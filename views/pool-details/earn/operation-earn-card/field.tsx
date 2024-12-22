@@ -41,7 +41,8 @@ const OperationEarnCardField: FC<Pick<OperationEarnCardProps, 'token'>> = ({
           <TokenIcon withBg network={network} symbol={token.symbol} />
         </Box>
       }
-      {...register(`tokenList.0.value`, {
+      //TODO: Change this to right form
+      {...register(`lpCoin.value`, {
         onChange: handleChange,
       })}
     />
