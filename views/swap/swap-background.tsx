@@ -1,17 +1,19 @@
+import { Network } from '@interest-protocol/aptos-sr-amm';
 import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
-import BigNumber from 'bignumber.js';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
-import { COIN_TYPE_TO_FA, COINS_EXPOSED } from '@/constants/coin-fa';
+import { TokenIcon } from '@/components';
+import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { PRICE_TYPE } from '@/constants/prices';
-import { FixedPointMath } from '@/lib';
+import useExposedCoins from '@/hooks/use-exposed-coins';
+import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import {
   AssetMetadata,
   TokenStandard,
 } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 const label = 'to';
@@ -27,28 +29,9 @@ const POSITIONS = [
 
 const SwapBackground: FC = () => {
   const { setValue, getValues } = useFormContext();
-  const [exposedCoins, setExposedCoins] = useState<any[]>([]);
+  const network = useNetwork<Network>();
 
-  useEffect(() => {
-    Promise.all(
-      COINS_EXPOSED.map((coin) =>
-        fetch(
-          `/api/v1/usd-price?type=${coin.address.toString()}&decimals=${coin.decimals}`
-        )
-          .then((res) => res.json?.() ?? res.text?.())
-          .then((value) =>
-            formatDollars(
-              FixedPointMath.toNumber(BigNumber(value), coin.decimals)
-            )
-          )
-          .catch(() => '--')
-      )
-    ).then((prices) =>
-      setExposedCoins(
-        COINS_EXPOSED.map((coin, index) => ({ ...coin, usd: prices[index] }))
-      )
-    );
-  }, []);
+  const { exposedCoins } = useExposedCoins();
 
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
@@ -92,9 +75,15 @@ const SwapBackground: FC = () => {
   };
 
   return (
-    <Box position="absolute" flex="1" mt="5rem">
+    <Box
+      flex="1"
+      mt="5rem"
+      position="absolute"
+      display={['none', 'none', 'none', 'block', 'block']}
+    >
       {exposedCoins.map((token) => {
-        const size = Math.random() + 0.5;
+        const size = Math.random() * 0.5 + 0.75;
+
         return (
           <Motion
             gap="l"
@@ -128,7 +117,6 @@ const SwapBackground: FC = () => {
               }}
             >
               <Motion
-                overflow="hidden"
                 borderRadius="50%"
                 width={`calc(3rem * ${size})`}
                 height={`calc(3rem * ${size})`}
@@ -139,12 +127,11 @@ const SwapBackground: FC = () => {
                   repeatType: 'mirror',
                 }}
               >
-                <img
-                  width="100%"
-                  height="100%"
-                  style={{ objectFit: 'cover' }}
-                  alt="this person does not exist"
-                  src={token.iconUri ?? 'https://thispersondoesnotexist.com'}
+                <TokenIcon
+                  withBg
+                  network={network}
+                  url={token.iconUri}
+                  symbol={token.symbol}
                 />
               </Motion>
             </Motion>

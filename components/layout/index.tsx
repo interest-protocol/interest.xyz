@@ -1,6 +1,8 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC, PropsWithChildren } from 'react';
 
+import SwapBottomMenu from '@/components/layout/bottom-menu';
+
 import ErrorBoundary from '../error-boundary';
 import Footer from './footer';
 import Header from './header';
@@ -60,6 +62,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
         </Box>
         <Footer />
       </Box>
+      <SwapBottomMenu />
     </Box>
   </ErrorBoundary>
 );
