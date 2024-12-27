@@ -1,7 +1,7 @@
 import { Box, Tabs, Typography } from '@interest-protocol/ui-kit';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import useEventListener from '@/hooks/use-event-listener';
@@ -13,9 +13,11 @@ import FindPoolButton from './find-pool-button';
 import { HeaderProps } from './header.types';
 
 const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
-  const { setValue } = useFormContext<IPoolForm>();
+  const { setValue, control } = useFormContext<IPoolForm>();
   const [showSearchField, setShowSearchField] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const filterList = useWatch({ control, name: 'filterList' });
 
   const router = useRouter();
   const { query } = router;
@@ -70,15 +72,10 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
       }
     });
 
-    setValue(
-      'filterList',
-      filters.length
-        ? filters
-        : currentTab
-          ? []
-          : [{ type: FilterTypeEnum.CATEGORY, value: FormFilterValue.official }]
-    );
-  }, [cleanInvalidFilters, setValue, currentTab]);
+    if (filters.length) {
+      setValue('filterList', filters);
+    }
+  }, [cleanInvalidFilters, setValue, filterList]);
 
   return (
     <Box
@@ -101,17 +98,12 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
             setTab(index);
             setValue('isFindingPool', false);
             setValue('tokenList', []);
-            setValue(
-              'filterList',
-              index
-                ? []
-                : [
-                    {
-                      type: FilterTypeEnum.CATEGORY,
-                      value: FormFilterValue.official,
-                    },
-                  ]
-            );
+            setValue('filterList', [
+              {
+                type: FilterTypeEnum.CATEGORY,
+                value: FormFilterValue.official,
+              },
+            ]);
           }}
           defaultTabIndex={currentTab}
           items={['Pools', 'My Position'].map((tab) => (

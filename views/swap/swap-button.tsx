@@ -32,6 +32,8 @@ const SwapButton = () => {
   const error = useWatch({ control, name: 'error' });
   const valueIn = useWatch({ control, name: 'from.value' });
   const valueOut = useWatch({ control, name: 'to.value' });
+  const from = useWatch({ control, name: 'from' });
+  const to = useWatch({ control, name: 'to' });
 
   const gotoExplorer = () => {
     window.open(getValues('explorerLink'), '_blank', 'noopener,noreferrer');
@@ -124,10 +126,7 @@ const SwapButton = () => {
               Number(getValues('executionTime')) / 1000
             ).toFixed(2)}`}
           >
-            <SuccessModalTokenCard
-              from={getValues('from')}
-              to={getValues('to')}
-            />
+            <SuccessModalTokenCard from={from} to={to} />
           </SuccessModal>
         ),
         primaryButton: {

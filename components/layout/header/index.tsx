@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { FC, useCallback, useState } from 'react';
 import { v4 } from 'uuid';
 
-import MenuMobile from '@/components/menu-mobile';
 import { IPXGoldenSVG } from '@/components/svg';
 import Wallet from '@/components/wallet';
 import { Routes, RoutesEnum } from '@/constants';
@@ -14,7 +13,12 @@ import { SIDEBAR_ITEMS } from '../sidebar/sidebar.data';
 import LogoWrapper from './logo-wrapper';
 
 const Header: FC = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined'
+      ? !window.matchMedia('(min-width: 64em)').matches
+      : false
+  );
+
   const { asPath, push } = useRouter();
 
   const goToPath = (path: any) => {
@@ -30,6 +34,7 @@ const Header: FC = () => {
   }, []);
 
   useEventListener('resize', handleSetDesktop, true);
+
   return (
     <Box
       display="flex"
@@ -38,7 +43,9 @@ const Header: FC = () => {
       px={isMobile ? 'm' : '2xl'}
       justifyContent="space-between"
     >
-      {isMobile ? (
+      {!isMobile ? (
+        <LogoWrapper />
+      ) : (
         <Box>
           <Link href={Routes[RoutesEnum.Swap]}>
             <Box
@@ -53,8 +60,6 @@ const Header: FC = () => {
             </Box>
           </Link>
         </Box>
-      ) : (
-        <LogoWrapper />
       )}
       {!isMobile && (
         <Box gap="m" display="flex" alignItems="center" justifyContent="center">
@@ -72,8 +77,8 @@ const Header: FC = () => {
               nHover={{ color: 'primary' }}
               onClick={() => goToPath(path)}
               transition="all 350ms ease-in-out"
-              color={asPath === path ? 'primary' : 'onSurface'}
               opacity={asPath === path ? '1' : '.6'}
+              color={asPath === path ? 'primary' : 'onSurface'}
             >
               <Typography
                 size="large"
@@ -118,9 +123,8 @@ const Header: FC = () => {
         display={['flex', 'flex', 'flex', 'none']}
         boxShadow="0 1.5rem 2.875rem -0.625rem rgba(13, 16, 23, 0.16)"
       >
-        <Box display="flex" alignItems="center" gap="xs">
+        <Box display="flex" alignItems="center">
           <Wallet />
-          <MenuMobile />
         </Box>
       </Box>
     </Box>

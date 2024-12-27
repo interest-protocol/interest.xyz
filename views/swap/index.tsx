@@ -20,8 +20,8 @@ const Swap: FC = () => (
       mt="xl"
       display="flex"
       borderRadius="l"
-      flexDirection="column"
       alignContent="center"
+      flexDirection="column"
       justifyContent="center"
       px={['2xs', 'xl', 'xl', '7xl']}
       width={['100%', '100%', '100%', '39.75rem']}

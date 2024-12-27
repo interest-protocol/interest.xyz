@@ -44,14 +44,14 @@ const Pools: FC = () => {
             {
               metadataX: {
                 $in: tokenList?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] || type).toString()
+                  (COIN_TYPE_TO_FA[type] ?? type).toString()
                 ),
               },
             },
             {
               metadataY: {
                 $in: tokenList?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] || type).toString()
+                  (COIN_TYPE_TO_FA[type] ?? type).toString()
                 ),
               },
             },
@@ -115,9 +115,27 @@ const Position: FC = () => {
     isFindingPool
       ? {
           $and: [
-            { metadataX: { $in: tokenList?.map(({ type }) => type) } },
-            { metadataY: { $in: tokenList?.map(({ type }) => type) } },
-            { poolAddress: { $in: coins?.map(({ type }) => type) } },
+            {
+              metadataX: {
+                $in: tokenList?.map(({ type }) =>
+                  (COIN_TYPE_TO_FA[type] ?? type).toString()
+                ),
+              },
+            },
+            {
+              metadataY: {
+                $in: tokenList?.map(({ type }) =>
+                  (COIN_TYPE_TO_FA[type] ?? type).toString()
+                ),
+              },
+            },
+            {
+              poolAddress: {
+                $in: coins?.map(({ type }) =>
+                  (COIN_TYPE_TO_FA[type] ?? type).toString()
+                ),
+              },
+            },
           ],
         }
       : { poolAddress: { $in: coins?.map(({ type }) => type) } }
