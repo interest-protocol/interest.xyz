@@ -30,5 +30,6 @@ export const TOKEN_ICONS = {
     faUSDT: USDTSVG,
     nETH: NETHSVG,
     RUCO: '/images/ruco.webp',
+    MOMO: 'images/momo.webp',
   },
 } as unknown as Record<Network, Record<string, string | FC<SVGProps>>>;

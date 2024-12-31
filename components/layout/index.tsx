@@ -1,12 +1,18 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC, PropsWithChildren } from 'react';
 
+import SwapBottomMenu from '@/components/layout/bottom-menu';
+
 import ErrorBoundary from '../error-boundary';
 import Footer from './footer';
 import Header from './header';
 import { LayoutProps } from './layout.types';
 
-const Layout: FC<PropsWithChildren<LayoutProps>> = ({ title, children }) => (
+const Layout: FC<PropsWithChildren<LayoutProps>> = ({
+  title,
+  children,
+  background,
+}) => (
   <ErrorBoundary>
     <Box
       flex="1"
@@ -19,6 +25,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({ title, children }) => (
       flexDirection="column"
     >
       <Header />
+      {background}
       <Box
         flex="1"
         width="100%"
@@ -55,6 +62,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({ title, children }) => (
         </Box>
         <Footer />
       </Box>
+      <SwapBottomMenu />
     </Box>
   </ErrorBoundary>
 );

@@ -13,7 +13,7 @@ const ToInput: FC = () => {
   const value = useWatch({ control, name: 'to.value' });
 
   return (
-    <Box pt="5xl">
+    <Box>
       <HeaderInfo label="to" />
       <Box
         py="l"
@@ -32,13 +32,19 @@ const ToInput: FC = () => {
             <TextField
               disabled
               value={value}
+              ml="-1rem"
+              width="100%"
               lineHeight="l"
               placeholder="0"
               color="onSurface"
-              fontFamily="Satoshi"
+              fontFamily="Proto"
+              fontSize={['2xl', '4xl']}
               fieldProps={{
                 width: '100%',
-                borderRadius: 'xs',
+                border: 'none',
+                nHover: {
+                  border: 'none',
+                },
               }}
             />
           </Box>

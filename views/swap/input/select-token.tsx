@@ -118,13 +118,11 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       variant="tonal"
       color="onSurface"
       borderRadius="xs"
-      border="1px solid"
       disabled={swapping}
       onClick={openModal}
       bg="highestContainer"
       opacity={swapping ? 0.7 : 1}
       pl={currentSymbol ? '2xs' : 'm'}
-      borderColor="#C6C6CA !important"
       {...(currentSymbol && {
         PrefixIcon: (
           <TokenIcon

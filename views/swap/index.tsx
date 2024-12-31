@@ -6,72 +6,61 @@ import Layout from '@/components/layout';
 import Input from './input';
 import SwapFormFieldSlider from './input/swap-manager-slider';
 import ToInput from './input/to-input';
+import SwapBackground from './swap-background';
 import SwapButton from './swap-button';
 import SwapFlipToken from './swap-flip-token';
 import SwapManager from './swap-manager';
 import SwapMessages from './swap-messages';
 
 const Swap: FC = () => (
-  <Layout>
+  <Layout background={<SwapBackground />}>
     <Box
       gap="l"
       mx="auto"
-      mt="3.5rem"
+      mt="xl"
       display="flex"
       borderRadius="l"
-      flexDirection="column"
       alignContent="center"
+      flexDirection="column"
       justifyContent="center"
       px={['2xs', 'xl', 'xl', '7xl']}
       width={['100%', '100%', '100%', '39.75rem']}
     >
-      <Box bg="container" borderRadius="s" px="xl">
-        <Box display="flex" flexDirection="column" gap="5xl">
-          <Box py="l">
-            <Input label="from" />
-            <Box px="s">
-              <SwapFormFieldSlider />
-            </Box>
-          </Box>
+      <Box position="relative">
+        <Box
+          py="l"
+          px="xl"
+          display="flex"
+          bg="container"
+          borderRadius="s"
+          flexDirection="column"
+        >
+          <Input label="from" />
+          <SwapFormFieldSlider />
         </Box>
         <Box
+          my="-1.4rem"
           display="flex"
-          position="relative"
-          alignContent="center"
+          alignItems="center"
           justifyContent="center"
         >
-          <Box width="100%" height="0.313rem" bg="lowContainer" />
-          <Box
-            gap="s"
-            my="-1.5rem"
-            width="100%"
-            display="flex"
-            position="absolute"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Box
-              display="flex"
-              width="3.25rem"
-              height="3.25rem"
-              border="5px solid"
-              alignItems="center"
-              borderRadius="full"
-              justifyContent="center"
-              borderColor="lowContainer"
-            >
-              <SwapFlipToken />
-            </Box>
-          </Box>
+          <SwapFlipToken />
         </Box>
-        <Box borderRadius="xs" bg="container" my="l">
+        <Box
+          py="s"
+          px="xl"
+          display="flex"
+          bg="container"
+          borderRadius="s"
+          flexDirection="column"
+        >
           <ToInput />
+          <SwapMessages />
         </Box>
-        <SwapMessages />
-        <SwapManager />
+        <SwapButton />
       </Box>
-      <SwapButton />
     </Box>
+    <SwapManager />
   </Layout>
 );
 

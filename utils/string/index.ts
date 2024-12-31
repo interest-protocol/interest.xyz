@@ -135,7 +135,7 @@ export const parseInputEventToNumberString = (
   )
     return (+parseFloat(x).toFixed(6)).toPrecision() as `${number}`;
 
-  return x as `${number}`;
+  return x;
 };
 
 export function isHexString(value: any, length?: number): boolean {

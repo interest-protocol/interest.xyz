@@ -22,7 +22,7 @@ const Input: FC<InputProps> = ({ label }) => {
     <>
       <HeaderInfo label={label} />
       <Box
-        pt="l"
+        pt="m"
         gap="0.5rem"
         display="flex"
         flexDirection="column"
@@ -36,15 +36,20 @@ const Input: FC<InputProps> = ({ label }) => {
             justifyContent="flex-end"
           >
             <TextField
+              ml="-1rem"
               width="100%"
               lineHeight="l"
               placeholder="0"
               color="onSurface"
-              fontFamily="Satoshi"
+              fontFamily="Proto"
+              fontSize={['2xl', '4xl']}
               disabled={label === 'to' || swapping}
               fieldProps={{
                 width: '100%',
-                borderRadius: 'xs',
+                border: 'none',
+                nHover: {
+                  border: 'none',
+                },
               }}
               {...register(
                 `${label}.value`,
@@ -52,7 +57,7 @@ const Input: FC<InputProps> = ({ label }) => {
                   ? {}
                   : {
                       onChange: (v: ChangeEvent<HTMLInputElement>) => {
-                        setValue('updateSlider', {});
+                        setValue('slider', {});
                         setValue('origin', label);
                         const value = parseInputEventToNumberString(v);
                         setValue('lock', false);
