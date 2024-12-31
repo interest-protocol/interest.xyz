@@ -23,6 +23,7 @@ const SwapMessages: FC = () => {
     <Box
       p="s"
       gap="s"
+      mb="m"
       display="flex"
       borderRadius="xs"
       border="1px solid"
