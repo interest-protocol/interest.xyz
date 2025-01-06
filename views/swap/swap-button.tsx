@@ -155,7 +155,7 @@ const SwapButton = () => {
         variant="filled"
         borderRadius="s"
         onClick={onSwap}
-        disabled={disabled}
+        disabled={!disabled}
         justifyContent="center"
         nDisabled={{ bg: 'highestContainer' }}
       >

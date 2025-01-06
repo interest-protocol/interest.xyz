@@ -19,6 +19,18 @@ export const COIN_TYPE_TO_FA = {
   [PORTO_COINS.WETH]: PORTO_FAS.WETH,
 };
 
+export const MOMO = {
+  address: AccountAddress.from(
+    '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+  ),
+  decimals: 6,
+  iconUri:
+    'https://drive.google.com/file/d/1OqJHbmmuLuyw7XJUciBaNtitcFigfXM3/preview',
+  name: 'Momo Coin',
+  projectUri: '',
+  symbol: 'MOMO',
+};
+
 export const RUCO = {
   address: AccountAddress.from(
     '0xf0949330b384afdfce50661211adec99aaafb70f2c5ddee993fec4b60947b31e'
@@ -34,9 +46,15 @@ export const TOKENS = [
   ...values(COINS[Network.Porto]),
   ...values(FUNGIBLE_ASSETS[Network.Porto]),
   RUCO,
+  MOMO,
 ];
 
 export const COINS_EXPOSED = [
   RUCO,
+  MOMO,
   FUNGIBLE_ASSETS[Network.Porto][FA_ADDRESSES[Network.Porto].NETH.toString()],
+  FUNGIBLE_ASSETS[Network.Porto][FA_ADDRESSES[Network.Porto].WETH.toString()],
+  FUNGIBLE_ASSETS[Network.Porto][FA_ADDRESSES[Network.Porto].USDT.toString()],
+  FUNGIBLE_ASSETS[Network.Porto][FA_ADDRESSES[Network.Porto].USDC.toString()],
+  FUNGIBLE_ASSETS[Network.Porto][FA_ADDRESSES[Network.Porto].APT.toString()],
 ];
