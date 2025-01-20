@@ -1,8 +1,7 @@
-import BigNumber from 'bignumber.js';
 import { useEffect, useState } from 'react';
 
 import { COINS_EXPOSED } from '@/constants/coin-fa';
-import { FixedPointMath } from '@/lib';
+import { PRICE_TYPE } from '@/constants/prices';
 import { formatDollars } from '@/utils';
 
 const useExposedCoins = () => {
@@ -11,15 +10,13 @@ const useExposedCoins = () => {
   useEffect(() => {
     Promise.all(
       COINS_EXPOSED.map((coin) =>
-        fetch(
-          `/api/v1/usd-price?type=${coin.address.toString()}&decimals=${coin.decimals}`
-        )
-          .then((res) => res.json?.() ?? res.text?.())
-          .then((value) =>
-            formatDollars(
-              FixedPointMath.toNumber(BigNumber(value), coin.decimals)
-            )
-          )
+        fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
+          method: 'POST',
+          body: JSON.stringify({ coins: [PRICE_TYPE[coin.symbol]] }),
+          headers: { 'Content-Type': 'application/json', accept: '*/*' },
+        })
+          .then((response) => response.json())
+          .then((data) => formatDollars(data[0].price))
           .catch(() => '-')
       )
     ).then((prices) => {

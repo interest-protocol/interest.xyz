@@ -18,20 +18,55 @@ import { MetadataSources } from '@/utils/coin/coin.types';
 
 const label = 'to';
 
-const POSITIONS = [
-  [10, 10],
-  [50, 15],
-  [5, 50],
-  [15, 85],
-  [80, 80],
-  [70, 50],
+const MAX_COINS = 10;
+const MAX_ATTEMPTS = 100;
+const VALID_AREAS = [
+  { top: 0, bottom: 40, left: 5, right: 25 },
+  { top: 0, bottom: 40, left: 75, right: 95 },
 ];
+const MIN_DISTANCE = 10;
+
+const generatePosition = (
+  area: { top: number; bottom: number; left: number; right: number },
+  size: number,
+  existingPositions: { top: number; left: number }[]
+) => {
+  const adjustedSize = size * 3;
+  let attempts = 0;
+
+  while (attempts < MAX_ATTEMPTS) {
+    const top =
+      area.top +
+      adjustedSize +
+      Math.random() * (area.bottom - area.top - 2 * adjustedSize);
+    const left =
+      area.left +
+      adjustedSize +
+      Math.random() * (area.right - area.left - 2 * adjustedSize);
+
+    const isValid = existingPositions.every(
+      (pos) =>
+        Math.sqrt(Math.pow(pos.top - top, 2) + Math.pow(pos.left - left, 2)) >
+        MIN_DISTANCE
+    );
+
+    if (isValid) {
+      return { top, left };
+    }
+
+    attempts++;
+  }
+
+  return null;
+};
 
 const SwapBackground: FC = () => {
   const { setValue, getValues } = useFormContext();
   const network = useNetwork<Network>();
 
   const { exposedCoins } = useExposedCoins();
+
+  const positions: { top: number; left: number }[] = [];
 
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
@@ -77,12 +112,18 @@ const SwapBackground: FC = () => {
   return (
     <Box
       flex="1"
-      mt="5rem"
+      mt="6rem"
       position="absolute"
       display={['none', 'none', 'none', 'block', 'block']}
     >
-      {exposedCoins.map((token) => {
+      {exposedCoins.slice(0, MAX_COINS).map((token) => {
         const size = Math.random() * 0.5 + 0.75;
+        const area = VALID_AREAS[Math.random() > 0.5 ? 0 : 1];
+        const position = generatePosition(area, size, positions);
+
+        if (!position) return null;
+
+        positions.push(position);
 
         return (
           <Motion
@@ -101,8 +142,8 @@ const SwapBackground: FC = () => {
               repeatType: 'mirror',
             }}
             onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
-            top={`calc(${POSITIONS[~~(POSITIONS.length * Math.random())][0]}vh + ${Math.random() * 10 * (Math.random() > 0.5 ? 1 : -1)}rem)`}
-            left={`calc(${POSITIONS[~~(POSITIONS.length * Math.random())][1]}vw + ${Math.random() * 10 * (Math.random() > 0.5 ? 1 : -1)}rem)`}
+            top={`calc(${position.top}vh)`}
+            left={`calc(${position.left}vw)`}
           >
             <Motion
               scale="1"
