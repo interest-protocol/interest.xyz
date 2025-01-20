@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     ).then((res) => res.json?.());
 
-    return res.json(data.data.dstAmount);
+    return res.json(data.data?.dstAmount);
   } catch (e) {
     console.log(e);
 
