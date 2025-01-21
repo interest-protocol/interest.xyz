@@ -16,7 +16,6 @@ const Footer: FC = () => {
 
   return (
     <Box
-      py="xl"
       gap="s"
       px="2xl"
       zIndex={0}
@@ -26,6 +25,7 @@ const Footer: FC = () => {
       flexDirection="column"
       mb={isMobile ? '2xl' : ''}
       justifyContent="space-between"
+      py={['5rem', '5rem', '5rem', 'm', 'm']}
       display={['flex', 'flex', 'flex', 'grid']}
       gridTemplateColumns={['1fr', '1fr', '1fr', '1fr auto 1fr']}
     >
