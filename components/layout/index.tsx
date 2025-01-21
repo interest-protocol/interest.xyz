@@ -36,14 +36,21 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
       >
         <Box
           m="0"
+          mt="unset"
           width="100%"
+          height="100%"
           display="flex"
           variant="container"
           flexDirection="column"
           px={['m', 'l', 'l', 'xl']}
-          mt="unset"
         >
-          <Box as="main" flex="1" mb="2xl">
+          <Box
+            flex="1"
+            as="main"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
             <Box>
               {title && (
                 <Typography
