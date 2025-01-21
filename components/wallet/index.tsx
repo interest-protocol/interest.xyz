@@ -20,12 +20,13 @@ const Wallet: FC = () => {
         rel="noreferrer"
       >
         <Button
+          px="m"
+          bg="#1f1f1f"
           color="#fff"
           variant="outline"
-          px="m"
           border="1px solid #FFDA34"
           borderRadius="m"
-          nHover={{ borderColor: '#ffda34ac', bg: 'unset', color: '#fff' }}
+          nHover={{ borderColor: '#ffda34ac', bg: '#1f1f1fbe', color: '#fff' }}
         >
           Mint
         </Button>
