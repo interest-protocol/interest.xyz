@@ -72,7 +72,6 @@ const SwapTopSlider: FC = () => {
         overflowX="scroll"
         alignItems="center"
         scrollbarWidth="none"
-        bg="rgba(0, 0, 0, 0.2)"
         backdropFilter="blur(40px)"
         scrollSnapType="x mandatory"
         WebkitBackdropFilter="blur(40px)"

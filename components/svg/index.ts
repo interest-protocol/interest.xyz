@@ -74,6 +74,7 @@ export { default as LogoutSVG } from './logout';
 export { default as MenuSVG } from './menu';
 export { default as MergeSVG } from './merge';
 export { default as MinusSVG } from './minus';
+export { default as MoreSVG } from './more';
 export { default as MOVESVG } from './move';
 export { default as MovementLogoSVG } from './movement-logo';
 export { default as NETHSVG } from './neth';

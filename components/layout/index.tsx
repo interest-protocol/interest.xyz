@@ -33,6 +33,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
         overflowY="auto"
         flexDirection="column"
         justifyContent="space-between"
+        py={['l', 'l', 'l', 'unset', 'unset']}
       >
         <Box
           m="0"

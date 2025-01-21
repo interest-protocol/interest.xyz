@@ -9,6 +9,7 @@ const BottomNavListItem: FC<BottomNavListItemProps> = ({
   name,
   path,
   Icon,
+  onClick,
 }) => {
   const { asPath, push } = useRouter();
 
@@ -34,10 +35,10 @@ const BottomNavListItem: FC<BottomNavListItemProps> = ({
         alignContent="center"
         flexDirection="column"
         justifyContent="center"
-        onClick={() => goToPath(path)}
         transition="all 350ms ease-in-out"
-        nHover={{ color: asPath !== path ? 'outline' : '' }}
         color={asPath === path ? 'primary' : '#ffffff9d'}
+        nHover={{ color: asPath !== path ? 'outline' : '' }}
+        {...(onClick ? { onClick } : { onClick: () => goToPath(path) })}
       >
         <Box height="2rem" display="flex" alignItems="center">
           <Icon maxHeight="1.5rem" maxWidth="1.5rem" width="1.5rem" />

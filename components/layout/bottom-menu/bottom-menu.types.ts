@@ -11,12 +11,13 @@ export interface SwapBottomMenuItemProps {
 
 export interface BottomNavListItemProps {
   name: string;
-  path: string | undefined;
+  path?: string | undefined;
   Icon: FC<SVGProps>;
+  onClick?: () => void;
 }
 
 export interface BottomMenuProps {
   name: string;
-  path: string;
+  path?: string;
   Icon: FC<SVGProps>;
 }
