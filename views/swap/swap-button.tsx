@@ -39,6 +39,11 @@ const SwapButton = () => {
     window.open(getValues('explorerLink'), '_blank', 'noopener,noreferrer');
   };
 
+  const onCloseModal = () => {
+    reset();
+    handleClose();
+  };
+
   const handleSwap = async () => {
     try {
       setLoading(true);
@@ -90,8 +95,6 @@ const SwapButton = () => {
         'explorerLink',
         EXPLORER_URL[Network.Porto](`txn/${txResult.hash}`)
       );
-
-      reset();
     } catch (e) {
       console.warn(e);
 
@@ -138,7 +141,7 @@ const SwapButton = () => {
             mr="s"
             color="onSurface"
             variant="outline"
-            onClick={handleClose}
+            onClick={onCloseModal}
           >
             got it
           </Button>
