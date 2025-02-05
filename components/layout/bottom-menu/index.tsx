@@ -6,7 +6,7 @@ const SwapBottomMenu = () => {
   return (
     <Box
       left="0"
-      zIndex="9"
+      zIndex="5"
       bottom="0"
       width="100vw"
       overflow="hidden"

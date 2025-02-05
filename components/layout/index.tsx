@@ -67,11 +67,11 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
               {children}
             </Box>
           </Box>
+          <Footer />
         </Box>
-        <Footer />
       </Box>
-      <SwapBottomMenu />
     </Box>
+    <SwapBottomMenu />
   </ErrorBoundary>
 );
 

@@ -1,6 +1,6 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import Link from 'next/link';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { IPXSVG } from '@/components/svg';
@@ -8,24 +8,19 @@ import { IPXSVG } from '@/components/svg';
 import { SOCIAL_LINK } from './ social-link.data';
 
 const Footer: FC = () => {
-  const [isMobile] = useState(() =>
-    typeof window !== 'undefined'
-      ? !window.matchMedia('(min-width: 64em)').matches
-      : false
-  );
-
   return (
     <Box
+      pt="xl"
       gap="s"
       px="2xl"
-      zIndex={0}
       as="footer"
       width="100%"
+      position="relative"
       alignItems="center"
       flexDirection="column"
-      mb={isMobile ? '2xl' : ''}
       justifyContent="space-between"
       display={['flex', 'flex', 'flex', 'grid']}
+      pb={['6rem', '6rem', '6rem', '2xl', '2xl']}
       gridTemplateColumns={['1fr', '1fr', '1fr', '1fr auto 1fr']}
     >
       <Link
