@@ -149,7 +149,12 @@ const SwapButton = () => {
       }),
     });
 
-  const disabled = !Number(valueIn) || !Number(valueOut) || !!error;
+  const disabled =
+    !Number(valueIn) ||
+    !Number(valueOut) ||
+    valueIn < 0 ||
+    valueOut < 0 ||
+    !!error;
 
   return (
     <Box display="flex" flexDirection="column" mt="xs">
@@ -158,7 +163,7 @@ const SwapButton = () => {
         variant="filled"
         borderRadius="s"
         onClick={onSwap}
-        disabled={!disabled}
+        disabled={disabled}
         justifyContent="center"
         nDisabled={{ bg: 'highestContainer' }}
       >

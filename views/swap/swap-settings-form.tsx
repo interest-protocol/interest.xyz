@@ -3,7 +3,7 @@ import { ChangeEvent, FC } from 'react';
 import { useForm, useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
-import { PercentageSVG } from '@/components/svg';
+import { PercentageSVG, TimesSVG } from '@/components/svg';
 import { LOCAL_STORAGE_VERSION } from '@/constants';
 import { useModal } from '@/hooks/use-modal';
 import { parseInputEventToNumberString } from '@/utils';
@@ -36,7 +36,8 @@ const SwapSettingsForm: FC = () => {
 
   return (
     <Box
-      py="2xl"
+      pb="2xl"
+      pt="m"
       px="2xl"
       gap="xl"
       bg="container"
@@ -47,6 +48,11 @@ const SwapSettingsForm: FC = () => {
       flexDirection="column"
     >
       <Box>
+        <Box display="flex" width="100%" justifyContent="flex-end">
+          <Button variant="text" isIcon onClick={handleClose} mr="-0.5rem">
+            <TimesSVG maxWidth="0.8rem" maxHeight="0.8rem" width="100%" />
+          </Button>
+        </Box>
         <Typography variant="body" size="small" mb="0.5rem">
           Slippage Tolerance
         </Typography>
