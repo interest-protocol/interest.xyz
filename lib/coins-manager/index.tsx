@@ -126,12 +126,12 @@ const CoinsManager: FC = () => {
           .map(({ type, symbol }) => [type, PRICE_TYPE[symbol]]);
 
         const prices: ReadonlyArray<PriceResponse> = await fetch(
-          'https://rates-api-production.up.railway.app/api/fetch-quote',
+          'https://api.mosaic.ag/v1/prices',
           {
-            method: 'POST',
+            method: 'GET',
             headers: { 'Content-Type': 'application/json', accept: '*/*' },
             body: JSON.stringify({
-              coins: coinsPriceType.map(([, type]) => type),
+              ids: coinsPriceType.map(([, type]) => type),
             }),
           }
         )

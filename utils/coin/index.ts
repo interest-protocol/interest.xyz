@@ -11,7 +11,6 @@ import {
 import { pathOr, propOr, values } from 'ramda';
 import invariant from 'tiny-invariant';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { CoinBalance } from '@/interface';
 import {
   AssetMetadata,
@@ -26,7 +25,7 @@ import {
 } from './coin.types';
 
 export const isAptosCoin = (type: string) =>
-  type.endsWith('1::aptos_coin::AptosCoin');
+  type?.endsWith('1::aptos_coin::AptosCoin');
 
 export const isAptosFA = (type: string) => Number(type) === 0xa;
 
@@ -125,13 +124,7 @@ export const parseToMetadata = ({
     name,
     decimals,
     standard,
-    symbol:
-      standard === TokenStandard.FA &&
-      values(COIN_TYPE_TO_FA).some((address) =>
-        address.equals(AccountAddress.from(type))
-      )
-        ? `fa${symbol}`
-        : symbol,
+    symbol: symbol,
     ...(iconUri && { iconUri }),
     ...(projectUri && { projectUri }),
   };

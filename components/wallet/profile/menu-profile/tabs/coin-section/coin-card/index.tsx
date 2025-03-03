@@ -1,22 +1,11 @@
-import { InterestDex } from '@interest-protocol/aptos-move-dex';
 import { Network } from '@interest-protocol/aptos-sr-amm';
-import {
-  Box,
-  Button,
-  TooltipWrapper,
-  Typography,
-} from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
+import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
-import toast from 'react-hot-toast';
-import invariant from 'tiny-invariant';
 
-import { RateDownSVG, RateUpSVG, WrapSVG } from '@/components/svg';
+import { RateDownSVG, RateUpSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { FixedPointMath } from '@/lib';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
@@ -24,20 +13,10 @@ import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
 
 import { CoinCardProps } from '../../../user-info.types';
 import CardWrapper from './card-wrapper';
-import { logWrapCoin } from './coin-card.utils';
-
-const dex = new InterestDex();
 
 const CoinCard: FC<CoinCardProps> = ({ token }) => {
-  const client = useAptosClient();
   const network = useNetwork<Network>();
-  const { coinsMap, mutate } = useCoins();
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { coinsMap } = useCoins();
 
   const symbol = token.symbol;
   const decimals = token.decimals;
@@ -48,61 +27,6 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
     coin?.balance ?? ZERO_BIG_NUMBER,
     coin?.decimals ?? decimals
   );
-
-  const handleWrapCoin = async () => {
-    const id = toast.loading(`Wrapping ${symbol}...`);
-    try {
-      invariant(account, 'You should have this coin in your wallet');
-      invariant(coin, 'You should have this coin in your wallet');
-
-      let txResult;
-      const payload = dex.wrapCoin({
-        coinType: token.type,
-        amount: BigInt(coin.balance.toString()),
-        recipient: account.address,
-      });
-
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
-
-        invariant(tx.status === 'Approved', 'Rejected by User');
-
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
-
-      logWrapCoin(account.address, symbol, network, txResult.hash);
-
-      toast.success(`${symbol} wrapped successfully!`);
-    } catch (e) {
-      if ((e as any).data.error_code === 'mempool_is_full')
-        toast.error('The mempool is full, try again in a few seconds.');
-      else toast.error((e as Error).message);
-    } finally {
-      mutate();
-      toast.dismiss(id);
-    }
-  };
 
   return (
     <CardWrapper
@@ -176,27 +100,6 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
             </Box>
           )}
         </Box>
-        {COIN_TYPE_TO_FA[token.type] && (
-          <TooltipWrapper
-            bg="lowContainer"
-            tooltipPosition="top"
-            tooltipContent={
-              <Typography variant="body" size="small" whiteSpace="nowrap">
-                Convert to FA
-              </Typography>
-            }
-          >
-            <Button
-              isIcon
-              variant="text"
-              color="primary"
-              onClick={handleWrapCoin}
-              disabled={!coin || coin.balance.isZero()}
-            >
-              <WrapSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
-            </Button>
-          </TooltipWrapper>
-        )}
       </Box>
     </CardWrapper>
   );

@@ -3,7 +3,6 @@ import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC, useEffect, useState } from 'react';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { PRICE_TYPE } from '@/constants/prices';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
@@ -15,15 +14,12 @@ const BalanceCard: FC = () => {
   const defaultCoin = COINS[Network.Porto].APT;
 
   const type = defaultCoin.type;
-  const faType = COIN_TYPE_TO_FA[type].toString();
   const decimals = defaultCoin.decimals;
   const symbol = defaultCoin.symbol;
 
   const balance = FixedPointMath.toNumber(
     coinsMap[type]?.balance.isZero()
-      ? coinsMap[faType]?.balance.isZero()
-        ? ZERO_BIG_NUMBER
-        : coinsMap[faType]?.balance
+      ? ZERO_BIG_NUMBER
       : coinsMap[type]?.balance,
     decimals
   );

@@ -5,14 +5,10 @@ import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
-import {
-  AssetMetadata,
-  TokenStandard,
-} from '@/lib/coins-manager/coins-manager.types';
+import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
@@ -34,16 +30,6 @@ const SwapBackground: FC = () => {
     const [currentToken, opposite] = getValues([label, 'from']);
 
     if (
-      (metadata.standard == TokenStandard.FA
-        ? metadata.type
-        : COIN_TYPE_TO_FA[metadata.type].toString()) ==
-      (opposite.standard == TokenStandard.FA
-        ? opposite.type
-        : COIN_TYPE_TO_FA[opposite.type].toString())
-    )
-      return;
-
-    if (
       metadata.standard === opposite.standard &&
       metadata.symbol === opposite.symbol
     ) {
@@ -61,13 +47,17 @@ const SwapBackground: FC = () => {
     });
 
     if (PRICE_TYPE[metadata.symbol])
-      fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-        method: 'POST',
-        body: JSON.stringify({ coins: [PRICE_TYPE[metadata.symbol]] }),
-        headers: { 'Content-Type': 'application/json', accept: '*/*' },
+      fetch('https://api.mosaic.ag/v1/prices', {
+        method: 'GET',
+        body: JSON.stringify({ ids: [PRICE_TYPE[metadata.symbol]] }),
+        headers: {
+          'Content-Type': 'application/json',
+          accept: '*/*',
+          'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+        },
       })
         .then((response) => response.json())
-        .then((data) => setValue(`${label}.usdPrice`, data[0].price))
+        .then((data) => console.log('data', data))
         .catch(() => null);
   };
 

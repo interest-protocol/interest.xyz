@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { useReadLocalStorage } from 'usehooks-ts';
 
 import { LOCAL_STORAGE_VERSION } from '@/constants';
-import { PRICE_TYPE } from '@/constants/prices';
+import { COINS_EXPOSED } from '@/constants/coin-fa';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { updateURL } from '@/utils';
 
@@ -21,14 +21,21 @@ const SwapInitManager: FC = () => {
     `${LOCAL_STORAGE_VERSION}-movement-dex-settings`
   ) ?? { slippage: '2', aggregator: Aggregator.Interest };
 
+  const params = COINS_EXPOSED.map((el) => `ids[]=${el.address}`).join('&');
+
   const getUSDPrice = (symbol: string, label: 'to' | 'from') => {
-    fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-      method: 'POST',
-      body: JSON.stringify({ coins: [PRICE_TYPE[symbol]] }),
-      headers: { 'Content-Type': 'application/json', accept: '*/*' },
+    fetch(`https://api.mosaic.ag/v1/prices?${params}`, {
+      method: 'GET',
+      headers: {
+        accept: '*/*',
+        'Content-Type': 'application/json',
+        'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+      },
     })
       .then((response) => response.json())
-      .then((data) => form.setValue(`${label}.usdPrice`, data[0].price))
+      .then((data) =>
+        form.setValue(`${label}.usdPrice`, data.priceById[label].price)
+      )
       .catch(() => null);
   };
 
