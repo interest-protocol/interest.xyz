@@ -33,9 +33,7 @@ const SwapInitManager: FC = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) =>
-        form.setValue(`${label}.usdPrice`, data.priceById[label].price)
-      )
+      .then((data) => form.setValue(`${label}.usdPrice`, data))
       .catch(() => null);
   };
 
