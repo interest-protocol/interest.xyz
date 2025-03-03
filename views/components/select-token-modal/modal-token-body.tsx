@@ -29,7 +29,7 @@ const ModalTokenBody: FC<ModalTokenBodyProps> = ({
       token.symbol.toLowerCase().includes(search?.toLowerCase() || '') ||
       token.name.toLowerCase().includes(search?.toLowerCase() || '')
   );
-
+  console.log(filteredTokens, '>>>>Tokens');
   if (!isSearchAddres)
     return (
       <Box px="m" py="s">

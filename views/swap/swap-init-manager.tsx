@@ -6,7 +6,6 @@ import { useFormContext } from 'react-hook-form';
 import { useReadLocalStorage } from 'usehooks-ts';
 
 import { LOCAL_STORAGE_VERSION } from '@/constants';
-import { COINS_EXPOSED } from '@/constants/coin-fa';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { updateURL } from '@/utils';
 
@@ -21,10 +20,8 @@ const SwapInitManager: FC = () => {
     `${LOCAL_STORAGE_VERSION}-movement-dex-settings`
   ) ?? { slippage: '2', aggregator: Aggregator.Interest };
 
-  const params = COINS_EXPOSED.map((el) => `ids[]=${el.address}`).join('&');
-
-  const getUSDPrice = (symbol: string, label: 'to' | 'from') => {
-    fetch(`https://api.mosaic.ag/v1/prices?${params}`, {
+  const getUSDPrice = (address: string, label: 'to' | 'from') => {
+    fetch(`https://api.mosaic.ag/v1/prices?ids[]=${address}`, {
       method: 'GET',
       headers: {
         accept: '*/*',
@@ -33,7 +30,9 @@ const SwapInitManager: FC = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => form.setValue(`${label}.usdPrice`, data))
+      .then(({ data }) =>
+        form.setValue(`${label}.usdPrice`, data.priceById[address].price)
+      )
       .catch(() => null);
   };
 
@@ -41,8 +40,8 @@ const SwapInitManager: FC = () => {
     form.reset();
     const defaultSettings = form.getValues('settings');
     form.setValue('settings', mergeAll([defaultSettings, settings]));
-    getUSDPrice(form.getValues('from.symbol'), 'from');
-    getUSDPrice(form.getValues('to.symbol'), 'to');
+    getUSDPrice(form.getValues('from.type'), 'from');
+    getUSDPrice(form.getValues('to.type'), 'to');
     updateURL(pathname);
   }, [network]);
 

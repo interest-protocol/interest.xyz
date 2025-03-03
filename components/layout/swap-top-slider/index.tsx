@@ -3,13 +3,9 @@ import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { AsteriskSVG } from '@/components/svg';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
-import {
-  AssetMetadata,
-  TokenStandard,
-} from '@/lib/coins-manager/coins-manager.types';
+import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
@@ -24,15 +20,7 @@ const SwapTopSlider: FC = () => {
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
 
-    if (
-      (metadata.standard == TokenStandard.FA
-        ? metadata.type
-        : COIN_TYPE_TO_FA[metadata.type].toString()) ==
-      (opposite.standard == TokenStandard.FA
-        ? opposite.type
-        : COIN_TYPE_TO_FA[opposite.type].toString())
-    )
-      return;
+    if (metadata.type == opposite.type) return;
 
     if (
       metadata.standard === opposite.standard &&
