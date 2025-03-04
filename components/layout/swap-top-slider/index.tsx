@@ -70,8 +70,8 @@ const SwapTopSlider: FC = () => {
         WebkitBackdropFilter="blur(40px)"
       >
         {exposedCoins.map((token, index) => (
-          <>
-            <Box key={index}>
+          <Box key={index}>
+            <Box>
               <BottomMenuItem
                 usdPrice={token.usd}
                 symbol={token.symbol}
@@ -91,7 +91,7 @@ const SwapTopSlider: FC = () => {
                 <AsteriskSVG maxHeight="1rem" maxWidth="1rem" width="1rem" />
               </Box>
             )}
-          </>
+          </Box>
         ))}
       </Box>
     </Box>
