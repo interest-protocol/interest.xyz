@@ -1,6 +1,5 @@
 // import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
-import { values } from 'ramda';
 import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
@@ -65,12 +64,12 @@ const SwapManager: FC = () => {
           'to.value',
           String(FixedPointMath.toNumber(value, to.decimals))
         );
-        setValue('path', data.data.paths);
-        setValue('payload', {
-          function: data.data.tx.function,
-          typeArguments: data.data.tx.typeArguments,
-          functionArguments: values(data.data.tx.functionArguments),
-        });
+        // setValue('path', data.data.paths);
+        // setValue('payload', {
+        //   function: data.data.tx.function,
+        //   typeArguments: data.data.tx.typeArguments,
+        //   functionArguments: values(data.data.tx.functionArguments),
+        // });
         setHasNoMarket(false);
         setValue('focus', false);
       })
