@@ -54,7 +54,10 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
       )
         .then((response) => response.json())
         .then(({ data }) =>
-          setValue(`tokens.${index}.usdPrice`, formatDollars(data.price))
+          setValue(
+            `tokens.${index}.usdPrice`,
+            Number(formatDollars(data.price))
+          )
         )
         .catch(() => null);
   };
