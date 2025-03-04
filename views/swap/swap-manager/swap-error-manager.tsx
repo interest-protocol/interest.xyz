@@ -33,8 +33,7 @@ export const SwapErrorManager: FC<SwapMessagesProps> = ({ hasNoMarket }) => {
     if (!isAptos(from?.type)) return false;
 
     const balanceMinusFee =
-      coinsMap[from.type]?.balance.minus(BigNumber(100000000)) ??
-      ZERO_BIG_NUMBER;
+      coinsMap[from.type]?.balance.minus(BigNumber(1000000)) ?? ZERO_BIG_NUMBER;
     const fromValue = Number(from?.value ?? '0');
 
     return FixedPointMath.toNumber(balanceMinusFee, from.decimals) < fromValue;
