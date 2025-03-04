@@ -38,8 +38,10 @@ const SwapManager: FC = () => {
 
     const to = getValues('to');
     const from = getValues('from');
+    const slippage = (getValues('settings.slippage') * 100).toFixed(0);
+
     fetch(
-      `https://api.mosaic.ag/v1/quote?srcAsset=${from.type}&dstAsset=${to.type}&amount=${from.valueBN.toFixed(0)}&slippage=${getValues('settings.slippage')}`,
+      `https://api.mosaic.ag/v1/quote?srcAsset=${from.type}&dstAsset=${to.type}&amount=${from.valueBN.toFixed(0)}&slippage=${slippage}`,
       {
         headers: {
           accept: '*/*',
