@@ -1,14 +1,10 @@
-import {
-  AccountAddress,
-  GetFungibleAssetMetadataResponse,
-} from '@aptos-labs/ts-sdk';
+import { GetFungibleAssetMetadataResponse } from '@aptos-labs/ts-sdk';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { values } from 'ramda';
 import { type FC, useEffect, useId } from 'react';
 import useSWR from 'swr';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { PRICE_TYPE } from '@/constants/prices';
 import { PriceResponse } from '@/interface';
 import { isAptos } from '@/utils';
@@ -68,9 +64,7 @@ const CoinsManager: FC = () => {
             } = coinsMetadata[asset_type];
 
             if (isAptos(asset_type)) {
-              const symbol = (
-                token_standard === TokenStandard.COIN ? 'MOVE' : 'faMOVE'
-              ).toString();
+              const symbol = 'MOVE';
 
               const type =
                 token_standard === TokenStandard.COIN
@@ -102,13 +96,7 @@ const CoinsManager: FC = () => {
                 decimals,
                 type: asset_type,
                 balance: BigNumber(amount.toString()),
-                symbol:
-                  token_standard === TokenStandard.FA &&
-                  values(COIN_TYPE_TO_FA).some((address) =>
-                    address.equals(AccountAddress.from(asset_type))
-                  )
-                    ? `fa${symbol}`
-                    : symbol,
+                symbol: symbol,
                 standard:
                   token_standard === 'v1'
                     ? TokenStandard.COIN
@@ -125,14 +113,17 @@ const CoinsManager: FC = () => {
           .filter(({ symbol }) => PRICE_TYPE[symbol])
           .map(({ type, symbol }) => [type, PRICE_TYPE[symbol]]);
 
+        const params = coinsPriceType.map((el) => `ids[]=${el[0]}`).join('&');
+
         const prices: ReadonlyArray<PriceResponse> = await fetch(
-          'https://api.mosaic.ag/v1/prices',
+          `https://api.mosaic.ag/v1/prices?${params}`,
           {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', accept: '*/*' },
-            body: JSON.stringify({
-              ids: coinsPriceType.map(([, type]) => type),
-            }),
+            headers: {
+              accept: '*/*',
+              'Content-Type': 'application/json',
+              'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+            },
           }
         )
           .then((response) => response.json())

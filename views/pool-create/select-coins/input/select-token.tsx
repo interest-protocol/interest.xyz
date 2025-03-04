@@ -5,6 +5,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ChevronRightSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
+import { PRICE_TYPE } from '@/constants/prices';
 import { useModal } from '@/hooks/use-modal';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import {
@@ -41,24 +42,23 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
       valueBN: ZERO_BIG_NUMBER,
     });
 
-    // TODO: Check if u can remove this comments/validation
-    //if (PRICE_TYPE[metadata.symbol])
-    fetch(`https://api.mosaic.ag/v1/prices?ids[]=${metadata.type}`, {
-      method: 'GET',
-      headers: {
-        accept: '*/*',
-        'Content-Type': 'application/json',
-        'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-      },
-    })
-      .then((response) => response.json())
-      .then(({ data }) =>
-        setValue(
-          `tokens.${index}.usdPrice`,
-          data.priceById[metadata.type].price
+    if (PRICE_TYPE[metadata.symbol])
+      fetch(`https://api.mosaic.ag/v1/prices?ids[]=${metadata.type}`, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          'Content-Type': 'application/json',
+          'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+        },
+      })
+        .then((response) => response.json())
+        .then(({ data }) =>
+          setValue(
+            `tokens.${index}.usdPrice`,
+            data.priceById[metadata.type].price
+          )
         )
-      )
-      .catch(() => null);
+        .catch(() => null);
   };
 
   const openModal = () =>

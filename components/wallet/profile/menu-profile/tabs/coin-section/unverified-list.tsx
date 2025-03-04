@@ -5,6 +5,7 @@ import { v4 } from 'uuid';
 import { LOCAL_STORAGE_VERSION } from '@/constants';
 import { TOKENS } from '@/constants/coin-fa';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
+import { parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
 import NoCoin from '../no-coin';
@@ -22,8 +23,8 @@ const UnverifiedCoinList: FC = () => {
     ({ type, symbol }) =>
       !TOKENS.some(
         (token) =>
-          (
-            (token as CoinMetadata).type || (token as FAMetadata).address
+          parseToMetadata(
+            token as unknown as CoinMetadata | FAMetadata
           ).toString() === type
       ) && (isHideLPToken ? !symbol.includes('sr-LpFa') : true)
   );

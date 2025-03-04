@@ -3,6 +3,7 @@ import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC, useEffect, useState } from 'react';
 
+import { PRICE_TYPE } from '@/constants/prices';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
@@ -24,19 +25,18 @@ const BalanceCard: FC = () => {
   );
 
   useEffect(() => {
-    // TODO: Check if u can remove this comments/validation
-    //if (PRICE_TYPE[symbol])
-    fetch(`https://api.mosaic.ag/v1/prices?ids[]=${type}`, {
-      method: 'GET',
-      headers: {
-        accept: '*/*',
-        'Content-Type': 'application/json',
-        'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-      },
-    })
-      .then((response) => response.json())
-      .then(({ data }) => setUSDPrice(data.priceById[type].price))
-      .catch(() => null);
+    if (PRICE_TYPE[symbol])
+      fetch(`https://api.mosaic.ag/v1/prices?ids[]=${type}`, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          'Content-Type': 'application/json',
+          'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+        },
+      })
+        .then((response) => response.json())
+        .then(({ data }) => setUSDPrice(data.priceById[type].price))
+        .catch(() => null);
   }, []);
 
   return (

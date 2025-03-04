@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { AsteriskSVG } from '@/components/svg';
+import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
@@ -38,21 +39,20 @@ const SwapTopSlider: FC = () => {
       valueBN: ZERO_BIG_NUMBER,
     });
 
-    // TODO: Check if u can remove this comments/validation
-    //if (PRICE_TYPE[metadata.symbol])
-    fetch(`https://api.mosaic.ag/v1/prices?ids[]=${metadata.type}`, {
-      method: 'GET',
-      headers: {
-        accept: '*/*',
-        'Content-Type': 'application/json',
-        'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-      },
-    })
-      .then((response) => response.json())
-      .then(({ data }) =>
-        setValue(`${label}.usdPrice`, data.priceById[metadata.type].price)
-      )
-      .catch(() => null);
+    if (PRICE_TYPE[metadata.symbol])
+      fetch(`https://api.mosaic.ag/v1/prices?ids[]=${metadata.type}`, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          'Content-Type': 'application/json',
+          'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+        },
+      })
+        .then((response) => response.json())
+        .then(({ data }) =>
+          setValue(`${label}.usdPrice`, data.priceById[metadata.type].price)
+        )
+        .catch(() => null);
   };
 
   return (
