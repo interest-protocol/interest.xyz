@@ -7,7 +7,7 @@ import { useReadLocalStorage } from 'usehooks-ts';
 
 import { LOCAL_STORAGE_VERSION } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
-import { updateURL } from '@/utils';
+import { formatDollars, updateURL } from '@/utils';
 
 import { Aggregator, ISwapSettings } from './swap.types';
 
@@ -21,17 +21,18 @@ const SwapInitManager: FC = () => {
   ) ?? { slippage: '2', aggregator: Aggregator.Interest };
 
   const getUSDPrice = (address: string, label: 'to' | 'from') => {
-    fetch(`https://api.mosaic.ag/v1/prices?ids[]=${address}`, {
-      method: 'GET',
-      headers: {
-        accept: '*/*',
-        'Content-Type': 'application/json',
-        'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-      },
-    })
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${address}`,
+      {
+        method: 'GET',
+        headers: {
+          network: 'MOVEMENT',
+        },
+      }
+    )
       .then((response) => response.json())
-      .then(({ data }) =>
-        form.setValue(`${label}.usdPrice`, data.priceById[address].price)
+      .then((data) =>
+        form.setValue(`${label}.usdPrice`, formatDollars(data.price))
       )
       .catch(() => null);
   };

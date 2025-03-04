@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
 
@@ -76,4 +76,4 @@ const SwapManager: FC = () => {
   return <SwapErrorManager hasNoMarket={hasNoMarket} />;
 };
 
-export default SwapManager;
+export default memo(SwapManager);

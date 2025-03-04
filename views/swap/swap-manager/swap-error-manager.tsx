@@ -1,7 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { propOr } from 'ramda';
-import { FC } from 'react';
-import { useEffect } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { FixedPointMath } from '@/lib';
@@ -14,59 +12,62 @@ import { SwapForm, SwapMessagesProps } from '../swap.types';
 export const SwapErrorManager: FC<SwapMessagesProps> = ({ hasNoMarket }) => {
   const { control, setValue } = useFormContext<SwapForm>();
   const { coinsMap } = useCoins();
-  const to = useWatch({ control: control, name: 'to' });
-  const from = useWatch({ control: control, name: 'from' });
-  const swapping = useWatch({ control: control, name: 'swapping' });
-  const error = useWatch({ control: control, name: 'error' });
+
+  const from = useWatch({ control, name: 'from' });
+  const to = useWatch({ control, name: 'to' });
+  const swapping = useWatch({ control, name: 'swapping' });
+  const error = useWatch({ control, name: 'error' });
+
+  const isGreaterThanBalance = useMemo(() => {
+    if (!from || !coinsMap[from.type]) return false;
+
+    const fromValueBN = FixedPointMath.toBigNumber(
+      from.value ?? '0',
+      from.decimals ?? 0
+    ).decimalPlaces(0, BigNumber.ROUND_DOWN);
+
+    return fromValueBN.gt(BigNumber(coinsMap[from.type].balance));
+  }, [from, coinsMap]);
+
+  const hasAtLeastOneMove = useMemo(() => {
+    if (!isAptos(from?.type)) return false;
+
+    const balanceMinusFee =
+      coinsMap[from.type]?.balance.minus(BigNumber(100000000)) ??
+      ZERO_BIG_NUMBER;
+    const fromValue = Number(from?.value ?? '0');
+
+    return FixedPointMath.toNumber(balanceMinusFee, from.decimals) < fromValue;
+  }, [from, coinsMap]);
 
   useEffect(() => {
-    const fromValue = +(propOr('0', 'value', from) as string);
+    if (!from?.value || !to?.value || swapping) return;
 
-    const isGreaterThanBalance = FixedPointMath.toBigNumber(
-      from?.value ?? '0',
-      from?.decimals ?? 0
-    )
-      .decimalPlaces(0, BigNumber.ROUND_DOWN)
-      .gt(
-        from && coinsMap[from.type]
-          ? BigNumber(coinsMap[from.type].balance)
-          : ZERO_BIG_NUMBER
-      );
-
-    const hasAtLeastOneMove =
-      isAptos(from.type) &&
-      FixedPointMath.toNumber(
-        coinsMap[from.type]?.balance.minus(BigNumber(100000000)) ??
-          ZERO_BIG_NUMBER,
-        from.decimals
-      ) < Number(fromValue);
-
-    if (!from?.value || !to?.value) return;
-
-    if (swapping) return;
+    let newError: string | null = null;
 
     if (hasNoMarket) {
-      setValue('error', String(SwapMessagesEnum.noMarket));
-      return;
+      newError = String(SwapMessagesEnum.noMarket);
+    } else if (from.type === to.type) {
+      newError = String(SwapMessagesEnum.sameCoin);
+    } else if (hasAtLeastOneMove) {
+      newError = String(SwapMessagesEnum.leastOneMove);
+    } else if (isGreaterThanBalance) {
+      newError = String(SwapMessagesEnum.notEnoughToken);
     }
 
-    if (from?.type == to?.type) {
-      setValue('error', String(SwapMessagesEnum.sameCoin));
-      return;
+    if (newError !== error) {
+      setValue('error', newError);
     }
-
-    if (hasAtLeastOneMove) {
-      setValue('error', String(SwapMessagesEnum.leastOneMove));
-      return;
-    }
-
-    if (isGreaterThanBalance) {
-      setValue('error', String(SwapMessagesEnum.notEnoughToken));
-      return;
-    }
-
-    setValue('error', null);
-  }, [error, from, to, hasNoMarket]);
+  }, [
+    error,
+    from,
+    to,
+    hasNoMarket,
+    hasAtLeastOneMove,
+    isGreaterThanBalance,
+    swapping,
+    setValue,
+  ]);
 
   return null;
 };

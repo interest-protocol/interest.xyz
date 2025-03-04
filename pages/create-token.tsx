@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
 import { MOVE } from '@/constants/coins';
-import { parseToMetadata } from '@/utils';
+import { formatDollars, parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 import CreateToken from '@/views/create-token';
 import { validationSchema } from '@/views/create-token/create-token-form/create-token-form.validation';
@@ -25,19 +25,20 @@ const CreateTokenPage: NextPage = () => {
     MOVE as unknown as CoinMetadata | FAMetadata
   );
   useEffect(() => {
-    fetch(`https://api.mosaic.ag/v1/prices?ids[]=${MOVE_PARSED.type}`, {
-      method: 'GET',
-      headers: {
-        accept: '*/*',
-        'Content-Type': 'application/json',
-        'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-      },
-    })
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${MOVE_PARSED.type}`,
+      {
+        method: 'GET',
+        headers: {
+          network: 'MOVEMENT',
+        },
+      }
+    )
       .then((response) => response.json())
-      .then(({ data }) =>
+      .then((data) =>
         form.setValue(
           'pool.quoteUsdPrice' as never,
-          data.priceById[MOVE_PARSED.type].price as never
+          formatDollars(data.price) as never
         )
       )
       .catch(() => null);

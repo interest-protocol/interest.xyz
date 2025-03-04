@@ -6,7 +6,7 @@ import { AsteriskSVG } from '@/components/svg';
 import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 import BottomMenuItem from './swap-top-slider-item';
@@ -40,17 +40,18 @@ const SwapTopSlider: FC = () => {
     });
 
     if (PRICE_TYPE[metadata.symbol])
-      fetch(`https://api.mosaic.ag/v1/prices?ids[]=${metadata.type}`, {
-        method: 'GET',
-        headers: {
-          accept: '*/*',
-          'Content-Type': 'application/json',
-          'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-        },
-      })
+      fetch(
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+        {
+          method: 'GET',
+          headers: {
+            network: 'MOVEMENT',
+          },
+        }
+      )
         .then((response) => response.json())
-        .then(({ data }) =>
-          setValue(`${label}.usdPrice`, data.priceById[metadata.type].price)
+        .then((data) =>
+          setValue(`${label}.usdPrice`, formatDollars(data.price))
         )
         .catch(() => null);
   };

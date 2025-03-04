@@ -26,16 +26,17 @@ const BalanceCard: FC = () => {
 
   useEffect(() => {
     if (PRICE_TYPE[symbol])
-      fetch(`https://api.mosaic.ag/v1/prices?ids[]=${type}`, {
-        method: 'GET',
-        headers: {
-          accept: '*/*',
-          'Content-Type': 'application/json',
-          'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-        },
-      })
+      fetch(
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${type}`,
+        {
+          method: 'GET',
+          headers: {
+            network: 'MOVEMENT',
+          },
+        }
+      )
         .then((response) => response.json())
-        .then(({ data }) => setUSDPrice(data.priceById[type].price))
+        .then((data) => setUSDPrice(Number(formatDollars(data.price))))
         .catch(() => null);
   }, []);
 

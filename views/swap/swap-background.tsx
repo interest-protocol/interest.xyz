@@ -9,7 +9,7 @@ import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 const label = 'to';
@@ -48,19 +48,17 @@ const SwapBackground: FC = () => {
 
     if (PRICE_TYPE[metadata.symbol])
       fetch(
-        `https://api.mosaic.ag/v1/prices?ids=[]${PRICE_TYPE[metadata.symbol]}`,
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
         {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
-            accept: '*/*',
-            'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+            network: 'MOVEMENT',
           },
         }
       )
         .then((response) => response.json())
         .then((data) =>
-          setValue(`${label}.usdPrice`, data.priceById[metadata.type].price)
+          setValue(`${label}.usdPrice`, formatDollars(data.price))
         )
         .catch(() => null);
   };

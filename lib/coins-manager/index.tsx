@@ -113,32 +113,39 @@ const CoinsManager: FC = () => {
           .filter(({ symbol }) => PRICE_TYPE[symbol])
           .map(({ type, symbol }) => [type, PRICE_TYPE[symbol]]);
 
-        const params = coinsPriceType.map((el) => `ids[]=${el[0]}`).join('&');
+        const prices: ReadonlyArray<PriceResponse> = await Promise.all(
+          coinsPriceType.map(([type]) =>
+            fetch(
+              `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${type}`,
+              {
+                method: 'GET',
+                headers: {
+                  network: 'MOVEMENT',
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => data[0])
+              .catch(() => null)
+          )
+        );
 
-        const prices: ReadonlyArray<PriceResponse> = await fetch(
-          `https://api.mosaic.ag/v1/prices?${params}`,
-          {
-            method: 'GET',
-            headers: {
-              accept: '*/*',
-              'Content-Type': 'application/json',
-              'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-            },
-          }
-        )
-          .then((response) => response.json())
-          .catch(() => []);
+        const coinsWithPrice = Object.entries(coins).reduce(
+          (acc, [coinKey, coinData]) => {
+            const coinPrice = prices.find(
+              (price) => price?.coin === coinData.type
+            );
 
-        const coinsWithPrice = coinsPriceType.reduce(
-          (acc, [coin], index) => ({
-            ...acc,
-            [coin]: {
-              ...coins[coin],
-              usdPrice: prices[index]?.price,
-              usdPrice24Change: prices[index]?.priceChange24HoursPercentage,
-            },
-          }),
-          coins
+            return {
+              ...acc,
+              [coinKey]: {
+                ...coinData,
+                usdPrice: coinPrice?.price,
+                usdPrice24Change: coinPrice?.priceChange24HoursPercentage,
+              },
+            };
+          },
+          {}
         );
 
         setCoins?.(coinsWithPrice);

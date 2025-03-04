@@ -13,27 +13,28 @@ const useExposedCoins = () => {
         const coinParsed = parseToMetadata(
           coin as unknown as CoinMetadata | FAMetadata
         );
+
         return fetch(
-          `https://api.mosaic.ag/v1/prices?ids[]=${coinParsed.type}`,
+          `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${coinParsed.type}`,
           {
             method: 'GET',
             headers: {
-              accept: '*/*',
-              'Content-Type': 'application/json',
-              'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+              network: 'MOVEMENT',
             },
           }
         )
           .then((response) => response.json())
-          .then(({ data }) =>
-            formatDollars(data.priceById[coinParsed.type].price)
-          )
-          .catch(() => '-');
+          .then((data) => ({
+            ...coin,
+            usd: formatDollars(data[0].price),
+          }))
+          .catch(() => ({
+            ...coin,
+            usd: '-',
+          }));
       })
-    ).then((prices) => {
-      setExposedCoins(
-        COINS_EXPOSED.map((coin, index) => ({ ...coin, usd: prices[index] }))
-      );
+    ).then((coinsWithPrices) => {
+      setExposedCoins(coinsWithPrices);
     });
   }, []);
 

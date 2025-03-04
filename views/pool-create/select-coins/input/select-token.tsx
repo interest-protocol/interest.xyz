@@ -12,7 +12,7 @@ import {
   AssetMetadata,
   TokenStandard,
 } from '@/lib/coins-manager/coins-manager.types';
-import { ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
 import SelectTokenModal from '@/views/components/select-token-modal';
 
 import { CreatePoolForm } from '../../pool-create.types';
@@ -43,20 +43,18 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
     });
 
     if (PRICE_TYPE[metadata.symbol])
-      fetch(`https://api.mosaic.ag/v1/prices?ids[]=${metadata.type}`, {
-        method: 'GET',
-        headers: {
-          accept: '*/*',
-          'Content-Type': 'application/json',
-          'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-        },
-      })
+      fetch(
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+        {
+          method: 'GET',
+          headers: {
+            network: 'MOVEMENT',
+          },
+        }
+      )
         .then((response) => response.json())
         .then(({ data }) =>
-          setValue(
-            `tokens.${index}.usdPrice`,
-            data.priceById[metadata.type].price
-          )
+          setValue(`tokens.${index}.usdPrice`, formatDollars(data.price))
         )
         .catch(() => null);
   };
