@@ -6,7 +6,7 @@ import { AsteriskSVG } from '@/components/svg';
 import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 import BottomMenuItem from './swap-top-slider-item';
@@ -50,9 +50,7 @@ const SwapTopSlider: FC = () => {
         }
       )
         .then((response) => response.json())
-        .then((data) =>
-          setValue(`${label}.usdPrice`, formatDollars(data.price))
-        )
+        .then((data) => setValue(`${label}.usdPrice`, data[0].price))
         .catch(() => null);
   };
 

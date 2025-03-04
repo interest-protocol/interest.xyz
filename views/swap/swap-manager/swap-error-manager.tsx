@@ -43,7 +43,7 @@ export const SwapErrorManager: FC<SwapMessagesProps> = ({ hasNoMarket }) => {
   useEffect(() => {
     if (!from?.value || !to?.value || swapping) return;
 
-    let newError: string | null = null;
+    let newError = null;
 
     if (hasNoMarket) {
       newError = String(SwapMessagesEnum.noMarket);

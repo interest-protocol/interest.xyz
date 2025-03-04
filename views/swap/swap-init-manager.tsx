@@ -7,7 +7,7 @@ import { useReadLocalStorage } from 'usehooks-ts';
 
 import { LOCAL_STORAGE_VERSION } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
-import { formatDollars, updateURL } from '@/utils';
+import { updateURL } from '@/utils';
 
 import { Aggregator, ISwapSettings } from './swap.types';
 
@@ -31,9 +31,7 @@ const SwapInitManager: FC = () => {
       }
     )
       .then((response) => response.json())
-      .then((data) =>
-        form.setValue(`${label}.usdPrice`, formatDollars(data.price))
-      )
+      .then((data) => form.setValue(`${label}.usdPrice`, data[0].price))
       .catch(() => null);
   };
 

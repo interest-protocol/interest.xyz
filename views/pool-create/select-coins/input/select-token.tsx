@@ -56,7 +56,7 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
         .then(({ data }) =>
           setValue(
             `tokens.${index}.usdPrice`,
-            Number(formatDollars(data.price))
+            Number(formatDollars(data[0].price))
           )
         )
         .catch(() => null);

@@ -36,7 +36,7 @@ const BalanceCard: FC = () => {
         }
       )
         .then((response) => response.json())
-        .then((data) => setUSDPrice(Number(formatDollars(data.price))))
+        .then((data) => setUSDPrice(Number(formatDollars(data[0].price))))
         .catch(() => null);
   }, []);
 

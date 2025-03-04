@@ -75,7 +75,7 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       )
         .then((response) => response.json())
         .then((data) =>
-          setValue(`${label}.usdPrice`, formatDollars(data.price))
+          setValue(`${label}.usdPrice`, formatDollars(data[0].price))
         )
         .catch(() => null);
 

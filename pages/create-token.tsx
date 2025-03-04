@@ -38,7 +38,7 @@ const CreateTokenPage: NextPage = () => {
       .then((data) =>
         form.setValue(
           'pool.quoteUsdPrice' as never,
-          formatDollars(data.price) as never
+          formatDollars(data[0].price) as never
         )
       )
       .catch(() => null);

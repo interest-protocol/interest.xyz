@@ -71,7 +71,7 @@ const SwapManager: FC = () => {
         setValue('to.value', '0');
         setValue('error', 'Failed to quote');
       });
-  }, [value, refreshInterval]);
+  }, [value, refreshInterval, setValue, getValues]);
 
   return <SwapErrorManager hasNoMarket={hasNoMarket} />;
 };
