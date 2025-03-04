@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
-import { MOVE } from '@/constants/coin-fa';
+import { MOVE } from '@/constants/coins';
 import { parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 import CreateToken from '@/views/create-token';

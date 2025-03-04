@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
-import { TOKENS } from '@/constants/coin-fa';
+import { TOKENS } from '@/constants/coins';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 import Swap from '@/views/swap';

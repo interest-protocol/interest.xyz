@@ -11,7 +11,6 @@ import { useFormContext } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
 import { Routes, RoutesEnum } from '@/constants';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { useDialog } from '@/hooks';
 import { useInterestDex } from '@/hooks/use-interest-dex';
 import { FixedPointMath } from '@/lib';
@@ -67,8 +66,8 @@ const PoolSummaryButton: FC = () => {
 
       if (coins.length > 1) {
         pool = await dex.getPoolAddress({
-          faA: COIN_TYPE_TO_FA[coins[0].type].toString(),
-          faB: COIN_TYPE_TO_FA[coins[1].type].toString(),
+          faA: coins[0].type.toString(),
+          faB: coins[1].type.toString(),
         });
 
         payload = dex.addLiquidityCoins({
@@ -88,7 +87,7 @@ const PoolSummaryButton: FC = () => {
         });
       } else if (coins.length === 1) {
         pool = await dex.getPoolAddress({
-          faA: COIN_TYPE_TO_FA[coins[0].type].toString(),
+          faA: coins[0].type.toString(),
           faB: fas[0].type,
         });
 

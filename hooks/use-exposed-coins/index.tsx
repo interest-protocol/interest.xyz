@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { COINS_EXPOSED } from '@/constants/coin-fa';
+import { COINS_EXPOSED } from '@/constants/coins';
 import { formatDollars, parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 

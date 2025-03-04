@@ -3,7 +3,7 @@ import { useReadLocalStorage } from 'usehooks-ts';
 import { v4 } from 'uuid';
 
 import { LOCAL_STORAGE_VERSION } from '@/constants';
-import { TOKENS } from '@/constants/coin-fa';
+import { TOKENS } from '@/constants/coins';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';

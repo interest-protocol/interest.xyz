@@ -3,7 +3,6 @@ import { Button, ProgressIndicator } from '@interest-protocol/ui-kit';
 import { type FC, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { useInterestDex } from '@/hooks/use-interest-dex';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
@@ -35,12 +34,12 @@ const PoolNextButton: FC = () => {
 
     if (coins.length > 1) {
       pool = await dex.getPoolAddress({
-        faA: COIN_TYPE_TO_FA[coins[0].type].toString(),
-        faB: COIN_TYPE_TO_FA[coins[1].type].toString(),
+        faA: coins[0].type.toString(),
+        faB: coins[1].type.toString(),
       });
     } else if (coins.length === 1) {
       pool = await dex.getPoolAddress({
-        faA: COIN_TYPE_TO_FA[coins[0].type].toString(),
+        faA: coins[0].type.toString(),
         faB: fas[0].type,
       });
     } else {

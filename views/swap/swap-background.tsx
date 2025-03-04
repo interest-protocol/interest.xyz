@@ -47,15 +47,17 @@ const SwapBackground: FC = () => {
     });
 
     if (PRICE_TYPE[metadata.symbol])
-      fetch('https://api.mosaic.ag/v1/prices', {
-        method: 'GET',
-        body: JSON.stringify({ ids: [PRICE_TYPE[metadata.symbol]] }),
-        headers: {
-          'Content-Type': 'application/json',
-          accept: '*/*',
-          'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
-        },
-      })
+      fetch(
+        `https://api.mosaic.ag/v1/prices?ids=[]${PRICE_TYPE[metadata.symbol]}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            accept: '*/*',
+            'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+          },
+        }
+      )
         .then((response) => response.json())
         .then((data) => console.log('data', data))
         .catch(() => null);
