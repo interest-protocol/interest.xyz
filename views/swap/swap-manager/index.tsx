@@ -1,4 +1,3 @@
-// import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -11,7 +10,6 @@ import { MosaicQuoteResponse } from '../swap.types';
 import { SwapErrorManager } from './swap-error-manager';
 
 const SwapManager: FC = () => {
-  // const { account } = useAptosWallet();
   const { control, setValue, getValues } = useFormContext();
   const [hasNoMarket, setHasNoMarket] = useState(false);
   const [value] = useDebounce(useWatch({ control, name: 'from.value' }), 800);
@@ -64,12 +62,7 @@ const SwapManager: FC = () => {
           'to.value',
           String(FixedPointMath.toNumber(value, to.decimals))
         );
-        // setValue('path', data.data.paths);
-        // setValue('payload', {
-        //   function: data.data.tx.function,
-        //   typeArguments: data.data.tx.typeArguments,
-        //   functionArguments: values(data.data.tx.functionArguments),
-        // });
+        setValue('path', data.data.paths);
         setHasNoMarket(false);
         setValue('focus', false);
       })

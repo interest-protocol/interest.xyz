@@ -59,7 +59,9 @@ const SwapBackground: FC = () => {
         }
       )
         .then((response) => response.json())
-        .then((data) => console.log('data', data))
+        .then((data) =>
+          setValue(`${label}.usdPrice`, data.priceById[metadata.type].price)
+        )
         .catch(() => null);
   };
 
