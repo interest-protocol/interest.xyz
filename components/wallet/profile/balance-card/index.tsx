@@ -3,7 +3,6 @@ import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC, useEffect, useState } from 'react';
 
-import { PRICE_TYPE } from '@/constants/prices';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
@@ -25,15 +24,19 @@ const BalanceCard: FC = () => {
   );
 
   useEffect(() => {
-    if (PRICE_TYPE[symbol])
-      fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-        method: 'POST',
-        body: JSON.stringify({ coins: [PRICE_TYPE[symbol]] }),
-        headers: { 'Content-Type': 'application/json', accept: '*/*' },
-      })
-        .then((response) => response.json())
-        .then((data) => setUSDPrice(data[0].price))
-        .catch(() => null);
+    // TODO: Check if u can remove this comments/validation
+    //if (PRICE_TYPE[symbol])
+    fetch(`https://api.mosaic.ag/v1/prices?ids[]=${type}`, {
+      method: 'GET',
+      headers: {
+        accept: '*/*',
+        'Content-Type': 'application/json',
+        'x-api-key': 'tYPtSqDun-w9Yrric2baUAckKtzZh9U0',
+      },
+    })
+      .then((response) => response.json())
+      .then(({ data }) => setUSDPrice(data.priceById[type].price))
+      .catch(() => null);
   }, []);
 
   return (
