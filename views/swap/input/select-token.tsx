@@ -12,7 +12,7 @@ import {
   AssetMetadata,
   TokenStandard,
 } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
+import { ZERO_BIG_NUMBER } from '@/utils';
 import SelectTokenModal from '@/views/components/select-token-modal';
 
 import { InputProps } from './input.types';
@@ -74,9 +74,7 @@ const SelectToken: FC<InputProps> = ({ label }) => {
         }
       )
         .then((response) => response.json())
-        .then((data) =>
-          setValue(`${label}.usdPrice`, formatDollars(data[0].price))
-        )
+        .then((data) => setValue(`${label}.usdPrice`, data[0].price))
         .catch(() => null);
 
     if (label === 'from') {
