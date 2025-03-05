@@ -1,8 +1,12 @@
+import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
+import { values } from 'ramda';
 import { FC, memo, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
 
+import { TREASURY } from '@/constants';
+import { EXCHANGE_FEE_BPS } from '@/constants/fees';
 import { FixedPointMath } from '@/lib';
 import { ZERO_BIG_NUMBER } from '@/utils';
 
@@ -14,6 +18,8 @@ const SwapManager: FC = () => {
   const [hasNoMarket, setHasNoMarket] = useState(false);
   const [value] = useDebounce(useWatch({ control, name: 'from.value' }), 800);
   const [refreshInterval, setRefreshInterval] = useState(0);
+
+  const { account } = useAptosWallet();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,7 +44,7 @@ const SwapManager: FC = () => {
     const slippage = (getValues('settings.slippage') * 100).toFixed(0);
 
     fetch(
-      `https://api.mosaic.ag/v1/quote?srcAsset=${from.type}&dstAsset=${to.type}&amount=${from.valueBN.toFixed(0)}&slippage=${slippage}`,
+      `https://api.mosaic.ag/v1/quote?srcAsset=${from.type}&dstAsset=${to.type}&amount=${from.valueBN.toFixed(0)}&feeInBps=${EXCHANGE_FEE_BPS}&feeReceiver=${TREASURY}&slippage=${slippage}&sender=${account?.address}`,
       {
         headers: {
           accept: '*/*',
@@ -63,6 +69,11 @@ const SwapManager: FC = () => {
           String(FixedPointMath.toNumber(value, to.decimals))
         );
         setValue('path', data.data.paths);
+        setValue('payload', {
+          function: data.data.tx.function,
+          typeArguments: data.data.tx.typeArguments,
+          functionArguments: values(data.data.tx.functionArguments),
+        });
         setHasNoMarket(false);
         setValue('focus', false);
       })

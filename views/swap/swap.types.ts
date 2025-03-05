@@ -60,6 +60,22 @@ export interface MosaicQuoteResponse {
     feeAmount: string;
     isFeeIn: false;
     paths: ReadonlyArray<ReadonlyArray<SwapPath>>;
+    tx: {
+      function: `${string}::${string}::${string}`;
+      typeArguments: Array<string>;
+      functionArguments: {
+        receiver: string;
+        amounts: Array<string>;
+        routeData: Array<string>;
+        faAddresses: Array<string>;
+        configAddresses: Array<string>;
+        feeReceiver: string;
+        feeBps: string;
+        isFeeIn: boolean;
+        minAmountOut: string;
+        extraData: string;
+      };
+    };
   };
   requestId: string;
 }
