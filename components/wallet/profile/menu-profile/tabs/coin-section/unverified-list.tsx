@@ -19,15 +19,16 @@ const UnverifiedCoinList: FC = () => {
     `${LOCAL_STORAGE_VERSION}-movement-dex-hide-lp-token`
   );
 
-  const unverifiedCoins = coins.filter(
-    ({ type, symbol }) =>
-      !TOKENS.some(
-        (token) =>
-          parseToMetadata(
-            token as unknown as CoinMetadata | FAMetadata
-          ).toString() === type
-      ) && (isHideLPToken ? !symbol.includes('sr-LpFa') : true)
+  const tokenTypes = TOKENS.map(
+    (token) =>
+      parseToMetadata(token as unknown as CoinMetadata | FAMetadata).type
   );
+
+  const unverifiedCoins = coins.filter(({ type, symbol }) => {
+    const isNotInTokens = !tokenTypes.includes(type);
+    const isNotLPToken = isHideLPToken ? !symbol.includes('sr-LpFa') : true;
+    return isNotInTokens && isNotLPToken;
+  });
 
   return (
     <Collapse title={`${unverifiedCoins.length} unverified`}>
