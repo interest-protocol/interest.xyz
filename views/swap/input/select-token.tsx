@@ -5,7 +5,6 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ChevronDownSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { PRICE_TYPE } from '@/constants/prices';
 import { useModal } from '@/hooks/use-modal';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
@@ -13,7 +12,7 @@ import {
   AssetMetadata,
   TokenStandard,
 } from '@/lib/coins-manager/coins-manager.types';
-import { ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
 import SelectTokenModal from '@/views/components/select-token-modal';
 
 import { InputProps } from './input.types';
@@ -45,15 +44,7 @@ const SelectToken: FC<InputProps> = ({ label }) => {
   });
 
   const onSelect = async (metadata: AssetMetadata) => {
-    if (
-      (metadata.standard == TokenStandard.FA
-        ? metadata.type
-        : COIN_TYPE_TO_FA[metadata.type].toString()) ==
-      (opposite.standard == TokenStandard.FA
-        ? opposite.type
-        : COIN_TYPE_TO_FA[opposite.type].toString())
-    )
-      return;
+    if (metadata.type == opposite.type) return;
 
     if (
       metadata.standard === opposite.standard &&
@@ -73,13 +64,19 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     });
 
     if (PRICE_TYPE[metadata.symbol])
-      fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-        method: 'POST',
-        body: JSON.stringify({ coins: [PRICE_TYPE[metadata.symbol]] }),
-        headers: { 'Content-Type': 'application/json', accept: '*/*' },
-      })
+      fetch(
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+        {
+          method: 'GET',
+          headers: {
+            network: 'MOVEMENT',
+          },
+        }
+      )
         .then((response) => response.json())
-        .then((data) => setValue(`${label}.usdPrice`, data[0].price))
+        .then((data) =>
+          setValue(`${label}.usdPrice`, formatDollars(data[0].price))
+        )
         .catch(() => null);
 
     if (label === 'from') {

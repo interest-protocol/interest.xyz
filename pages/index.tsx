@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
-import { TOKENS } from '@/constants/coin-fa';
+import { TOKENS } from '@/constants/coins';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 import Swap from '@/views/swap';
@@ -14,16 +14,16 @@ const SwapPage: NextPage = () => {
     defaultValues: {
       from: {
         ...TOKENS.map((metadata) =>
-          parseToMetadata(metadata as CoinMetadata | FAMetadata)
-        ).filter((token) => token.symbol == 'faMOVE')[0],
+          parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
+        ).filter((token) => token.symbol == 'MOVE')[0],
         value: '',
         usdPrice: null,
         valueBN: ZERO_BIG_NUMBER,
       },
       to: {
         ...TOKENS.map((metadata) =>
-          parseToMetadata(metadata as CoinMetadata | FAMetadata)
-        ).filter((token) => token.symbol == 'faUSDC')[0],
+          parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
+        ).filter((token) => token.symbol == 'FAKE')[0],
         value: '',
         usdPrice: null,
         valueBN: ZERO_BIG_NUMBER,

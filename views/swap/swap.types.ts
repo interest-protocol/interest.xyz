@@ -1,4 +1,3 @@
-import { InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk';
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 
@@ -41,7 +40,6 @@ export interface SwapForm {
   executionTime: string;
   settings: ISwapSettings;
   path: ReadonlyArray<ReadonlyArray<SwapPath>>;
-  payload: InputGenerateTransactionPayloadData;
 }
 
 export interface AggregatorProps {
@@ -62,22 +60,6 @@ export interface MosaicQuoteResponse {
     feeAmount: string;
     isFeeIn: false;
     paths: ReadonlyArray<ReadonlyArray<SwapPath>>;
-    tx: {
-      function: `${string}::${string}::${string}`;
-      typeArguments: Array<string>;
-      functionArguments: {
-        receiver: string;
-        amounts: Array<string>;
-        routeData: Array<string>;
-        faAddresses: Array<string>;
-        configAddresses: Array<string>;
-        feeReceiver: string;
-        feeBps: string;
-        isFeeIn: boolean;
-        minAmountOut: string;
-        extraData: string;
-      };
-    };
   };
   requestId: string;
 }

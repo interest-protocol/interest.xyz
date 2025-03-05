@@ -1,14 +1,10 @@
-import {
-  AccountAddress,
-  GetFungibleAssetMetadataResponse,
-} from '@aptos-labs/ts-sdk';
+import { GetFungibleAssetMetadataResponse } from '@aptos-labs/ts-sdk';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { values } from 'ramda';
 import { type FC, useEffect, useId } from 'react';
 import useSWR from 'swr';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { PRICE_TYPE } from '@/constants/prices';
 import { PriceResponse } from '@/interface';
 import { isAptos } from '@/utils';
@@ -68,9 +64,7 @@ const CoinsManager: FC = () => {
             } = coinsMetadata[asset_type];
 
             if (isAptos(asset_type)) {
-              const symbol = (
-                token_standard === TokenStandard.COIN ? 'MOVE' : 'faMOVE'
-              ).toString();
+              const symbol = 'MOVE';
 
               const type =
                 token_standard === TokenStandard.COIN
@@ -102,13 +96,7 @@ const CoinsManager: FC = () => {
                 decimals,
                 type: asset_type,
                 balance: BigNumber(amount.toString()),
-                symbol:
-                  token_standard === TokenStandard.FA &&
-                  values(COIN_TYPE_TO_FA).some((address) =>
-                    address.equals(AccountAddress.from(asset_type))
-                  )
-                    ? `fa${symbol}`
-                    : symbol,
+                symbol: symbol,
                 standard:
                   token_standard === 'v1'
                     ? TokenStandard.COIN
@@ -125,29 +113,39 @@ const CoinsManager: FC = () => {
           .filter(({ symbol }) => PRICE_TYPE[symbol])
           .map(({ type, symbol }) => [type, PRICE_TYPE[symbol]]);
 
-        const prices: ReadonlyArray<PriceResponse> = await fetch(
-          'https://rates-api-production.up.railway.app/api/fetch-quote',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', accept: '*/*' },
-            body: JSON.stringify({
-              coins: coinsPriceType.map(([, type]) => type),
-            }),
-          }
-        )
-          .then((response) => response.json())
-          .catch(() => []);
+        const prices: ReadonlyArray<PriceResponse> = await Promise.all(
+          coinsPriceType.map(([type]) =>
+            fetch(
+              `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${type}`,
+              {
+                method: 'GET',
+                headers: {
+                  network: 'MOVEMENT',
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => data[0])
+              .catch(() => null)
+          )
+        );
 
-        const coinsWithPrice = coinsPriceType.reduce(
-          (acc, [coin], index) => ({
-            ...acc,
-            [coin]: {
-              ...coins[coin],
-              usdPrice: prices[index]?.price,
-              usdPrice24Change: prices[index]?.priceChange24HoursPercentage,
-            },
-          }),
-          coins
+        const coinsWithPrice = Object.entries(coins).reduce(
+          (acc, [coinKey, coinData]) => {
+            const coinPrice = prices.find(
+              (price) => price?.coin === coinData.type
+            );
+
+            return {
+              ...acc,
+              [coinKey]: {
+                ...coinData,
+                usdPrice: coinPrice?.price,
+                usdPrice24Change: coinPrice?.priceChange24HoursPercentage,
+              },
+            };
+          },
+          {}
         );
 
         setCoins?.(coinsWithPrice);

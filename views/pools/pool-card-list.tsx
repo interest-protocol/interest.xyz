@@ -4,11 +4,9 @@ import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { usePools } from '@/hooks/use-pools';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
-import { POOL_DATA } from './pool.data';
 import PoolCard from './pool-card';
 import { FormFilterValue } from './pool-card/pool-card.types';
 import PoolCardSkeleton from './pool-card/pool-card-skeleton';
@@ -43,16 +41,12 @@ const Pools: FC = () => {
           $and: [
             {
               metadataX: {
-                $in: tokenList?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] ?? type).toString()
-                ),
+                $in: tokenList?.map(({ type }) => type.toString()),
               },
             },
             {
               metadataY: {
-                $in: tokenList?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] ?? type).toString()
-                ),
+                $in: tokenList?.map(({ type }) => type.toString()),
               },
             },
           ],
@@ -64,12 +58,10 @@ const Pools: FC = () => {
               filterProp.value === FormFilterValue.all
           )
         ? {}
-        : {
-            poolAddress: {
-              $in: POOL_DATA.map(({ poolAddress }) => poolAddress),
-            },
-          }
+        : {}
   );
+
+  console.log('Pools _> ', data);
 
   useEffect(() => {
     if (isFindingPool || page != 1) {
@@ -117,23 +109,17 @@ const Position: FC = () => {
           $and: [
             {
               metadataX: {
-                $in: tokenList?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] ?? type).toString()
-                ),
+                $in: tokenList?.map(({ type }) => type.toString()),
               },
             },
             {
               metadataY: {
-                $in: tokenList?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] ?? type).toString()
-                ),
+                $in: tokenList?.map(({ type }) => type.toString()),
               },
             },
             {
               poolAddress: {
-                $in: coins?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] ?? type).toString()
-                ),
+                $in: coins?.map(({ type }) => type.toString()),
               },
             },
           ],
@@ -151,6 +137,15 @@ const Position: FC = () => {
   useEffect(() => {
     if (data?.pools) setPools([...pools.slice(0, page), data.pools]);
   }, [data?.pools]);
+
+  if (!data?.pools?.length)
+    return (
+      <Box width="100%" color="onSurface" textAlign="center" my="3xl">
+        <Typography size="large" variant="label">
+          There is no pools in your list
+        </Typography>
+      </Box>
+    );
 
   return (
     <PoolCardListContent
@@ -198,14 +193,14 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
       </Box>
     );
 
-  if (!pools?.[0]?.length)
-    return (
-      <Box width="100%" color="onSurface" textAlign="center" my="3xl">
-        <Typography size="large" variant="label">
-          There is no pools in your list
-        </Typography>
-      </Box>
-    );
+  // if (!pools?.[0]?.length)
+  //   return (
+  //     <Box width="100%" color="onSurface" textAlign="center" my="3xl">
+  //       <Typography size="large" variant="label">
+  //         There is no pools in your list
+  //       </Typography>
+  //     </Box>
+  //   );
 
   return (
     <>

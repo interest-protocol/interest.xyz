@@ -12,7 +12,7 @@ import {
   AssetMetadata,
   TokenStandard,
 } from '@/lib/coins-manager/coins-manager.types';
-import { ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
 import SelectTokenModal from '@/views/components/select-token-modal';
 
 import { CreatePoolForm } from '../../pool-create.types';
@@ -43,13 +43,22 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
     });
 
     if (PRICE_TYPE[metadata.symbol])
-      fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-        method: 'POST',
-        body: JSON.stringify({ coins: [PRICE_TYPE[metadata.symbol]] }),
-        headers: { 'Content-Type': 'application/json', accept: '*/*' },
-      })
+      fetch(
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+        {
+          method: 'GET',
+          headers: {
+            network: 'MOVEMENT',
+          },
+        }
+      )
         .then((response) => response.json())
-        .then((data) => setValue(`tokens.${index}.usdPrice`, data[0].price))
+        .then(({ data }) =>
+          setValue(
+            `tokens.${index}.usdPrice`,
+            Number(formatDollars(data[0].price))
+          )
+        )
         .catch(() => null);
   };
 

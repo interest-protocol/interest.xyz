@@ -76,7 +76,7 @@ const CreateTokenFormButton = () => {
       let txResult;
 
       const payload = values.pool?.active
-        ? dex.deployMemeFA({
+        ? dex.deployMemeWithFa({
             name,
             symbol,
             iconURI,
@@ -93,7 +93,7 @@ const CreateTokenFormButton = () => {
               FixedPointMath.toBigNumber(pool!.quoteValue!).toString()
             ),
           })
-        : dex.createFA({
+        : dex.createFa({
             name,
             symbol,
             iconURI,

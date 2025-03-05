@@ -4,7 +4,9 @@ import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
-import { PRICE_TYPE } from '@/constants/prices';
+import { MOVE } from '@/constants/coins';
+import { formatDollars, parseToMetadata } from '@/utils';
+import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 import CreateToken from '@/views/create-token';
 import { validationSchema } from '@/views/create-token/create-token-form/create-token-form.validation';
 
@@ -19,16 +21,25 @@ const CreateTokenPage: NextPage = () => {
       pool: { active: true },
     },
   });
-
+  const MOVE_PARSED = parseToMetadata(
+    MOVE as unknown as CoinMetadata | FAMetadata
+  );
   useEffect(() => {
-    fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-      method: 'POST',
-      body: JSON.stringify({ coins: [PRICE_TYPE['MOVE']] }),
-      headers: { 'Content-Type': 'application/json', accept: '*/*' },
-    })
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${MOVE_PARSED.type}`,
+      {
+        method: 'GET',
+        headers: {
+          network: 'MOVEMENT',
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) =>
-        form.setValue('pool.quoteUsdPrice' as never, data[0].price as never)
+        form.setValue(
+          'pool.quoteUsdPrice' as never,
+          formatDollars(data[0].price) as never
+        )
       )
       .catch(() => null);
   });

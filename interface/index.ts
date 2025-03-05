@@ -53,6 +53,16 @@ export interface ISrPool {
   };
 }
 
+export interface Pools {
+  address: AccountAddress;
+  faX: AccountAddress;
+  faY: AccountAddress;
+  projectUri: string;
+  symbol: string;
+  name: string;
+  decimals: number;
+}
+
 export interface SrAmmPoolWithMetadata
   extends Omit<InterestV2Pool, 'metadataX' | 'metadataY'> {
   metadata: AssetMetadata;

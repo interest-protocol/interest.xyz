@@ -51,7 +51,7 @@ const Balance: FC<InputProps> = ({ label }) => {
     if (label === 'to') return;
 
     const value = balance.minus(
-      FixedPointMath.toBigNumber(isAptos(type) ? 1 : 0)
+      FixedPointMath.toBigNumber(isAptos(type) ? 0.01 : 0)
     );
 
     if (isAptos(type) && !value.isPositive()) {

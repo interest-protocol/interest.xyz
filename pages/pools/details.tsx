@@ -1,4 +1,7 @@
-import { FA_ADDRESSES, FUNGIBLE_ASSETS } from '@interest-protocol/aptos-sr-amm';
+import {
+  FA_ADDRESSES,
+  FUNGIBLE_ASSETS,
+} from '@interest-protocol/interest-aptos-v2';
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { NextPage } from 'next';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -20,7 +23,7 @@ const PoolDetailsPage: NextPage<PoolPageProps> = ({ address }) => {
         {
           ...parseToMetadata(
             FUNGIBLE_ASSETS[Network.MovementMainnet][
-              FA_ADDRESSES[Network.MovementMainnet].APT.toString()
+              FA_ADDRESSES[Network.MovementMainnet].MOVE.toString()
             ] as FAMetadata
           ),
           value: '',
@@ -28,7 +31,7 @@ const PoolDetailsPage: NextPage<PoolPageProps> = ({ address }) => {
         {
           ...parseToMetadata(
             FUNGIBLE_ASSETS[Network.MovementMainnet][
-              FA_ADDRESSES[Network.MovementMainnet].USDC.toString()
+              FA_ADDRESSES[Network.MovementMainnet].FIRE_EMOJI.toString()
             ] as FAMetadata
           ),
           value: '',

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,
@@ -86,7 +85,7 @@ const MovementNetwork: FC = () => {
           color="onSurface"
           width="max-content"
         >
-          Movement Mainnet
+          Mainnet
         </Typography>
       </Button>
       {!isFirstRender && (
@@ -110,10 +109,10 @@ const MovementNetwork: FC = () => {
             index={0}
             totalItems={1}
             selected={true}
-            onClick={() => changeNetwork(Network.MovementMainnet)}
+            onClick={() => changeNetwork('mainnet')}
           >
             <MovementLogoSVG maxWidth="2rem" maxHeight="2rem" />
-            <Box>Movement Mainnet</Box>
+            <Box>Mainnet</Box>
           </OptionItem>
         </Motion>
       )}
