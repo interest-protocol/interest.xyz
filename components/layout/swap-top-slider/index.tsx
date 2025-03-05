@@ -1,8 +1,8 @@
-import { Box } from '@interest-protocol/ui-kit';
+import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { AsteriskSVG } from '@/components/svg';
+import { AsteriskSVG, RateDownSVG, RateUpSVG } from '@/components/svg';
 import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
@@ -79,6 +79,38 @@ const SwapTopSlider: FC = () => {
                   onSelect(parseToMetadata(token as MetadataSources))
                 }
               />
+            </Box>
+            <Box
+              gap="xs"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              {token.usdPrice24Change < 1 ? (
+                <RateDownSVG
+                  width="1rem"
+                  height="1rem"
+                  maxHeight="100%"
+                  maxWidth="100%"
+                />
+              ) : (
+                <RateUpSVG
+                  width="1rem"
+                  height="1rem"
+                  maxHeight="100%"
+                  maxWidth="100%"
+                />
+              )}
+              <Typography
+                size="large"
+                opacity={0.7}
+                variant="label"
+                color="onSurface"
+                fontSize="0.625rem"
+                lineHeight="1rem"
+              >
+                {token.usdPrice24Change}
+              </Typography>
             </Box>
             {index !== exposedCoins.length - 1 && (
               <Box
