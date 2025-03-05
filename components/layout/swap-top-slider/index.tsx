@@ -86,31 +86,37 @@ const SwapTopSlider: FC = () => {
               alignItems="center"
               justifyContent="center"
             >
-              {token.usdPrice24Change < 1 ? (
-                <RateDownSVG
-                  width="1rem"
-                  height="1rem"
-                  maxHeight="100%"
-                  maxWidth="100%"
-                />
-              ) : (
-                <RateUpSVG
-                  width="1rem"
-                  height="1rem"
-                  maxHeight="100%"
-                  maxWidth="100%"
-                />
+              {token.usdPrice24Change !== '-' && (
+                <>
+                  <Box>
+                    {token.usdPrice24Change < 1 ? (
+                      <RateDownSVG
+                        width="1rem"
+                        height="1rem"
+                        maxHeight="100%"
+                        maxWidth="100%"
+                      />
+                    ) : (
+                      <RateUpSVG
+                        width="1rem"
+                        height="1rem"
+                        maxHeight="100%"
+                        maxWidth="100%"
+                      />
+                    )}
+                  </Box>
+                  <Typography
+                    size="large"
+                    opacity={0.7}
+                    variant="label"
+                    color="onSurface"
+                    fontSize="0.625rem"
+                    lineHeight="1rem"
+                  >
+                    {token.usdPrice24Change}
+                  </Typography>
+                </>
               )}
-              <Typography
-                size="large"
-                opacity={0.7}
-                variant="label"
-                color="onSurface"
-                fontSize="0.625rem"
-                lineHeight="1rem"
-              >
-                {token.usdPrice24Change}
-              </Typography>
             </Box>
             {index !== exposedCoins.length - 1 && (
               <Box

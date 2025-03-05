@@ -27,10 +27,12 @@ const useExposedCoins = () => {
           .then((data) => ({
             ...coin,
             usd: formatDollars(data[0].price),
+            usdPrice24Change: data[0]?.priceChange24HoursPercentage,
           }))
           .catch(() => ({
             ...coin,
             usd: '-',
+            usdPrice24Change: '-',
           }));
       })
     ).then((coinsWithPrices) => {
