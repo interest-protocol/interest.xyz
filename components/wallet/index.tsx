@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
@@ -15,7 +15,7 @@ const Wallet: FC = () => {
   return (
     <Box gap="m" display="flex" alignItems="center" justifyContent="flex-end">
       <a
-        href={EXTERNAL_FAUCET_URL[Network.Porto]}
+        href={EXTERNAL_FAUCET_URL[Network.MovementMainnet]}
         target="_blank"
         rel="noreferrer"
       >

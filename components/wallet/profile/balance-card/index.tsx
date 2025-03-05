@@ -1,4 +1,5 @@
-import { COINS, Network } from '@interest-protocol/aptos-sr-amm';
+import { COINS } from '@interest-protocol/interest-aptos-v2';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC, useEffect, useState } from 'react';
@@ -12,7 +13,7 @@ import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
 const BalanceCard: FC = () => {
   const { coinsMap } = useCoins();
   const [USDPrice, setUSDPrice] = useState(0);
-  const defaultCoin = COINS[Network.Porto].APT;
+  const defaultCoin = COINS[Network.MovementMainnet].MOVE;
 
   const type = defaultCoin.type;
   const faType = COIN_TYPE_TO_FA[type].toString();

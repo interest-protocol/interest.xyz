@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { FC, PropsWithChildren } from 'react';
 
 import { FAUCET_URL, INDEXER_URL, RPC_URL } from '@/constants';
@@ -11,13 +11,13 @@ import ThemeManager from '../theme-manager';
 const Provider: FC<PropsWithChildren> = ({ children }) => (
   <ThemeManager>
     <AptosProvider
-      defaultNetwork={Network.Porto}
+      defaultNetwork={Network.MovementMainnet}
       networks={[
         {
-          network: Network.Porto,
-          rpc: RPC_URL[Network.Porto],
-          faucet: FAUCET_URL[Network.Porto],
-          indexer: INDEXER_URL[Network.Porto],
+          network: Network.MovementMainnet,
+          rpc: RPC_URL[Network.MovementMainnet],
+          faucet: FAUCET_URL[Network.MovementMainnet],
+          indexer: INDEXER_URL[Network.MovementMainnet],
         },
       ]}
     >

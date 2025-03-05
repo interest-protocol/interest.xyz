@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
@@ -74,13 +74,13 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
         account.address,
         getValues('tokenList.0'),
         getValues('tokenList.1'),
-        Network.Porto,
+        Network.MovementMainnet,
         txResult.hash
       );
 
       setValue(
         'explorerLink',
-        EXPLORER_URL[Network.Porto](`txn/${txResult.hash}`)
+        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
       );
     } catch (e) {
       console.warn({ e });

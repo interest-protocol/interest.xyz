@@ -2,7 +2,7 @@ import {
   InputGenerateTransactionPayloadData,
   MoveValue,
 } from '@aptos-labs/ts-sdk';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useRouter } from 'next/router';
@@ -24,7 +24,7 @@ import { logCreatePool } from '../pool-create.utils';
 const PoolSummaryButton: FC = () => {
   const dex = useInterestDex();
   const { push } = useRouter();
-  const network = Network.Porto;
+  const network = Network.MovementMainnet;
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const {
@@ -155,18 +155,21 @@ const PoolSummaryButton: FC = () => {
         account.address,
         tokens[0],
         tokens[1],
-        Network.Porto,
+        Network.MovementMainnet,
         txResult.hash
       );
 
-      fetch('https://pool-indexer-production.up.railway.app/api/pool/sr-amm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          network,
-          poolId: pool.poolAddress?.toString(),
-        }),
-      });
+      fetch(
+        'https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            network,
+            poolId: pool.poolAddress?.toString(),
+          }),
+        }
+      );
 
       push(
         `${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress?.toString()}`

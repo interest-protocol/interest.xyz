@@ -198,6 +198,15 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
       </Box>
     );
 
+  if (!pools?.[0]?.length)
+    return (
+      <Box width="100%" color="onSurface" textAlign="center" my="3xl">
+        <Typography size="large" variant="label">
+          There is no pools in your list
+        </Typography>
+      </Box>
+    );
+
   return (
     <>
       <Box

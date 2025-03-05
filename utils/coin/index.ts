@@ -3,11 +3,8 @@ import {
   Aptos,
   InputViewFunctionData,
 } from '@aptos-labs/ts-sdk';
-import {
-  COINS,
-  FUNGIBLE_ASSETS,
-  Network,
-} from '@interest-protocol/aptos-sr-amm';
+import { COINS, FUNGIBLE_ASSETS } from '@interest-protocol/aptos-move-dex';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { pathOr, propOr, values } from 'ramda';
 import invariant from 'tiny-invariant';
 
@@ -81,13 +78,13 @@ export const getFaPrimaryStore = async (
     return {
       balance: BigInt(propOr(0, 'balance', x)),
       frozen: propOr(false, 'frozen', x),
-      fa: FUNGIBLE_ASSETS[Network.Porto][key],
+      fa: FUNGIBLE_ASSETS[Network.MovementMainnet][key],
     };
   } catch {
     return {
       balance: BigInt(0),
       frozen: false,
-      fa: FUNGIBLE_ASSETS[Network.Porto][fa],
+      fa: FUNGIBLE_ASSETS[Network.MovementMainnet][fa],
     };
   }
 };
@@ -142,8 +139,8 @@ export const getCoinMetadata = (
   client: Aptos
 ): CoinMetadata | FAMetadata | Promise<ClientMetadata> => {
   const metadata =
-    values(COINS[Network.Porto]).find((coin) => coin.type === type) ??
-    values(FUNGIBLE_ASSETS[Network.Porto]).find((fa) =>
+    values(COINS[Network.MovementMainnet]).find((coin) => coin.type === type) ??
+    values(FUNGIBLE_ASSETS[Network.MovementMainnet]).find((fa) =>
       fa.address.equals(AccountAddress.from(type))
     );
 

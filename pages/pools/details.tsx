@@ -1,8 +1,5 @@
-import {
-  FA_ADDRESSES,
-  FUNGIBLE_ASSETS,
-  Network,
-} from '@interest-protocol/aptos-sr-amm';
+import { FA_ADDRESSES, FUNGIBLE_ASSETS } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { NextPage } from 'next';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -22,16 +19,16 @@ const PoolDetailsPage: NextPage<PoolPageProps> = ({ address }) => {
       tokenList: [
         {
           ...parseToMetadata(
-            FUNGIBLE_ASSETS[Network.Porto][
-              FA_ADDRESSES[Network.Porto].APT.toString()
+            FUNGIBLE_ASSETS[Network.MovementMainnet][
+              FA_ADDRESSES[Network.MovementMainnet].APT.toString()
             ] as FAMetadata
           ),
           value: '',
         },
         {
           ...parseToMetadata(
-            FUNGIBLE_ASSETS[Network.Porto][
-              FA_ADDRESSES[Network.Porto].USDC.toString()
+            FUNGIBLE_ASSETS[Network.MovementMainnet][
+              FA_ADDRESSES[Network.MovementMainnet].USDC.toString()
             ] as FAMetadata
           ),
           value: '',

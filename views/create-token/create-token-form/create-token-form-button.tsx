@@ -1,5 +1,5 @@
 import { UserTransactionResponse } from '@aptos-labs/ts-sdk';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useState } from 'react';
@@ -151,13 +151,13 @@ const CreateTokenFormButton = () => {
             )!.data.pool;
 
             fetch(
-              'https://pool-indexer-production.up.railway.app/api/pool/sr-amm',
+              'https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm',
               {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   poolId,
-                  network: Network.Porto,
+                  network: Network.MovementMainnet,
                 }),
               }
             );
@@ -168,13 +168,13 @@ const CreateTokenFormButton = () => {
         account!.address,
         symbol,
         !!pool?.active,
-        Network.Porto,
+        Network.MovementMainnet,
         txResult.hash
       );
 
       setValue(
         'explorerLink',
-        EXPLORER_URL[Network.Porto](`txn/${txResult.hash}`)
+        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
       );
     } catch (e) {
       console.warn({ e });

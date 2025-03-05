@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { FC } from 'react';
 
 import {
@@ -13,7 +13,7 @@ import {
 import { SVGProps } from '../svg/svg.types';
 
 export const TOKEN_ICONS = {
-  [Network.Porto]: {
+  [Network.MovementMainnet]: {
     ETH: ETHSVG,
     faETH: ETHSVG,
     WETH: ETHSVG,
