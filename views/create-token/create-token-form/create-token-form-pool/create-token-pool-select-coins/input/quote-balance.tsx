@@ -1,4 +1,4 @@
-import { FA_ADDRESSES, Network } from '@interest-protocol/aptos-sr-amm';
+import { FA_ADDRESSES, Network } from '@interest-protocol/interest-aptos-v2';
 import {
   Button,
   ProgressIndicator,

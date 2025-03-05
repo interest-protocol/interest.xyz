@@ -1,4 +1,4 @@
-import { FA_ADDRESSES } from '@interest-protocol/aptos-sr-amm';
+import { FA_ADDRESSES } from '@interest-protocol/interest-aptos-v2';
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button } from '@interest-protocol/ui-kit';
 import { FC } from 'react';

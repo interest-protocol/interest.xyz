@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Theme, Typography, useTheme } from '@interest-protocol/ui-kit';
 import { FC, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';

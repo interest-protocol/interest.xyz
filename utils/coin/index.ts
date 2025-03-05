@@ -3,7 +3,7 @@ import {
   Aptos,
   InputViewFunctionData,
 } from '@aptos-labs/ts-sdk';
-import { COINS, FUNGIBLE_ASSETS } from '@interest-protocol/aptos-move-dex';
+import { COINS, FUNGIBLE_ASSETS } from '@interest-protocol/interest-aptos-v2';
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { pathOr, propOr, values } from 'ramda';
 import invariant from 'tiny-invariant';
