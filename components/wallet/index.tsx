@@ -6,7 +6,6 @@ import { FC } from 'react';
 import { EXTERNAL_FAUCET_URL } from '@/constants';
 import { useNetworkContext } from '@/lib/aptos-provider/network/network.hooks';
 
-import MovementNetwork from '../account-info/movement-network';
 import ConnectWalletButton from './connect-wallet';
 import Profile from './profile';
 
@@ -40,12 +39,11 @@ const Wallet: FC = () => {
         </a>
       )}
       <Box
-        gap="l"
+        width="14.5rem"
         justifyContent="flex-end"
         display={['none', 'none', 'none', 'flex']}
-      >
-        <MovementNetwork />
-      </Box>
+      />
+
       {account?.address ? <Profile /> : <ConnectWalletButton />}
     </Box>
   );
