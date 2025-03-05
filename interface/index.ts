@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-import { SrPool } from '@interest-protocol/aptos-sr-amm';
+import { InterestV2Pool } from '@interest-protocol/interest-aptos-v2';
 import BigNumber from 'bignumber.js';
 
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
@@ -53,8 +53,18 @@ export interface ISrPool {
   };
 }
 
+export interface Pools {
+  address: AccountAddress;
+  faX: AccountAddress;
+  faY: AccountAddress;
+  projectUri: string;
+  symbol: string;
+  name: string;
+  decimals: number;
+}
+
 export interface SrAmmPoolWithMetadata
-  extends Omit<SrPool, 'metadataX' | 'metadataY'> {
+  extends Omit<InterestV2Pool, 'metadataX' | 'metadataY'> {
   metadata: AssetMetadata;
   metadataX: AssetMetadata;
   metadataY: AssetMetadata;

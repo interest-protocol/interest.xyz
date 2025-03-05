@@ -1,5 +1,5 @@
 import { InterestDex } from '@interest-protocol/aptos-move-dex';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,

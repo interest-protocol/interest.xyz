@@ -1,13 +1,13 @@
 import {
   getDefaultClient,
+  InterestV2,
   Network,
-  SrAmm,
-} from '@interest-protocol/aptos-sr-amm';
+} from '@interest-protocol/interest-aptos-v2';
 
-const network = Network.Porto;
+const network = Network.MovementMainnet;
 
 const client = getDefaultClient(network);
 
-const dex = new SrAmm({ network, client });
+const dex = new InterestV2({ network, client });
 
 export const useInterestDex = () => dex;

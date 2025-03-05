@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 
 import dbConnect from '@/server';
 import metrics from '@/server/model/metrics';

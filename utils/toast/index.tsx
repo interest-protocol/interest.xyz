@@ -1,5 +1,5 @@
 import { TransactionResponse } from '@aptos-labs/ts-sdk';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import toast from 'react-hot-toast';
 

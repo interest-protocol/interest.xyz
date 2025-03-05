@@ -7,7 +7,6 @@ import { v4 } from 'uuid';
 import { usePools } from '@/hooks/use-pools';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
-import { POOL_DATA } from './pool.data';
 import PoolCard from './pool-card';
 import { FormFilterValue } from './pool-card/pool-card.types';
 import PoolCardSkeleton from './pool-card/pool-card-skeleton';
@@ -59,12 +58,10 @@ const Pools: FC = () => {
               filterProp.value === FormFilterValue.all
           )
         ? {}
-        : {
-            poolAddress: {
-              $in: POOL_DATA.map(({ poolAddress }) => poolAddress),
-            },
-          }
+        : {}
   );
+
+  console.log('Pools _> ', data);
 
   useEffect(() => {
     if (isFindingPool || page != 1) {
@@ -141,6 +138,15 @@ const Position: FC = () => {
     if (data?.pools) setPools([...pools.slice(0, page), data.pools]);
   }, [data?.pools]);
 
+  if (!data?.pools?.length)
+    return (
+      <Box width="100%" color="onSurface" textAlign="center" my="3xl">
+        <Typography size="large" variant="label">
+          There is no pools in your list
+        </Typography>
+      </Box>
+    );
+
   return (
     <PoolCardListContent
       pools={pools}
@@ -186,6 +192,15 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
         </Typography>
       </Box>
     );
+
+  // if (!pools?.[0]?.length)
+  //   return (
+  //     <Box width="100%" color="onSurface" textAlign="center" my="3xl">
+  //       <Typography size="large" variant="label">
+  //         There is no pools in your list
+  //       </Typography>
+  //     </Box>
+  //   );
 
   return (
     <>

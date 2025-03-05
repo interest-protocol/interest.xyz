@@ -1,4 +1,5 @@
-import { FA_ADDRESSES, Network } from '@interest-protocol/aptos-sr-amm';
+import { FA_ADDRESSES } from '@interest-protocol/interest-aptos-v2';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -12,7 +13,7 @@ const InputQuoteMaxButton: FC = () => {
   const { coinsMap } = useCoins();
   const { setValue } = useFormContext<ICreateTokenForm>();
 
-  const type = FA_ADDRESSES[Network.Porto].APT.toString();
+  const type = FA_ADDRESSES[Network.MovementMainnet].APT.toString();
 
   const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
 

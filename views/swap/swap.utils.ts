@@ -1,5 +1,5 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 
 import { fasByPool } from '@/constants/pools';
 import { Quest } from '@/server/model/quest';
@@ -41,8 +41,11 @@ export const logSwap = (
 
 const getFaOptions = (fa: AccountAddress) =>
   fasByPool.reduce((acc, fas) => {
-    if (fas.some((faItem) => faItem.equals(fa)))
-      return [...acc, fas.find((faItem) => !faItem.equals(fa))!];
+    if (fas.some((faItem: AccountAddress) => faItem.equals(fa)))
+      return [
+        ...acc,
+        fas.find((faItem: AccountAddress) => !faItem.equals(fa))!,
+      ];
     return acc;
   }, [] as ReadonlyArray<AccountAddress>);
 

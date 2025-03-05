@@ -1,6 +1,6 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
-const modelName = 'InterestDEXQuestPorto';
+const modelName = 'InterestDEXQueryMovementMainnet';
 
 interface Coin {
   type: string;
