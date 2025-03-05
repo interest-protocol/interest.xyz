@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 import { pathOr } from 'ramda';
@@ -16,7 +16,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (process.env.NODE_ENV === 'development') return;
 
-    const network = pathOr(Network.Porto, ['query', 'network'], req) as Network;
+    const network = pathOr(
+      Network.MovementMainnet,
+      ['query', 'network'],
+      req
+    ) as Network;
 
     const body = req.body as Quest;
 

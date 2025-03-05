@@ -3,8 +3,9 @@ import { useReadLocalStorage } from 'usehooks-ts';
 import { v4 } from 'uuid';
 
 import { LOCAL_STORAGE_VERSION } from '@/constants';
-import { TOKENS } from '@/constants/coin-fa';
+import { TOKENS } from '@/constants/coins';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
+import { parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
 import NoCoin from '../no-coin';
@@ -18,15 +19,16 @@ const UnverifiedCoinList: FC = () => {
     `${LOCAL_STORAGE_VERSION}-movement-dex-hide-lp-token`
   );
 
-  const unverifiedCoins = coins.filter(
-    ({ type, symbol }) =>
-      !TOKENS.some(
-        (token) =>
-          (
-            (token as CoinMetadata).type || (token as FAMetadata).address
-          ).toString() === type
-      ) && (isHideLPToken ? !symbol.includes('sr-LpFa') : true)
+  const tokenTypes = TOKENS.map(
+    (token) =>
+      parseToMetadata(token as unknown as CoinMetadata | FAMetadata).type
   );
+
+  const unverifiedCoins = coins.filter(({ type, symbol }) => {
+    const isNotInTokens = !tokenTypes.includes(type);
+    const isNotLPToken = isHideLPToken ? !symbol.includes('sr-LpFa') : true;
+    return isNotInTokens && isNotLPToken;
+  });
 
   return (
     <Collapse title={`${unverifiedCoins.length} unverified`}>

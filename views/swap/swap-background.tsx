@@ -1,19 +1,15 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
-import {
-  AssetMetadata,
-  TokenStandard,
-} from '@/lib/coins-manager/coins-manager.types';
-import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
+import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 const label = 'to';
@@ -34,16 +30,6 @@ const SwapBackground: FC = () => {
     const [currentToken, opposite] = getValues([label, 'from']);
 
     if (
-      (metadata.standard == TokenStandard.FA
-        ? metadata.type
-        : COIN_TYPE_TO_FA[metadata.type].toString()) ==
-      (opposite.standard == TokenStandard.FA
-        ? opposite.type
-        : COIN_TYPE_TO_FA[opposite.type].toString())
-    )
-      return;
-
-    if (
       metadata.standard === opposite.standard &&
       metadata.symbol === opposite.symbol
     ) {
@@ -61,13 +47,19 @@ const SwapBackground: FC = () => {
     });
 
     if (PRICE_TYPE[metadata.symbol])
-      fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-        method: 'POST',
-        body: JSON.stringify({ coins: [PRICE_TYPE[metadata.symbol]] }),
-        headers: { 'Content-Type': 'application/json', accept: '*/*' },
-      })
+      fetch(
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+        {
+          method: 'GET',
+          headers: {
+            network: 'MOVEMENT',
+          },
+        }
+      )
         .then((response) => response.json())
-        .then((data) => setValue(`${label}.usdPrice`, data[0].price))
+        .then((data) =>
+          setValue(`${label}.usdPrice`, formatDollars(data[0].price))
+        )
         .catch(() => null);
   };
 

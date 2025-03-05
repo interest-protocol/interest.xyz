@@ -3,15 +3,11 @@ import {
   Aptos,
   InputViewFunctionData,
 } from '@aptos-labs/ts-sdk';
-import {
-  COINS,
-  FUNGIBLE_ASSETS,
-  Network,
-} from '@interest-protocol/aptos-sr-amm';
+import { COINS, FUNGIBLE_ASSETS } from '@interest-protocol/interest-aptos-v2';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { pathOr, propOr, values } from 'ramda';
 import invariant from 'tiny-invariant';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { CoinBalance } from '@/interface';
 import {
   AssetMetadata,
@@ -26,7 +22,7 @@ import {
 } from './coin.types';
 
 export const isAptosCoin = (type: string) =>
-  type.endsWith('1::aptos_coin::AptosCoin');
+  type?.endsWith('1::aptos_coin::AptosCoin');
 
 export const isAptosFA = (type: string) => Number(type) === 0xa;
 
@@ -81,13 +77,13 @@ export const getFaPrimaryStore = async (
     return {
       balance: BigInt(propOr(0, 'balance', x)),
       frozen: propOr(false, 'frozen', x),
-      fa: FUNGIBLE_ASSETS[Network.Porto][key],
+      fa: FUNGIBLE_ASSETS[Network.MovementMainnet][key],
     };
   } catch {
     return {
       balance: BigInt(0),
       frozen: false,
-      fa: FUNGIBLE_ASSETS[Network.Porto][fa],
+      fa: FUNGIBLE_ASSETS[Network.MovementMainnet][fa],
     };
   }
 };
@@ -125,13 +121,7 @@ export const parseToMetadata = ({
     name,
     decimals,
     standard,
-    symbol:
-      standard === TokenStandard.FA &&
-      values(COIN_TYPE_TO_FA).some((address) =>
-        address.equals(AccountAddress.from(type))
-      )
-        ? `fa${symbol}`
-        : symbol,
+    symbol: symbol,
     ...(iconUri && { iconUri }),
     ...(projectUri && { projectUri }),
   };
@@ -142,8 +132,8 @@ export const getCoinMetadata = (
   client: Aptos
 ): CoinMetadata | FAMetadata | Promise<ClientMetadata> => {
   const metadata =
-    values(COINS[Network.Porto]).find((coin) => coin.type === type) ??
-    values(FUNGIBLE_ASSETS[Network.Porto]).find((fa) =>
+    values(COINS[Network.MovementMainnet]).find((coin) => coin.type === type) ??
+    values(FUNGIBLE_ASSETS[Network.MovementMainnet]).find((fa) =>
       fa.address.equals(AccountAddress.from(type))
     );
 

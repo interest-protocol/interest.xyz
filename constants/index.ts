@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 
 export const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -12,24 +12,24 @@ export const LOCAL_STORAGE_VERSION = 'v5';
 export const PAGE_SIZE = 50;
 
 export const RPC_URL = {
-  [Network.Porto]: 'https://aptos.testnet.porto.movementlabs.xyz/v1',
+  [Network.MovementMainnet]: 'https://aptos.testnet.porto.movementlabs.xyz/v1',
 };
 
 export const FAUCET_URL = {
-  [Network.Porto]: 'https://mizu.testnet.porto.movementnetwork.xyz/',
+  [Network.MovementMainnet]: 'https://mizu.testnet.porto.movementnetwork.xyz/',
 };
 
 export const INDEXER_URL = {
-  [Network.Porto]:
+  [Network.MovementMainnet]:
     'https://indexer.testnet.porto.movementnetwork.xyz/v1/graphql',
 };
 
 export const EXTERNAL_FAUCET_URL = {
-  [Network.Porto]: 'https://mizu.testnet.porto.movementnetwork.xyz/',
+  [Network.MovementMainnet]: 'https://mizu.testnet.porto.movementnetwork.xyz/',
 };
 
 export const EXPLORER_URL = {
-  [Network.Porto]: (path: string) =>
+  [Network.MovementMainnet]: (path: string) =>
     `https://explorer.testnet.porto.movementnetwork.xyz/${path}`,
 } as Record<Network, (path: string) => string>;
 

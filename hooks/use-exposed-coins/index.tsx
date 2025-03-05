@@ -1,28 +1,42 @@
 import { useEffect, useState } from 'react';
 
-import { COINS_EXPOSED } from '@/constants/coin-fa';
-import { PRICE_TYPE } from '@/constants/prices';
-import { formatDollars } from '@/utils';
+import { COINS_EXPOSED } from '@/constants/coins';
+import { formatDollars, parseToMetadata } from '@/utils';
+import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
 const useExposedCoins = () => {
   const [exposedCoins, setExposedCoins] = useState<any[]>([]);
 
   useEffect(() => {
     Promise.all(
-      COINS_EXPOSED.map((coin) =>
-        fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-          method: 'POST',
-          body: JSON.stringify({ coins: [PRICE_TYPE[coin.symbol]] }),
-          headers: { 'Content-Type': 'application/json', accept: '*/*' },
-        })
+      COINS_EXPOSED.map((coin) => {
+        const coinParsed = parseToMetadata(
+          coin as unknown as CoinMetadata | FAMetadata
+        );
+
+        return fetch(
+          `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${coinParsed.type}`,
+          {
+            method: 'GET',
+            headers: {
+              network: 'MOVEMENT',
+            },
+          }
+        )
           .then((response) => response.json())
-          .then((data) => formatDollars(data[0].price))
-          .catch(() => '-')
-      )
-    ).then((prices) => {
-      setExposedCoins(
-        COINS_EXPOSED.map((coin, index) => ({ ...coin, usd: prices[index] }))
-      );
+          .then((data) => ({
+            ...coin,
+            usd: formatDollars(data[0].price),
+            usdPrice24Change: data[0]?.priceChange24HoursPercentage,
+          }))
+          .catch(() => ({
+            ...coin,
+            usd: '-',
+            usdPrice24Change: '-',
+          }));
+      })
+    ).then((coinsWithPrices) => {
+      setExposedCoins(coinsWithPrices);
     });
   }, []);
 

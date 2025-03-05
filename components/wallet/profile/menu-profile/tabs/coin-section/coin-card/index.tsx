@@ -1,5 +1,5 @@
 import { InterestDex } from '@interest-protocol/aptos-move-dex';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,
@@ -14,7 +14,7 @@ import invariant from 'tiny-invariant';
 
 import { RateDownSVG, RateUpSVG, WrapSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
+import { COIN_TYPE_TO_FA } from '@/constants/coins';
 import { FixedPointMath } from '@/lib';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
@@ -26,7 +26,7 @@ import { CoinCardProps } from '../../../user-info.types';
 import CardWrapper from './card-wrapper';
 import { logWrapCoin } from './coin-card.utils';
 
-const dex = new InterestDex();
+type CoinType = keyof typeof COIN_TYPE_TO_FA;
 
 const CoinCard: FC<CoinCardProps> = ({ token }) => {
   const client = useAptosClient();
@@ -48,6 +48,8 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
     coin?.balance ?? ZERO_BIG_NUMBER,
     coin?.decimals ?? decimals
   );
+
+  const dex = new InterestDex();
 
   const handleWrapCoin = async () => {
     const id = toast.loading(`Wrapping ${symbol}...`);
@@ -103,6 +105,8 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       toast.dismiss(id);
     }
   };
+
+  const isConvertible = (token.type as CoinType) in COIN_TYPE_TO_FA;
 
   return (
     <CardWrapper
@@ -176,7 +180,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
             </Box>
           )}
         </Box>
-        {COIN_TYPE_TO_FA[token.type] && (
+        {isConvertible && (
           <TooltipWrapper
             bg="lowContainer"
             tooltipPosition="top"

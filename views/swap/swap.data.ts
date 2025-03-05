@@ -1,5 +1,5 @@
 export enum SwapMessagesEnum {
-  leastOneMove = 'You must have at least 1 MOVE on your wallet',
+  leastOneMove = 'You must have at least 0.01 MOVE on your wallet',
   sameCoin = "You can't swap the same coin",
   greaterThanBalance = "Sell value can't be greater than balance",
   notEnoughToken = 'You do not have enough tokens.',

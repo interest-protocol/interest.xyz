@@ -18,11 +18,14 @@ dependencies:
     specifier: ^3.9.1
     version: 3.9.1(react-hook-form@7.53.2)
   '@interest-protocol/aptos-move-dex':
-    specifier: 1.0.0-alpha.6
-    version: 1.0.0-alpha.6(typescript@5.7.2)
+    specifier: 2.0.0
+    version: 2.0.0
   '@interest-protocol/aptos-sr-amm':
     specifier: ^1.1.0
     version: 1.1.0(typescript@5.7.2)
+  '@interest-protocol/interest-aptos-v2':
+    specifier: 3.0.0
+    version: 3.0.0
   '@interest-protocol/ui-kit':
     specifier: 0.3.3-beta
     version: 0.3.3-beta(@types/react@18.3.12)
@@ -95,6 +98,9 @@ dependencies:
   toformat:
     specifier: ^2.0.0
     version: 2.0.0
+  ts-sdk@latest:
+    specifier: aptos-labs/ts-sdk@latest
+    version: link:aptos-labs/ts-sdk@latest
   use-debounce:
     specifier: ^10.0.4
     version: 10.0.4(react@18.3.1)
@@ -1183,18 +1189,14 @@ packages:
       aptos: 1.21.0
     dev: false
 
-  /@interest-protocol/aptos-move-dex@1.0.0-alpha.6(typescript@5.7.2):
-    resolution: {integrity: sha512-8no0CrF1XBwHGOehSPv1DPfwsh+eKjpYkJvQri3l72MKh15+gmNPHKZxW5YzkWD/SoCdyAYM4vOu5Gv6tWi+1Q==}
+  /@interest-protocol/aptos-move-dex@2.0.0:
+    resolution: {integrity: sha512-jxGSbs82Penp1jaBxqqdg0grNp7O0dO5Q461z64jNiNWbpTkvYkVmJRo5M3IgSVH5kGe2+r82BvYxd/WPldC8w==}
     dependencies:
       '@aptos-labs/ts-sdk': 1.33.0
-      '@mysten/sui': 1.15.0(typescript@5.7.2)
       ramda: 0.30.1
       tiny-invariant: 1.3.3
     transitivePeerDependencies:
-      - '@gql.tada/svelte-support'
-      - '@gql.tada/vue-support'
       - debug
-      - typescript
     dev: false
 
   /@interest-protocol/aptos-sr-amm@1.1.0(typescript@5.7.2):
@@ -1215,6 +1217,17 @@ packages:
       - tsx
       - typescript
       - yaml
+    dev: false
+
+  /@interest-protocol/interest-aptos-v2@3.0.0:
+    resolution: {integrity: sha512-C11LrzUfNOUKdxZcaPSqRx3DqlYNFkoCsrCej00hu68YsMlAxbsBLwt8t+/IoAiCqAMd+vMklcTqHa/Up3FumQ==}
+    dependencies:
+      '@aptos-labs/ts-sdk': 1.33.0
+      '@mysten/bcs': 1.1.0
+      ramda: 0.30.1
+      tiny-invariant: 1.3.3
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@interest-protocol/ui-kit@0.3.3-beta(@types/react@18.3.12):

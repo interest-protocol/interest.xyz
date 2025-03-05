@@ -1,40 +1,43 @@
-import { COINS, Network } from '@interest-protocol/aptos-sr-amm';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC, useEffect, useState } from 'react';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
+import { MOVE } from '@/constants/coins';
 import { PRICE_TYPE } from '@/constants/prices';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
-import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
 const BalanceCard: FC = () => {
   const { coinsMap } = useCoins();
   const [USDPrice, setUSDPrice] = useState(0);
-  const defaultCoin = COINS[Network.Porto].APT;
+  const defaultCoin = parseToMetadata(
+    MOVE as unknown as CoinMetadata | FAMetadata
+  );
 
   const type = defaultCoin.type;
-  const faType = COIN_TYPE_TO_FA[type].toString();
   const decimals = defaultCoin.decimals;
   const symbol = defaultCoin.symbol;
 
   const balance = FixedPointMath.toNumber(
     coinsMap[type]?.balance.isZero()
-      ? coinsMap[faType]?.balance.isZero()
-        ? ZERO_BIG_NUMBER
-        : coinsMap[faType]?.balance
+      ? ZERO_BIG_NUMBER
       : coinsMap[type]?.balance,
     decimals
   );
 
   useEffect(() => {
     if (PRICE_TYPE[symbol])
-      fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-        method: 'POST',
-        body: JSON.stringify({ coins: [PRICE_TYPE[symbol]] }),
-        headers: { 'Content-Type': 'application/json', accept: '*/*' },
-      })
+      fetch(
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${type}`,
+        {
+          method: 'GET',
+          headers: {
+            network: 'MOVEMENT',
+          },
+        }
+      )
         .then((response) => response.json())
         .then((data) => setUSDPrice(data[0].price))
         .catch(() => null);

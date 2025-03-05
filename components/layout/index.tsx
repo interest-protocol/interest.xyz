@@ -52,7 +52,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
             alignItems="center"
             justifyContent="center"
           >
-            <Box>
+            <Box flex="1">
               {title && (
                 <Typography
                   textAlign="center"
