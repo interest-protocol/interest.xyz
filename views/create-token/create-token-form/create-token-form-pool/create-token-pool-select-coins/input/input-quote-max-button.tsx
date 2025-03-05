@@ -13,7 +13,7 @@ const InputQuoteMaxButton: FC = () => {
   const { coinsMap } = useCoins();
   const { setValue } = useFormContext<ICreateTokenForm>();
 
-  const type = FA_ADDRESSES[Network.MovementMainnet].APT.toString();
+  const type = FA_ADDRESSES[Network.MovementMainnet].MOVE.toString();
 
   const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
 
