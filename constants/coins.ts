@@ -1,5 +1,9 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
 
+export const COIN_TYPE_TO_FA = {
+  ['0x1::aptos_coin::AptosCoin']: '0xa',
+};
+
 export const FAKE = {
   address: AccountAddress.from(
     '0x2092ebb9cd4279c252efd4a778d143ad65d759401773b4fbbc163513e04ac108'
@@ -11,6 +15,7 @@ export const FAKE = {
   projectUri: '',
   symbol: 'FAKE',
 };
+
 export const MOVE = {
   address: AccountAddress.from('0xa'),
   decimals: 8,

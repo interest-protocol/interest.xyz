@@ -1,18 +1,20 @@
-import { COINS } from '@interest-protocol/interest-aptos-v2';
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC, useEffect, useState } from 'react';
 
+import { MOVE } from '@/constants/coins';
 import { PRICE_TYPE } from '@/constants/prices';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
-import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
 const BalanceCard: FC = () => {
   const { coinsMap } = useCoins();
   const [USDPrice, setUSDPrice] = useState(0);
-  const defaultCoin = COINS[Network.MovementMainnet].MOVE;
+  const defaultCoin = parseToMetadata(
+    MOVE as unknown as CoinMetadata | FAMetadata
+  );
 
   const type = defaultCoin.type;
   const decimals = defaultCoin.decimals;
@@ -37,7 +39,7 @@ const BalanceCard: FC = () => {
         }
       )
         .then((response) => response.json())
-        .then((data) => setUSDPrice(Number(formatDollars(data[0].price))))
+        .then((data) => setUSDPrice(data[0].price))
         .catch(() => null);
   }, []);
 
