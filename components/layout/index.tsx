@@ -4,7 +4,6 @@ import { FC, PropsWithChildren } from 'react';
 import SwapBottomMenu from '@/components/layout/bottom-menu';
 
 import ErrorBoundary from '../error-boundary';
-import Footer from './footer';
 import Header from './header';
 import { LayoutProps } from './layout.types';
 
@@ -18,25 +17,31 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
       flex="1"
       as="aside"
       height="100vh"
-      display={['flex', 'flex', 'flex', 'grid']}
+      overflowY="auto"
       overflowX="hidden"
       position="relative"
       flexDirection="column"
       gridTemplateRows="auto 1fr auto"
-      overflowY="auto"
+      display={['flex', 'flex', 'flex', 'grid']}
     >
       <Header />
-      <Box mx="auto" width="98%" bg="surface" borderRadius="1rem">
+      <Box
+        mx="auto"
+        width={['95%', '95%', '95%', '98%', '98%']}
+        bg="surface"
+        borderRadius="1rem"
+        mt={['3rem', '3rem', '3rem', '1rem', '1rem']}
+      >
         {background}
         <Box
           flex="1"
+          py="2xl"
+          mb="1rem"
           height="100%"
           width="100%"
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
-          py={['unset', 'unset', 'unset', '2xl']}
-          mb="1rem"
         >
           <Box
             m="0"
@@ -58,11 +63,11 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
               <Box flex="1" pb="2rem">
                 {title && (
                   <Typography
-                    textAlign="center"
+                    my="3rem"
+                    size="medium"
                     color="onSurface"
                     variant="display"
-                    size="medium"
-                    my="3rem"
+                    textAlign="center"
                   >
                     {title}
                   </Typography>
@@ -73,7 +78,6 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
           </Box>
         </Box>
       </Box>
-      <Footer />
     </Box>
     <SwapBottomMenu />
   </ErrorBoundary>
