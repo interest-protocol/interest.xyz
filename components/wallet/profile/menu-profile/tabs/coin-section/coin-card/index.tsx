@@ -32,12 +32,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
   const client = useAptosClient();
   const network = useNetwork<Network>();
   const { coinsMap, mutate } = useCoins();
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
 
   const symbol = token.symbol;
   const decimals = token.decimals;
@@ -57,36 +52,17 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       invariant(account, 'You should have this coin in your wallet');
       invariant(coin, 'You should have this coin in your wallet');
 
-      let txResult;
       const payload = dex.wrapCoin({
         coinType: token.type,
         amount: BigInt(coin.balance.toString()),
         recipient: account.address,
       });
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
+      const txResult = tx.args;
 
       await client.waitForTransaction({
         transactionHash: txResult.hash,

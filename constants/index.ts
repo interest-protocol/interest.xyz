@@ -12,25 +12,16 @@ export const LOCAL_STORAGE_VERSION = 'v5';
 export const PAGE_SIZE = 50;
 
 export const RPC_URL = {
-  [Network.MovementMainnet]: 'https://aptos.testnet.porto.movementlabs.xyz/v1',
-};
-
-export const FAUCET_URL = {
-  [Network.MovementMainnet]: 'https://mizu.testnet.porto.movementnetwork.xyz/',
+  [Network.MovementMainnet]: 'https://mainnet.movementlabs.xyz/v1',
 };
 
 export const INDEXER_URL = {
-  [Network.MovementMainnet]:
-    'https://indexer.testnet.porto.movementnetwork.xyz/v1/graphql',
-};
-
-export const EXTERNAL_FAUCET_URL = {
-  [Network.MovementMainnet]: 'https://mizu.testnet.porto.movementnetwork.xyz/',
+  [Network.MovementMainnet]: 'https://mainnet.movementnetwork.xyz/v1/graphql',
 };
 
 export const EXPLORER_URL = {
   [Network.MovementMainnet]: (path: string) =>
-    `https://explorer.testnet.porto.movementnetwork.xyz/${path}`,
+    `https://mainnet.movementnetwork.xyz/${path}`,
 } as Record<Network, (path: string) => string>;
 
 export const TOAST_DURATION = 10000;

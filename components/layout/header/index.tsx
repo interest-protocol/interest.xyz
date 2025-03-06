@@ -37,12 +37,7 @@ const Header: FC = () => {
   useEventListener('resize', handleSetDesktop, true);
 
   return (
-    <Box
-      display="flex"
-      position="relative"
-      flexDirection="column"
-      bg="rgba(0, 0, 0, 0.2)"
-    >
+    <Box display="flex" position="relative" flexDirection="column" bg="#000000">
       <Box
         width="100%"
         display="flex"
