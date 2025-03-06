@@ -26,12 +26,7 @@ const PoolSummaryButton: FC = () => {
   const network = Network.MovementMainnet;
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
   const { setValue, getValues, resetField } = useFormContext<CreatePoolForm>();
 
   const gotoExplorer = () => {
@@ -57,7 +52,6 @@ const PoolSummaryButton: FC = () => {
         [[], []] as [ReadonlyArray<Token>, ReadonlyArray<Token>]
       );
 
-      let txResult;
       let payload: InputGenerateTransactionPayloadData;
       let pool: {
         exists: MoveValue;
@@ -121,29 +115,11 @@ const PoolSummaryButton: FC = () => {
         });
       }
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
+      const txResult = tx.args;
 
       await client.waitForTransaction({
         transactionHash: txResult.hash,

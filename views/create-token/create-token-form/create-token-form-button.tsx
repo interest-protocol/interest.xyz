@@ -21,12 +21,7 @@ const CreateTokenFormButton = () => {
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
   const { control, setValue, getValues, reset } =
     useFormContext<ICreateTokenForm>();
 
@@ -73,8 +68,6 @@ const CreateTokenFormButton = () => {
         'You must fill the required fields'
       );
 
-      let txResult;
-
       const payload = values.pool?.active
         ? dex.deployMemeWithFa({
             name,
@@ -107,29 +100,11 @@ const CreateTokenFormButton = () => {
 
       const startTime = Date.now();
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
+      const txResult = tx.args;
 
       const endTime = Date.now() - startTime;
 

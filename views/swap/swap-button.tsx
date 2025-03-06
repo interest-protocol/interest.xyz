@@ -21,19 +21,14 @@ const SwapButton = () => {
   const network = useNetwork<Network>();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
   const { getValues, setValue, control, reset } = useFormContext();
 
-  const error = useWatch({ control, name: 'error' });
-  const valueIn = useWatch({ control, name: 'from.value' });
-  const valueOut = useWatch({ control, name: 'to.value' });
-  const from = useWatch({ control, name: 'from' });
   const to = useWatch({ control, name: 'to' });
+  const from = useWatch({ control, name: 'from' });
+  const error = useWatch({ control, name: 'error' });
+  const valueOut = useWatch({ control, name: 'to.value' });
+  const valueIn = useWatch({ control, name: 'from.value' });
 
   const gotoExplorer = () => {
     window.open(getValues('explorerLink'), '_blank', 'noopener,noreferrer');
@@ -51,34 +46,15 @@ const SwapButton = () => {
 
       if (!account) return;
 
-      let txResult;
       const { from, to, payload } = getValues();
 
       const startTime = Date.now();
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
+      const txResult = tx.args;
 
       const endTime = Date.now() - startTime;
 
