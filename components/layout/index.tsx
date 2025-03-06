@@ -21,15 +21,16 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
       overflowX="hidden"
       position="relative"
       flexDirection="column"
-      gridTemplateRows="auto 1fr auto"
+      gridTemplateRows="auto 1fr"
       display={['flex', 'flex', 'flex', 'grid']}
     >
       <Header />
       <Box
+        mb="m"
         mx="auto"
-        width={['95%', '95%', '95%', '98%', '98%']}
         bg="surface"
         borderRadius="1rem"
+        width={['95%', '95%', '95%', '98%', '98%']}
         mt={['3rem', '3rem', '3rem', '1rem', '1rem']}
       >
         {background}
