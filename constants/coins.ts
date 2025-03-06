@@ -1,5 +1,7 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-
+import { COINS } from '@interest-protocol/aptos-move-dex';
+import { Network } from '@interest-protocol/interest-aptos-v2';
+import { values } from 'ramda';
 export const COIN_TYPE_TO_FA = {
   ['0x1::aptos_coin::AptosCoin']: '0xa',
 };
@@ -25,6 +27,6 @@ export const MOVE = {
   symbol: 'MOVE',
 };
 
-export const TOKENS = [MOVE, FAKE];
+export const TOKENS = [...values(COINS[Network.MovementMainnet]), FAKE, MOVE];
 
 export const COINS_EXPOSED = [MOVE, FAKE];
