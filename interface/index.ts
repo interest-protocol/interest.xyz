@@ -19,7 +19,7 @@ export interface PoolPageProps {
 
 export enum PoolTypeEnum {
   CLAMM = 'CLAMM',
-  srAMM = 'SR-AMM',
+  srAMM = 'V2(SR-AMM)',
 }
 
 export interface AmmPoolCoinTypes {

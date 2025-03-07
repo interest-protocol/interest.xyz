@@ -18,7 +18,11 @@ const PoolDetail = () => {
 
   if (loading) return <PoolInfoLoading />;
 
-  const infoData = [(query.address as string) ?? 'N/A', 'SR-AMM', 'Volatile'];
+  const infoData = [
+    (query.address as string) ?? 'N/A',
+    'V2(SR-AMM)',
+    'Volatile',
+  ];
 
   const statsData = [
     pool

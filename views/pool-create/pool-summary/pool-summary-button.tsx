@@ -14,7 +14,7 @@ import { Routes, RoutesEnum } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useInterestDex } from '@/hooks/use-interest-dex';
 import { FixedPointMath } from '@/lib';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
+import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
 import { CreatePoolForm, Token } from '../pool-create.types';
@@ -23,8 +23,7 @@ import { logCreatePool } from '../pool-create.utils';
 const PoolSummaryButton: FC = () => {
   const dex = useInterestDex();
   const { push } = useRouter();
-  const network = Network.MovementMainnet;
-  const client = useAptosClient();
+  const network = useNetwork();
   const { dialog, handleClose } = useDialog();
   const { account, signAndSubmitTransaction } = useAptosWallet();
   const { setValue, getValues, resetField } = useFormContext<CreatePoolForm>();
@@ -120,11 +119,6 @@ const PoolSummaryButton: FC = () => {
       invariant(tx.status === 'Approved', 'Rejected by User');
 
       const txResult = tx.args;
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
 
       await logCreatePool(
         account.address,

@@ -7,7 +7,6 @@ import invariant from 'tiny-invariant';
 
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
@@ -17,7 +16,6 @@ import { logSwap } from './swap.utils';
 
 const SwapButton = () => {
   const { mutate } = useCoins();
-  const client = useAptosClient();
   const network = useNetwork<Network>();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
@@ -59,11 +57,6 @@ const SwapButton = () => {
       const endTime = Date.now() - startTime;
 
       setValue('executionTime', String(endTime));
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
 
       logSwap(account!.address, from, to, network, txResult.hash);
 
