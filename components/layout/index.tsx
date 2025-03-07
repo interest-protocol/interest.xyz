@@ -4,7 +4,6 @@ import { FC, PropsWithChildren } from 'react';
 import SwapBottomMenu from '@/components/layout/bottom-menu';
 
 import ErrorBoundary from '../error-boundary';
-import Footer from './footer';
 import Header from './header';
 import { LayoutProps } from './layout.types';
 
@@ -17,57 +16,67 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
     <Box
       flex="1"
       as="aside"
-      bg="surface"
       height="100vh"
-      display="flex"
-      overflow="hidden"
+      overflowY="auto"
+      overflowX="hidden"
       position="relative"
       flexDirection="column"
+      gridTemplateRows="auto 1fr"
+      display={['flex', 'flex', 'flex', 'grid']}
     >
       <Header />
-      {background}
       <Box
-        flex="1"
-        width="100%"
-        display="flex"
-        overflowY="auto"
-        flexDirection="column"
-        justifyContent="space-between"
-        py={['l', 'l', 'l', 'unset', 'unset']}
+        mb="m"
+        mx="auto"
+        bg="surface"
+        borderRadius="1rem"
+        width={['95%', '95%', '95%', '98%', '98%']}
+        mt={['3rem', '3rem', '3rem', '1rem', '1rem']}
       >
+        {background}
         <Box
-          m="0"
-          mt="unset"
-          width="100%"
+          flex="1"
+          py="2xl"
+          mb="1rem"
           height="100%"
+          width="100%"
           display="flex"
-          variant="container"
           flexDirection="column"
-          px={['m', 'l', 'l', 'xl']}
+          justifyContent="space-between"
         >
           <Box
-            flex="1"
-            as="main"
+            m="0"
+            mt="unset"
+            width="100%"
+            height="100%"
             display="flex"
-            alignItems="center"
-            justifyContent="center"
+            variant="container"
+            flexDirection="column"
+            px={['m', 'l', 'l', 'xl']}
           >
-            <Box flex="1">
-              {title && (
-                <Typography
-                  textAlign="center"
-                  color="onSurface"
-                  variant="display"
-                  size="medium"
-                  my="3rem"
-                >
-                  {title}
-                </Typography>
-              )}
-              {children}
+            <Box
+              flex="1"
+              as="main"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Box flex="1" pb="2rem">
+                {title && (
+                  <Typography
+                    my="3rem"
+                    size="medium"
+                    color="onSurface"
+                    variant="display"
+                    textAlign="center"
+                  >
+                    {title}
+                  </Typography>
+                )}
+                {children}
+              </Box>
             </Box>
           </Box>
-          <Footer />
         </Box>
       </Box>
     </Box>

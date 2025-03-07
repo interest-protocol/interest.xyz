@@ -17,6 +17,10 @@ const SwapTopSlider: FC = () => {
   const { setValue, getValues } = useFormContext();
   const { exposedCoins } = useExposedCoins();
 
+  const handleTokenSelect = (token: MetadataSources) => {
+    onSelect(parseToMetadata(token));
+  };
+
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
 
@@ -75,9 +79,7 @@ const SwapTopSlider: FC = () => {
                 usdPrice={token.usd}
                 symbol={token.symbol}
                 iconUri={token.iconUri}
-                onClick={() =>
-                  onSelect(parseToMetadata(token as MetadataSources))
-                }
+                onClick={() => handleTokenSelect(token)}
               />
             </Box>
             <Box

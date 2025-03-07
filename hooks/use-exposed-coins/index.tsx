@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { COINS_EXPOSED } from '@/constants/coins';
+import { TOKENS } from '@/constants/coins';
 import { formatDollars, parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
@@ -9,7 +9,7 @@ const useExposedCoins = () => {
 
   useEffect(() => {
     Promise.all(
-      COINS_EXPOSED.map((coin) => {
+      TOKENS.map((coin) => {
         const coinParsed = parseToMetadata(
           coin as unknown as CoinMetadata | FAMetadata
         );
