@@ -73,11 +73,6 @@ export const WBTCe = {
   symbol: 'WBTC.e',
 };
 
-export const TOKENS: ReadonlyArray<Token> = [
-  MOVE,
-  FIRE,
-  USDCe,
-  USDTe,
-  WETHe,
-  WBTCe,
-];
+export const ETH_COINS = [USDCe, USDTe, WETHe, WBTCe];
+
+export const TOKENS: ReadonlyArray<Token> = [MOVE, FIRE, ...ETH_COINS];
