@@ -19,6 +19,7 @@ const SwapTopSliderItem: FC<SwapBottomMenuItemProps> = ({
     <Box
       gap="xs"
       display="flex"
+      cursor="pointer"
       onClick={onClick}
       alignItems="center"
       justifyContent="center"

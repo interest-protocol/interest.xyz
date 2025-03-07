@@ -10,6 +10,7 @@ const BottomNavListItem: FC<BottomNavListItemProps> = ({
   path,
   Icon,
   onClick,
+  isHidden,
 }) => {
   const { asPath, push } = useRouter();
 
@@ -19,6 +20,8 @@ const BottomNavListItem: FC<BottomNavListItemProps> = ({
 
     push(path);
   };
+
+  if (isHidden) return null;
 
   return (
     <Box flex="1" height="100%">
