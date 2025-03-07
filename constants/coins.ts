@@ -4,16 +4,16 @@ export const COIN_TYPE_TO_FA = {
   ['0x1::aptos_coin::AptosCoin']: '0xa',
 };
 
-export const FAKE = {
+export const FIRE = {
   address: AccountAddress.from(
-    '0x2092ebb9cd4279c252efd4a778d143ad65d759401773b4fbbc163513e04ac108'
+    '0x5f7f59e38a96dfe79830f53fe49a19e770f70a13ff30ce598a49e8f0a2b46861'
   ),
   decimals: 8,
   iconUri:
     'https://raw.githubusercontent.com/kitelabs-io/mvmt-tokens/main/logos/FAKE.png',
-  name: 'FAKE',
-  projectUri: '',
-  symbol: 'FAKE',
+  name: '🔥',
+  symbol: '🔥',
+  projectUri: 'www.interest.xyz',
 };
 
 export const MOVE = {
@@ -25,6 +25,6 @@ export const MOVE = {
   symbol: 'MOVE',
 };
 
-export const TOKENS = [MOVE, FAKE];
+export const TOKENS = [MOVE, FIRE];
 
-export const COINS_EXPOSED = [MOVE, FAKE];
+export const COINS_EXPOSED = [MOVE, FIRE];
