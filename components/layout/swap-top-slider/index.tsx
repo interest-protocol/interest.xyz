@@ -17,9 +17,8 @@ const SwapTopSlider: FC = () => {
   const { setValue, getValues } = useFormContext();
   const { exposedCoins } = useExposedCoins();
 
-  const handleTokenSelect = (token: MetadataSources) => {
+  const handleTokenSelect = (token: MetadataSources) =>
     onSelect(parseToMetadata(token));
-  };
 
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
@@ -48,9 +47,7 @@ const SwapTopSlider: FC = () => {
         `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
         {
           method: 'GET',
-          headers: {
-            network: 'MOVEMENT',
-          },
+          headers: { network: 'MOVEMENT' },
         }
       )
         .then((response) => response.json())
@@ -88,7 +85,7 @@ const SwapTopSlider: FC = () => {
               alignItems="center"
               justifyContent="center"
             >
-              {token.usdPrice24Change !== '-' && (
+              {token.usdPrice24Change && (
                 <>
                   <Box>
                     {token.usdPrice24Change < 1 ? (
