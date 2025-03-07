@@ -12,8 +12,8 @@ export const FIRE = {
   iconUri:
     'https://raw.githubusercontent.com/kitelabs-io/mvmt-tokens/main/logos/FAKE.png',
   name: '🔥',
-  symbol: '🔥',
   projectUri: 'www.interest.xyz',
+  symbol: '🔥',
 };
 
 export const MOVE = {
