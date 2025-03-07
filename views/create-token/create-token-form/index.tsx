@@ -105,7 +105,7 @@ const CreateTokenForm: FC = () => {
               type="number"
               label="Coin Decimals"
               {...register('decimals')}
-              supportingText="Insert the decimal precision of your token. If you don't know what to insert, use 9"
+              supportingText="Insert the decimal precision of your token. If you don't know what to insert, use 8"
               nPlaceholder={{ opacity: 0.7 }}
               fieldProps={{ borderRadius: 'xs', height: '2.8rem' }}
             />
