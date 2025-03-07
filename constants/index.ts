@@ -19,10 +19,9 @@ export const INDEXER_URL = {
   [Network.MovementMainnet]: 'https://mainnet.movementnetwork.xyz/v1/graphql',
 };
 
-export const EXPLORER_URL = {
-  [Network.MovementMainnet]: (path: string) =>
-    `https://mainnet.movementnetwork.xyz/${path}`,
-} as Record<Network, (path: string) => string>;
+export const NETWORK = {
+  [Network.MovementMainnet]: 'mainnet',
+};
 
 export const TOAST_DURATION = 10000;
 
