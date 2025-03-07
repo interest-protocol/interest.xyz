@@ -93,3 +93,23 @@ export interface PriceResponse {
   price: number;
   priceChange24HoursPercentage: number;
 }
+
+export interface Token {
+  address: AccountAddress;
+  decimals: number;
+  iconUri: string;
+  name: string;
+  projectUri: string;
+  symbol: string;
+}
+
+export interface TokenWithPrice extends Token {
+  usd: string;
+  usdPrice24Change: number;
+}
+
+export interface TokenPrice {
+  coin: string;
+  price: number;
+  priceChange24HoursPercentage: number;
+}
