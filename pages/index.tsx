@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
@@ -34,10 +33,6 @@ const SwapPage: NextPage = () => {
       },
     },
   });
-
-  useEffect(() => {
-    console.log('>> page rerender');
-  }, []);
 
   return (
     <FormProvider {...form}>
