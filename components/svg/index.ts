@@ -55,6 +55,7 @@ export { default as FileSVG } from './file';
 export { default as FilterSVG } from './filter';
 export { default as FindSVG } from './find';
 export { default as FireSVG } from './fire';
+export { default as FireEmojiSVG } from './fire-emoji';
 export { default as FolderSVG } from './folder';
 export { default as GBLSVG } from './gbl';
 export { default as GithubSVG } from './github';

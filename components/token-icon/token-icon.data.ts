@@ -4,6 +4,7 @@ import { FC } from 'react';
 import {
   BTCSVG,
   ETHSVG,
+  FireEmojiSVG,
   MOVESVG,
   NETHSVG,
   USDCSVG,
@@ -19,6 +20,7 @@ export const TOKEN_ICONS = {
     ['USDC.e']: USDCSVG,
     ['USDT.e']: USDTSVG,
     MOVE: MOVESVG,
+    ['🔥']: FireEmojiSVG,
     nETH: NETHSVG,
     RUCO: '/images/ruco.webp',
     MOMO: 'images/momo.webp',
