@@ -12,15 +12,12 @@ export const LOCAL_STORAGE_VERSION = 'v5';
 export const PAGE_SIZE = 50;
 
 export const RPC_URL = {
-  [Network.MovementMainnet]: 'https://mainnet.movementlabs.xyz/v1',
-};
-
-export const NETWORK = {
-  [Network.MovementMainnet]: 'mainnet',
+  [Network.MovementMainnet]: 'https://mainnet.movementnetwork.xyz/v1',
 };
 
 export const INDEXER_URL = {
-  [Network.MovementMainnet]: 'https://mainnet.movementnetwork.xyz/v1/graphql',
+  [Network.MovementMainnet]:
+    'https://indexer.mainnet.movementnetwork.xyz/v1/graphql',
 };
 
 export const EXPLORER_URL = {
