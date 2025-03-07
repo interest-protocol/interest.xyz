@@ -39,7 +39,7 @@ export const USDCe = {
 
 export const USDTe = {
   address: AccountAddress.from(
-    '0x447721a30109c662dde9c73a0c2c9c9c459fb5e5a9c92f03c50fa69737f5d08d;'
+    '0x447721a30109c662dde9c73a0c2c9c9c459fb5e5a9c92f03c50fa69737f5d08d'
   ),
   decimals: 6,
   iconUri: 'https://tether.to/images/logoCircle.svg',
@@ -50,7 +50,7 @@ export const USDTe = {
 
 export const WETHe = {
   address: AccountAddress.from(
-    '0x908828f4fb0213d4034c3ded1630bbd904e8a3a6bf3c63270887f0b06653a376;'
+    '0x908828f4fb0213d4034c3ded1630bbd904e8a3a6bf3c63270887f0b06653a376'
   ),
   decimals: 8,
   iconUri: 'https://etherscan.io/token/images/weth_28.png',
@@ -61,7 +61,7 @@ export const WETHe = {
 
 export const WBTCe = {
   address: AccountAddress.from(
-    '0xb06f29f24dde9c6daeec1f930f14a441a8d6c0fbea590725e88b340af3e1939c;'
+    '0xb06f29f24dde9c6daeec1f930f14a441a8d6c0fbea590725e88b340af3e1939c'
   ),
   decimals: 8,
   iconUri:
