@@ -124,9 +124,7 @@ const Position: FC = () => {
         }
       : {
           poolAddress: {
-            $in: coins
-              ?.filter((coin) => coin.symbol == 'v2-LP')
-              .map(({ type }) => type),
+            $in: coins?.map(({ type }) => type),
           },
         }
   );

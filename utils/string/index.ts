@@ -2,7 +2,8 @@ import { ChangeEvent } from 'react';
 
 import { MAX_NUMBER_INPUT_VALUE } from '@/constants';
 
-const isExponential = (number: number) => number.toString().includes('e');
+export const isExponential = (number: number) =>
+  number.toString().includes('e');
 
 const removeZero = (array: ReadonlyArray<string>): string => {
   if (!array.length) return '';
