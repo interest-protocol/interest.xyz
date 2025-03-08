@@ -59,7 +59,7 @@ const SwapTopSlider: FC = () => {
     <Box
       px="m"
       display={
-        exposedCoins.length ? ['flex', 'flex', 'flex', 'none', 'none'] : 'none'
+        exposedCoins?.length ? ['flex', 'flex', 'flex', 'none', 'none'] : 'none'
       }
     >
       <Box
