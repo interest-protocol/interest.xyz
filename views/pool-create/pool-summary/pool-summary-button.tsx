@@ -133,8 +133,6 @@ const PoolSummaryButton: FC = () => {
         poolId: pool.poolAddress?.toString(),
       };
 
-      console.log({ body });
-
       fetch(
         'https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm/',
         {
