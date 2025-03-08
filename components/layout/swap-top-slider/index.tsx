@@ -74,7 +74,7 @@ const SwapTopSlider: FC = () => {
         scrollSnapType="x mandatory"
         WebkitBackdropFilter="blur(40px)"
       >
-        {exposedCoins.map((token, index) => (
+        {exposedCoins?.map((token, index) => (
           <Box gap="s" key={index} display="flex">
             <Box>
               <BottomMenuItem
