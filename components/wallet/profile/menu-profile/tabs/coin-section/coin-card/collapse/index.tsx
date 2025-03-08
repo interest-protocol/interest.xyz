@@ -48,6 +48,7 @@ const Collapse: FC<CollapseProps> = ({ title, children }) => {
         gap="xs"
         display="flex"
         initial="rest"
+        overflow="hidden"
         variants={variants}
         flexDirection="column"
         animate={isExpanded ? 'collapsed' : 'rest'}
