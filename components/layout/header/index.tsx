@@ -41,6 +41,7 @@ const Header: FC = () => {
       <Box
         width="100%"
         display="flex"
+        position="relative"
         alignItems="center"
         py={isMobile ? 'xs' : 's'}
         px={isMobile ? 'm' : '2xl'}
@@ -67,7 +68,11 @@ const Header: FC = () => {
         {!isMobile && (
           <Box
             gap="m"
+            mx="auto"
+            left="0"
+            right="0"
             display="flex"
+            position="absolute"
             alignItems="center"
             justifyContent="center"
           >
