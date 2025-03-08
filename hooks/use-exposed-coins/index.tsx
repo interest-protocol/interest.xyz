@@ -37,8 +37,6 @@ const useExposedCoins = () => {
           ];
         }, [] as ReadonlyArray<TokenWithPrice>);
 
-        console.log({ coinsToExpose });
-
         setExposedCoins(coinsToExpose);
       });
   }, []);

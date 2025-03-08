@@ -120,7 +120,7 @@ const PoolSummaryButton: FC = () => {
 
       const txResult = tx.args;
 
-      await logCreatePool(
+      logCreatePool(
         account.address,
         tokens[0],
         tokens[1],
@@ -128,15 +128,17 @@ const PoolSummaryButton: FC = () => {
         txResult.hash
       );
 
+      const body = {
+        network,
+        poolId: pool.poolAddress?.toString(),
+      };
+
       fetch(
-        'https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm',
+        'https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm/',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            network,
-            poolId: pool.poolAddress?.toString(),
-          }),
+          body: JSON.stringify(body),
         }
       );
 

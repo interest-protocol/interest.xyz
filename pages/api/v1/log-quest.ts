@@ -14,7 +14,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       origin: process.env.ORIGIN ?? '*',
     });
 
-    if (process.env.NODE_ENV === 'development') return;
+    if (process.env.NODE_ENV === 'development')
+      return res.status(200).send('Development environment');
 
     const network = pathOr(
       Network.MovementMainnet,
