@@ -18,7 +18,12 @@ import QuoteInputDollar from './token-input-dollar';
 
 const Input: FC<InputProps> = ({ label }) => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const { register, setValue, getValues } = useFormContext<ICreateTokenForm>();
+  const {
+    register,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useFormContext<ICreateTokenForm>();
 
   const handleSetMobile = useCallback(() => {
     const mediaIsMobile = !window.matchMedia('(max-width: 26.875rem)').matches;
@@ -37,7 +42,16 @@ const Input: FC<InputProps> = ({ label }) => {
     >
       <TokenField
         active
-        status="none"
+        status={
+          label == 'quote'
+            ? errors.pool?.quoteValue && 'error'
+            : errors.pool?.tokenValue && 'error'
+        }
+        supportingText={
+          label == 'quote'
+            ? errors.pool?.quoteValue?.message
+            : errors.pool?.tokenValue?.message
+        }
         opacity="0.7"
         placeholder="--"
         variant="outline"

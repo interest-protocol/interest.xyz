@@ -5,7 +5,10 @@ export const validationSchema = yup.object({
   symbol: yup
     .string()
     .required('Symbol is a required field')
-    .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field'),
+    .matches(
+      /^[a-zA-Z][\x21-\x7E]*$/,
+      'This symbol is not following ASCII pattern'
+    ),
   projectUrl: yup
     .string()
     .url('You must provide an URL')
@@ -27,8 +30,14 @@ export const validationSchema = yup.object({
   fixedSupply: yup.boolean().required('Fixed Supply is an required field'),
   pool: yup.object({
     active: yup.boolean().required(),
-    quoteValue: yup.string(),
-    tokenValue: yup.string(),
+    quoteValue: yup
+      .number()
+      .required('Move amount is a required field')
+      .min(1, 'It is required to add at least 1 MOVE'),
+    tokenValue: yup
+      .number()
+      .required('The amount is required in this field')
+      .min(1, 'You must add at least 1'),
     quote: yup.object(),
   }),
 });
