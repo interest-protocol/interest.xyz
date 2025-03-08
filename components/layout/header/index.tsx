@@ -109,6 +109,7 @@ const Header: FC = () => {
           left="0"
           right="0"
           zIndex="1"
+          width="15rem"
           position="relative"
           alignItems="center"
           justifyContent="flex-end"
