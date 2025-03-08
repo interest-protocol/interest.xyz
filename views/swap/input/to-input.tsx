@@ -2,13 +2,15 @@ import { Box, TextField } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
+import { isExponential } from '@/utils';
+
 import Balance from './balance';
 import AmountInDollar from './dollar-value';
 import HeaderInfo from './header-info';
 import SelectToken from './select-token';
 
 const ToInput: FC = () => {
-  const { control } = useFormContext();
+  const { control, getValues } = useFormContext();
 
   const value = useWatch({ control, name: 'to.value' });
 
@@ -31,7 +33,11 @@ const ToInput: FC = () => {
           >
             <TextField
               disabled
-              value={value}
+              value={
+                isExponential(+value)
+                  ? (+value).toFixed(getValues('to.decimals'))
+                  : value
+              }
               ml="-1rem"
               width="100%"
               lineHeight="l"

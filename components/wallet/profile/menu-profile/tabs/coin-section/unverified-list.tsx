@@ -26,7 +26,9 @@ const UnverifiedCoinList: FC = () => {
 
   const unverifiedCoins = coins.filter(({ type, symbol }) => {
     const isNotInTokens = !tokenTypes.includes(type);
-    const isNotLPToken = isHideLPToken ? !symbol.includes('sr-LpFa') : true;
+    const isNotLPToken = isHideLPToken
+      ? !symbol.toLowerCase().includes('v2-lp')
+      : true;
     return isNotInTokens && isNotLPToken;
   });
 

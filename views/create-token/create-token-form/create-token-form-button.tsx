@@ -22,8 +22,13 @@ const CreateTokenFormButton = () => {
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
   const { account, signAndSubmitTransaction } = useAptosWallet();
-  const { control, setValue, getValues, reset } =
-    useFormContext<ICreateTokenForm>();
+  const {
+    control,
+    setValue,
+    getValues,
+    reset,
+    formState: { errors },
+  } = useFormContext<ICreateTokenForm>();
 
   const values = useWatch({ control });
 
@@ -40,6 +45,7 @@ const CreateTokenFormButton = () => {
     !loading &&
     values.name &&
     values.symbol &&
+    Object.keys(errors).length == 0 &&
     String(values.decimals) &&
     values.supply &&
     (values.pool?.active
