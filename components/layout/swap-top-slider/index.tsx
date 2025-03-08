@@ -107,9 +107,8 @@ const SwapTopSlider: FC = () => {
               )}
               <Typography
                 size="large"
-                opacity={0.7}
                 variant="label"
-                color={token.usdPrice24Change < 1 ? 'error' : 'success'}
+                color={token.usdPrice24Change < 1 ? '#E53E3E' : '#16A24A'}
                 fontSize="0.625rem"
                 lineHeight="1rem"
               >

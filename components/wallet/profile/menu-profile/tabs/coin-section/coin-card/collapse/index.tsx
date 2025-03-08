@@ -52,7 +52,7 @@ const Collapse: FC<CollapseProps> = ({ title, children }) => {
         variants={variants}
         flexDirection="column"
         animate={isExpanded ? 'collapsed' : 'rest'}
-        mb="10rem"
+        mb={['10rem', '10rem', '10rem', 'unset']}
       >
         {children}
       </Motion>

@@ -122,7 +122,13 @@ const Position: FC = () => {
             },
           ],
         }
-      : { poolAddress: { $in: coins?.map(({ type }) => type) } }
+      : {
+          poolAddress: {
+            $in: coins
+              ?.filter((coin) => coin.symbol == 'v2-LP')
+              .map(({ type }) => type),
+          },
+        }
   );
 
   useEffect(() => {
