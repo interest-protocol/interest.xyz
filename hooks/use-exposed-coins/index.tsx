@@ -1,43 +1,44 @@
+import { AccountAddress } from '@aptos-labs/ts-sdk';
 import { useEffect, useState } from 'react';
 
-import { COINS_EXPOSED } from '@/constants/coins';
-import { formatDollars, parseToMetadata } from '@/utils';
-import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
+import { TOKENS } from '@/constants/coins';
+import { TokenPrice, TokenWithPrice } from '@/interface';
+import { formatDollars } from '@/utils';
 
 const useExposedCoins = () => {
-  const [exposedCoins, setExposedCoins] = useState<any[]>([]);
+  const [exposedCoins, setExposedCoins] = useState<
+    ReadonlyArray<TokenWithPrice>
+  >([]);
 
   useEffect(() => {
-    Promise.all(
-      COINS_EXPOSED.map((coin) => {
-        const coinParsed = parseToMetadata(
-          coin as unknown as CoinMetadata | FAMetadata
-        );
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?${TOKENS.map((coin) => `coins=${coin.address.toString()}`).join('&')}`,
+      {
+        method: 'GET',
+        headers: { network: 'MOVEMENT' },
+      }
+    )
+      .then((res) => res.json())
+      .then((data: ReadonlyArray<TokenPrice>) => {
+        const coinsToExpose = TOKENS.reduce((acc, coin) => {
+          const item = data.find((item) =>
+            coin.address.equals(AccountAddress.from(item.coin))
+          );
 
-        return fetch(
-          `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${coinParsed.type}`,
-          {
-            method: 'GET',
-            headers: {
-              network: 'MOVEMENT',
+          if (!item) return acc;
+
+          return [
+            ...acc,
+            {
+              ...coin,
+              usd: formatDollars(item.price),
+              usdPrice24Change: item.priceChange24HoursPercentage,
             },
-          }
-        )
-          .then((response) => response.json())
-          .then((data) => ({
-            ...coin,
-            usd: formatDollars(data[0].price),
-            usdPrice24Change: data[0]?.priceChange24HoursPercentage,
-          }))
-          .catch(() => ({
-            ...coin,
-            usd: '-',
-            usdPrice24Change: '-',
-          }));
-      })
-    ).then((coinsWithPrices) => {
-      setExposedCoins(coinsWithPrices);
-    });
+          ];
+        }, [] as ReadonlyArray<TokenWithPrice>);
+
+        setExposedCoins(coinsToExpose);
+      });
   }, []);
 
   return { exposedCoins };

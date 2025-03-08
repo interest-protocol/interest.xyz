@@ -136,7 +136,9 @@ const Header: FC = () => {
           </Box>
         </Box>
       </Box>
-      {asPath === '/' && <SwapTopSlider />}
+      <Box display={asPath === '/' ? 'block' : 'none'}>
+        <SwapTopSlider />
+      </Box>
     </Box>
   );
 };

@@ -64,10 +64,13 @@ const SwapManager: FC = () => {
         const value = BigNumber(data.data.dstAmount);
 
         setValue('to.valueBN', value);
-        setValue(
-          'to.value',
-          String(FixedPointMath.toNumber(value, to.decimals))
-        );
+
+        const formattedValue = FixedPointMath.toNumber(
+          value,
+          to.decimals
+        ).toFixed(to.decimals);
+
+        setValue('to.value', formattedValue);
         setValue('path', data.data.paths);
         setValue('payload', {
           function: data.data.tx.function,

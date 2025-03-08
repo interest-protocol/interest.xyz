@@ -4,6 +4,7 @@ import { FC } from 'react';
 import {
   BTCSVG,
   ETHSVG,
+  FireEmojiSVG,
   MOVESVG,
   NETHSVG,
   USDCSVG,
@@ -14,20 +15,12 @@ import { SVGProps } from '../svg/svg.types';
 
 export const TOKEN_ICONS = {
   [Network.MovementMainnet]: {
-    ETH: ETHSVG,
-    faETH: ETHSVG,
-    WETH: ETHSVG,
-    faWETH: ETHSVG,
-    BTC: BTCSVG,
-    faBTC: BTCSVG,
-    WBTC: BTCSVG,
-    faWBTC: BTCSVG,
-    USDC: USDCSVG,
-    faUSDC: USDCSVG,
+    ['WETH.e']: ETHSVG,
+    ['WBTC.e']: BTCSVG,
+    ['USDC.e']: USDCSVG,
+    ['USDT.e']: USDTSVG,
     MOVE: MOVESVG,
-    faMOVE: MOVESVG,
-    USDT: USDTSVG,
-    faUSDT: USDTSVG,
+    ['🔥']: FireEmojiSVG,
     nETH: NETHSVG,
     RUCO: '/images/ruco.webp',
     MOMO: 'images/momo.webp',

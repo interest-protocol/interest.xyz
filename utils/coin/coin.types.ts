@@ -1,5 +1,7 @@
 import type { AccountAddress } from '@aptos-labs/ts-sdk';
 
+import { Token } from '@/interface';
+
 export interface CoinMetadata {
   type: string;
   name: string;
@@ -29,4 +31,8 @@ export interface ClientMetadata {
   project_uri?: string | null;
 }
 
-export type MetadataSources = CoinMetadata | FAMetadata | ClientMetadata;
+export type MetadataSources =
+  | CoinMetadata
+  | FAMetadata
+  | ClientMetadata
+  | Token;

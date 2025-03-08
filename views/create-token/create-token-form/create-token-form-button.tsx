@@ -110,11 +110,6 @@ const CreateTokenFormButton = () => {
 
       setValue('executionTime', String(endTime));
 
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
-
       if (pool?.active) {
         client
           .getTransactionByHash({

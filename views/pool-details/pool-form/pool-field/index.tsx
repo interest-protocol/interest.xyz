@@ -65,6 +65,7 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
                 <TokenIcon
                   withBg
                   network={network}
+                  url={token.iconUri}
                   symbol={isDeposit ? symbol : token?.name}
                 />
                 {symbol}

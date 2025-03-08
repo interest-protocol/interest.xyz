@@ -61,8 +61,6 @@ const Pools: FC = () => {
         : {}
   );
 
-  console.log('Pools _> ', data);
-
   useEffect(() => {
     if (isFindingPool || page != 1) {
       setPools([[]]);
