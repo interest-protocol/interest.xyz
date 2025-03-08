@@ -68,35 +68,39 @@ const CreateTokenFormButton = () => {
         'You must fill the required fields'
       );
 
+      const createFaArgs = {
+        name,
+        symbol,
+        iconURI,
+        decimals,
+        projectURI,
+        recipient: account!.address,
+        totalSupply: BigInt(
+          FixedPointMath.toBigNumber(supply!, decimals).toString()
+        ),
+      };
+
+      const deployMemeWithFaArgs = {
+        name,
+        symbol,
+        iconURI,
+        decimals,
+        projectURI,
+        recipient: account!.address,
+        totalSupply: BigInt(
+          FixedPointMath.toBigNumber(supply!, decimals).toString()
+        ),
+        liquidityMemeAmount: BigInt(
+          FixedPointMath.toBigNumber(pool!.tokenValue!, decimals).toString()
+        ),
+        liquidityAptosAmount: BigInt(
+          FixedPointMath.toBigNumber(pool!.quoteValue!).toString()
+        ),
+      };
+
       const payload = values.pool?.active
-        ? dex.deployMemeWithFa({
-            name,
-            symbol,
-            iconURI,
-            decimals,
-            projectURI,
-            recipient: account!.address,
-            totalSupply: BigInt(
-              FixedPointMath.toBigNumber(supply!, decimals).toString()
-            ),
-            liquidityMemeAmount: BigInt(
-              FixedPointMath.toBigNumber(pool!.tokenValue!, decimals).toString()
-            ),
-            liquidityAptosAmount: BigInt(
-              FixedPointMath.toBigNumber(pool!.quoteValue!).toString()
-            ),
-          })
-        : dex.createFa({
-            name,
-            symbol,
-            iconURI,
-            decimals,
-            projectURI,
-            recipient: account!.address,
-            totalSupply: BigInt(
-              FixedPointMath.toBigNumber(supply!, decimals).toString()
-            ),
-          });
+        ? dex.deployMemeWithFa(deployMemeWithFaArgs)
+        : dex.createFa(createFaArgs);
 
       const startTime = Date.now();
 
