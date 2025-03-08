@@ -10,7 +10,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import SubtractBox from '@/components/svg/subtract-box';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
-import { isAptos, ZERO_BIG_NUMBER } from '@/utils';
+import { formatMoney, isAptos, ZERO_BIG_NUMBER } from '@/utils';
 
 import { InputProps } from './input.types';
 
@@ -92,7 +92,7 @@ const Balance: FC<InputProps> = ({ label }) => {
           whiteSpace="nowrap"
         >
           {symbol
-            ? `${FixedPointMath.toNumber(balance, decimals).toString()} ${symbol}`
+            ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
             : '0'}
         </Typography>
         {loading && (
@@ -132,7 +132,7 @@ const Balance: FC<InputProps> = ({ label }) => {
       </Box>
       <Typography size="small" variant="body" fontSize="s" whiteSpace="nowrap">
         {symbol
-          ? `${FixedPointMath.toNumber(balance, decimals).toString()} ${symbol}`
+          ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
           : '0'}
       </Typography>
       {loading && (

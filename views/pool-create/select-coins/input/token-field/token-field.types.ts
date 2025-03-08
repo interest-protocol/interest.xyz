@@ -18,6 +18,7 @@ export interface TokenFieldProps
   TokenIcon?: ReactNode;
   fieldProps?: BoxProps;
   ButtonMax?: ReactNode;
+  supportingText?: string;
   onActivate?: () => void;
   variant?: 'filled' | 'outline';
   status?: 'error' | 'success' | 'none';

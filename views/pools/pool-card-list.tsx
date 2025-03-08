@@ -122,7 +122,11 @@ const Position: FC = () => {
             },
           ],
         }
-      : { poolAddress: { $in: coins?.map(({ type }) => type) } }
+      : {
+          poolAddress: {
+            $in: coins?.map(({ type }) => type),
+          },
+        }
   );
 
   useEffect(() => {
