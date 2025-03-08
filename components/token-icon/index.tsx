@@ -6,6 +6,7 @@ import { DefaultTokenSVG, ETHChainSVG, SVGProps } from '@/components/svg';
 
 import { TOKEN_ICONS } from './token-icon.data';
 import { TokenIconProps } from './token-icon.types';
+import { isTokenIconUrl } from './token-icon.utils';
 
 const PADDING_BORDER_SYMBOLS = ['nETH'];
 
@@ -28,12 +29,12 @@ const TokenIcon: FC<TokenIconProps> = ({
   const stopLoad = () => setLoading(false);
   const errorOnLoad = () => setLoadError(true);
 
-  const TokenIcon = TOKEN_ICONS[network]?.[symbol] ?? null;
+  const icon = TOKEN_ICONS[network]?.[symbol] ?? null;
 
   const { data: iconSrc, isLoading } = useSWR(
     `${network}-${symbol}`,
     async () => {
-      if (TokenIcon) return null;
+      if (icon) return null;
 
       if (url) return url;
 
@@ -74,7 +75,7 @@ const TokenIcon: FC<TokenIconProps> = ({
       </Box>
     );
 
-  if (TokenIcon && typeof TokenIcon === 'string')
+  if (icon && isTokenIconUrl(icon))
     return (
       <Box
         display="flex"
@@ -106,7 +107,7 @@ const TokenIcon: FC<TokenIconProps> = ({
             <img
               width="100%"
               alt={symbol}
-              src={TokenIcon}
+              src={icon.url}
               onLoad={stopLoad}
               onError={errorOnLoad}
             />
@@ -126,7 +127,7 @@ const TokenIcon: FC<TokenIconProps> = ({
       </Box>
     );
 
-  if (TokenIcon)
+  if (icon && !isTokenIconUrl(icon))
     return (
       <Box
         display="flex"
@@ -143,9 +144,12 @@ const TokenIcon: FC<TokenIconProps> = ({
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
           borderRadius={rounded ? 'full' : 'xs'}
-          {...(withBg && { bg: 'onSurface', color: 'surface' })}
+          {...(withBg && {
+            bg: icon.bg || 'onSurface',
+            color: icon.color || 'surface',
+          })}
         >
-          <TokenIcon
+          <icon.Icon
             width="100%"
             maxWidth={
               PADDING_BORDER_SYMBOLS.includes(symbol)
