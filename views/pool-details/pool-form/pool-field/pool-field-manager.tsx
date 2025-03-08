@@ -50,13 +50,16 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
 
       const liquidity = liquidityX > liquidityY ? liquidityY : liquidityX;
 
-      setValue(`tokenList.${!isFirst ? '0' : '1'}.value`, String(amountY));
+      setValue(
+        `tokenList.${!isFirst ? '0' : '1'}.value`,
+        String(amountY.toFixed(6))
+      );
       setValue(
         `tokenList.${!isFirst ? '0' : '1'}.valueBN`,
         FixedPointMath.toBigNumber(String(amountY), decimals)
       );
 
-      setValue('lpCoin.value', String(liquidity));
+      setValue('lpCoin.value', String(liquidity.toFixed(6)));
       setValue(
         'lpCoin.valueBN',
         FixedPointMath.toBigNumber(String(liquidity), lpCoinDecimals)

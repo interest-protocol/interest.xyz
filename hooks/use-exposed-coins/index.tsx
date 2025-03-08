@@ -21,7 +21,7 @@ const useExposedCoins = () => {
       .then((res) => res.json())
       .then((data: ReadonlyArray<TokenPrice>) => {
         const coinsToExpose = TOKENS.reduce((acc, coin) => {
-          const item = data.find((item) =>
+          const item = data?.find((item) =>
             coin.address.equals(AccountAddress.from(item.coin))
           );
 
