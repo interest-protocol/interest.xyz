@@ -38,7 +38,7 @@ const Avatar: FC<AvatarProps> = ({
       {withNameOrAddress && (
         <Link
           target="_blank"
-          href={EXPLORER_URL[network](`/account/${address}`)}
+          href={EXPLORER_URL[network](`account/${address}`)}
         >
           <Typography
             mr="0.5rem"
