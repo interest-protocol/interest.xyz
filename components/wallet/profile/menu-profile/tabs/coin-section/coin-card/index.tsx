@@ -19,7 +19,7 @@ import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, formatMoney, ZERO_BIG_NUMBER } from '@/utils';
 
 import { CoinCardProps } from '../../../user-info.types';
 import CardWrapper from './card-wrapper';
@@ -109,8 +109,8 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
           justifyContent="flex-start"
         >
           <Typography size="large" variant="label" lineHeight="1.5rem">
-            {balance}
-            <Box fontSize="Satoshi" as="span">
+            {formatMoney(balance)}
+            <Box fontSize="Satoshi" as="span" ml="2xs">
               {symbol}
             </Box>
           </Typography>

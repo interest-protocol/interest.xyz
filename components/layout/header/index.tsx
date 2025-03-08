@@ -64,6 +64,7 @@ const Header: FC = () => {
             </Link>
           </Box>
         )}
+        sdfsd
         {!isMobile && (
           <Box
             gap="m"
