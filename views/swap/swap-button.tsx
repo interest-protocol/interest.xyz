@@ -137,9 +137,9 @@ const SwapButton = () => {
         disabled={disabled}
         justifyContent="center"
         nDisabled={{
-          bg: 'highestContainer',
+          bg: error ? '#f6465d' : 'highestContainer',
           ':hover': {
-            background: '#343438',
+            background: error ? '#f6465d' : '#343438',
             color: '#909094',
           },
         }}
@@ -147,7 +147,7 @@ const SwapButton = () => {
         <Typography
           variant="label"
           size="large"
-          color={error ? 'onErrorContainer' : 'none'}
+          color={error ? '#fff' : 'none'}
         >
           {loading ? 'Swapping...' : error ? error : 'Confirm Swap'}
         </Typography>
