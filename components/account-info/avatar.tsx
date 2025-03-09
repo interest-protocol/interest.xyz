@@ -23,14 +23,24 @@ const Avatar: FC<AvatarProps> = ({
   const SIZE = isLarge ? '2.2rem' : '1.5rem';
 
   return (
-    <>
+    <Box
+      p="xs"
+      gap="s"
+      display="flex"
+      cursor="pointer"
+      borderRadius="xs"
+      transition="0.3s"
+      alignItems="center"
+      nHover={{ bg: 'highestContainer' }}
+    >
       {withNameOrAddress && nameOrAddressPosition === 'left' && (
         <Typography
-          variant="label"
-          size="large"
           ml="0.5rem"
-          width="max-content"
+          size="large"
+          variant="label"
           color="onSurface"
+          width="max-content"
+          display={['none', 'none', 'none', 'block', 'block']}
         >
           {address.slice(0, 6)}...{address.slice(-4)}
         </Typography>
@@ -63,7 +73,7 @@ const Avatar: FC<AvatarProps> = ({
           </Typography>
         </Link>
       )}
-    </>
+    </Box>
   );
 };
 

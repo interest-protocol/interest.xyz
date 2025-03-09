@@ -62,7 +62,13 @@ const PoolNextButton: FC = () => {
           symbol && Number(value) && String(decimals)
       );
 
-    return false;
+    const internTokens = getValues('tokens');
+
+    const [coinA, coinB] = internTokens;
+
+    if (!coinA.type || !coinB.type) return true;
+
+    if (!coinA.value || !coinB.value) return true;
   }, [step, tokens, loading]);
 
   return (
