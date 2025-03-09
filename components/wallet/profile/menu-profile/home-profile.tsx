@@ -18,7 +18,6 @@ const HomeProfile: FC = () => {
   return (
     <>
       <BalanceCard />
-      <Box display="flex" gap="xs" p="xl"></Box>
       <Box
         gap="m"
         width="100%"
