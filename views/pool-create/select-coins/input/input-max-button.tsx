@@ -15,7 +15,6 @@ const InputMaxButton: FC<InputProps> = ({ index }) => {
 
   const type = useWatch({ control, name: `tokens.${index}.type` });
   const decimals = useWatch({ control, name: `tokens.${index}.decimals` });
-  const symbol = useWatch({ control, name: `tokens.${index}.symbol` });
 
   const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
 
@@ -45,7 +44,7 @@ const InputMaxButton: FC<InputProps> = ({ index }) => {
       color="onSurface"
       variant="outline"
       borderRadius="2xs"
-      disabled={!symbol}
+      disabled={!type}
       onClick={handleMax}
     >
       MAX

@@ -7,15 +7,17 @@ import invariant from 'tiny-invariant';
 
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
+import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
+import { ZERO_BIG_NUMBER } from '@/utils';
 
 import SuccessModal from '../components/success-modal';
 import SuccessModalTokenCard from '../components/success-modal/success-modal-token-card';
 import { logSwap } from './swap.utils';
 
 const SwapButton = () => {
-  const { mutate } = useCoins();
+  const { coinsMap, mutate } = useCoins();
   const network = useNetwork<Network>();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
@@ -27,6 +29,13 @@ const SwapButton = () => {
   const error = useWatch({ control, name: 'error' });
   const valueOut = useWatch({ control, name: 'to.value' });
   const valueIn = useWatch({ control, name: 'from.value' });
+
+  const coin = coinsMap[from?.type];
+
+  const balance = FixedPointMath.toNumber(
+    coin?.balance ?? ZERO_BIG_NUMBER,
+    coin?.decimals ?? coin?.decimals
+  );
 
   const gotoExplorer = () => {
     window.open(getValues('explorerLink'), '_blank', 'noopener,noreferrer');
@@ -121,8 +130,10 @@ const SwapButton = () => {
   const disabled =
     !Number(valueIn) ||
     !Number(valueOut) ||
+    !Number(balance) ||
     valueIn < 0 ||
     valueOut < 0 ||
+    !balance ||
     !!error;
 
   return (
@@ -134,10 +145,20 @@ const SwapButton = () => {
         onClick={onSwap}
         disabled={disabled}
         justifyContent="center"
-        nDisabled={{ bg: 'highestContainer' }}
+        nDisabled={{
+          bg: error ? '#f6465d' : 'highestContainer',
+          ':hover': {
+            background: error ? '#f6465d' : '#343438',
+            color: '#909094',
+          },
+        }}
       >
-        <Typography variant="label" size="large">
-          {loading ? 'Swapping...' : 'Confirm Swap'}
+        <Typography
+          variant="label"
+          size="large"
+          color={error ? '#fff' : 'none'}
+        >
+          {loading ? 'Swapping...' : error ? error : 'Confirm Swap'}
         </Typography>
       </Button>
     </Box>

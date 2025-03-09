@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
 import { MOVE } from '@/constants/coins';
-import { formatDollars, parseToMetadata } from '@/utils';
+import { parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 import CreateToken from '@/views/create-token';
 import { validationSchema } from '@/views/create-token/create-token-form/create-token-form.validation';
@@ -36,10 +36,7 @@ const CreateTokenPage: NextPage = () => {
     )
       .then((response) => response.json())
       .then((data) =>
-        form.setValue(
-          'pool.quoteUsdPrice' as never,
-          formatDollars(data[0].price) as never
-        )
+        form.setValue('pool.quoteUsdPrice' as never, data[0].price as never)
       )
       .catch(() => null);
   });

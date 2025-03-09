@@ -1,10 +1,11 @@
 import * as yup from 'yup';
 
+import { FixedPointMath } from '@/lib';
+
 export const validationSchema = yup.object({
-  name: yup.string().required('Name is a required field'),
+  name: yup.string(),
   symbol: yup
     .string()
-    .required('Symbol is a required field')
     .matches(
       /^[a-zA-Z][\x21-\x7E]*$/,
       'This symbol is not following ASCII pattern'
@@ -31,13 +32,35 @@ export const validationSchema = yup.object({
   pool: yup.object({
     active: yup.boolean().required(),
     quoteValue: yup
-      .number()
-      .required('Move amount is a required field')
-      .min(1, 'It is required to add at least 1 MOVE'),
+      .string()
+      .test(
+        'quoteValue',
+        'You cannot add numbers less than 0',
+        function (value) {
+          const { active, quoteValueBN } = this.parent;
+          if (active) {
+            return FixedPointMath.toNumber(quoteValueBN) == 0
+              ? true
+              : value == undefined
+                ? true
+                : +value > 0;
+          }
+          return true;
+        }
+      ),
     tokenValue: yup
-      .number()
-      .required('The amount is required in this field')
-      .min(1, 'You must add at least 1'),
+      .string()
+      .test(
+        'tokenValue',
+        'You cannot add numbers less than 0',
+        function (value) {
+          const { active } = this.parent;
+          if (active) {
+            return value == undefined ? true : +value > 0;
+          }
+          return true;
+        }
+      ),
     quote: yup.object(),
   }),
 });
