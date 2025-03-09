@@ -10,12 +10,6 @@ const Wallet: FC = () => {
 
   return (
     <Box gap="m" display="flex" alignItems="center" justifyContent="flex-end">
-      <Box
-        width="14.5rem"
-        justifyContent="flex-end"
-        display={['none', 'none', 'none', 'flex']}
-      />
-
       {account?.address ? <Profile /> : <ConnectWalletButton />}
     </Box>
   );
