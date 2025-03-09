@@ -68,14 +68,11 @@ const CreateTokenFormButton = () => {
         projectUrl: projectURI,
       } = values;
 
-      invariant(
-        name && symbol && decimals && supply,
-        'You must fill the required fields'
-      );
+      invariant(decimals && supply, 'You must fill the required fields');
 
       const createFaArgs = {
-        name,
-        symbol,
+        name: name || '',
+        symbol: symbol || '',
         iconURI,
         decimals,
         projectURI,
@@ -86,8 +83,8 @@ const CreateTokenFormButton = () => {
       };
 
       const deployMemeWithFaArgs = {
-        name,
-        symbol,
+        name: name || '',
+        symbol: symbol || '',
         iconURI,
         decimals,
         projectURI,
@@ -145,7 +142,7 @@ const CreateTokenFormButton = () => {
 
       logCreateToken(
         account!.address,
-        symbol,
+        symbol || '',
         !!pool?.active,
         Network.MovementMainnet,
         txResult.hash

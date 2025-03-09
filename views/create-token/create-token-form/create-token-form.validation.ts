@@ -3,10 +3,9 @@ import * as yup from 'yup';
 import { FixedPointMath } from '@/lib';
 
 export const validationSchema = yup.object({
-  name: yup.string().required('Name is a required field'),
+  name: yup.string(),
   symbol: yup
     .string()
-    .required('Symbol is a required field')
     .matches(
       /^[a-zA-Z][\x21-\x7E]*$/,
       'This symbol is not following ASCII pattern'
