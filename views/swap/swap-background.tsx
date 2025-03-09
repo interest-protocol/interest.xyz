@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
-import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
@@ -46,21 +45,20 @@ const SwapBackground: FC = () => {
       valueBN: ZERO_BIG_NUMBER,
     });
 
-    if (PRICE_TYPE[metadata.symbol])
-      fetch(
-        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
-        {
-          method: 'GET',
-          headers: {
-            network: 'MOVEMENT',
-          },
-        }
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+      {
+        method: 'GET',
+        headers: {
+          network: 'MOVEMENT',
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) =>
+        setValue(`${label}.usdPrice`, formatDollars(data[0].price))
       )
-        .then((response) => response.json())
-        .then((data) =>
-          setValue(`${label}.usdPrice`, formatDollars(data[0].price))
-        )
-        .catch(() => null);
+      .catch(() => null);
   };
 
   const coins = exposedCoins?.slice(0, MAX_COINS) ?? [];
