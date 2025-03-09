@@ -139,8 +139,8 @@ const SwapButton = () => {
         nDisabled={{
           bg: 'highestContainer',
           ':hover': {
-            background: '#1F2023',
-            opacity: '1',
+            background: '#343438',
+            color: '#909094',
           },
         }}
       >
