@@ -62,7 +62,7 @@ export const SwapErrorManager: FC<SwapMessagesProps> = ({ hasNoMarket }) => {
     } else if (hasAtLeastOneMove) {
       newError = String(SwapMessagesEnum.leastOneMove);
     } else if (isGreaterThanBalance) {
-      newError = String(SwapMessagesEnum.insufficientBalance);
+      newError = String(SwapMessagesEnum.notEnoughToken);
     }
 
     if (newError !== error) {
