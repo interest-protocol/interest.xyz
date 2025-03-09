@@ -16,7 +16,7 @@ const PoolDetail = () => {
   const { query } = useRouter();
   const { pool, config, loading } = usePoolDetails();
 
-  if (loading) return <PoolInfoLoading />;
+  if (!pool || loading) return <PoolInfoLoading />;
 
   const infoData = [
     (query.address as string) ?? 'N/A',
@@ -27,8 +27,8 @@ const PoolDetail = () => {
   const statsData = [
     pool
       ? FixedPointMath.toNumber(
-          BigNumber(String(pool?.bidLiquidity ?? 0)),
-          pool?.metadata.decimals
+          BigNumber(String(pool.bidLiquidity ?? 0)),
+          pool.metadata.decimals
         )
       : 'N/A',
     config

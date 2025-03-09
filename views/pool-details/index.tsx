@@ -35,12 +35,12 @@ const PoolDetails: FC = () => {
 
   const handleOptionTab = (index: PoolOption) => setPoolOptionView(index);
 
-  const { loading } = usePoolDetails();
+  const { pool, loading } = usePoolDetails();
 
   return (
     <Layout>
       <PoolTitleBar
-        loading={loading}
+        loading={!pool || loading}
         onBack={() => push(Routes[RoutesEnum.Pools])}
       />
       {!isEarnPoolView ? (
