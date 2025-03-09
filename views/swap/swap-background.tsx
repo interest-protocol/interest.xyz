@@ -1,6 +1,6 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
-import { FC } from 'react';
+import { memo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
@@ -19,7 +19,7 @@ const SIDE_MARGIN = 15;
 const TOP_MARGIN = 10;
 const RANDOM_OFFSET = 8;
 
-const SwapBackground: FC = () => {
+const SwapBackground = memo(() => {
   const { setValue, getValues } = useFormContext();
   const network = useNetwork<Network>();
 
@@ -245,6 +245,8 @@ const SwapBackground: FC = () => {
       })}
     </Box>
   );
-};
+});
+
+SwapBackground.displayName = SwapBackground.name;
 
 export default SwapBackground;
