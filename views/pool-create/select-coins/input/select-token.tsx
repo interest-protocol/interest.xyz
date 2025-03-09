@@ -29,10 +29,18 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
     name: `tokens.${index}`,
   });
 
+  const type = useWatch({ control, name: `tokens.${index}.type` });
+
   const { symbol: currentSymbol } = currentToken;
 
+  const formatedSymbol = currentSymbol
+    ? currentSymbol
+    : !currentSymbol && type
+      ? type
+      : 'Select token';
+
   const onSelect = async (metadata: AssetMetadata) => {
-    if (getValues('tokens')?.some((token) => token.symbol === metadata.symbol))
+    if (getValues('tokens')?.some((token) => token.type === metadata.type))
       return;
 
     setValue(`tokens.${index}`, {
@@ -90,10 +98,15 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
         fontSize="s"
         width="100%"
         variant="tonal"
-        bg={currentSymbol ? 'transparent' : 'highestContainer'}
         color="onSurface"
         borderRadius="xs"
         onClick={openModal}
+        height={formatedSymbol === '' ? '2.5rem' : ''}
+        bg={
+          currentSymbol || formatedSymbol === type
+            ? 'transparent'
+            : 'highestContainer'
+        }
         {...(currentSymbol && {
           PrefixIcon: (
             <TokenIcon
@@ -107,14 +120,17 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
       >
         <Typography
           p="xs"
-          variant="label"
-          whiteSpace="nowrap"
           width="100%"
+          maxWidth="12ch"
+          variant="label"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
           size={isMobile ? 'large' : 'small'}
         >
-          {currentSymbol || 'Select token'}
+          {formatedSymbol}
         </Typography>
-        {!currentSymbol && (
+        {!currentSymbol && formatedSymbol !== type && (
           <ChevronRightSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
         )}
       </Button>

@@ -45,7 +45,7 @@ const Balance: FC<InputProps> = ({ label }) => {
       </Box>
     );
 
-  const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance = coinsMap[type]?.balance ?? 10;
 
   const handleMax = () => {
     if (label === 'to') return;
@@ -79,10 +79,10 @@ const Balance: FC<InputProps> = ({ label }) => {
       <Box display="flex" gap="xs">
         <Box display={['none', 'block']} width="1rem" height="1rem">
           <SubtractBox
-            maxHeight="100%"
-            maxWidth="100%"
             width="100%"
             height="100%"
+            maxWidth="100%"
+            maxHeight="100%"
           />
         </Box>
         <Typography
@@ -91,7 +91,7 @@ const Balance: FC<InputProps> = ({ label }) => {
           variant="body"
           whiteSpace="nowrap"
         >
-          {symbol
+          {type
             ? `${FixedPointMath.toNumber(balance, decimals).toString()} ${symbol}`
             : '0'}
         </Typography>
@@ -124,14 +124,14 @@ const Balance: FC<InputProps> = ({ label }) => {
     >
       <Box display={['none', 'block']} width="1rem" height="1rem">
         <SubtractBox
-          maxHeight="100%"
-          maxWidth="100%"
           width="100%"
           height="100%"
+          maxWidth="100%"
+          maxHeight="100%"
         />
       </Box>
       <Typography size="small" variant="body" fontSize="s" whiteSpace="nowrap">
-        {symbol
+        {type
           ? `${FixedPointMath.toNumber(balance, decimals).toString()} ${symbol}`
           : '0'}
       </Typography>
