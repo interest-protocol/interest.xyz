@@ -43,13 +43,12 @@ const CreateTokenFormButton = () => {
   const ableToMerge = !!(
     account &&
     !loading &&
-    values.name &&
-    values.symbol &&
-    Object.keys(errors).length == 0 &&
     String(values.decimals) &&
     values.supply &&
     (values.pool?.active
-      ? Number(values.pool.quoteValue) && Number(values.pool.tokenValue)
+      ? Number(values.pool.quoteValue) &&
+        Number(values.pool.tokenValue) &&
+        Object.keys(errors).length == 0
       : true)
   );
 

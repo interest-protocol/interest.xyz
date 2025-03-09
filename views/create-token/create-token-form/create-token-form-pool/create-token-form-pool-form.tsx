@@ -6,12 +6,10 @@ import CreateTokenPoolSelectCoins from './create-token-pool-select-coins';
 
 const CreateTokenFormPoolForm: FC = () => {
   const { control } = useFormContext<ICreateTokenForm>();
-  const name = useWatch({ control, name: 'name' });
-  const symbol = useWatch({ control, name: 'symbol' });
   const supply = useWatch({ control, name: 'supply' });
   const active = useWatch({ control, name: 'pool.active' });
 
-  if (!active || !symbol || !supply || !name) return null;
+  if (!active || !supply) return null;
 
   return <CreateTokenPoolSelectCoins />;
 };
