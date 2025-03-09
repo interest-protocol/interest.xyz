@@ -5,7 +5,7 @@ import { SEO } from '@/components';
 import { TOKENS } from '@/constants/coins';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
-import Swap from '@/views/swap';
+import SwapComponent from '@/views/swap';
 import { SwapForm } from '@/views/swap/swap.types';
 import SwapInitManager from '@/views/swap/swap-init-manager';
 
@@ -38,7 +38,7 @@ const SwapPage: NextPage = () => {
     <FormProvider {...form}>
       <SEO pageTitle="Trade" />
       <SwapInitManager />
-      <Swap />
+      <SwapComponent />
     </FormProvider>
   );
 };
