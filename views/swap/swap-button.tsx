@@ -28,6 +28,8 @@ const SwapButton = () => {
   const valueOut = useWatch({ control, name: 'to.value' });
   const valueIn = useWatch({ control, name: 'from.value' });
 
+  //if (!error) return null;
+
   const gotoExplorer = () => {
     window.open(getValues('explorerLink'), '_blank', 'noopener,noreferrer');
   };
@@ -134,10 +136,20 @@ const SwapButton = () => {
         onClick={onSwap}
         disabled={disabled}
         justifyContent="center"
-        nDisabled={{ bg: 'highestContainer' }}
+        nDisabled={{
+          bg: 'highestContainer',
+          ':hover': {
+            background: '#1F2023',
+            opacity: '1',
+          },
+        }}
       >
-        <Typography variant="label" size="large">
-          {loading ? 'Swapping...' : 'Confirm Swap'}
+        <Typography
+          variant="label"
+          size="large"
+          color={error ? 'onErrorContainer' : 'none'}
+        >
+          {loading ? 'Swapping...' : error ? error : 'Confirm Swap'}
         </Typography>
       </Button>
     </Box>
