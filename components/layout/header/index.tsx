@@ -125,9 +125,8 @@ const Header: FC = () => {
           overflowX="auto"
           position="relative"
           alignItems="center"
-          px={['m', 'l', 'l', 'xl']}
+          px={['unset', 'xl']}
           justifyContent="space-between"
-          gridTemplateColumns="1fr 1fr 1fr"
           display={['flex', 'flex', 'flex', 'none']}
           boxShadow="0 1.5rem 2.875rem -0.625rem rgba(13, 16, 23, 0.16)"
         >
@@ -136,7 +135,9 @@ const Header: FC = () => {
           </Box>
         </Box>
       </Box>
-      {asPath === '/' && <SwapTopSlider />}
+      <Box display={asPath === '/' ? 'block' : 'none'}>
+        <SwapTopSlider />
+      </Box>
     </Box>
   );
 };

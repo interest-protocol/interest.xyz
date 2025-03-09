@@ -1,4 +1,7 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
+import { FC } from 'react';
+
+import { SVGProps } from '../svg';
 
 export interface TokenIconProps {
   url?: string;
@@ -9,3 +12,19 @@ export interface TokenIconProps {
   rounded?: boolean;
   loaderSize?: number;
 }
+
+export interface TokenIconUrl {
+  url: string;
+}
+export interface TokenIconSVG {
+  bg?: string;
+  color?: string;
+  Icon: FC<SVGProps>;
+}
+
+export type DefaultTokenIcon = TokenIconUrl | TokenIconSVG;
+
+export type DefaultTokenIcons = Record<
+  Network,
+  Record<string, DefaultTokenIcon>
+>;

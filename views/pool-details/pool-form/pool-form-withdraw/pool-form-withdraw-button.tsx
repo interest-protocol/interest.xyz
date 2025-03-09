@@ -9,13 +9,11 @@ import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useInterestDex } from '@/hooks/use-interest-dex';
 import { useModal } from '@/hooks/use-modal';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 
 import { PoolFormButtonProps } from '../pool-form.types';
 
 const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({ form }) => {
   const dex = useInterestDex();
-  const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
   const { handleClose: closeModal } = useModal();
@@ -42,11 +40,6 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({ form }) => {
       invariant(tx.status === 'Approved', 'Rejected by User');
 
       const txResult = tx.args;
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
 
       setValue(
         'explorerLink',

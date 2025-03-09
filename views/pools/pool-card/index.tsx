@@ -53,7 +53,7 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
       >
         <PoolCardHeader
           tags={[
-            'SR-AMM',
+            'V2(SR-AMM)',
             FormFilterValue['volatile'],
             POOL_DATA.filter(
               ({ poolAddress }) => poolAddress == pool.poolAddress

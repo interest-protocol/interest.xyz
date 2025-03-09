@@ -2,12 +2,17 @@ import { Box, ProgressIndicator } from '@interest-protocol/ui-kit';
 import { FC, useState } from 'react';
 import useSWR from 'swr';
 
-import { DefaultTokenSVG } from '@/components/svg';
+import { DefaultTokenSVG, ETHChainSVG, SVGProps } from '@/components/svg';
 
 import { TOKEN_ICONS } from './token-icon.data';
 import { TokenIconProps } from './token-icon.types';
+import { isTokenIconUrl } from './token-icon.utils';
 
 const PADDING_BORDER_SYMBOLS = ['nETH'];
+
+const CHAIN_ICON: Record<string, FC<SVGProps>> = {
+  e: ETHChainSVG,
+};
 
 const TokenIcon: FC<TokenIconProps> = ({
   url,
@@ -24,18 +29,21 @@ const TokenIcon: FC<TokenIconProps> = ({
   const stopLoad = () => setLoading(false);
   const errorOnLoad = () => setLoadError(true);
 
-  const TokenIcon = TOKEN_ICONS[network]?.[symbol] ?? null;
+  const icon = TOKEN_ICONS[network]?.[symbol] ?? null;
 
   const { data: iconSrc, isLoading } = useSWR(
     `${network}-${symbol}`,
     async () => {
-      if (TokenIcon) return null;
+      if (icon) return null;
 
       if (url) return url;
 
       return null;
     }
   );
+
+  const chain = symbol.split('.')[1];
+  const ChainIcon = CHAIN_ICON[chain];
 
   if (loadError)
     return (
@@ -67,7 +75,7 @@ const TokenIcon: FC<TokenIconProps> = ({
       </Box>
     );
 
-  if (TokenIcon && typeof TokenIcon === 'string')
+  if (icon && isTokenIconUrl(icon))
     return (
       <Box
         display="flex"
@@ -99,16 +107,27 @@ const TokenIcon: FC<TokenIconProps> = ({
             <img
               width="100%"
               alt={symbol}
-              src={TokenIcon}
+              src={icon.url}
               onLoad={stopLoad}
               onError={errorOnLoad}
             />
           </Box>
         </Box>
+        {ChainIcon && (
+          <Box
+            right="-0.5rem"
+            bottom="-0.3rem"
+            overflow="hidden"
+            position="absolute"
+            borderRadius="full"
+          >
+            <ChainIcon maxHeight={size} maxWidth={size} width="100%" />
+          </Box>
+        )}
       </Box>
     );
 
-  if (TokenIcon)
+  if (icon && !isTokenIconUrl(icon))
     return (
       <Box
         display="flex"
@@ -125,9 +144,12 @@ const TokenIcon: FC<TokenIconProps> = ({
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
           borderRadius={rounded ? 'full' : 'xs'}
-          {...(withBg && { bg: 'onSurface', color: 'surface' })}
+          {...(withBg && {
+            bg: icon.bg || 'onSurface',
+            color: icon.color || 'surface',
+          })}
         >
-          <TokenIcon
+          <icon.Icon
             width="100%"
             maxWidth={
               PADDING_BORDER_SYMBOLS.includes(symbol)
@@ -141,6 +163,17 @@ const TokenIcon: FC<TokenIconProps> = ({
             }
           />
         </Box>
+        {ChainIcon && (
+          <Box
+            right="-0.5rem"
+            bottom="-0.3rem"
+            overflow="hidden"
+            position="absolute"
+            borderRadius="full"
+          >
+            <ChainIcon maxHeight={size} maxWidth={size} width="100%" />
+          </Box>
+        )}
       </Box>
     );
 
@@ -186,6 +219,17 @@ const TokenIcon: FC<TokenIconProps> = ({
             />
           </Box>
         </Box>
+        {ChainIcon && (
+          <Box
+            right="-0.5rem"
+            bottom="-0.3rem"
+            overflow="hidden"
+            position="absolute"
+            borderRadius="full"
+          >
+            <ChainIcon maxHeight={size} maxWidth={size} width="100%" />
+          </Box>
+        )}
       </Box>
     );
 
@@ -233,6 +277,17 @@ const TokenIcon: FC<TokenIconProps> = ({
             )}
           </Box>
         </Box>
+        {ChainIcon && (
+          <Box
+            right="-0.5rem"
+            bottom="-0.3rem"
+            overflow="hidden"
+            position="absolute"
+            borderRadius="full"
+          >
+            <ChainIcon maxHeight={size} maxWidth={size} width="100%" />
+          </Box>
+        )}
       </Box>
     );
 
@@ -262,6 +317,17 @@ const TokenIcon: FC<TokenIconProps> = ({
           maxHeight={size ?? '1.5rem'}
         />
       </Box>
+      {ChainIcon && (
+        <Box
+          right="-0.5rem"
+          bottom="-0.3rem"
+          overflow="hidden"
+          position="absolute"
+          borderRadius="full"
+        >
+          <ChainIcon maxHeight={size} maxWidth={size} width="100%" />
+        </Box>
+      )}
     </Box>
   );
 };

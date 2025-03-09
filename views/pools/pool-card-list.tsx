@@ -61,8 +61,6 @@ const Pools: FC = () => {
         : {}
   );
 
-  console.log('Pools _> ', data);
-
   useEffect(() => {
     if (isFindingPool || page != 1) {
       setPools([[]]);
@@ -124,7 +122,11 @@ const Position: FC = () => {
             },
           ],
         }
-      : { poolAddress: { $in: coins?.map(({ type }) => type) } }
+      : {
+          poolAddress: {
+            $in: coins?.map(({ type }) => type),
+          },
+        }
   );
 
   useEffect(() => {

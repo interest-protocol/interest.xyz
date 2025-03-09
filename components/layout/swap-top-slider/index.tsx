@@ -2,7 +2,7 @@ import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { AsteriskSVG, RateDownSVG, RateUpSVG } from '@/components/svg';
+import { RateDownSVG, RateUpSVG } from '@/components/svg';
 import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
@@ -16,6 +16,9 @@ const label = 'to';
 const SwapTopSlider: FC = () => {
   const { setValue, getValues } = useFormContext();
   const { exposedCoins } = useExposedCoins();
+
+  const handleTokenSelect = (token: MetadataSources) =>
+    onSelect(parseToMetadata(token));
 
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
@@ -44,9 +47,7 @@ const SwapTopSlider: FC = () => {
         `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
         {
           method: 'GET',
-          headers: {
-            network: 'MOVEMENT',
-          },
+          headers: { network: 'MOVEMENT' },
         }
       )
         .then((response) => response.json())
@@ -55,7 +56,12 @@ const SwapTopSlider: FC = () => {
   };
 
   return (
-    <Box px="m" display={['flex', 'flex', 'flex', 'none', 'none']}>
+    <Box
+      px="m"
+      display={
+        exposedCoins?.length ? ['flex', 'flex', 'flex', 'none', 'none'] : 'none'
+      }
+    >
       <Box
         py="s"
         gap="l"
@@ -68,16 +74,14 @@ const SwapTopSlider: FC = () => {
         scrollSnapType="x mandatory"
         WebkitBackdropFilter="blur(40px)"
       >
-        {exposedCoins.map((token, index) => (
+        {exposedCoins?.map((token, index) => (
           <Box gap="s" key={index} display="flex">
             <Box>
               <BottomMenuItem
                 usdPrice={token.usd}
                 symbol={token.symbol}
                 iconUri={token.iconUri}
-                onClick={() =>
-                  onSelect(parseToMetadata(token as MetadataSources))
-                }
+                onClick={() => handleTokenSelect(token)}
               />
             </Box>
             <Box
@@ -86,48 +90,31 @@ const SwapTopSlider: FC = () => {
               alignItems="center"
               justifyContent="center"
             >
-              {token.usdPrice24Change !== '-' && (
-                <>
-                  <Box>
-                    {token.usdPrice24Change < 1 ? (
-                      <RateDownSVG
-                        width="1rem"
-                        height="1rem"
-                        maxHeight="100%"
-                        maxWidth="100%"
-                      />
-                    ) : (
-                      <RateUpSVG
-                        width="1rem"
-                        height="1rem"
-                        maxHeight="100%"
-                        maxWidth="100%"
-                      />
-                    )}
-                  </Box>
-                  <Typography
-                    size="large"
-                    opacity={0.7}
-                    variant="label"
-                    color="onSurface"
-                    fontSize="0.625rem"
-                    lineHeight="1rem"
-                  >
-                    {token.usdPrice24Change}
-                  </Typography>
-                </>
+              {token.usdPrice24Change < 1 ? (
+                <RateDownSVG
+                  width="1rem"
+                  height="1rem"
+                  maxHeight="1rem"
+                  maxWidth="1rem"
+                />
+              ) : (
+                <RateUpSVG
+                  width="1rem"
+                  height="1rem"
+                  maxHeight="1rem"
+                  maxWidth="1rem"
+                />
               )}
-            </Box>
-            {index !== exposedCoins.length - 1 && (
-              <Box
-                alignItems="center"
-                display="inline-flex"
-                flexDirection="column"
-                justifyContent="center"
+              <Typography
+                size="large"
+                variant="label"
+                color={token.usdPrice24Change < 1 ? '#E53E3E' : '#16A24A'}
+                fontSize="0.625rem"
+                lineHeight="1rem"
               >
-                <AsteriskSVG maxHeight="1rem" maxWidth="1rem" width="1rem" />
-              </Box>
-            )}
+                {(token.usdPrice24Change * 100).toFixed(2)}%
+              </Typography>
+            </Box>
           </Box>
         ))}
       </Box>

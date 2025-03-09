@@ -22,8 +22,13 @@ const CreateTokenFormButton = () => {
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
   const { account, signAndSubmitTransaction } = useAptosWallet();
-  const { control, setValue, getValues, reset } =
-    useFormContext<ICreateTokenForm>();
+  const {
+    control,
+    setValue,
+    getValues,
+    reset,
+    formState: { errors },
+  } = useFormContext<ICreateTokenForm>();
 
   const values = useWatch({ control });
 
@@ -40,6 +45,7 @@ const CreateTokenFormButton = () => {
     !loading &&
     values.name &&
     values.symbol &&
+    Object.keys(errors).length == 0 &&
     String(values.decimals) &&
     values.supply &&
     (values.pool?.active
@@ -68,35 +74,39 @@ const CreateTokenFormButton = () => {
         'You must fill the required fields'
       );
 
+      const createFaArgs = {
+        name,
+        symbol,
+        iconURI,
+        decimals,
+        projectURI,
+        recipient: account!.address,
+        totalSupply: BigInt(
+          FixedPointMath.toBigNumber(supply!, decimals).toString()
+        ),
+      };
+
+      const deployMemeWithFaArgs = {
+        name,
+        symbol,
+        iconURI,
+        decimals,
+        projectURI,
+        recipient: account!.address,
+        totalSupply: BigInt(
+          FixedPointMath.toBigNumber(supply!, decimals).toString()
+        ),
+        liquidityMemeAmount: BigInt(
+          FixedPointMath.toBigNumber(pool!.tokenValue!, decimals).toString()
+        ),
+        liquidityAptosAmount: BigInt(
+          FixedPointMath.toBigNumber(pool!.quoteValue!).toString()
+        ),
+      };
+
       const payload = values.pool?.active
-        ? dex.deployMemeWithFa({
-            name,
-            symbol,
-            iconURI,
-            decimals,
-            projectURI,
-            recipient: account!.address,
-            totalSupply: BigInt(
-              FixedPointMath.toBigNumber(supply!, decimals).toString()
-            ),
-            liquidityMemeAmount: BigInt(
-              FixedPointMath.toBigNumber(pool!.tokenValue!, decimals).toString()
-            ),
-            liquidityAptosAmount: BigInt(
-              FixedPointMath.toBigNumber(pool!.quoteValue!).toString()
-            ),
-          })
-        : dex.createFa({
-            name,
-            symbol,
-            iconURI,
-            decimals,
-            projectURI,
-            recipient: account!.address,
-            totalSupply: BigInt(
-              FixedPointMath.toBigNumber(supply!, decimals).toString()
-            ),
-          });
+        ? dex.deployMemeWithFa(deployMemeWithFaArgs)
+        : dex.createFa(createFaArgs);
 
       const startTime = Date.now();
 
@@ -109,11 +119,6 @@ const CreateTokenFormButton = () => {
       const endTime = Date.now() - startTime;
 
       setValue('executionTime', String(endTime));
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
 
       if (pool?.active) {
         client

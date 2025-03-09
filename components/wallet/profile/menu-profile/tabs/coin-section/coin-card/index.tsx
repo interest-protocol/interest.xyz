@@ -16,11 +16,10 @@ import { RateDownSVG, RateUpSVG, WrapSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
 import { COIN_TYPE_TO_FA } from '@/constants/coins';
 import { FixedPointMath } from '@/lib';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, formatMoney, ZERO_BIG_NUMBER } from '@/utils';
 
 import { CoinCardProps } from '../../../user-info.types';
 import CardWrapper from './card-wrapper';
@@ -29,7 +28,6 @@ import { logWrapCoin } from './coin-card.utils';
 type CoinType = keyof typeof COIN_TYPE_TO_FA;
 
 const CoinCard: FC<CoinCardProps> = ({ token }) => {
-  const client = useAptosClient();
   const network = useNetwork<Network>();
   const { coinsMap, mutate } = useCoins();
   const { account, signAndSubmitTransaction } = useAptosWallet();
@@ -63,11 +61,6 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       invariant(tx.status === 'Approved', 'Rejected by User');
 
       const txResult = tx.args;
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
 
       logWrapCoin(account.address, symbol, network, txResult.hash);
 
@@ -116,8 +109,8 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
           justifyContent="flex-start"
         >
           <Typography size="large" variant="label" lineHeight="1.5rem">
-            {balance}
-            <Box fontSize="Satoshi" as="span">
+            {formatMoney(balance)}
+            <Box fontSize="Satoshi" as="span" ml="2xs">
               {symbol}
             </Box>
           </Typography>

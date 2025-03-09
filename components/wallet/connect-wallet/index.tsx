@@ -22,9 +22,9 @@ const ConnectWalletButton: FC = () => {
       bg="#1F1F1F"
       borderRadius="m"
       variant="filled"
-      border="1px solid #FFDA34"
+      border="1px solid #B4C5FF"
       nHover={{
-        borderColor: '#ffda34ac',
+        borderColor: '#B4C5FF',
         bg: '#1f1f1fbe',
         color: '#fff',
       }}
@@ -40,7 +40,6 @@ const ConnectWalletButton: FC = () => {
         variant="label"
         display={['none', 'none', 'inline']}
       >
-        {' '}
         Wallet
       </Typography>
     </Button>

@@ -15,7 +15,7 @@ const SwapPage: NextPage = () => {
       from: {
         ...TOKENS.map((metadata) =>
           parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
-        ).filter((token) => token.symbol == 'MOVE')[0],
+        )[0],
         value: '',
         usdPrice: null,
         valueBN: ZERO_BIG_NUMBER,
@@ -23,7 +23,7 @@ const SwapPage: NextPage = () => {
       to: {
         ...TOKENS.map((metadata) =>
           parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
-        ).filter((token) => token.symbol == 'FAKE')[0],
+        )[1],
         value: '',
         usdPrice: null,
         valueBN: ZERO_BIG_NUMBER,

@@ -21,7 +21,7 @@ export interface CreatePoolForm {
   isStable: boolean;
   step: CreatePoolStep;
   explorerLink: string;
-  type: 'SR-AMM';
+  type: 'V2(SR-AMM)';
   tokens: ReadonlyArray<Token>;
 }
 
