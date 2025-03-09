@@ -22,6 +22,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
       position="relative"
       flexDirection="column"
       gridTemplateRows="auto 1fr"
+      pb={['8rem', '8rem', '8rem', 'unset']}
       display={['flex', 'flex', 'flex', 'grid']}
     >
       <Header />

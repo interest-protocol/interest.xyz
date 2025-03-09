@@ -6,6 +6,7 @@ import { TokenIcon } from '@/components';
 import { ChevronDoubleLeftSVG } from '@/components/svg';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
+import { formatMoney } from '@/utils';
 
 import { SuccessModalTokenCardProps } from './success-modal.types';
 
@@ -42,7 +43,7 @@ const SuccessModalTokenCard: FC<SuccessModalTokenCardProps> = ({
           display="flex"
           ml="s"
         >
-          {`${!withoutAmount ? from?.value : ''} ${from.symbol}`}
+          {`${!withoutAmount ? formatMoney(+from?.value) : ''} ${from.symbol}`}
         </Typography>
       </Box>
       <Box display="flex" alignItems="center" color="onSurface">
@@ -69,7 +70,7 @@ const SuccessModalTokenCard: FC<SuccessModalTokenCardProps> = ({
           display="flex"
           ml="s"
         >
-          {`${!withoutAmount ? to?.value : ''} ${to.symbol}`}
+          {`${!withoutAmount ? formatMoney(+to?.value) : ''} ${to.symbol}`}
         </Typography>
       </Box>
     </Box>

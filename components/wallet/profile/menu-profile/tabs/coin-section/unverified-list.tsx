@@ -19,14 +19,33 @@ const UnverifiedCoinList: FC = () => {
     `${LOCAL_STORAGE_VERSION}-movement-dex-hide-lp-token`
   );
 
-  const tokenTypes = TOKENS.map(
-    (token) =>
-      parseToMetadata(token as unknown as CoinMetadata | FAMetadata).type
+  const tokenTypes = TOKENS.flatMap((metadata) =>
+    metadata.address && metadata.type
+      ? [
+          parseToMetadata({
+            name: metadata.name,
+            symbol: metadata.symbol,
+            iconUri: metadata.iconUri,
+            address: metadata.address,
+            decimals: metadata.decimals,
+            projectUri: metadata.projectUri ?? '',
+          } as FAMetadata).type,
+          parseToMetadata({
+            name: metadata.name,
+            type: metadata.type,
+            symbol: metadata.symbol,
+            iconUri: metadata.iconUri,
+            decimals: metadata.decimals,
+          } as CoinMetadata).type,
+        ]
+      : parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata).type
   );
 
   const unverifiedCoins = coins.filter(({ type, symbol }) => {
     const isNotInTokens = !tokenTypes.includes(type);
-    const isNotLPToken = isHideLPToken ? !symbol.includes('sr-LpFa') : true;
+    const isNotLPToken = isHideLPToken
+      ? !symbol.toLowerCase().includes('v2-lp')
+      : true;
     return isNotInTokens && isNotLPToken;
   });
 

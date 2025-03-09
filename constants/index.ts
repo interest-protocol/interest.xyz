@@ -22,7 +22,7 @@ export const INDEXER_URL = {
 
 export const EXPLORER_URL = {
   [Network.MovementMainnet]: (path: string) =>
-    `https://explorer.movementnetwork.xyz/${path}`,
+    `https://explorer.movementnetwork.xyz/${path}?network=mainnet`,
 } as Record<Network, (path: string) => string>;
 
 export const TOAST_DURATION = 10000;

@@ -95,6 +95,7 @@ export interface PriceResponse {
 }
 
 export interface Token {
+  type?: string;
   address: AccountAddress;
   decimals: number;
   iconUri: string;
