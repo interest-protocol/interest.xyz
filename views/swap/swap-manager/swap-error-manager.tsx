@@ -18,6 +18,15 @@ export const SwapErrorManager: FC<SwapMessagesProps> = ({ hasNoMarket }) => {
   const swapping = useWatch({ control, name: 'swapping' });
   const error = useWatch({ control, name: 'error' });
 
+  const coin = coinsMap[from?.type];
+
+  const balance = FixedPointMath.toNumber(
+    coin?.balance ?? ZERO_BIG_NUMBER,
+    coin?.decimals ?? coin?.decimals
+  );
+
+  const valueIn = useWatch({ control, name: 'from.value' });
+
   const isGreaterThanBalance = useMemo(() => {
     if (!from || !coinsMap[from.type]) return false;
 
@@ -48,6 +57,8 @@ export const SwapErrorManager: FC<SwapMessagesProps> = ({ hasNoMarket }) => {
       newError = String(SwapMessagesEnum.noMarket);
     } else if (from.type === to.type) {
       newError = String(SwapMessagesEnum.sameCoin);
+    } else if (Number(valueIn) > Number(balance)) {
+      newError = String(SwapMessagesEnum.insufficientBalance);
     } else if (hasAtLeastOneMove) {
       newError = String(SwapMessagesEnum.leastOneMove);
     } else if (isGreaterThanBalance) {
