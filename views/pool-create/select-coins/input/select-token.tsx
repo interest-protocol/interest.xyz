@@ -119,6 +119,7 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
         <Typography
           p="xs"
           width="100%"
+          cursor="pointer"
           variant="label"
           maxWidth="12ch"
           overflow="hidden"
