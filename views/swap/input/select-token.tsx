@@ -27,6 +27,11 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     name: label,
   });
 
+  const type = useWatch({
+    control,
+    name: `${label}.type`,
+  });
+
   const swapping = useWatch({
     control,
     name: 'swapping',
@@ -41,6 +46,12 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     control,
     name: `${label === 'to' ? 'from' : 'to'}`,
   });
+
+  const formatedSymbol = currentSymbol
+    ? currentSymbol
+    : !currentSymbol && type
+      ? type
+      : 'Select token';
 
   const onSelect = async (metadata: AssetMetadata) => {
     if (metadata.type == opposite.type) return;
@@ -130,14 +141,16 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     >
       <Typography
         size="large"
+        maxWidth="12ch"
         variant="label"
         overflow="hidden"
         whiteSpace="nowrap"
         fontFamily="Satoshi"
+        textOverflow="ellipsis"
         width={['0px', 'auto']}
         display={[currentSymbol ? 'none' : 'block', 'block']}
       >
-        {currentSymbol ?? 'Select Token'}
+        {formatedSymbol}
       </Typography>
       <ChevronDownSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
     </Button>
