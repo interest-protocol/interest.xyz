@@ -15,7 +15,7 @@ const SelectToken: FC<InputProps> = ({ label, isMobile }) => {
 
   const tokenSymbol = useWatch({ control, name: `symbol` });
   const tokenImageUrl = useWatch({ control, name: `imageUrl` });
-
+  console.log('::::');
   if (label === 'token')
     return (
       <Box p="xs" position="relative">
