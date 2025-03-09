@@ -5,7 +5,6 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ChevronDownSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
-import { PRICE_TYPE } from '@/constants/prices';
 import { useModal } from '@/hooks/use-modal';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import {
@@ -63,19 +62,18 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       valueBN: ZERO_BIG_NUMBER,
     });
 
-    if (PRICE_TYPE[metadata.symbol])
-      fetch(
-        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
-        {
-          method: 'GET',
-          headers: {
-            network: 'MOVEMENT',
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => setValue(`${label}.usdPrice`, data[0].price))
-        .catch(() => null);
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+      {
+        method: 'GET',
+        headers: {
+          network: 'MOVEMENT',
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setValue(`${label}.usdPrice`, data[0].price))
+      .catch(() => null);
 
     if (label === 'from') {
       setValue('to.value', '');

@@ -65,10 +65,10 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         gap="m"
         mx="auto"
         display="flex"
-        flexWrap="wrap"
         maxWidth="65rem"
         borderRadius="xs"
         alignItems="center"
+        justifyContent="ce"
         bg="container"
         mt={['5xl', '5xl', '5xl', 'xl']}
       >
@@ -84,48 +84,64 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         >
           <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
         </Button>
-        <Typography
-          size="large"
-          color="onSurface"
-          variant="headline"
-          textAlign="center"
-          ml={centerTile ? 'auto' : ''}
-          fontSize={['xl', 'xl', '3xl', '5xl']}
-        >
-          {loading ? (
-            <Box display="flex" gap="s">
-              <Skeleton width="5rem" height="2rem" />
-              <Skeleton width="5rem" height="2rem" />
-            </Box>
-          ) : (
-            <Box as="span" fontFamily="Satoshi">
-              {name}
-            </Box>
-          )}
-        </Typography>
-
         <Box
+          display="flex"
           gap="s"
-          ml="auto"
-          alignItems="center"
-          display={['none', 'none', 'flex', 'flex']}
+          flexWrap="wrap"
+          justifyContent="space-between"
+          minWidth={['auto', 'auto', '90%', '93.5%']}
         >
-          {!loading ? (
-            tokens.map(({ symbol }) => (
-              <TokenIcon withBg key={v4()} symbol={symbol} network={network} />
-            ))
-          ) : (
-            <Box display="flex" gap="s">
-              <Skeleton
-                width="calc(1.5rem * 1.66)"
-                height="calc(1.5rem * 1.66)"
-              />
-              <Skeleton
-                width="calc(1.5rem * 1.66)"
-                height="calc(1.5rem * 1.66)"
-              />
+          <Box display="flex" gap="s" flexWrap="wrap">
+            <Typography
+              size="large"
+              color="onSurface"
+              variant="headline"
+              textAlign="center"
+              ml={centerTile ? 'auto' : ''}
+              fontSize={['xl', 'xl', '3xl', '5xl']}
+            >
+              {loading ? (
+                <Box display="flex" gap="s">
+                  <Skeleton width="5rem" height="2rem" />
+                  <Skeleton width="5rem" height="2rem" />
+                </Box>
+              ) : (
+                <Box as="span" fontFamily="Satoshi">
+                  {name}
+                </Box>
+              )}
+            </Typography>
+          </Box>
+          <Box display="flex" gap="s">
+            <Box
+              gap="s"
+              ml="auto"
+              alignItems="center"
+              display={['none', 'none', 'flex', 'flex']}
+            >
+              {!loading ? (
+                tokens.map(({ symbol }) => (
+                  <TokenIcon
+                    withBg
+                    key={v4()}
+                    symbol={symbol}
+                    network={network}
+                  />
+                ))
+              ) : (
+                <Box display="flex" gap="s">
+                  <Skeleton
+                    width="calc(1.5rem * 1.66)"
+                    height="calc(1.5rem * 1.66)"
+                  />
+                  <Skeleton
+                    width="calc(1.5rem * 1.66)"
+                    height="calc(1.5rem * 1.66)"
+                  />
+                </Box>
+              )}
             </Box>
-          )}
+          </Box>
         </Box>
       </Box>
       {isEarnable && (

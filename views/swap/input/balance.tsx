@@ -91,7 +91,7 @@ const Balance: FC<InputProps> = ({ label }) => {
           variant="body"
           whiteSpace="nowrap"
         >
-          {symbol
+          {type
             ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
             : '0'}
         </Typography>
@@ -131,7 +131,7 @@ const Balance: FC<InputProps> = ({ label }) => {
         />
       </Box>
       <Typography size="small" variant="body" fontSize="s" whiteSpace="nowrap">
-        {symbol
+        {type
           ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
           : '0'}
       </Typography>

@@ -14,6 +14,7 @@ const Avatar: FC<AvatarProps> = ({
   isLarge,
   accountAddress,
   withNameOrAddress,
+  nameOrAddressPosition = 'right',
 }) => {
   const network = useNetwork<Network>();
   const { account: currentAccount } = useAptosWallet();
@@ -23,6 +24,17 @@ const Avatar: FC<AvatarProps> = ({
 
   return (
     <>
+      {withNameOrAddress && nameOrAddressPosition === 'left' && (
+        <Typography
+          variant="label"
+          size="large"
+          ml="0.5rem"
+          width="max-content"
+          color="onSurface"
+        >
+          {address.slice(0, 6)}...{address.slice(-4)}
+        </Typography>
+      )}
       <Box
         bg="primary"
         width={SIZE}
@@ -35,7 +47,7 @@ const Avatar: FC<AvatarProps> = ({
       >
         <UserSVG width="80%" height="80%" maxWidth={SIZE} maxHeight={SIZE} />
       </Box>
-      {withNameOrAddress && (
+      {withNameOrAddress && nameOrAddressPosition === 'right' && (
         <Link
           target="_blank"
           href={EXPLORER_URL[network](`account/${address}`)}

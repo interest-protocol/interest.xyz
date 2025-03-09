@@ -112,7 +112,12 @@ export const TokenField: FC<PropsWithRef<TokenFieldProps>> = forwardRef(
             </Typography>
           </Box>
         )}
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box
+          display="flex"
+          alignItems="center"
+          my={status == 'error' ? 'unset' : 'xs'}
+          justifyContent="space-between"
+        >
           {Balance}
           {ButtonMax}
         </Box>

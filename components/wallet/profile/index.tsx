@@ -1,4 +1,5 @@
 import { Box } from '@interest-protocol/ui-kit';
+import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 
@@ -11,6 +12,7 @@ const BOX_ID = 'wallet-box';
 
 const Profile: FC = () => {
   const { query } = useRouter();
+  const { account: currentAccount } = useAptosWallet();
   const [isOpenProfile, setIsOpenProfile] = useState(Boolean(query.profile));
 
   const [menuIsDropdown] = useState(isOpenProfile);
@@ -79,7 +81,12 @@ const Profile: FC = () => {
           'flex',
         ]}
       >
-        <Avatar isLarge />
+        <Avatar
+          isLarge
+          withNameOrAddress
+          nameOrAddressPosition="left"
+          accountAddress={currentAccount?.address}
+        />
       </Box>
       <MenuProfile
         isOpen={isOpenProfile}

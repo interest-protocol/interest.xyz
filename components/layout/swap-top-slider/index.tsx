@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { RateDownSVG, RateUpSVG } from '@/components/svg';
-import { PRICE_TYPE } from '@/constants/prices';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
@@ -42,17 +41,16 @@ const SwapTopSlider: FC = () => {
       valueBN: ZERO_BIG_NUMBER,
     });
 
-    if (PRICE_TYPE[metadata.symbol])
-      fetch(
-        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
-        {
-          method: 'GET',
-          headers: { network: 'MOVEMENT' },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => setValue(`${label}.usdPrice`, data[0].price))
-        .catch(() => null);
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+      {
+        method: 'GET',
+        headers: { network: 'MOVEMENT' },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setValue(`${label}.usdPrice`, data[0].price))
+      .catch(() => null);
   };
 
   return (

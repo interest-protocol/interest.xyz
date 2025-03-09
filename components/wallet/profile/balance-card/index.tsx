@@ -3,44 +3,50 @@ import BigNumber from 'bignumber.js';
 import { FC, useEffect, useState } from 'react';
 
 import { MOVE } from '@/constants/coins';
-import { PRICE_TYPE } from '@/constants/prices';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
-import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
 const BalanceCard: FC = () => {
   const { coinsMap } = useCoins();
   const [USDPrice, setUSDPrice] = useState(0);
-  const defaultCoin = parseToMetadata(
-    MOVE as unknown as CoinMetadata | FAMetadata
-  );
+  const defaultCoins = [
+    {
+      name: MOVE.name,
+      symbol: MOVE.symbol,
+      iconUri: MOVE.iconUri,
+      address: MOVE.address,
+      decimals: MOVE.decimals,
+      projectUri: MOVE.projectUri ?? '',
+    },
+    {
+      type: MOVE.type,
+      name: MOVE.name,
+      symbol: MOVE.symbol,
+      iconUri: MOVE.iconUri,
+      decimals: MOVE.decimals,
+    },
+  ].map(parseToMetadata);
 
-  const type = defaultCoin.type;
-  const decimals = defaultCoin.decimals;
-  const symbol = defaultCoin.symbol;
-
-  const balance = FixedPointMath.toNumber(
-    coinsMap[type]?.balance.isZero()
-      ? ZERO_BIG_NUMBER
-      : coinsMap[type]?.balance,
-    decimals
+  const balance = defaultCoins.reduce(
+    (acc, { type }) =>
+      coinsMap[type]?.balance.isZero()
+        ? acc
+        : acc.plus(coinsMap[type]?.balance ?? ZERO_BIG_NUMBER),
+    ZERO_BIG_NUMBER
   );
 
   useEffect(() => {
-    if (PRICE_TYPE[symbol])
-      fetch(
-        `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${type}`,
-        {
-          method: 'GET',
-          headers: {
-            network: 'MOVEMENT',
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => setUSDPrice(data[0].price))
-        .catch(() => null);
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=0xa`,
+      {
+        method: 'GET',
+        headers: { network: 'MOVEMENT' },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setUSDPrice(data[0].price))
+      .catch(() => null);
   }, []);
 
   return (
@@ -54,9 +60,9 @@ const BalanceCard: FC = () => {
       justifyContent="flex-start"
     >
       <Typography size="small" variant="display">
-        {balance}{' '}
+        {FixedPointMath.toNumber(balance, MOVE.decimals)}{' '}
         <Box fontSize="Satoshi" as="span">
-          {symbol}
+          {MOVE.symbol}
         </Box>
       </Typography>
       <Typography size="small" opacity="0.7" variant="label" color="onSurface">

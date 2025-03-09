@@ -5,7 +5,6 @@ import { values } from 'ramda';
 import { type FC, useEffect, useId } from 'react';
 import useSWR from 'swr';
 
-import { PRICE_TYPE } from '@/constants/prices';
 import { PriceResponse } from '@/interface';
 import { isAptos } from '@/utils';
 
@@ -109,12 +108,8 @@ const CoinsManager: FC = () => {
           {} as Record<string, Asset>
         );
 
-        const coinsPriceType = values(coins)
-          .filter(({ symbol }) => PRICE_TYPE[symbol])
-          .map(({ type, symbol }) => [type, PRICE_TYPE[symbol]]);
-
         const prices: ReadonlyArray<PriceResponse> = await Promise.all(
-          coinsPriceType.map(([type]) =>
+          values(coins).map(({ type }) =>
             fetch(
               `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${type}`,
               {
