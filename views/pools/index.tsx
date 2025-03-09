@@ -13,23 +13,26 @@ const Pools: FC = () => {
 
   return (
     <Layout>
-      <Box py="xl">
-        <Header setTab={setTab} currentTab={tab} />
-      </Box>
-      <Box
-        px="s"
-        gap="2xs"
-        display="flex"
-        bg="container"
-        maxWidth="100%"
-        maxHeight="100%"
-        borderRadius="xs"
-        minHeight="30rem"
-        flexDirection="column"
-        py={['s', 's', 's', '2xl']}
-      >
-        <PoolFilter />
-        <PoolCardList tab={tab} />
+      <Box display="flex" flexDirection="column" flex="1">
+        <Box py="xl">
+          <Header setTab={setTab} currentTab={tab} />
+        </Box>
+        <Box
+          px="s"
+          flex="1"
+          gap="2xs"
+          display="flex"
+          bg="container"
+          maxWidth="100%"
+          maxHeight="100%"
+          borderRadius="xs"
+          minHeight="30rem"
+          flexDirection="column"
+          py={['s', 's', 's', '2xl']}
+        >
+          <PoolFilter />
+          <PoolCardList tab={tab} />
+        </Box>
       </Box>
     </Layout>
   );

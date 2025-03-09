@@ -60,9 +60,16 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
               as="main"
               display="flex"
               alignItems="center"
+              flexDirection="column"
               justifyContent="center"
             >
-              <Box flex="1" pb="2rem">
+              <Box
+                flex="1"
+                pb="2rem"
+                width="100%"
+                display="flex"
+                flexDirection="column"
+              >
                 {title && (
                   <Typography
                     my="3rem"
