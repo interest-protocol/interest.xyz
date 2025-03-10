@@ -125,7 +125,7 @@ const CreateTokenFormButton = () => {
           .then(() => {
             waitingTx = false;
           })
-          .catch();
+          .catch(console.warn);
       } while (waitingTx);
 
       setValue('executionTime', String(endTime));
