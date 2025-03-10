@@ -1,8 +1,8 @@
-import { FA_ADDRESSES, Network } from '@interest-protocol/interest-aptos-v2';
 import { Box } from '@interest-protocol/ui-kit';
 import { ChangeEvent, FC, useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { MOVE } from '@/constants/coins';
 import useEventListener from '@/hooks/use-event-listener';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
@@ -29,7 +29,7 @@ const Input: FC<InputProps> = ({ label }) => {
     formState: { errors },
   } = useFormContext<ICreateTokenForm>();
 
-  const type = FA_ADDRESSES[Network.MovementMainnet].MOVE.toString();
+  const type = MOVE.address.toString();
   const balance =
     label == 'quote'
       ? FixedPointMath.toNumber(coinsMap[type]?.balance ?? ZERO_BIG_NUMBER)

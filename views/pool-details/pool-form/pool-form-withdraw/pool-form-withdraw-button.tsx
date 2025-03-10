@@ -43,10 +43,19 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({ form }) => {
 
       const txResult = tx.args;
 
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
+      let waitingTx = true;
+
+      do {
+        await client
+          .waitForTransaction({
+            transactionHash: txResult.hash,
+            options: { checkSuccess: true },
+          })
+          .then(() => {
+            waitingTx = false;
+          })
+          .catch();
+      } while (waitingTx);
 
       setValue(
         'explorerLink',
