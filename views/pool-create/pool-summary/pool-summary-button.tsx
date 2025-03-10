@@ -103,10 +103,17 @@ const PoolSummaryButton: FC = () => {
 
       const txResult = tx.args;
 
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
+      await client
+        .waitForTransaction({
+          transactionHash: txResult.hash,
+          options: { checkSuccess: true },
+        })
+        .catch(() =>
+          client.waitForTransaction({
+            transactionHash: txResult.hash,
+            options: { checkSuccess: true },
+          })
+        );
 
       logCreatePool(
         account.address,
@@ -124,8 +131,6 @@ const PoolSummaryButton: FC = () => {
               event.type.endsWith('::events::AddLiquidity')
             )!.data.pool
         );
-
-      console.log({ pool });
 
       const body = {
         network,

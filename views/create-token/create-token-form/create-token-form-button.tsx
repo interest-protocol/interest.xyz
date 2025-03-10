@@ -114,10 +114,17 @@ const CreateTokenFormButton = () => {
 
       const endTime = Date.now() - startTime;
 
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
+      await client
+        .waitForTransaction({
+          transactionHash: txResult.hash,
+          options: { checkSuccess: true },
+        })
+        .catch(() =>
+          client.waitForTransaction({
+            transactionHash: txResult.hash,
+            options: { checkSuccess: true },
+          })
+        );
 
       setValue('executionTime', String(endTime));
 
