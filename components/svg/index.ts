@@ -10,6 +10,7 @@ export { default as AsteriskSVG } from './asterisk';
 export { default as AUDSVG } from './aud';
 export { default as AVAChainSVG } from './ava-chain';
 export { default as BadgeSVG } from './badge';
+export { default as BridgeSVG } from './bridge';
 export { default as BRLSVG } from './brl';
 export { default as BSCChainSVG } from './bsc-chain';
 export { default as BTCSVG } from './btc';
