@@ -13,7 +13,7 @@ import SwapManager from './swap-manager';
 
 const Swap: FC = () => (
   <Layout background={<SwapBackground />}>
-    <Box height="100%">
+    <Box height="100%" display="flex">
       <Box
         gap="l"
         mx="auto"

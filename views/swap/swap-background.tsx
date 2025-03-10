@@ -8,7 +8,7 @@ import { TokenIcon } from '@/components';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 const label = 'to';
@@ -55,9 +55,7 @@ const SwapBackground = memo(() => {
       }
     )
       .then((response) => response.json())
-      .then((data) =>
-        setValue(`${label}.usdPrice`, formatDollars(data[0].price))
-      )
+      .then((data) => setValue(`${label}.usdPrice`, data[0].price))
       .catch(() => null);
   };
 
