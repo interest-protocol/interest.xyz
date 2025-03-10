@@ -8,6 +8,7 @@ import invariant from 'tiny-invariant';
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
 import { FixedPointMath } from '@/lib';
+import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { ZERO_BIG_NUMBER } from '@/utils';
@@ -17,8 +18,9 @@ import SuccessModalTokenCard from '../components/success-modal/success-modal-tok
 import { logSwap } from './swap.utils';
 
 const SwapButton = () => {
-  const { coinsMap, mutate } = useCoins();
+  const client = useAptosClient();
   const network = useNetwork<Network>();
+  const { coinsMap, mutate } = useCoins();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
   const { account, signAndSubmitTransaction } = useAptosWallet();
@@ -68,6 +70,11 @@ const SwapButton = () => {
       setValue('executionTime', String(endTime));
 
       logSwap(account!.address, from, to, network, txResult.hash);
+
+      await client.waitForTransaction({
+        transactionHash: txResult.hash,
+        options: { checkSuccess: true },
+      });
 
       setValue(
         'explorerLink',

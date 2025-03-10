@@ -1,6 +1,6 @@
 import {
   InputGenerateTransactionPayloadData,
-  MoveValue,
+  UserTransactionResponse,
 } from '@aptos-labs/ts-sdk';
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button } from '@interest-protocol/ui-kit';
@@ -14,6 +14,7 @@ import { Routes, RoutesEnum } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useInterestDex } from '@/hooks/use-interest-dex';
 import { FixedPointMath } from '@/lib';
+import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
@@ -24,6 +25,7 @@ const PoolSummaryButton: FC = () => {
   const dex = useInterestDex();
   const { push } = useRouter();
   const network = useNetwork();
+  const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const { account, signAndSubmitTransaction } = useAptosWallet();
   const { setValue, getValues, resetField } = useFormContext<CreatePoolForm>();
@@ -52,17 +54,8 @@ const PoolSummaryButton: FC = () => {
       );
 
       let payload: InputGenerateTransactionPayloadData;
-      let pool: {
-        exists: MoveValue;
-        poolAddress: MoveValue;
-      };
 
       if (coins.length > 1) {
-        pool = await dex.getPoolAddress({
-          faA: coins[0].type.toString(),
-          faB: coins[1].type.toString(),
-        });
-
         payload = dex.addLiquidityCoins({
           coinA: coins[0].type,
           coinB: coins[1].type,
@@ -79,11 +72,6 @@ const PoolSummaryButton: FC = () => {
           ),
         });
       } else if (coins.length === 1) {
-        pool = await dex.getPoolAddress({
-          faA: coins[0].type.toString(),
-          faB: fas[0].type,
-        });
-
         payload = dex.addLiquidityOneCoin({
           coinA: coins[0].type,
           faB: fas[0].type,
@@ -100,11 +88,6 @@ const PoolSummaryButton: FC = () => {
           ),
         });
       } else {
-        pool = await dex.getPoolAddress({
-          faA: fas[0].type,
-          faB: fas[1].type,
-        });
-
         payload = dex.addLiquidity({
           faA: fas[0].type,
           faB: fas[1].type,
@@ -120,6 +103,11 @@ const PoolSummaryButton: FC = () => {
 
       const txResult = tx.args;
 
+      await client.waitForTransaction({
+        transactionHash: txResult.hash,
+        options: { checkSuccess: true },
+      });
+
       logCreatePool(
         account.address,
         tokens[0],
@@ -128,9 +116,20 @@ const PoolSummaryButton: FC = () => {
         txResult.hash
       );
 
+      const pool = await client
+        .getTransactionByHash({ transactionHash: txResult.hash })
+        .then(
+          (txn) =>
+            (txn as UserTransactionResponse).events.find((event) =>
+              event.type.endsWith('::events::AddLiquidity')
+            )!.data.pool
+        );
+
+      console.log({ pool });
+
       const body = {
         network,
-        poolId: pool.poolAddress?.toString(),
+        poolId: pool?.toString(),
       };
 
       fetch(
@@ -142,9 +141,7 @@ const PoolSummaryButton: FC = () => {
         }
       );
 
-      push(
-        `${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress?.toString()}`
-      );
+      push(`${Routes[RoutesEnum.PoolDetails]}?address=${pool?.toString()}`);
     } catch (e) {
       console.warn({ e });
 
@@ -158,7 +155,7 @@ const PoolSummaryButton: FC = () => {
   const createPool = () =>
     dialog.promise(onCreatePool(), {
       loading: () => ({
-        title: 'Create the pool...',
+        title: 'Creating the pool...',
         message: 'We are creating the pool, and you will know when it is done',
       }),
       success: () => ({

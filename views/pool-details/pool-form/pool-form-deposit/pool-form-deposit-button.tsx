@@ -8,12 +8,14 @@ import invariant from 'tiny-invariant';
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useInterestDex } from '@/hooks/use-interest-dex';
+import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 
 import { PoolFormButtonProps } from '../pool-form.types';
 import { logDepositPool } from '../pool-form.utils';
 
 const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
   const dex = useInterestDex();
+  const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
   const { account, signAndSubmitTransaction } = useAptosWallet();
@@ -45,6 +47,11 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
         Network.MovementMainnet,
         txResult.hash
       );
+
+      await client.waitForTransaction({
+        transactionHash: txResult.hash,
+        options: { checkSuccess: true },
+      });
 
       setValue(
         'explorerLink',

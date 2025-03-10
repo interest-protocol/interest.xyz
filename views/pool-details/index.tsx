@@ -39,30 +39,32 @@ const PoolDetails: FC = () => {
 
   return (
     <Layout>
-      <PoolTitleBar
-        loading={!pool || loading}
-        onBack={() => push(Routes[RoutesEnum.Pools])}
-      />
-      {!isEarnPoolView ? (
-        <Box
-          gap="xs"
-          mx="auto"
-          maxWidth="65rem"
-          overflow="hidden"
-          flexDirection="column"
-          gridTemplateColumns="3fr 2fr"
-          display={['flex', 'flex', 'flex', 'grid']}
-          alignItems={['unset', 'unset', 'unset', 'start']}
-        >
-          <PoolForm
-            poolOptionView={poolOptionView}
-            handleOptionTab={handleOptionTab}
-          />
-          <PoolInfo />
-        </Box>
-      ) : (
-        <Earn />
-      )}
+      <Box>
+        <PoolTitleBar
+          loading={!pool || loading}
+          onBack={() => push(Routes[RoutesEnum.Pools])}
+        />
+        {!isEarnPoolView ? (
+          <Box
+            gap="xs"
+            mx="auto"
+            maxWidth="65rem"
+            overflow="hidden"
+            flexDirection="column"
+            gridTemplateColumns="3fr 2fr"
+            display={['flex', 'flex', 'flex', 'grid']}
+            alignItems={['unset', 'unset', 'unset', 'start']}
+          >
+            <PoolForm
+              poolOptionView={poolOptionView}
+              handleOptionTab={handleOptionTab}
+            />
+            <PoolInfo />
+          </Box>
+        ) : (
+          <Earn />
+        )}
+      </Box>
     </Layout>
   );
 };

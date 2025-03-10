@@ -114,13 +114,16 @@ const CreateTokenFormButton = () => {
 
       const endTime = Date.now() - startTime;
 
+      await client.waitForTransaction({
+        transactionHash: txResult.hash,
+        options: { checkSuccess: true },
+      });
+
       setValue('executionTime', String(endTime));
 
-      if (pool?.active) {
+      if (pool?.active)
         client
-          .getTransactionByHash({
-            transactionHash: txResult.hash,
-          })
+          .getTransactionByHash({ transactionHash: txResult.hash })
           .then((txn) => {
             const poolId = (txn as UserTransactionResponse).events.find(
               (event) => event.type.endsWith('::events::AddLiquidity')
@@ -138,7 +141,6 @@ const CreateTokenFormButton = () => {
               }
             );
           });
-      }
 
       logCreateToken(
         account!.address,
