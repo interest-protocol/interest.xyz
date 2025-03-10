@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
-import useExposedCoins from '@/hooks/use-exposed-coins';
+import { useExposedCoinsContext } from '@/context/exposedCoins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
@@ -23,7 +23,7 @@ const SwapBackground = memo(() => {
   const { setValue, getValues } = useFormContext();
   const network = useNetwork<Network>();
 
-  const { exposedCoins } = useExposedCoins();
+  const { exposedCoins } = useExposedCoinsContext();
 
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
@@ -90,6 +90,7 @@ const SwapBackground = memo(() => {
       mt="6rem"
       position="absolute"
       display={['none', 'none', 'none', 'block', 'block']}
+      zIndex={1} // Garante que o componente esteja acima de outros elementos
     >
       {leftCoins.map((token, index) => {
         const position = calculatePosition(index, 'left');

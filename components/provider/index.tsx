@@ -2,6 +2,7 @@ import { Network } from '@interest-protocol/interest-aptos-v2';
 import { FC, PropsWithChildren } from 'react';
 
 import { INDEXER_URL, RPC_URL } from '@/constants';
+import { ExposedCoinsProvider } from '@/context/exposedCoins';
 import { ModalProvider } from '@/context/modal';
 import { AptosProvider } from '@/lib/aptos-provider';
 import CoinsManager from '@/lib/coins-manager';
@@ -21,7 +22,9 @@ const Provider: FC<PropsWithChildren> = ({ children }) => (
       ]}
     >
       <CoinsManager />
-      <ModalProvider>{children}</ModalProvider>
+      <ExposedCoinsProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </ExposedCoinsProvider>
     </AptosProvider>
   </ThemeManager>
 );
