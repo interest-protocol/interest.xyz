@@ -10,7 +10,7 @@ const SwapBottomMenu = () => {
       bottom="0"
       width="100vw"
       overflow="hidden"
-      position="absolute"
+      position="fixed"
       bg="highestContainer"
       flexDirection="column"
       display={['flex', 'flex', 'flex', 'none', 'none']}
