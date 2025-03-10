@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Theme, Typography, useTheme } from '@interest-protocol/ui-kit';
 import { FC, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -47,7 +47,7 @@ const TokenModalItem: FC<TokenModalItemProps> = ({
           <Skeleton height="100%" />
         </Box>
       )}
-      <Box display="flex" alignItems="center" gap="xs">
+      <Box display="flex" alignItems="center" gap="s">
         <TokenIcon
           withBg
           url={iconUri}
@@ -66,6 +66,17 @@ const TokenModalItem: FC<TokenModalItemProps> = ({
             maxWidth={['unset', '5rem']}
           >
             {symbol}
+          </Typography>
+          <Typography
+            size="small"
+            opacity="0.6"
+            variant="body"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            maxWidth={['unset', '5rem']}
+          >
+            {isFA ? 'Fungible Asset' : 'Coin'}
           </Typography>
         </Box>
       </Box>

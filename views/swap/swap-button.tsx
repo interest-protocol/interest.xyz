@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useState } from 'react';
@@ -7,36 +7,43 @@ import invariant from 'tiny-invariant';
 
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
+import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
+import { ZERO_BIG_NUMBER } from '@/utils';
 
 import SuccessModal from '../components/success-modal';
 import SuccessModalTokenCard from '../components/success-modal/success-modal-token-card';
 import { logSwap } from './swap.utils';
 
 const SwapButton = () => {
-  const { mutate } = useCoins();
-  const client = useAptosClient();
   const network = useNetwork<Network>();
+  const { coinsMap, mutate } = useCoins();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
   const { getValues, setValue, control, reset } = useFormContext();
 
-  const error = useWatch({ control, name: 'error' });
-  const valueIn = useWatch({ control, name: 'from.value' });
-  const valueOut = useWatch({ control, name: 'to.value' });
-  const from = useWatch({ control, name: 'from' });
   const to = useWatch({ control, name: 'to' });
+  const from = useWatch({ control, name: 'from' });
+  const error = useWatch({ control, name: 'error' });
+  const valueOut = useWatch({ control, name: 'to.value' });
+  const valueIn = useWatch({ control, name: 'from.value' });
+
+  const coin = coinsMap[from?.type];
+
+  const balance = FixedPointMath.toNumber(
+    coin?.balance ?? ZERO_BIG_NUMBER,
+    coin?.decimals ?? coin?.decimals
+  );
 
   const gotoExplorer = () => {
     window.open(getValues('explorerLink'), '_blank', 'noopener,noreferrer');
+  };
+
+  const onCloseModal = () => {
+    reset();
+    handleClose();
   };
 
   const handleSwap = async () => {
@@ -46,52 +53,26 @@ const SwapButton = () => {
 
       if (!account) return;
 
-      let txResult;
       const { from, to, payload } = getValues();
 
       const startTime = Date.now();
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
+      const txResult = tx.args;
 
       const endTime = Date.now() - startTime;
 
       setValue('executionTime', String(endTime));
 
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
-
       logSwap(account!.address, from, to, network, txResult.hash);
 
       setValue(
         'explorerLink',
-        EXPLORER_URL[Network.Porto](`txn/${txResult.hash}`)
+        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
       );
-
-      reset();
     } catch (e) {
       console.warn(e);
 
@@ -138,7 +119,7 @@ const SwapButton = () => {
             mr="s"
             color="onSurface"
             variant="outline"
-            onClick={handleClose}
+            onClick={onCloseModal}
           >
             got it
           </Button>
@@ -146,7 +127,14 @@ const SwapButton = () => {
       }),
     });
 
-  const disabled = !Number(valueIn) || !Number(valueOut) || !!error;
+  const disabled =
+    !Number(valueIn) ||
+    !Number(valueOut) ||
+    !Number(balance) ||
+    valueIn < 0 ||
+    valueOut < 0 ||
+    !balance ||
+    !!error;
 
   return (
     <Box display="flex" flexDirection="column" mt="xs">
@@ -155,12 +143,22 @@ const SwapButton = () => {
         variant="filled"
         borderRadius="s"
         onClick={onSwap}
-        disabled={!disabled}
+        disabled={disabled}
         justifyContent="center"
-        nDisabled={{ bg: 'highestContainer' }}
+        nDisabled={{
+          bg: error ? '#f6465d' : 'highestContainer',
+          ':hover': {
+            background: error ? '#f6465d' : '#343438',
+            color: '#909094',
+          },
+        }}
       >
-        <Typography variant="label" size="large">
-          {loading ? 'Swapping...' : 'Confirm Swap'}
+        <Typography
+          variant="label"
+          size="large"
+          color={error ? '#fff' : 'none'}
+        >
+          {loading ? 'Swapping...' : error ? error : 'Confirm Swap'}
         </Typography>
       </Button>
     </Box>

@@ -1,8 +1,8 @@
 import {
   InputGenerateTransactionPayloadData,
-  MoveValue,
+  UserTransactionResponse,
 } from '@aptos-labs/ts-sdk';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useRouter } from 'next/router';
@@ -11,11 +11,11 @@ import { useFormContext } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
 import { Routes, RoutesEnum } from '@/constants';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { useDialog } from '@/hooks';
 import { useInterestDex } from '@/hooks/use-interest-dex';
 import { FixedPointMath } from '@/lib';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
+import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
 import { CreatePoolForm, Token } from '../pool-create.types';
@@ -24,15 +24,10 @@ import { logCreatePool } from '../pool-create.utils';
 const PoolSummaryButton: FC = () => {
   const dex = useInterestDex();
   const { push } = useRouter();
-  const network = Network.Porto;
+  const network = useNetwork();
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
   const { setValue, getValues, resetField } = useFormContext<CreatePoolForm>();
 
   const gotoExplorer = () => {
@@ -58,119 +53,100 @@ const PoolSummaryButton: FC = () => {
         [[], []] as [ReadonlyArray<Token>, ReadonlyArray<Token>]
       );
 
-      let txResult;
       let payload: InputGenerateTransactionPayloadData;
-      let pool: {
-        exists: MoveValue;
-        poolAddress: MoveValue;
-      };
 
       if (coins.length > 1) {
-        pool = await dex.getPoolAddress({
-          faA: COIN_TYPE_TO_FA[coins[0].type].toString(),
-          faB: COIN_TYPE_TO_FA[coins[1].type].toString(),
-        });
-
         payload = dex.addLiquidityCoins({
           coinA: coins[0].type,
           coinB: coins[1].type,
           recipient: account.address,
           amountA: BigInt(
             FixedPointMath.toBigNumber(coins[0].value, coins[0].decimals)
-              .decimalPlaces(0, 1)
+              .decimalPlaces(0)
               .toString()
           ),
           amountB: BigInt(
             FixedPointMath.toBigNumber(coins[1].value, coins[1].decimals)
-              .decimalPlaces(0, 1)
+              .decimalPlaces(0)
               .toString()
           ),
         });
       } else if (coins.length === 1) {
-        pool = await dex.getPoolAddress({
-          faA: COIN_TYPE_TO_FA[coins[0].type].toString(),
-          faB: fas[0].type,
-        });
-
         payload = dex.addLiquidityOneCoin({
           coinA: coins[0].type,
           faB: fas[0].type,
           recipient: account.address,
           amountA: BigInt(
             FixedPointMath.toBigNumber(coins[0].value, coins[0].decimals)
-              .decimalPlaces(0, 1)
+              .decimalPlaces(0)
               .toString()
           ),
           amountB: BigInt(
             FixedPointMath.toBigNumber(fas[0].value, fas[0].decimals)
-              .decimalPlaces(0, 1)
+              .decimalPlaces(0)
               .toString()
           ),
         });
       } else {
-        pool = await dex.getPoolAddress({
-          faA: fas[0].type,
-          faB: fas[1].type,
-        });
-
         payload = dex.addLiquidity({
           faA: fas[0].type,
           faB: fas[1].type,
           recipient: account.address,
-          amountA: BigInt(fas[0].valueBN.decimalPlaces(0, 1).toString()),
-          amountB: BigInt(fas[1].valueBN.decimalPlaces(0, 1).toString()),
+          amountA: BigInt(fas[0].valueBN.decimalPlaces(0).toString()),
+          amountB: BigInt(fas[1].valueBN.decimalPlaces(0).toString()),
         });
       }
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
+      const txResult = tx.args;
 
-        const signedTx = await signTransaction(tx);
+      await client
+        .waitForTransaction({
+          transactionHash: txResult.hash,
+          options: { checkSuccess: true },
+        })
+        .catch(() =>
+          client.waitForTransaction({
+            transactionHash: txResult.hash,
+            options: { checkSuccess: true },
+          })
+        );
 
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
-
-      await logCreatePool(
+      logCreatePool(
         account.address,
         tokens[0],
         tokens[1],
-        Network.Porto,
+        Network.MovementMainnet,
         txResult.hash
       );
 
-      fetch('https://pool-indexer-production.up.railway.app/api/pool/sr-amm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          network,
-          poolId: pool.poolAddress?.toString(),
-        }),
-      });
+      const pool = await client
+        .getTransactionByHash({ transactionHash: txResult.hash })
+        .then(
+          (txn) =>
+            (txn as UserTransactionResponse).events.find((event) =>
+              event.type.endsWith('::events::AddLiquidity')
+            )!.data.pool
+        );
 
-      push(
-        `${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress?.toString()}`
+      const body = {
+        network,
+        poolId: pool?.toString(),
+      };
+
+      fetch(
+        'https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm/',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        }
       );
+
+      push(`${Routes[RoutesEnum.PoolDetails]}?address=${pool?.toString()}`);
     } catch (e) {
       console.warn({ e });
 
@@ -184,7 +160,7 @@ const PoolSummaryButton: FC = () => {
   const createPool = () =>
     dialog.promise(onCreatePool(), {
       loading: () => ({
-        title: 'Create the pool...',
+        title: 'Creating the pool...',
         message: 'We are creating the pool, and you will know when it is done',
       }),
       success: () => ({

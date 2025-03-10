@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 import { pathOr } from 'ramda';
@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     await dbConnect();
 
-    const network = pathOr(Network.Porto, ['query', 'network'], req);
+    const network = pathOr(Network.MovementMainnet, ['query', 'network'], req);
 
     const data = await metrics.findOne({ network });
 

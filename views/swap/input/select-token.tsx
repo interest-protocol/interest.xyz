@@ -1,12 +1,10 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button, Motion, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ChevronDownSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
-import { PRICE_TYPE } from '@/constants/prices';
 import { useModal } from '@/hooks/use-modal';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import {
@@ -29,6 +27,11 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     name: label,
   });
 
+  const type = useWatch({
+    control,
+    name: `${label}.type`,
+  });
+
   const swapping = useWatch({
     control,
     name: 'swapping',
@@ -44,16 +47,14 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     name: `${label === 'to' ? 'from' : 'to'}`,
   });
 
+  const formatedSymbol = currentSymbol
+    ? currentSymbol
+    : !currentSymbol && type
+      ? type
+      : 'Select token';
+
   const onSelect = async (metadata: AssetMetadata) => {
-    if (
-      (metadata.standard == TokenStandard.FA
-        ? metadata.type
-        : COIN_TYPE_TO_FA[metadata.type].toString()) ==
-      (opposite.standard == TokenStandard.FA
-        ? opposite.type
-        : COIN_TYPE_TO_FA[opposite.type].toString())
-    )
-      return;
+    if (metadata.type == opposite.type) return;
 
     if (
       metadata.standard === opposite.standard &&
@@ -72,15 +73,18 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       valueBN: ZERO_BIG_NUMBER,
     });
 
-    if (PRICE_TYPE[metadata.symbol])
-      fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-        method: 'POST',
-        body: JSON.stringify({ coins: [PRICE_TYPE[metadata.symbol]] }),
-        headers: { 'Content-Type': 'application/json', accept: '*/*' },
-      })
-        .then((response) => response.json())
-        .then((data) => setValue(`${label}.usdPrice`, data[0].price))
-        .catch(() => null);
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+      {
+        method: 'GET',
+        headers: {
+          network: 'MOVEMENT',
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setValue(`${label}.usdPrice`, data[0].price))
+      .catch(() => null);
 
     if (label === 'from') {
       setValue('to.value', '');
@@ -137,14 +141,16 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     >
       <Typography
         size="large"
+        maxWidth="12ch"
         variant="label"
         overflow="hidden"
         whiteSpace="nowrap"
         fontFamily="Satoshi"
+        textOverflow="ellipsis"
         width={['0px', 'auto']}
         display={[currentSymbol ? 'none' : 'block', 'block']}
       >
-        {currentSymbol ?? 'Select Token'}
+        {formatedSymbol}
       </Typography>
       <ChevronDownSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
     </Button>

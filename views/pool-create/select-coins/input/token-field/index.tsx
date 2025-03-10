@@ -1,4 +1,4 @@
-import { Box, Theme, useTheme } from '@interest-protocol/ui-kit';
+import { Box, Theme, Typography, useTheme } from '@interest-protocol/ui-kit';
 import stylin from '@stylin.js/react';
 import {
   ChangeEvent,
@@ -29,6 +29,7 @@ export const TokenField: FC<PropsWithRef<TokenFieldProps>> = forwardRef(
       ButtonMax,
       fieldProps,
       onActivate,
+      supportingText,
       ...props
     },
     ref
@@ -56,7 +57,13 @@ export const TokenField: FC<PropsWithRef<TokenFieldProps>> = forwardRef(
           bg={variant === 'outline' ? 'transparent' : 'container'}
           border={
             '1px solid ' +
-            colors[variant === 'outline' ? 'outlineVariant' : 'container']
+            colors[
+              status == 'error'
+                ? 'error'
+                : variant === 'outline'
+                  ? 'outlineVariant'
+                  : 'container'
+            ]
           }
           {...fieldProps}
           {...(onActivate &&
@@ -92,10 +99,23 @@ export const TokenField: FC<PropsWithRef<TokenFieldProps>> = forwardRef(
             {Bottom}
           </Box>
         </Box>
+        {status == 'error' && (
+          <Box mt="xs">
+            <Typography
+              variant="body"
+              size="small"
+              textTransform="capitalize"
+              ml="2xs"
+              color="error"
+            >
+              {supportingText}
+            </Typography>
+          </Box>
+        )}
         <Box
-          my="xs"
           display="flex"
           alignItems="center"
+          my={status == 'error' ? 'unset' : 'xs'}
           justifyContent="space-between"
         >
           {Balance}

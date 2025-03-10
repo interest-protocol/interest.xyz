@@ -1,13 +1,14 @@
 import { Box } from '@interest-protocol/ui-kit';
 import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import Layout from '@/components/layout';
 import { Routes, RoutesEnum } from '@/constants';
 
 import PoolTitleBar from '../components/pool-title-bar';
 import { IPoolForm, PoolOption } from '../pools/pools.types';
+import Earn from './earn';
 import { usePoolDetails } from './pool-details.context';
 import PoolForm from './pool-form';
 import PoolInfo from './pool-info';
@@ -18,6 +19,10 @@ const PoolDetails: FC = () => {
   const [poolOptionView, setPoolOptionView] = useState<PoolOption>(
     PoolOption.Deposit
   );
+  const isEarnPoolView = useWatch({
+    control: form.control,
+    name: 'isEarnPoolView',
+  });
 
   useEffect(() => {
     form.resetField('lpCoin.value');
@@ -30,29 +35,35 @@ const PoolDetails: FC = () => {
 
   const handleOptionTab = (index: PoolOption) => setPoolOptionView(index);
 
-  const { loading } = usePoolDetails();
+  const { pool, loading } = usePoolDetails();
 
   return (
     <Layout>
-      <PoolTitleBar
-        loading={loading}
-        onBack={() => push(Routes[RoutesEnum.Pools])}
-      />
-      <Box
-        gap="xs"
-        mx="auto"
-        maxWidth="65rem"
-        overflow="hidden"
-        flexDirection="column"
-        gridTemplateColumns="3fr 2fr"
-        display={['flex', 'flex', 'flex', 'grid']}
-        alignItems={['unset', 'unset', 'unset', 'start']}
-      >
-        <PoolForm
-          poolOptionView={poolOptionView}
-          handleOptionTab={handleOptionTab}
+      <Box>
+        <PoolTitleBar
+          loading={!pool || loading}
+          onBack={() => push(Routes[RoutesEnum.Pools])}
         />
-        <PoolInfo />
+        {!isEarnPoolView ? (
+          <Box
+            gap="xs"
+            mx="auto"
+            maxWidth="65rem"
+            overflow="hidden"
+            flexDirection="column"
+            gridTemplateColumns="3fr 2fr"
+            display={['flex', 'flex', 'flex', 'grid']}
+            alignItems={['unset', 'unset', 'unset', 'start']}
+          >
+            <PoolForm
+              poolOptionView={poolOptionView}
+              handleOptionTab={handleOptionTab}
+            />
+            <PoolInfo />
+          </Box>
+        ) : (
+          <Earn />
+        )}
       </Box>
     </Layout>
   );

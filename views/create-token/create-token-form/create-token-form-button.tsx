@@ -1,5 +1,5 @@
 import { UserTransactionResponse } from '@aptos-labs/ts-sdk';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useState } from 'react';
@@ -21,14 +21,14 @@ const CreateTokenFormButton = () => {
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
+  const { account, signAndSubmitTransaction } = useAptosWallet();
   const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
-  const { control, setValue, getValues, reset } =
-    useFormContext<ICreateTokenForm>();
+    control,
+    setValue,
+    getValues,
+    reset,
+    formState: { errors },
+  } = useFormContext<ICreateTokenForm>();
 
   const values = useWatch({ control });
 
@@ -43,12 +43,12 @@ const CreateTokenFormButton = () => {
   const ableToMerge = !!(
     account &&
     !loading &&
-    values.name &&
-    values.symbol &&
     String(values.decimals) &&
     values.supply &&
     (values.pool?.active
-      ? Number(values.pool.quoteValue) && Number(values.pool.tokenValue)
+      ? Number(values.pool.quoteValue) &&
+        Number(values.pool.tokenValue) &&
+        Object.keys(errors).length == 0
       : true)
   );
 
@@ -68,113 +68,98 @@ const CreateTokenFormButton = () => {
         projectUrl: projectURI,
       } = values;
 
-      invariant(
-        name && symbol && decimals && supply,
-        'You must fill the required fields'
-      );
+      invariant(decimals && supply, 'You must fill the required fields');
 
-      let txResult;
+      const createFaArgs = {
+        name: name || '',
+        symbol: symbol || '',
+        iconURI,
+        decimals,
+        projectURI,
+        recipient: account!.address,
+        totalSupply: BigInt(
+          FixedPointMath.toBigNumber(supply!, decimals).toString()
+        ),
+      };
+
+      const deployMemeWithFaArgs = {
+        name: name || '',
+        symbol: symbol || '',
+        iconURI,
+        decimals,
+        projectURI,
+        recipient: account!.address,
+        totalSupply: BigInt(
+          FixedPointMath.toBigNumber(supply!, decimals).toString()
+        ),
+        liquidityMemeAmount: BigInt(
+          FixedPointMath.toBigNumber(pool!.tokenValue!, decimals).toString()
+        ),
+        liquidityAptosAmount: BigInt(
+          FixedPointMath.toBigNumber(pool!.quoteValue!).toString()
+        ),
+      };
 
       const payload = values.pool?.active
-        ? dex.deployMemeFA({
-            name,
-            symbol,
-            iconURI,
-            decimals,
-            projectURI,
-            recipient: account!.address,
-            totalSupply: BigInt(
-              FixedPointMath.toBigNumber(supply!, decimals).toString()
-            ),
-            liquidityMemeAmount: BigInt(
-              FixedPointMath.toBigNumber(pool!.tokenValue!, decimals).toString()
-            ),
-            liquidityAptosAmount: BigInt(
-              FixedPointMath.toBigNumber(pool!.quoteValue!).toString()
-            ),
-          })
-        : dex.createFA({
-            name,
-            symbol,
-            iconURI,
-            decimals,
-            projectURI,
-            recipient: account!.address,
-            totalSupply: BigInt(
-              FixedPointMath.toBigNumber(supply!, decimals).toString()
-            ),
-          });
+        ? dex.deployMemeWithFa(deployMemeWithFaArgs)
+        : dex.createFa(createFaArgs);
 
       const startTime = Date.now();
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
+      const txResult = tx.args;
 
       const endTime = Date.now() - startTime;
 
+      await client
+        .waitForTransaction({
+          transactionHash: txResult.hash,
+          options: { checkSuccess: true },
+        })
+        .catch(() =>
+          client.waitForTransaction({
+            transactionHash: txResult.hash,
+            options: { checkSuccess: true },
+          })
+        );
+
       setValue('executionTime', String(endTime));
 
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
-
-      if (pool?.active) {
+      if (pool?.active)
         client
-          .getTransactionByHash({
-            transactionHash: txResult.hash,
-          })
+          .getTransactionByHash({ transactionHash: txResult.hash })
           .then((txn) => {
             const poolId = (txn as UserTransactionResponse).events.find(
               (event) => event.type.endsWith('::events::AddLiquidity')
             )!.data.pool;
 
             fetch(
-              'https://pool-indexer-production.up.railway.app/api/pool/sr-amm',
+              'https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm',
               {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   poolId,
-                  network: Network.Porto,
+                  network: Network.MovementMainnet,
                 }),
               }
             );
           });
-      }
 
       logCreateToken(
         account!.address,
-        symbol,
+        symbol || '',
         !!pool?.active,
-        Network.Porto,
+        Network.MovementMainnet,
         txResult.hash
       );
 
       setValue(
         'explorerLink',
-        EXPLORER_URL[Network.Porto](`txn/${txResult.hash}`)
+        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
       );
     } catch (e) {
       console.warn({ e });

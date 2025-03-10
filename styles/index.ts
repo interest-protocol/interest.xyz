@@ -80,6 +80,7 @@ export const GlobalStyles = css`
   body,
   html {
     overflow-x: hidden;
+    background-color: #000;
   }
 
   a {

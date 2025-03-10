@@ -20,7 +20,6 @@ const Balance: FC<InputProps> = ({ index }) => {
 
   const type = useWatch({ control, name: `tokens.${index}.type` });
   const decimals = useWatch({ control, name: `tokens.${index}.decimals` });
-  const symbol = useWatch({ control, name: `tokens.${index}.symbol` });
 
   if (!type)
     return (
@@ -73,7 +72,7 @@ const Balance: FC<InputProps> = ({ index }) => {
       <Typography size="small" variant="body" fontSize="xs">
         Balance:{' '}
         {!loading
-          ? symbol
+          ? type
             ? `${FixedPointMath.toNumber(balance, decimals)}`
             : '--'
           : ''}

@@ -8,7 +8,6 @@ const TokenBalance: FC = () => {
   const { control, setValue } = useFormContext<ICreateTokenForm>();
 
   const supply = useWatch({ control, name: `supply` });
-  const symbol = useWatch({ control, name: `symbol` });
 
   const handleMax = () => setValue(`pool.tokenValue`, String(supply));
 
@@ -26,7 +25,7 @@ const TokenBalance: FC = () => {
       className="loading-balance"
     >
       <Typography size="small" variant="body" fontSize="xs">
-        Balance: {symbol ? `${supply}` : '--'}
+        Balance: {supply}
       </Typography>
     </Button>
   );

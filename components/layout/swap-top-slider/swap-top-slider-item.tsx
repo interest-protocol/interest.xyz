@@ -1,13 +1,13 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import { TokenIcon } from '@/components';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 
-import { SwapBottomMenuItemProps } from './bottom-menu.types';
+import { SwapBottomMenuItemProps } from '../bottom-menu/bottom-menu.types';
 
-const SwapBottomMenuItem: FC<SwapBottomMenuItemProps> = ({
+const SwapTopSliderItem: FC<SwapBottomMenuItemProps> = ({
   symbol,
   iconUri,
   onClick,
@@ -19,25 +19,27 @@ const SwapBottomMenuItem: FC<SwapBottomMenuItemProps> = ({
     <Box
       gap="xs"
       display="flex"
+      cursor="pointer"
       onClick={onClick}
       alignItems="center"
       justifyContent="center"
     >
       <TokenIcon
-        size="0.8rem"
+        size="1.5rem"
         withBg
         network={network}
         url={iconUri}
         symbol={symbol}
       />
-      <Typography size="large" variant="body" color="primary" fontWeight="bold">
+      <Typography size="medium" variant="title" color="primary">
         {symbol}
       </Typography>
       <Box>
         <Typography
-          size="small"
-          variant="label"
+          size="medium"
+          variant="title"
           textAlign="left"
+          fontWeight="500"
           color="onSurface"
         >
           {usdPrice}
@@ -47,4 +49,4 @@ const SwapBottomMenuItem: FC<SwapBottomMenuItemProps> = ({
   );
 };
 
-export default SwapBottomMenuItem;
+export default SwapTopSliderItem;

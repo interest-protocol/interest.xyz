@@ -1,4 +1,3 @@
-import { InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk';
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 
@@ -41,7 +40,6 @@ export interface SwapForm {
   executionTime: string;
   settings: ISwapSettings;
   path: ReadonlyArray<ReadonlyArray<SwapPath>>;
-  payload: InputGenerateTransactionPayloadData;
 }
 
 export interface AggregatorProps {

@@ -1,11 +1,10 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, Motion, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ChevronRightSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
-import { PRICE_TYPE } from '@/constants/prices';
 import { useModal } from '@/hooks/use-modal';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import {
@@ -29,10 +28,21 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
     name: `tokens.${index}`,
   });
 
+  const type = useWatch({
+    control,
+    name: `tokens.${index}.type`,
+  });
+
   const { symbol: currentSymbol } = currentToken;
 
+  const formatedSymbol = currentSymbol
+    ? currentSymbol
+    : !currentSymbol && type
+      ? type
+      : 'Select token';
+
   const onSelect = async (metadata: AssetMetadata) => {
-    if (getValues('tokens')?.some((token) => token.symbol === metadata.symbol))
+    if (getValues('tokens')?.some((token) => token.type === metadata.type))
       return;
 
     setValue(`tokens.${index}`, {
@@ -42,15 +52,20 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
       valueBN: ZERO_BIG_NUMBER,
     });
 
-    if (PRICE_TYPE[metadata.symbol])
-      fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-        method: 'POST',
-        body: JSON.stringify({ coins: [PRICE_TYPE[metadata.symbol]] }),
-        headers: { 'Content-Type': 'application/json', accept: '*/*' },
-      })
-        .then((response) => response.json())
-        .then((data) => setValue(`tokens.${index}.usdPrice`, data[0].price))
-        .catch(() => null);
+    fetch(
+      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
+      {
+        method: 'GET',
+        headers: {
+          network: 'MOVEMENT',
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) =>
+        setValue(`tokens.${index}.usdPrice`, Number(data[0].price))
+      )
+      .catch(() => null);
   };
 
   const openModal = () =>
@@ -81,7 +96,12 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
         fontSize="s"
         width="100%"
         variant="tonal"
-        bg={currentSymbol ? 'transparent' : 'highestContainer'}
+        height={formatedSymbol === '' ? '2.5rem' : ''}
+        bg={
+          currentSymbol || formatedSymbol === type
+            ? 'transparent'
+            : 'highestContainer'
+        }
         color="onSurface"
         borderRadius="xs"
         onClick={openModal}
@@ -98,14 +118,18 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
       >
         <Typography
           p="xs"
-          variant="label"
-          whiteSpace="nowrap"
           width="100%"
+          cursor="pointer"
+          variant="label"
+          maxWidth="12ch"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
           size={isMobile ? 'large' : 'small'}
         >
-          {currentSymbol || 'Select token'}
+          {formatedSymbol}
         </Typography>
-        {!currentSymbol && (
+        {!currentSymbol && formatedSymbol !== type && (
           <ChevronRightSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
         )}
       </Button>

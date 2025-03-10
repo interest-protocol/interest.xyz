@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-import { SrPool } from '@interest-protocol/aptos-sr-amm';
+import { InterestV2Pool } from '@interest-protocol/interest-aptos-v2';
 import BigNumber from 'bignumber.js';
 
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
@@ -19,7 +19,7 @@ export interface PoolPageProps {
 
 export enum PoolTypeEnum {
   CLAMM = 'CLAMM',
-  srAMM = 'SR-AMM',
+  srAMM = 'V2(SR-AMM)',
 }
 
 export interface AmmPoolCoinTypes {
@@ -53,8 +53,18 @@ export interface ISrPool {
   };
 }
 
+export interface Pools {
+  address: AccountAddress;
+  faX: AccountAddress;
+  faY: AccountAddress;
+  projectUri: string;
+  symbol: string;
+  name: string;
+  decimals: number;
+}
+
 export interface SrAmmPoolWithMetadata
-  extends Omit<SrPool, 'metadataX' | 'metadataY'> {
+  extends Omit<InterestV2Pool, 'metadataX' | 'metadataY'> {
   metadata: AssetMetadata;
   metadataX: AssetMetadata;
   metadataY: AssetMetadata;
@@ -79,6 +89,27 @@ export interface SdkSrAmmConfig {
 }
 
 export interface PriceResponse {
+  coin: string;
+  price: number;
+  priceChange24HoursPercentage: number;
+}
+
+export interface Token {
+  type?: string;
+  address: AccountAddress;
+  decimals: number;
+  iconUri: string;
+  name: string;
+  projectUri: string;
+  symbol: string;
+}
+
+export interface TokenWithPrice extends Token {
+  usd: string;
+  usdPrice24Change: number;
+}
+
+export interface TokenPrice {
   coin: string;
   price: number;
   priceChange24HoursPercentage: number;

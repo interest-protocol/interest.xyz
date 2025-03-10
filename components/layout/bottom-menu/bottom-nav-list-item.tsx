@@ -3,11 +3,14 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
-import { SwapBottomMenuListItemProps } from './bottom-menu.types';
+import { BottomNavListItemProps } from './bottom-menu.types';
 
-const SwapBottomMenuListItem: FC<SwapBottomMenuListItemProps> = ({
+const BottomNavListItem: FC<BottomNavListItemProps> = ({
   name,
   path,
+  Icon,
+  onClick,
+  isHidden,
 }) => {
   const { asPath, push } = useRouter();
 
@@ -18,28 +21,34 @@ const SwapBottomMenuListItem: FC<SwapBottomMenuListItemProps> = ({
     push(path);
   };
 
+  if (isHidden) return null;
+
   return (
-    <Box flex="1">
+    <Box flex="1" height="100%">
       <Box
-        py="xl"
+        py="m"
         px="xs"
+        gap="xs"
         key={v4()}
+        height="100%"
         display="flex"
         cursor="pointer"
-        height="1.375rem"
         borderRadius="xs"
         alignItems="center"
         alignContent="center"
+        flexDirection="column"
         justifyContent="center"
-        onClick={() => goToPath(path)}
         transition="all 350ms ease-in-out"
-        bg={asPath === path ? 'primary' : ''}
-        nHover={{ bg: asPath !== path ? 'outline' : '' }}
+        color={asPath === path ? 'primary' : '#ffffff9d'}
+        nHover={{ color: asPath !== path ? 'outline' : '' }}
+        {...(onClick ? { onClick } : { onClick: () => goToPath(path) })}
       >
+        <Box height="2rem" display="flex" alignItems="center">
+          <Icon maxHeight="1.5rem" maxWidth="1.5rem" width="1.5rem" />
+        </Box>
         <Typography
           size="large"
           variant="label"
-          color={asPath === path ? 'onPrimary' : 'white'}
           width="max-content"
           nHover={{
             opacity: 0.7,
@@ -52,4 +61,4 @@ const SwapBottomMenuListItem: FC<SwapBottomMenuListItemProps> = ({
   );
 };
 
-export default SwapBottomMenuListItem;
+export default BottomNavListItem;
