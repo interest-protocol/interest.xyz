@@ -103,17 +103,19 @@ const PoolSummaryButton: FC = () => {
 
       const txResult = tx.args;
 
-      await client
-        .waitForTransaction({
-          transactionHash: txResult.hash,
-          options: { checkSuccess: true },
-        })
-        .catch(() =>
-          client.waitForTransaction({
+      let waitingTx = true;
+
+      do {
+        await client
+          .waitForTransaction({
             transactionHash: txResult.hash,
             options: { checkSuccess: true },
           })
-        );
+          .then(() => {
+            waitingTx = false;
+          })
+          .catch();
+      } while (waitingTx);
 
       logCreatePool(
         account.address,
