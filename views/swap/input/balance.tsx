@@ -135,7 +135,7 @@ const Balance: FC<InputProps> = ({ label }) => {
           ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
           : '0'}
       </Typography>
-      {coinsMap[type]?.balance && loading && (
+      {!coinsMap[type]?.balance && loading && (
         <Box
           mx="xs"
           mt="-1.2rem"
