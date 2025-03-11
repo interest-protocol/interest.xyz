@@ -11,7 +11,7 @@ const useExposedCoins = () => {
     ReadonlyArray<TokenWithPrice>
   >([]);
 
-  const { data, ...rest } = useSWR(
+  const { ...rest } = useSWR(
     'coins-to-expose',
     async () => {
       try {
@@ -61,7 +61,7 @@ const useExposedCoins = () => {
   );
 
   return {
-    data,
+    exposedCoins,
     ...rest,
   };
 };

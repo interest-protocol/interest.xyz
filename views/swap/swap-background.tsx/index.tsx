@@ -24,7 +24,7 @@ const RANDOM_OFFSET = 8;
 const SwapBackground = memo(() => {
   const { setValue, getValues } = useFormContext();
   const network = useNetwork<Network>();
-  const { data: exposedCoins } = useExposedCoins();
+  const { exposedCoins } = useExposedCoins();
 
   const [tokenPositions, setTokenPositions] = useState<{
     leftCoins: Array<{ token: TokenWithPrice; position: TokenPosition }>;
