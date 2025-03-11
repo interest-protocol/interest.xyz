@@ -17,7 +17,16 @@ const Avatar: FC<AvatarProps> = ({
   nameOrAddressPosition = 'right',
 }) => {
   const network = useNetwork<Network>();
-  const { account: currentAccount } = useAptosWallet();
+  const {
+    account: currentAccount,
+    name,
+    allAvailableWallets,
+  } = useAptosWallet();
+
+  const walletImg = allAvailableWallets.find(
+    (wallet) => wallet.name === name
+  )?.iconUrl;
+
   const address = accountAddress ?? (currentAccount?.address || '');
 
   const SIZE = isLarge ? '2.2rem' : '1.5rem';
@@ -50,12 +59,17 @@ const Avatar: FC<AvatarProps> = ({
         width={SIZE}
         height={SIZE}
         display="flex"
+        overflow="hidden"
         color="onPrimary"
         alignItems="center"
         borderRadius="full"
         justifyContent="center"
       >
-        <UserSVG width="80%" height="80%" maxWidth={SIZE} maxHeight={SIZE} />
+        {walletImg ? (
+          <img src={walletImg} alt={name} width="100%" />
+        ) : (
+          <UserSVG width="80%" height="80%" maxWidth={SIZE} maxHeight={SIZE} />
+        )}
       </Box>
       {withNameOrAddress && nameOrAddressPosition === 'right' && (
         <Link
