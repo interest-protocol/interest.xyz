@@ -1,5 +1,7 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
 
+import { Token } from '@/interface';
+
 export const COIN_TYPE_TO_FA = {
   ['0x1::aptos_coin::AptosCoin']: '0xa',
 };
@@ -74,4 +76,4 @@ export const WBTCe = {
 
 export const ETH_COINS = [USDCe, USDTe, WETHe, WBTCe];
 
-export const TOKENS = [MOVE, FIRE, ...ETH_COINS];
+export const TOKENS: ReadonlyArray<Token> = [MOVE, FIRE, ...ETH_COINS];
