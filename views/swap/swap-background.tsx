@@ -8,7 +8,7 @@ import { TokenIcon } from '@/components';
 import useExposedCoins from '@/hooks/use-exposed-coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 const label = 'to';
@@ -143,7 +143,7 @@ const SwapBackground = memo(() => {
               {token.symbol}
             </Typography>
             <Typography size="small" variant="label" color="onSurface">
-              {token.usdPrice}
+              {formatDollars(token.usdPrice!)}
             </Typography>
           </Motion>
         </Motion>
@@ -214,7 +214,7 @@ const SwapBackground = memo(() => {
               {token.symbol}
             </Typography>
             <Typography size="small" variant="label" color="onSurface">
-              {token.usdPrice}
+              {formatDollars(token.usdPrice!)}
             </Typography>
           </Motion>
         </Motion>

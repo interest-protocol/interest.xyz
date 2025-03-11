@@ -1,23 +1,28 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { RateDownSVG, RateUpSVG } from '@/components/svg';
 import useExposedCoins from '@/hooks/use-exposed-coins';
-import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
-import { MetadataSources } from '@/utils/coin/coin.types';
+import {
+  AssetMetadata,
+  AssetWithPrice,
+} from '@/lib/coins-manager/coins-manager.types';
+import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
 
 import BottomMenuItem from './swap-top-slider-item';
 
 const label = 'to';
 
 const SwapTopSlider: FC = () => {
+  useEffect(() => {
+    console.log('>> rerender');
+  }, []);
+
   const { exposedCoins } = useExposedCoins();
   const { setValue, getValues } = useFormContext();
 
-  const handleTokenSelect = (token: MetadataSources) =>
-    onSelect(parseToMetadata(token));
+  const handleTokenSelect = (token: AssetWithPrice) => onSelect(token);
 
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
@@ -40,8 +45,6 @@ const SwapTopSlider: FC = () => {
       valueBN: ZERO_BIG_NUMBER,
     });
   };
-
-  console.log({ exposedCoins });
 
   return (
     <Box
@@ -67,8 +70,8 @@ const SwapTopSlider: FC = () => {
             <Box>
               <BottomMenuItem
                 symbol={token.symbol}
-                price={token.usdPrice}
                 iconUri={token.iconUri}
+                price={formatDollars(token.usdPrice!)}
                 onClick={() => handleTokenSelect(token)}
               />
             </Box>

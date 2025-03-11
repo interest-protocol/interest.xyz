@@ -1,9 +1,8 @@
-import { AccountAddress } from '@aptos-labs/ts-sdk';
 import useSWR from 'swr';
 
 import { TOKENS } from '@/constants/coins';
 import { AssetWithPrice } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, parseToMetadata } from '@/utils';
+import { parseToMetadata } from '@/utils';
 
 import { useCoinsPrice } from '../use-coins-price';
 
@@ -17,15 +16,13 @@ const useExposedCoins = () => {
   );
 
   const { data: exposedCoins, ...rest } = useSWR<ReadonlyArray<AssetWithPrice>>(
-    ['coins-to-expose', prices],
+    ['coins-to-expose', prices?.length],
     async () => {
-      console.log({ prices });
-
       if (!prices) return [];
 
       return TOKENS.reduce((acc, coin) => {
-        const item = prices.find((item) =>
-          coin.address.equals(AccountAddress.from(item.coin))
+        const item = prices.find(
+          (item) => (coin.type ?? coin.address.toString()) === item.coin
         );
 
         if (!item) return acc;
@@ -34,11 +31,19 @@ const useExposedCoins = () => {
           ...acc,
           {
             ...parseToMetadata(coin),
-            usdPrice: formatDollars(item.price),
+            usdPrice: item.price,
             usdPrice24Change: item.priceChange24HoursPercentage,
           },
         ];
       }, [] as ReadonlyArray<AssetWithPrice>);
+    },
+    {
+      refreshInterval: 0,
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
+      revalidateOnReconnect: false,
     }
   );
 
