@@ -1,6 +1,6 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-import useSWR from 'swr';
 import { useState } from 'react';
+import useSWR from 'swr';
 
 import { TOKENS } from '@/constants/coins';
 import { TokenPrice, TokenWithPrice } from '@/interface';

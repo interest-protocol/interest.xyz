@@ -6,12 +6,13 @@ import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
 import useExposedCoins from '@/hooks/use-exposed-coins';
+import { TokenWithPrice } from '@/interface';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
+
 import { TokenPosition } from './swap-background.types';
-import { TokenWithPrice } from '@/interface';
 
 const label = 'to';
 
