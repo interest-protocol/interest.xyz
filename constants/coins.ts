@@ -28,6 +28,16 @@ export const MOVE = {
   symbol: 'MOVE',
 };
 
+export const MOVEV2 = {
+  type: '0xa',
+  address: AccountAddress.from('0xa'),
+  decimals: 8,
+  iconUri: 'https://explorer.movementnetwork.xyz/logo.png',
+  name: 'Move Coin',
+  projectUri: 'https://movementnetwork.xyz',
+  symbol: 'MOVE',
+};
+
 export const USDCe = {
   address: AccountAddress.from(
     '0x83121c9f9b0527d1f056e21a950d6bf3b9e9e2e8353d0e95ccea726713cbea39'
