@@ -7,50 +7,41 @@ import { TokenPrice, TokenWithPrice } from '@/interface';
 import { formatDollars } from '@/utils';
 
 const useExposedCoins = () => {
-  const [exposedCoins, setExposedCoins] = useState<
+  const [savedExposedCoins, setSavedExposedCoins] = useState<
     ReadonlyArray<TokenWithPrice>
   >([]);
 
-  const { ...rest } = useSWR(
+  const { data: exposedCoins, ...rest } = useSWR(
     'coins-to-expose',
     async () => {
-      try {
-        const prices: ReadonlyArray<TokenPrice> = await fetch(
-          `https://rates-api-staging.up.railway.app/api/fetch-quote?${TOKENS.map(
-            (coin) => `coins=${coin.address.toString()}`
-          ).join('&')}`,
+      const prices: ReadonlyArray<TokenPrice> = await fetch(
+        `https://rates-api-staging.up.railway.app/api/fetch-quote?${TOKENS.map((coin) => `coins=${coin.address.toString()}`).join('&')}`,
+        {
+          method: 'GET',
+          headers: { network: 'MOVEMENT' },
+        }
+      ).then((res) => res.json());
+
+      const coinsToExpose = TOKENS.reduce((acc, coin) => {
+        const item = prices.find((item) =>
+          coin.address.equals(AccountAddress.from(item.coin))
+        );
+
+        if (!item) return acc;
+
+        return [
+          ...acc,
           {
-            method: 'GET',
-            headers: { network: 'MOVEMENT' },
-          }
-        ).then((res) => {
-          if (!res.ok) throw new Error('Failed to fetch prices');
-          return res.json();
-        });
+            ...coin,
+            usd: formatDollars(item.price),
+            usdPrice24Change: item.priceChange24HoursPercentage,
+          },
+        ];
+      }, [] as ReadonlyArray<TokenWithPrice>);
 
-        const coinsToExpose = TOKENS.reduce((acc, coin) => {
-          const item = prices.find((item) =>
-            coin.address.equals(AccountAddress.from(item.coin))
-          );
+      setSavedExposedCoins(coinsToExpose);
 
-          if (!item) return acc;
-
-          return [
-            ...acc,
-            {
-              ...coin,
-              usd: formatDollars(item.price),
-              usdPrice24Change: item.priceChange24HoursPercentage,
-            },
-          ];
-        }, [] as ReadonlyArray<TokenWithPrice>);
-
-        setExposedCoins(coinsToExpose);
-        return coinsToExpose;
-      } catch (error) {
-        console.error('Error fetching exposed coins:', error);
-        return null;
-      }
+      return coinsToExpose ?? savedExposedCoins;
     },
     {
       refreshInterval: 120000,
