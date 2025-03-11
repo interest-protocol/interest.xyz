@@ -6,7 +6,7 @@ import Layout from '@/components/layout';
 import Input from './input';
 import SwapFormFieldSlider from './input/swap-manager-slider';
 import ToInput from './input/to-input';
-import SwapBackground from './swap-background';
+import SwapBackground from './swap-background.tsx';
 import SwapButton from './swap-button';
 import SwapFlipToken from './swap-flip-token';
 import SwapManager from './swap-manager';
