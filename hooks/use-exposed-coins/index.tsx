@@ -9,7 +9,7 @@ import { formatDollars } from '@/utils';
 const useExposedCoins = () => {
   const [savedExposedCoins, setSavedExposedCoins] = useState<
     ReadonlyArray<TokenWithPrice>
-  >(TOKENS.map((coin) => ({ ...coin, usd: '0', usdPrice24Change: 0 })));
+  >(TOKENS.map((coin) => ({ ...coin, usd: '-', usdPrice24Change: '-' })));
 
   const { data: exposedCoins, ...rest } = useSWR(
     'coins-to-expose',
@@ -21,6 +21,9 @@ const useExposedCoins = () => {
           headers: { network: 'MOVEMENT' },
         }
       ).then((res) => res.json());
+
+      console.log(prices);
+      console.log(savedExposedCoins);
 
       if (!prices.length) return savedExposedCoins;
 

@@ -106,7 +106,7 @@ export interface Token {
 
 export interface TokenWithPrice extends Token {
   usd: string;
-  usdPrice24Change: number;
+  usdPrice24Change: number | string;
 }
 
 export interface TokenPrice {
