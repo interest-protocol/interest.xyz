@@ -20,10 +20,9 @@ const TOP_MARGIN = 10;
 const RANDOM_OFFSET = 8;
 
 const SwapBackground = memo(() => {
-  const { setValue, getValues } = useFormContext();
   const network = useNetwork<Network>();
-
   const { exposedCoins } = useExposedCoins();
+  const { setValue, getValues } = useFormContext();
 
   const onSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues([label, 'from']);
@@ -44,19 +43,6 @@ const SwapBackground = memo(() => {
       usdPrice: null,
       valueBN: ZERO_BIG_NUMBER,
     });
-
-    fetch(
-      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
-      {
-        method: 'GET',
-        headers: {
-          network: 'MOVEMENT',
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => setValue(`${label}.usdPrice`, data[0].price))
-      .catch(() => null);
   };
 
   const coins = exposedCoins?.slice(0, MAX_COINS) ?? [];
@@ -157,7 +143,7 @@ const SwapBackground = memo(() => {
               {token.symbol}
             </Typography>
             <Typography size="small" variant="label" color="onSurface">
-              {token.usd}
+              {token.usdPrice}
             </Typography>
           </Motion>
         </Motion>
@@ -228,7 +214,7 @@ const SwapBackground = memo(() => {
               {token.symbol}
             </Typography>
             <Typography size="small" variant="label" color="onSurface">
-              {token.usd}
+              {token.usdPrice}
             </Typography>
           </Motion>
         </Motion>

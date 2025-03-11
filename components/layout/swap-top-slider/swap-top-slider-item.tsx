@@ -8,10 +8,10 @@ import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { SwapBottomMenuItemProps } from '../bottom-menu/bottom-menu.types';
 
 const SwapTopSliderItem: FC<SwapBottomMenuItemProps> = ({
+  price,
   symbol,
   iconUri,
   onClick,
-  usdPrice,
 }) => {
   const network = useNetwork<Network>();
 
@@ -42,7 +42,7 @@ const SwapTopSliderItem: FC<SwapBottomMenuItemProps> = ({
           fontWeight="500"
           color="onSurface"
         >
-          {usdPrice}
+          {price}
         </Typography>
       </Box>
     </Box>

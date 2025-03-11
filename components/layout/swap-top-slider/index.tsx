@@ -13,8 +13,8 @@ import BottomMenuItem from './swap-top-slider-item';
 const label = 'to';
 
 const SwapTopSlider: FC = () => {
-  const { setValue, getValues } = useFormContext();
   const { exposedCoins } = useExposedCoins();
+  const { setValue, getValues } = useFormContext();
 
   const handleTokenSelect = (token: MetadataSources) =>
     onSelect(parseToMetadata(token));
@@ -37,21 +37,11 @@ const SwapTopSlider: FC = () => {
     setValue(label, {
       ...metadata,
       value: '',
-      usdPrice: null,
       valueBN: ZERO_BIG_NUMBER,
     });
-
-    fetch(
-      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
-      {
-        method: 'GET',
-        headers: { network: 'MOVEMENT' },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => setValue(`${label}.usdPrice`, data[0].price))
-      .catch(() => null);
   };
+
+  console.log({ exposedCoins });
 
   return (
     <Box
@@ -76,8 +66,8 @@ const SwapTopSlider: FC = () => {
           <Box gap="s" key={index} display="flex">
             <Box>
               <BottomMenuItem
-                usdPrice={token.usd}
                 symbol={token.symbol}
+                price={token.usdPrice}
                 iconUri={token.iconUri}
                 onClick={() => handleTokenSelect(token)}
               />
@@ -88,7 +78,7 @@ const SwapTopSlider: FC = () => {
               alignItems="center"
               justifyContent="center"
             >
-              {token.usdPrice24Change < 1 ? (
+              {!!token.usdPrice24Change && token.usdPrice24Change < 1 ? (
                 <RateDownSVG
                   width="1rem"
                   height="1rem"
@@ -106,11 +96,11 @@ const SwapTopSlider: FC = () => {
               <Typography
                 size="large"
                 variant="label"
-                color={token.usdPrice24Change < 1 ? '#E53E3E' : '#16A24A'}
-                fontSize="0.625rem"
                 lineHeight="1rem"
+                fontSize="0.625rem"
+                color={token.usdPrice24Change! < 1 ? '#E53E3E' : '#16A24A'}
               >
-                {(token.usdPrice24Change * 100).toFixed(2)}%
+                {(token.usdPrice24Change! * 100).toFixed(2)}%
               </Typography>
             </Box>
           </Box>
