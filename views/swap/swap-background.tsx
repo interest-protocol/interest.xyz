@@ -91,81 +91,77 @@ const SwapBackground = memo(() => {
       position="absolute"
       display={['none', 'none', 'none', 'block', 'block']}
     >
-      {leftCoins.map((token, index) => {
-        const position = calculatePosition(index, 'left');
-
-        return (
+      {leftCoins.map((token, index) => (
+        <Motion
+          gap="l"
+          key={v4()}
+          display="flex"
+          cursor="pointer"
+          initial="initial"
+          whileHover="hover"
+          position="absolute"
+          animate={{ y: [-5, 5] }}
+          top={calculatePosition(index, 'left').top}
+          left={calculatePosition(index, 'left').left}
+          onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            repeatType: 'mirror',
+          }}
+        >
           <Motion
-            gap="l"
-            key={v4()}
-            display="flex"
-            cursor="pointer"
-            initial="initial"
-            whileHover="hover"
-            position="absolute"
-            animate={{ y: [-5, 5] }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              repeatType: 'mirror',
+            scale="1"
+            filter="blur(10px)"
+            variants={{
+              initial: { y: 0 },
+              hover: {
+                scale: [1, 1.25],
+                filter: 'blur(0px)',
+                transition: { duration: 0.3 },
+              },
             }}
-            onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
-            top={position.top}
-            left={position.left}
           >
             <Motion
-              scale="1"
-              filter="blur(10px)"
-              variants={{
-                initial: { y: 0 },
-                hover: {
-                  scale: [1, 1.25],
-                  filter: 'blur(0px)',
-                  transition: { duration: 0.3 },
-                },
+              borderRadius="50%"
+              width="3rem"
+              height="3rem"
+              animate={{ rotate: ['-15deg', '15deg'] }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                repeatType: 'mirror',
               }}
             >
-              <Motion
-                borderRadius="50%"
-                width="3rem"
-                height="3rem"
-                animate={{ rotate: ['-15deg', '15deg'] }}
-                transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  repeatType: 'mirror',
-                }}
-              >
-                <TokenIcon
-                  withBg
-                  network={network}
-                  url={token.iconUri}
-                  symbol={token.symbol}
-                />
-              </Motion>
-            </Motion>
-            <Motion
-              variants={{
-                hover: { scale: 1 },
-                initial: { scale: 0 },
-              }}
-            >
-              <Typography
-                size="large"
-                variant="body"
-                color="primary"
-                fontWeight="bold"
-              >
-                {token.symbol}
-              </Typography>
-              <Typography size="small" variant="label" color="onSurface">
-                {token.usd}
-              </Typography>
+              <TokenIcon
+                withBg
+                network={network}
+                url={token.iconUri}
+                symbol={token.symbol}
+              />
             </Motion>
           </Motion>
-        );
-      })}
+          <Motion
+            variants={{
+              hover: { scale: 1 },
+              initial: { scale: 0 },
+            }}
+          >
+            <Typography
+              size="large"
+              variant="body"
+              color="primary"
+              fontWeight="bold"
+            >
+              {token.symbol}
+            </Typography>
+            <Typography size="small" variant="label" color="onSurface">
+              {token.usd}
+            </Typography>
+          </Motion>
+        </Motion>
+      ))}
       {rightCoins.map((token, index) => (
         <Motion
           gap="l"
@@ -176,15 +172,15 @@ const SwapBackground = memo(() => {
           whileHover="hover"
           position="absolute"
           animate={{ y: [-5, 5] }}
+          top={calculatePosition(index, 'right').top}
+          left={calculatePosition(index, 'right').left}
+          onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
           transition={{
             duration: 2,
             repeat: Infinity,
             ease: 'easeInOut',
             repeatType: 'mirror',
           }}
-          onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
-          top={calculatePosition(index, 'right').top}
-          left={calculatePosition(index, 'right').left}
         >
           <Motion
             scale="1"
