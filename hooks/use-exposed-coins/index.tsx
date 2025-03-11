@@ -46,7 +46,7 @@ const useExposedCoins = () => {
       return coinsToExpose ?? savedExposedCoins;
     },
     {
-      refreshInterval: 120000,
+      refreshInterval: 3000,
       revalidateOnMount: true,
       revalidateOnFocus: false,
       refreshWhenHidden: false,

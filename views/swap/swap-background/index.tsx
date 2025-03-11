@@ -2,7 +2,6 @@ import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
 import { memo, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
 import useExposedCoins from '@/hooks/use-exposed-coins';
@@ -13,6 +12,7 @@ import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 import { TokenPosition } from './swap-background.types';
+import { useIsFirstRender } from '@/hooks';
 
 const label = 'to';
 
@@ -26,6 +26,7 @@ const SwapBackground = memo(() => {
   const { setValue, getValues } = useFormContext();
   const network = useNetwork<Network>();
   const { exposedCoins } = useExposedCoins();
+  const isFirstRender = useIsFirstRender();
 
   const [tokenPositions, setTokenPositions] = useState<{
     leftCoins: Array<{ token: TokenWithPrice; position: TokenPosition }>;
@@ -64,10 +65,24 @@ const SwapBackground = memo(() => {
   };
 
   useEffect(() => {
-    if (exposedCoins) {
+    if (exposedCoins && exposedCoins.length > 0) {
       const coins = exposedCoins.slice(0, MAX_COINS);
-      const positions = calculatePositions(coins);
-      setTokenPositions(positions);
+
+      if (isFirstRender) {
+        const positions = calculatePositions(coins);
+        setTokenPositions(positions);
+      } else {
+        setTokenPositions((prev) => ({
+          leftCoins: prev.leftCoins.map((item, index) => ({
+            ...item,
+            token: coins[index] || item.token,
+          })),
+          rightCoins: prev.rightCoins.map((item, index) => ({
+            ...item,
+            token: coins[prev.leftCoins.length + index] || item.token,
+          })),
+        }));
+      }
     }
   }, [exposedCoins]);
 
@@ -115,7 +130,7 @@ const SwapBackground = memo(() => {
       {tokenPositions.leftCoins.map(({ token, position }) => (
         <Motion
           gap="l"
-          key={v4()}
+          key={token.type}
           display="flex"
           cursor="pointer"
           initial="initial"
@@ -186,7 +201,7 @@ const SwapBackground = memo(() => {
       {tokenPositions.rightCoins.map(({ token, position }) => (
         <Motion
           gap="l"
-          key={v4()}
+          key={token.type}
           display="flex"
           cursor="pointer"
           initial="initial"
