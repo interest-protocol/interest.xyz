@@ -35,12 +35,6 @@ const useExposedCoins = () => {
       }, [] as ReadonlyArray<TokenWithPrice>);
 
       return coinsToExpose;
-    },
-    {
-      refreshInterval: 7000,
-      revalidateOnMount: true,
-      revalidateOnFocus: false,
-      refreshWhenHidden: false,
     }
   );
 
