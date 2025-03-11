@@ -11,13 +11,13 @@ import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
-const label = 'to';
-
-const MAX_COINS = 10;
-const DISTANCE_BETWEEN_COINS = 5;
-const SIDE_MARGIN = 15;
-const TOP_MARGIN = 10;
-const RANDOM_OFFSET = 8;
+import {
+  DISTANCE_BETWEEN_COINS,
+  MAX_COINS,
+  RANDOM_OFFSET,
+  SIDE_MARGIN,
+  TOP_MARGIN,
+} from './swap-background.data';
 
 const SwapBackground = memo(() => {
   const network = useNetwork<Network>();
@@ -25,19 +25,18 @@ const SwapBackground = memo(() => {
   const { setValue, getValues } = useFormContext();
 
   const onSelect = async (metadata: AssetMetadata) => {
-    const [currentToken, opposite] = getValues([label, 'from']);
+    const [currentToken, opposite] = getValues(['to', 'from']);
 
     if (
       metadata.standard === opposite.standard &&
       metadata.symbol === opposite.symbol
-    ) {
-      setValue(label === 'to' ? 'from' : 'to', {
+    )
+      setValue('from', {
         ...currentToken,
         value: '',
       });
-    }
 
-    setValue(label, {
+    setValue('to', {
       ...metadata,
       value: '',
       usdPrice: null,

@@ -1,5 +1,5 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { RateDownSVG, RateUpSVG } from '@/components/svg';
@@ -15,10 +15,6 @@ import BottomMenuItem from './swap-top-slider-item';
 const label = 'to';
 
 const SwapTopSlider: FC = () => {
-  useEffect(() => {
-    console.log('>> rerender');
-  }, []);
-
   const { exposedCoins } = useExposedCoins();
   const { setValue, getValues } = useFormContext();
 
