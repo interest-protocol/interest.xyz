@@ -22,9 +22,6 @@ const useExposedCoins = () => {
         }
       ).then((res) => res.json());
 
-      console.log(prices);
-      console.log(savedExposedCoins);
-
       if (!prices.length) return savedExposedCoins;
 
       const coinsToExpose = TOKENS.reduce((acc, coin) => {
