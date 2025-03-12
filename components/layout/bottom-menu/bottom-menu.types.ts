@@ -3,9 +3,9 @@ import { FC } from 'react';
 import { SVGProps } from '@/components/svg/svg.types';
 
 export interface SwapBottomMenuItemProps {
+  price: string;
   symbol: string;
-  iconUri: string;
-  usdPrice: string;
+  iconUri?: string;
   onClick: () => void;
 }
 
