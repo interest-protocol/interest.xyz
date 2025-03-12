@@ -43,16 +43,16 @@ export interface PoolTokenWithMetadata extends AssetMetadata {
 export type PoolToken = PoolTokenWithMetadata;
 
 export interface IPoolForm {
-  error: string | null;
+  pool: ISrPool;
   lpCoin: PoolToken;
-  tokenSelected?: string;
   explorerLink: string;
+  error: string | null;
+  tokenSelected?: string;
   isFindingPool: boolean;
   settings: ISwapSettings;
+  isEarnPoolView?: boolean;
   tokenList: ReadonlyArray<PoolToken>;
   filterList: ReadonlyArray<FilterItemProps>;
-  pool: ISrPool;
-  isEarnPoolView?: boolean;
 }
 
 export interface FilterItemProps {

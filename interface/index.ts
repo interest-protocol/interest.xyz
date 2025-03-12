@@ -104,13 +104,14 @@ export interface Token {
   symbol: string;
 }
 
+export interface TokenPrice {
+  coin: string;
+  base?: string;
+  price: number;
+  priceChange24HoursPercentage: number;
+}
+
 export interface TokenWithPrice extends Token {
   usd: string;
   usdPrice24Change: number;
-}
-
-export interface TokenPrice {
-  coin: string;
-  price: number;
-  priceChange24HoursPercentage: number;
 }
