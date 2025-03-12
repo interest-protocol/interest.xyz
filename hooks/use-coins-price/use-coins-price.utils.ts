@@ -8,6 +8,9 @@ export const getBasedCoins =
   (client: Aptos) => async (data: ReadonlyArray<TokenPrice>) => {
     const usdCoins = data.filter(({ base }) => !base);
     const basedCoins = data.filter(({ base }) => base);
+
+    if (!basedCoins.length) return usdCoins;
+
     const bases = data.map(({ base }) => base);
     const uniqueBases = Array.from(new Set(bases));
 
