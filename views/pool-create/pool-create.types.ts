@@ -5,7 +5,6 @@ import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 export interface Token extends AssetMetadata {
   value: string;
   valueBN: BigNumber;
-  usdPrice: number | null;
 }
 
 export enum CreatePoolStep {

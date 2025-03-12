@@ -17,7 +17,6 @@ const SwapPage: NextPage = () => {
           parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
         )[0],
         value: '',
-        usdPrice: null,
         valueBN: ZERO_BIG_NUMBER,
       },
       to: {
@@ -25,7 +24,6 @@ const SwapPage: NextPage = () => {
           parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
         )[1],
         value: '',
-        usdPrice: null,
         valueBN: ZERO_BIG_NUMBER,
       },
       settings: {

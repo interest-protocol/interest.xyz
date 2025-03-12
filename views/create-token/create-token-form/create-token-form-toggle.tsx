@@ -7,7 +7,10 @@ import { ICreateTokenForm } from '../create-token.types';
 
 const FixedSupplyToggle: FC = () => {
   const { control, setValue } = useFormContext<ICreateTokenForm>();
-  const value = useWatch({ control, name: 'fixedSupply' });
+  const [supply, value] = useWatch({
+    control,
+    name: ['supply', 'fixedSupply'],
+  });
 
   return (
     <Box
@@ -26,7 +29,10 @@ const FixedSupplyToggle: FC = () => {
         <ToggleButton
           name="Fixed Supply"
           defaultValue={!!value}
-          onClick={() => setValue('fixedSupply', not(value))}
+          disabled={!Number(supply)}
+          onClick={() =>
+            !!Number(supply) && setValue('fixedSupply', not(value))
+          }
         />
       </Box>
       <Typography variant="body" size="small" color="onSurface" opacity={0.6}>

@@ -38,7 +38,6 @@ const SwapBackground = memo(() => {
     setValue('to', {
       ...metadata,
       value: '',
-      usdPrice: null,
       valueBN: ZERO_BIG_NUMBER,
     });
   };

@@ -17,7 +17,6 @@ const PoolCreatePage: NextPage = () => {
           value: '',
           symbol: '',
           decimals: 0,
-          usdPrice: null,
           type: '' as `0x${string}`,
         },
         {
@@ -25,7 +24,6 @@ const PoolCreatePage: NextPage = () => {
           value: '',
           symbol: '',
           decimals: 0,
-          usdPrice: null,
           type: '' as `0x${string}`,
         },
       ],

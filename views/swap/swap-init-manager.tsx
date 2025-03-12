@@ -13,34 +13,17 @@ import { Aggregator, ISwapSettings } from './swap.types';
 
 const SwapInitManager: FC = () => {
   const form = useFormContext();
-  const network = useNetwork<Network>();
   const { pathname } = useRouter();
+  const network = useNetwork<Network>();
 
   const settings = useReadLocalStorage<ISwapSettings>(
     `${LOCAL_STORAGE_VERSION}-movement-dex-settings`
   ) ?? { slippage: '2', aggregator: Aggregator.Interest };
 
-  const getUSDPrice = (address: string, label: 'to' | 'from') => {
-    fetch(
-      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${address}`,
-      {
-        method: 'GET',
-        headers: {
-          network: 'MOVEMENT',
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => form.setValue(`${label}.usdPrice`, data[0].price))
-      .catch(() => null);
-  };
-
   useEffect(() => {
     form.reset();
     const defaultSettings = form.getValues('settings');
     form.setValue('settings', mergeAll([defaultSettings, settings]));
-    getUSDPrice(form.getValues('from.type'), 'from');
-    getUSDPrice(form.getValues('to.type'), 'to');
     updateURL(pathname);
   }, [network]);
 

@@ -15,6 +15,7 @@ import invariant from 'tiny-invariant';
 import { RateDownSVG, RateUpSVG, WrapSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
 import { COIN_TYPE_TO_FA } from '@/constants/coins';
+import { useCoinsPrice } from '@/hooks/use-coins-price';
 import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
@@ -34,6 +35,8 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
 
   const symbol = token.symbol;
   const decimals = token.decimals;
+
+  const { data: price } = useCoinsPrice(token.type);
 
   const coin = coinsMap[token.type];
 
@@ -91,10 +94,10 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       }
       symbol={symbol}
       supportingText={
-        coin?.usdPrice
+        price?.[0].price
           ? formatDollars(
               +BigNumber(balance)
-                .times(BigNumber(coin.usdPrice))
+                .times(BigNumber(price[0].price))
                 .toNumber()
                 .toFixed(3)
             )
@@ -114,14 +117,14 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
               {symbol}
             </Box>
           </Typography>
-          {!!coin?.usdPrice24Change && (
+          {!!price?.[0].priceChange24HoursPercentage && (
             <Box
               gap="xs"
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
-              {coin.usdPrice24Change < 1 ? (
+              {price?.[0].priceChange24HoursPercentage < 1 ? (
                 <RateDownSVG
                   width="1rem"
                   height="1rem"
@@ -144,7 +147,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
                 fontSize="0.625rem"
                 lineHeight="1rem"
               >
-                {coin.usdPrice24Change}
+                {price?.[0].priceChange24HoursPercentage}
               </Typography>
             </Box>
           )}

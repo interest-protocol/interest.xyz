@@ -3,10 +3,7 @@ import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { TOKENS } from '@/constants/coins';
-import {
-  AssetMetadata,
-  AssetWithPrice,
-} from '@/lib/coins-manager/coins-manager.types';
+import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 
 import TopCoinItem from './top-coins-item';
@@ -14,9 +11,7 @@ import TopCoinItem from './top-coins-item';
 const SwapTopSlider: FC = () => {
   const { setValue, getValues } = useFormContext();
 
-  const handleTokenSelect = (token: AssetWithPrice) => onSelect(token);
-
-  const onSelect = async (metadata: AssetMetadata) => {
+  const handleTokenSelect = async (metadata: AssetMetadata) => {
     const [currentToken, opposite] = getValues(['to', 'from']);
 
     if (metadata.type == opposite.type) return;

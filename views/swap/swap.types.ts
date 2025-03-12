@@ -11,7 +11,6 @@ export interface ISwapSettings {
 export type SwapToken = AssetMetadata & {
   value: string;
   valueBN: BigNumber;
-  usdPrice: number | null;
   isFetchingSwap?: boolean;
 };
 

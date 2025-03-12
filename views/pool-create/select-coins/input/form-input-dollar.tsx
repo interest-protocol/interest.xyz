@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
+import { useCoinsPrice } from '@/hooks/use-coins-price';
 import { formatDollars } from '@/utils';
 
 import { CreatePoolForm } from '../../pool-create.types';
@@ -11,13 +12,20 @@ import { InputProps } from './input.types';
 const FormInputDollar: FC<InputProps> = ({ index }) => {
   const { control } = useFormContext<CreatePoolForm>();
 
-  const value = useWatch({ control, name: `tokens.${index}.value` });
-  const usdPrice = useWatch({ control, name: `tokens.${index}.usdPrice` });
+  const [type, value] = useWatch({
+    control,
+    name: [`tokens.${index}.type`, `tokens.${index}.value`],
+  });
+
+  const { data: prices } = useCoinsPrice(type);
 
   const usdValue =
-    usdPrice && value
+    prices && value
       ? formatDollars(
-          +BigNumber(value).times(BigNumber(usdPrice)).toNumber().toFixed(3)
+          +BigNumber(value)
+            .times(BigNumber(prices[0].price))
+            .toNumber()
+            .toFixed(3)
         )
       : '--';
 

@@ -16,12 +16,7 @@ export type AssetMetadata = {
   standard: TokenStandard;
 };
 
-export interface AssetWithPrice extends AssetMetadata {
-  usdPrice?: number;
-  usdPrice24Change?: number;
-}
-
-export interface Asset extends AssetWithPrice {
+export interface Asset extends AssetMetadata {
   balance: BigNumber;
 }
 
