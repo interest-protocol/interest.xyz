@@ -1,11 +1,9 @@
 import { GetFungibleAssetMetadataResponse } from '@aptos-labs/ts-sdk';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
-import { values } from 'ramda';
 import { type FC, useEffect, useId } from 'react';
 import useSWR from 'swr';
 
-import { PriceResponse } from '@/interface';
 import { isAptos } from '@/utils';
 
 import { useAptosClient } from '../aptos-provider/aptos-client/aptos-client.hooks';
@@ -108,42 +106,7 @@ const CoinsManager: FC = () => {
           {} as Record<string, Asset>
         );
 
-        const prices: ReadonlyArray<PriceResponse> = await Promise.all(
-          values(coins).map(({ type }) =>
-            fetch(
-              `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${type}`,
-              {
-                method: 'GET',
-                headers: {
-                  network: 'MOVEMENT',
-                },
-              }
-            )
-              .then((response) => response.json())
-              .then((data) => data[0])
-              .catch(() => null)
-          )
-        );
-
-        const coinsWithPrice = Object.entries(coins).reduce(
-          (acc, [coinKey, coinData]) => {
-            const coinPrice = prices.find(
-              (price) => price?.coin === coinData.type
-            );
-
-            return {
-              ...acc,
-              [coinKey]: {
-                ...coinData,
-                usdPrice: coinPrice?.price,
-                usdPrice24Change: coinPrice?.priceChange24HoursPercentage,
-              },
-            };
-          },
-          {}
-        );
-
-        setCoins?.(coinsWithPrice);
+        setCoins?.(coins);
       } catch (e) {
         console.warn('error: ', e);
 

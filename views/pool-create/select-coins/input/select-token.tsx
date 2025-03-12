@@ -18,9 +18,8 @@ import { CreatePoolForm } from '../../pool-create.types';
 import { InputProps } from './input.types';
 
 const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
-  const { setModal, handleClose } = useModal();
   const network = useNetwork<Network>();
-
+  const { setModal, handleClose } = useModal();
   const { control, getValues, setValue } = useFormContext<CreatePoolForm>();
 
   const currentToken = useWatch({
@@ -28,14 +27,9 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
     name: `tokens.${index}`,
   });
 
-  const type = useWatch({
-    control,
-    name: `tokens.${index}.type`,
-  });
+  const { type, symbol: currentSymbol } = currentToken;
 
-  const { symbol: currentSymbol } = currentToken;
-
-  const formatedSymbol = currentSymbol
+  const formattedSymbol = currentSymbol
     ? currentSymbol
     : !currentSymbol && type
       ? type
@@ -48,24 +42,8 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
     setValue(`tokens.${index}`, {
       ...metadata,
       value: '',
-      usdPrice: null,
       valueBN: ZERO_BIG_NUMBER,
     });
-
-    fetch(
-      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
-      {
-        method: 'GET',
-        headers: {
-          network: 'MOVEMENT',
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) =>
-        setValue(`tokens.${index}.usdPrice`, Number(data[0].price))
-      )
-      .catch(() => null);
   };
 
   const openModal = () =>
@@ -96,9 +74,9 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
         fontSize="s"
         width="100%"
         variant="tonal"
-        height={formatedSymbol === '' ? '2.5rem' : ''}
+        height={formattedSymbol === '' ? '2.5rem' : ''}
         bg={
-          currentSymbol || formatedSymbol === type
+          currentSymbol || formattedSymbol === type
             ? 'transparent'
             : 'highestContainer'
         }
@@ -127,9 +105,9 @@ const SelectToken: FC<InputProps> = ({ index, isMobile }) => {
           textOverflow="ellipsis"
           size={isMobile ? 'large' : 'small'}
         >
-          {formatedSymbol}
+          {formattedSymbol}
         </Typography>
-        {!currentSymbol && formatedSymbol !== type && (
+        {!currentSymbol && formattedSymbol !== type && (
           <ChevronRightSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
         )}
       </Button>

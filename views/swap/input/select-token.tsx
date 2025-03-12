@@ -19,22 +19,16 @@ import { InputProps } from './input.types';
 const SelectToken: FC<InputProps> = ({ label }) => {
   const network = useNetwork<Network>();
   const { setModal, handleClose } = useModal();
-
   const { setValue, control } = useFormContext();
 
-  const currentToken = useWatch({
+  const [currentToken, type, swapping, opposite] = useWatch({
     control,
-    name: label,
-  });
-
-  const type = useWatch({
-    control,
-    name: `${label}.type`,
-  });
-
-  const swapping = useWatch({
-    control,
-    name: 'swapping',
+    name: [
+      label,
+      `${label}.type`,
+      'swapping',
+      `${label === 'to' ? 'from' : 'to'}`,
+    ],
   });
 
   const { symbol: currentSymbol } = currentToken ?? {
@@ -42,12 +36,7 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     type: undefined,
   };
 
-  const opposite = useWatch({
-    control,
-    name: `${label === 'to' ? 'from' : 'to'}`,
-  });
-
-  const formatedSymbol = currentSymbol
+  const formattedSymbol = currentSymbol
     ? currentSymbol
     : !currentSymbol && type
       ? type
@@ -59,32 +48,17 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     if (
       metadata.standard === opposite.standard &&
       metadata.symbol === opposite.symbol
-    ) {
+    )
       setValue(label === 'to' ? 'from' : 'to', {
         ...currentToken,
         value: '',
       });
-    }
 
     setValue(label, {
       ...metadata,
       value: '',
-      usdPrice: null,
       valueBN: ZERO_BIG_NUMBER,
     });
-
-    fetch(
-      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
-      {
-        method: 'GET',
-        headers: {
-          network: 'MOVEMENT',
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => setValue(`${label}.usdPrice`, data[0].price))
-      .catch(() => null);
 
     if (label === 'from') {
       setValue('to.value', '');
@@ -150,7 +124,7 @@ const SelectToken: FC<InputProps> = ({ label }) => {
         width={['0px', 'auto']}
         display={[currentSymbol ? 'none' : 'block', 'block']}
       >
-        {formatedSymbol}
+        {formattedSymbol}
       </Typography>
       <ChevronDownSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
     </Button>
