@@ -9,7 +9,7 @@ const SwapBackgroundPrice: FC<{ coin: string }> = ({ coin }) => {
 
   return (
     <Typography size="small" variant="label" color="onSurface">
-      {formatDollars(price ? price[0].price : 0)}
+      {formatDollars(price?.length ? price[0].price : 0)}
     </Typography>
   );
 };

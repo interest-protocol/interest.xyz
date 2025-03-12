@@ -1,5 +1,6 @@
 import { Aptos } from '@aptos-labs/ts-sdk';
 import BigNumber from 'bignumber.js';
+import { empty } from 'ramda';
 
 import { TokenPrice } from '@/interface';
 import { FixedPointMath } from '@/lib';
@@ -33,6 +34,8 @@ export const getBasedCoins =
           {} as Record<string, number>
         )
       );
+
+    if (empty(basesPricesMap)) return usdCoins;
 
     return [
       ...usdCoins,

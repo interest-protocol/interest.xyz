@@ -21,11 +21,12 @@ const TopCoinItem: FC<{
           symbol={token.symbol}
           iconUri={token.iconUri}
           onClick={handleTokenSelect}
-          price={formatDollars(price?.[0].price ?? 0)}
+          price={formatDollars((price?.length && price[0].price) ?? 0)}
         />
       </Box>
       <Box gap="xs" display="flex" alignItems="center" justifyContent="center">
-        {!!price?.[0].priceChange24HoursPercentage &&
+        {!!price?.length &&
+        price[0].priceChange24HoursPercentage &&
         price[0].priceChange24HoursPercentage < 1 ? (
           <RateDownSVG
             width="1rem"
@@ -47,13 +48,18 @@ const TopCoinItem: FC<{
           lineHeight="1rem"
           fontSize="0.625rem"
           color={
-            price?.[0].priceChange24HoursPercentage &&
+            price?.length &&
+            price[0].priceChange24HoursPercentage &&
             price[0].priceChange24HoursPercentage < 1
               ? '#E53E3E'
               : '#16A24A'
           }
         >
-          {(price?.[0].priceChange24HoursPercentage ?? 0).toFixed(2)}%
+          {(
+            (price?.length && price[0].priceChange24HoursPercentage) ??
+            0
+          ).toFixed(2)}
+          %
         </Typography>
       </Box>
     </Box>
