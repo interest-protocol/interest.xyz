@@ -136,9 +136,11 @@ const Header: FC = () => {
           </Box>
         </Box>
       </Box>
-      <Box display={asPath === '/' ? 'block' : 'none'}>
-        <SwapTopSlider />
-      </Box>
+      {asPath === '/' && (
+        <Box display={['flex', 'flex', 'flex', 'none', 'none']}>
+          <SwapTopSlider />
+        </Box>
+      )}
     </Box>
   );
 };

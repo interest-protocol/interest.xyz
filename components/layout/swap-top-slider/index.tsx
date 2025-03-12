@@ -1,20 +1,21 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
 
 import { RateDownSVG, RateUpSVG } from '@/components/svg';
-import useExposedCoins from '@/hooks/use-exposed-coins';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
+import { SwapForm } from '@/views/swap/swap.types';
 
 import BottomMenuItem from './swap-top-slider-item';
 
 const label = 'to';
 
 const SwapTopSlider: FC = () => {
-  const { setValue, getValues } = useFormContext();
-  const { exposedCoins } = useExposedCoins();
+  const { setValue, getValues, control } = useFormContext<SwapForm>();
+  const exposedCoins = useWatch({ control, name: 'exposedCoins' });
 
   const handleTokenSelect = (token: MetadataSources) =>
     onSelect(parseToMetadata(token));
@@ -53,11 +54,29 @@ const SwapTopSlider: FC = () => {
       .catch(() => null);
   };
 
+  if (!exposedCoins.length)
+    return (
+      <Box
+        px="m"
+        gap="l"
+        width="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Box flex="1" key={index}>
+            <Skeleton width="100%" height="2rem" />
+          </Box>
+        ))}
+      </Box>
+    );
+
   return (
     <Box
       px="m"
       display={
-        exposedCoins?.length ? ['flex', 'flex', 'flex', 'none', 'none'] : 'none'
+        exposedCoins.length ? ['flex', 'flex', 'flex', 'none', 'none'] : 'none'
       }
     >
       <Box
@@ -72,14 +91,14 @@ const SwapTopSlider: FC = () => {
         scrollSnapType="x mandatory"
         WebkitBackdropFilter="blur(40px)"
       >
-        {exposedCoins?.map((token, index) => (
+        {exposedCoins.map((token, index) => (
           <Box gap="s" key={index} display="flex">
             <Box>
               <BottomMenuItem
-                usdPrice={token.usd}
                 symbol={token.symbol}
                 iconUri={token.iconUri}
                 onClick={() => handleTokenSelect(token)}
+                usdPrice={formatDollars(Number(token.usd))}
               />
             </Box>
             <Box
@@ -92,23 +111,23 @@ const SwapTopSlider: FC = () => {
                 <RateDownSVG
                   width="1rem"
                   height="1rem"
-                  maxHeight="1rem"
                   maxWidth="1rem"
+                  maxHeight="1rem"
                 />
               ) : (
                 <RateUpSVG
                   width="1rem"
                   height="1rem"
-                  maxHeight="1rem"
                   maxWidth="1rem"
+                  maxHeight="1rem"
                 />
               )}
               <Typography
                 size="large"
                 variant="label"
-                color={token.usdPrice24Change < 1 ? '#E53E3E' : '#16A24A'}
-                fontSize="0.625rem"
                 lineHeight="1rem"
+                fontSize="0.625rem"
+                color={token.usdPrice24Change < 1 ? '#E53E3E' : '#16A24A'}
               >
                 {(token.usdPrice24Change * 100).toFixed(2)}%
               </Typography>

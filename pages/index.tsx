@@ -7,6 +7,7 @@ import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 import SwapComponent from '@/views/swap';
 import { SwapForm } from '@/views/swap/swap.types';
+import SwapExposedCoinsManager from '@/views/swap/swap-exposed-coins-manager';
 import SwapInitManager from '@/views/swap/swap-init-manager';
 
 const SwapPage: NextPage = () => {
@@ -31,6 +32,7 @@ const SwapPage: NextPage = () => {
       settings: {
         slippage: '1',
       },
+      exposedCoins: [],
     },
   });
 
@@ -38,6 +40,7 @@ const SwapPage: NextPage = () => {
     <FormProvider {...form}>
       <SEO pageTitle="Trade" />
       <SwapInitManager />
+      <SwapExposedCoinsManager />
       <SwapComponent />
     </FormProvider>
   );

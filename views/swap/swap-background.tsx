@@ -1,14 +1,13 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
 import { memo } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
-import useExposedCoins from '@/hooks/use-exposed-coins';
+import { TokenWithPrice } from '@/interface';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
-import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 const label = 'to';
@@ -20,12 +19,13 @@ const TOP_MARGIN = 10;
 const RANDOM_OFFSET = 8;
 
 const SwapBackground = memo(() => {
-  const { setValue, getValues } = useFormContext();
+  const { setValue, getValues, control } = useFormContext();
   const network = useNetwork<Network>();
 
-  const { exposedCoins } = useExposedCoins();
+  const exposedCoins = useWatch({ control, name: 'exposedCoins' });
 
-  const onSelect = async (metadata: AssetMetadata) => {
+  const onSelect = async (token: TokenWithPrice) => {
+    const metadata = parseToMetadata(token as MetadataSources);
     const [currentToken, opposite] = getValues([label, 'from']);
 
     if (
@@ -41,27 +41,14 @@ const SwapBackground = memo(() => {
     setValue(label, {
       ...metadata,
       value: '',
-      usdPrice: null,
+      usdPrice: token.usd,
       valueBN: ZERO_BIG_NUMBER,
     });
-
-    fetch(
-      `https://rates-api-staging.up.railway.app/api/fetch-quote?coins=${metadata.type}`,
-      {
-        method: 'GET',
-        headers: {
-          network: 'MOVEMENT',
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => setValue(`${label}.usdPrice`, data[0].price))
-      .catch(() => null);
   };
 
   const coins = exposedCoins?.slice(0, MAX_COINS) ?? [];
 
-  const splitCoinsRandomly = (coins: typeof exposedCoins) => {
+  const splitCoinsRandomly = (coins: TokenWithPrice[]) => {
     const shuffledCoins = [...(coins ?? [])].sort(() => Math.random() - 0.5);
     const half = Math.ceil(shuffledCoins.length / 2);
     const leftCoins = shuffledCoins.slice(0, half);
@@ -103,7 +90,7 @@ const SwapBackground = memo(() => {
           animate={{ y: [-5, 5] }}
           top={calculatePosition(index, 'left').top}
           left={calculatePosition(index, 'left').left}
-          onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
+          onClick={() => onSelect(token)}
           transition={{
             duration: 2,
             repeat: Infinity,
@@ -157,7 +144,7 @@ const SwapBackground = memo(() => {
               {token.symbol}
             </Typography>
             <Typography size="small" variant="label" color="onSurface">
-              {token.usd}
+              {formatDollars(Number(token.usd))}
             </Typography>
           </Motion>
         </Motion>
@@ -174,7 +161,7 @@ const SwapBackground = memo(() => {
           animate={{ y: [-5, 5] }}
           top={calculatePosition(index, 'right').top}
           left={calculatePosition(index, 'right').left}
-          onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
+          onClick={() => onSelect(token)}
           transition={{
             duration: 2,
             repeat: Infinity,
@@ -228,7 +215,7 @@ const SwapBackground = memo(() => {
               {token.symbol}
             </Typography>
             <Typography size="small" variant="label" color="onSurface">
-              {token.usd}
+              {formatDollars(Number(token.usd))}
             </Typography>
           </Motion>
         </Motion>

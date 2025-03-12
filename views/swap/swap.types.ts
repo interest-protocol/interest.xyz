@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 
 import { SVGProps } from '@/components/svg/svg.types';
+import { TokenWithPrice } from '@/interface';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 export interface ISwapSettings {
@@ -39,6 +40,7 @@ export interface SwapForm {
   error?: string | null;
   executionTime: string;
   settings: ISwapSettings;
+  exposedCoins: ReadonlyArray<TokenWithPrice>;
   path: ReadonlyArray<ReadonlyArray<SwapPath>>;
 }
 
