@@ -36,10 +36,11 @@ export const getBasedCoins =
       ...basedCoins.map((coin, index) => ({
         ...coin,
         price:
+          basesPricesMap[coin.base!] /
           FixedPointMath.toNumber(
             BigNumber(coin.price),
             basedCoinsMetadata[index].decimals
-          ) * basesPricesMap[coin.base!],
+          ),
       })),
     ];
   };
