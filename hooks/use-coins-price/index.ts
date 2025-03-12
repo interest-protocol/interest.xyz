@@ -9,7 +9,7 @@ export const useCoinsPrice = (coins?: string | ReadonlyArray<string>) => {
   const client = useAptosClient();
 
   return useSWR<ReadonlyArray<TokenPrice> | null>(['prices', coins], () =>
-    !coins
+    !coins?.length
       ? null
       : fetch(
           `https://rates-api-staging.up.railway.app/api/fetch-quote?${Array.isArray(coins) ? coins.map((coin) => `coins=${coin}`).join('&') : `coins=${coins}`}`,

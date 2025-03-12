@@ -19,7 +19,7 @@ const AmountInDollar: FC<InputProps> = ({ label }) => {
 
   const { data: prices } = useCoinsPrice(type);
 
-  if (!(prices && value)) return '--';
+  if (!(prices?.length && value)) return '--';
 
   return (
     <Box display="flex" gap="s" alignItems="center" flexWrap="wrap">

@@ -94,7 +94,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       }
       symbol={symbol}
       supportingText={
-        price?.[0].price
+        price?.length && price[0].price
           ? formatDollars(
               +BigNumber(balance)
                 .times(BigNumber(price[0].price))
@@ -117,14 +117,14 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
               {symbol}
             </Box>
           </Typography>
-          {!!price?.[0].priceChange24HoursPercentage && (
+          {!!price?.length && price[0]?.priceChange24HoursPercentage && (
             <Box
               gap="xs"
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
-              {price?.[0].priceChange24HoursPercentage < 1 ? (
+              {price?.[0]?.priceChange24HoursPercentage < 1 ? (
                 <RateDownSVG
                   width="1rem"
                   height="1rem"
@@ -147,7 +147,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
                 fontSize="0.625rem"
                 lineHeight="1rem"
               >
-                {price?.[0].priceChange24HoursPercentage}
+                {(price?.length && price[0]?.priceChange24HoursPercentage) ?? 0}
               </Typography>
             </Box>
           )}
