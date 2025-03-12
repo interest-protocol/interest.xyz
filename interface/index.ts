@@ -106,6 +106,7 @@ export interface Token {
 
 export interface TokenPrice {
   coin: string;
+  base?: string;
   price: number;
   priceChange24HoursPercentage: number;
 }

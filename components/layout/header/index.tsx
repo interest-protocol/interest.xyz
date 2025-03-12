@@ -10,7 +10,7 @@ import { Routes, RoutesEnum } from '@/constants';
 import useEventListener from '@/hooks/use-event-listener';
 
 import { SIDEBAR_ITEMS } from '../sidebar/sidebar.data';
-import SwapTopSlider from '../swap-top-slider';
+import SwapTopSlider from '../top-coins-slider';
 import LogoWrapper from './logo-wrapper';
 
 const Header: FC = () => {

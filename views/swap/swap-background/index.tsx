@@ -1,27 +1,26 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
-import { memo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
-import useExposedCoins from '@/hooks/use-exposed-coins';
+import { TOKENS } from '@/constants/coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { MetadataSources } from '@/utils/coin/coin.types';
 
 import {
   DISTANCE_BETWEEN_COINS,
-  MAX_COINS,
   RANDOM_OFFSET,
   SIDE_MARGIN,
   TOP_MARGIN,
 } from './swap-background.data';
+import SwapBackgroundPrice from './swap-background-price';
 
 const SwapBackground = memo(() => {
   const network = useNetwork<Network>();
-  const { exposedCoins } = useExposedCoins();
   const { setValue, getValues } = useFormContext();
 
   const onSelect = async (metadata: AssetMetadata) => {
@@ -44,19 +43,15 @@ const SwapBackground = memo(() => {
     });
   };
 
-  const coins = exposedCoins?.slice(0, MAX_COINS) ?? [];
-
-  const splitCoinsRandomly = (coins: typeof exposedCoins) => {
-    const shuffledCoins = [...(coins ?? [])].sort(() => Math.random() - 0.5);
+  const { leftCoins, rightCoins } = useMemo(() => {
+    const shuffledCoins = Array.from(TOKENS).sort(() => Math.random() - 0.5);
     const half = Math.ceil(shuffledCoins.length / 2);
     const leftCoins = shuffledCoins.slice(0, half);
     const rightCoins = shuffledCoins.slice(half);
     return { leftCoins, rightCoins };
-  };
+  }, []);
 
-  const { leftCoins, rightCoins } = splitCoinsRandomly(coins);
-
-  const calculatePosition = (index: number, side: 'left' | 'right') => {
+  const getPosition = useCallback((index: number, side: 'left' | 'right') => {
     const baseTop = TOP_MARGIN + index * DISTANCE_BETWEEN_COINS * 3;
     const baseLeft = side === 'left' ? SIDE_MARGIN : 100 - SIDE_MARGIN;
 
@@ -67,7 +62,7 @@ const SwapBackground = memo(() => {
       top: `${baseTop + randomTopOffset}vh`,
       left: `${baseLeft + randomLeftOffset}vw`,
     };
-  };
+  }, []);
 
   return (
     <Box
@@ -86,8 +81,8 @@ const SwapBackground = memo(() => {
           whileHover="hover"
           position="absolute"
           animate={{ y: [-5, 5] }}
-          top={calculatePosition(index, 'left').top}
-          left={calculatePosition(index, 'left').left}
+          top={getPosition(index, 'left').top}
+          left={getPosition(index, 'left').left}
           onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
           transition={{
             duration: 2,
@@ -141,9 +136,9 @@ const SwapBackground = memo(() => {
             >
               {token.symbol}
             </Typography>
-            <Typography size="small" variant="label" color="onSurface">
-              {formatDollars(token.usdPrice!)}
-            </Typography>
+            <SwapBackgroundPrice
+              coin={token.type || token.address.toString()}
+            />
           </Motion>
         </Motion>
       ))}
@@ -157,8 +152,8 @@ const SwapBackground = memo(() => {
           whileHover="hover"
           position="absolute"
           animate={{ y: [-5, 5] }}
-          top={calculatePosition(index, 'right').top}
-          left={calculatePosition(index, 'right').left}
+          top={getPosition(index, 'right').top}
+          left={getPosition(index, 'right').left}
           onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
           transition={{
             duration: 2,
@@ -212,9 +207,9 @@ const SwapBackground = memo(() => {
             >
               {token.symbol}
             </Typography>
-            <Typography size="small" variant="label" color="onSurface">
-              {formatDollars(token.usdPrice!)}
-            </Typography>
+            <SwapBackgroundPrice
+              coin={token.type || token.address.toString()}
+            />
           </Motion>
         </Motion>
       ))}
