@@ -53,7 +53,7 @@ const TopCoinItem: FC<{
               : '#16A24A'
           }
         >
-          {((price?.[0].priceChange24HoursPercentage ?? 0) * 100).toFixed(2)}%
+          {(price?.[0].priceChange24HoursPercentage ?? 0).toFixed(2)}%
         </Typography>
       </Box>
     </Box>
