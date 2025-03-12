@@ -42,7 +42,7 @@ const TokenIcon: FC<TokenIconProps> = ({
     }
   );
 
-  const chain = symbol.split('.')[1];
+  const chain = symbol?.split('.')[1];
   const ChainIcon = CHAIN_ICON[chain];
 
   if (loadError)
