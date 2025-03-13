@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { v4 } from 'uuid';
 
 import { FixedPointMath } from '@/lib';
+import { formatMoney } from '@/utils';
 
 import { usePoolDetails } from '../pool-details.context';
 import Accordion from './components/accordion';
@@ -49,6 +50,21 @@ const PoolDetail = () => {
             popupInfo={popupInfo}
             content={infoData[index]}
             isCopyClipBoard={isCopyClipBoard}
+          />
+        ))}
+      </Accordion>
+      <Accordion title="Live balance">
+        {[
+          { ...pool.metadataX, balance: pool.balanceX },
+          { ...pool.metadataY, balance: pool.balanceY },
+        ].map(({ name, symbol, decimals, balance }) => (
+          <ItemStandard
+            key={v4()}
+            label={name}
+            loading={loading}
+            content={`${formatMoney(
+              FixedPointMath.toNumber(BigNumber(String(balance)), decimals)
+            )} ${symbol}`}
           />
         ))}
       </Accordion>

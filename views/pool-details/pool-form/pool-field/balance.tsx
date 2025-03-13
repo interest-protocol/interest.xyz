@@ -24,7 +24,8 @@ const Balance: FC<NameProps> = ({ name }) => {
   const token = useWatch({ control, name });
 
   const balance =
-    coinsMap[normalizeSuiAddress(token.type)]?.balance ?? ZERO_BIG_NUMBER;
+    (!!token.type && coinsMap[normalizeSuiAddress(token.type)]?.balance) ||
+    ZERO_BIG_NUMBER;
 
   const handleMax = () => {
     setValue(`lpCoin.locked`, false);

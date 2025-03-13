@@ -37,6 +37,8 @@ const PoolDetails: FC = () => {
 
   const { pool, loading } = usePoolDetails();
 
+  console.log({ pool });
+
   return (
     <Layout>
       <Box>

@@ -15,7 +15,6 @@ import { useDialog } from '@/hooks';
 import { useInterestDex } from '@/hooks/use-interest-dex';
 import { FixedPointMath } from '@/lib';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
-import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
 import { CreatePoolForm, Token } from '../pool-create.types';
@@ -24,7 +23,6 @@ import { logCreatePool } from '../pool-create.utils';
 const PoolSummaryButton: FC = () => {
   const dex = useInterestDex();
   const { push } = useRouter();
-  const network = useNetwork();
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const { account, signAndSubmitTransaction } = useAptosWallet();
@@ -133,20 +131,6 @@ const PoolSummaryButton: FC = () => {
               event.type.endsWith('::events::AddLiquidity')
             )!.data.pool
         );
-
-      const body = {
-        network,
-        poolId: pool?.toString(),
-      };
-
-      fetch(
-        'https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm/',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        }
-      );
 
       push(`${Routes[RoutesEnum.PoolDetails]}?address=${pool?.toString()}`);
     } catch (e) {
