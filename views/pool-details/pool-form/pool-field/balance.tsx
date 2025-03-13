@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import {
   Button,
   ProgressIndicator,
@@ -22,7 +23,9 @@ const Balance: FC<NameProps> = ({ name }) => {
 
   const token = useWatch({ control, name });
 
-  const balance = coinsMap[token.type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance =
+    (!!token.type && coinsMap[normalizeSuiAddress(token.type)]?.balance) ||
+    ZERO_BIG_NUMBER;
 
   const handleMax = () => {
     setValue(`lpCoin.locked`, false);

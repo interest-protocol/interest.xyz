@@ -5,6 +5,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { usePools } from '@/hooks/use-pools';
+import { ISrPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
 import PoolCard from './pool-card';
@@ -20,19 +21,16 @@ import {
 
 const Pools: FC = () => {
   const [page, setPage] = useState(1);
-  const [pools, setPools] = useState([[]]);
   const { control, getValues } = useFormContext<IPoolForm>();
-
-  const filterProps = useWatch({
-    control,
-    name: 'filterList',
-  });
-  const isFindingPool = useWatch({
-    control,
-    name: 'isFindingPool',
-  });
+  const [pools, setPools] = useState<ReadonlyArray<ReadonlyArray<ISrPool>>>([
+    [],
+  ]);
 
   const tokenList = getValues('tokenList');
+  const [filterProps, isFindingPool] = useWatch({
+    control,
+    name: ['filterList', 'isFindingPool'],
+  });
 
   const { data, isLoading: arePoolsLoading } = usePools(
     page,

@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,
@@ -36,7 +37,8 @@ const Balance: FC<InputProps> = ({ index }) => {
       </Box>
     );
 
-  const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance =
+    coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER;
 
   const handleMax = () => {
     const value = balance.minus(

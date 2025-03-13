@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import BigNumber from 'bignumber.js';
 import { FC, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -18,7 +19,7 @@ export const SwapErrorManager: FC<SwapMessagesProps> = ({ hasNoMarket }) => {
   const swapping = useWatch({ control, name: 'swapping' });
   const error = useWatch({ control, name: 'error' });
 
-  const coin = coinsMap[from?.type];
+  const coin = coinsMap[normalizeSuiAddress(from?.type)];
 
   const balance = FixedPointMath.toNumber(
     coin?.balance ?? ZERO_BIG_NUMBER,
@@ -28,21 +29,25 @@ export const SwapErrorManager: FC<SwapMessagesProps> = ({ hasNoMarket }) => {
   const valueIn = useWatch({ control, name: 'from.value' });
 
   const isGreaterThanBalance = useMemo(() => {
-    if (!from || !coinsMap[from.type]) return false;
+    if (!from || !coinsMap[normalizeSuiAddress(from.type)]) return false;
 
     const fromValueBN = FixedPointMath.toBigNumber(
       from.value ?? '0',
       from.decimals ?? 0
     ).decimalPlaces(0, BigNumber.ROUND_DOWN);
 
-    return fromValueBN.gt(BigNumber(coinsMap[from.type].balance));
+    return fromValueBN.gt(
+      BigNumber(coinsMap[normalizeSuiAddress(from.type)].balance)
+    );
   }, [from, coinsMap]);
 
   const hasAtLeastOneMove = useMemo(() => {
     if (!isAptos(from?.type)) return false;
 
     const balanceMinusFee =
-      coinsMap[from.type]?.balance.minus(BigNumber(1000000)) ?? ZERO_BIG_NUMBER;
+      coinsMap[normalizeSuiAddress(from.type)]?.balance.minus(
+        BigNumber(1000000)
+      ) ?? ZERO_BIG_NUMBER;
     const fromValue = Number(from?.value ?? '0');
 
     return FixedPointMath.toNumber(balanceMinusFee, from.decimals) < fromValue;

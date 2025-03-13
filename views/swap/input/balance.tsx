@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,
@@ -45,7 +46,8 @@ const Balance: FC<InputProps> = ({ label }) => {
       </Box>
     );
 
-  const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance =
+    coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER;
 
   const handleMax = () => {
     if (label === 'to') return;
@@ -135,7 +137,7 @@ const Balance: FC<InputProps> = ({ label }) => {
           ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
           : '0'}
       </Typography>
-      {!coinsMap[type]?.balance && loading && (
+      {!coinsMap[normalizeSuiAddress(type)]?.balance && loading && (
         <Box
           mx="xs"
           mt="-1.2rem"

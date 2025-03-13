@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
@@ -13,7 +14,9 @@ const OperationEarnCardBalance: FC<Pick<OperationEarnCardProps, 'token'>> = ({
 }) => {
   const { coinsMap } = useCoins();
 
-  const balance = coinsMap[token.type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance =
+    coinsMap[normalizeSuiAddress(token.type)]?.balance ?? ZERO_BIG_NUMBER;
+
   return (
     <>
       <Box color="onSurface" display="flex" gap="xs">

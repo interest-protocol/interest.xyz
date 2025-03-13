@@ -1,4 +1,8 @@
-import { FA_ADDRESSES, Network } from '@interest-protocol/interest-aptos-v2';
+import {
+  FA_ADDRESSES,
+  Network,
+  normalizeSuiAddress,
+} from '@interest-protocol/interest-aptos-v2';
 import {
   Button,
   ProgressIndicator,
@@ -17,7 +21,8 @@ const QuoteBalance: FC = () => {
   const { setValue } = useFormContext<ICreateTokenForm>();
 
   const type = FA_ADDRESSES[Network.MovementMainnet].MOVE.toString();
-  const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance =
+    coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER;
 
   const handleMax = () => {
     const value = balance.minus(FixedPointMath.toBigNumber(1));
