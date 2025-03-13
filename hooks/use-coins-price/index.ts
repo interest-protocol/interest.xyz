@@ -12,7 +12,7 @@ export const useCoinsPrice = (coins?: string | ReadonlyArray<string>) => {
     !coins?.length
       ? null
       : fetch(
-          `https://rates-api-staging.up.railway.app/api/fetch-quote?${Array.isArray(coins) ? coins.map((coin) => `coins=${coin}`).join('&') : `coins=${coins}`}`,
+          `https://rates-api-staging.up.railway.app/api/fetch-quote?${Array.isArray(coins) ? coins.map((coin) => `coins=${String(coin)}`).join('&') : `coins=${String(coins)}`}`,
           { headers: { network: 'MOVEMENT', cache: 'force-cache' } }
         )
           .then((response) => response.json())
