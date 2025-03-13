@@ -24,7 +24,7 @@ export const getBasedCoins =
     );
 
     const basesPricesMap = await fetch(
-      `https://rates-api-staging.up.railway.app/api/fetch-quote?${uniqueBases.map((coin) => `coins=${String(coin)}`).join('&')}`,
+      `https://api.staging.interestlabs.io/v1/rates?${uniqueBases.map((coin) => `coins=${String(coin)}`).join('&')}`,
       { headers: { network: 'MOVEMENT', cache: 'force-cache' } }
     )
       .then((response) => response.json())
