@@ -18,7 +18,7 @@ const CreateTokenPage: NextPage = () => {
       decimals: 8,
       fixedSupply: true,
       pool: { active: true },
-      supply: 100_000_000_000,
+      supply: 1_000_000_000_000,
     },
   });
 
