@@ -1,31 +1,21 @@
 import { Box } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import Link from 'next/link';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { Routes, RoutesEnum } from '@/constants';
+import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { FixedPointMath } from '@/lib';
 
 import { POOL_DATA } from '../pool.data';
-import { LINES } from './pool-card.data';
 import { FormFilterValue, PoolCardProps } from './pool-card.types';
 import PoolCardHeader from './pool-card-header';
 import PoolCardInfo from './pool-card-info';
 import PoolCardTrade from './pool-card-trade';
 
 const PoolCard: FC<PoolCardProps> = ({ pool }) => {
-  const [poolData, setPoolData] = useState<ReadonlyArray<string>>([
-    '0.3%',
-    'N/A',
-  ]);
-
-  useEffect(() => {
-    setPoolData((data) => [
-      data[0],
-      `${FixedPointMath.toNumber(BigNumber(String(pool.bidLiquidity)), pool.metadata.pool.decimals)}`,
-    ]);
-  }, []);
+  const { pool: data } = useSrAmmPool(pool.poolAddress.toString());
 
   return (
     <Link
@@ -67,14 +57,28 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
           coins={pool ? [pool.metadata.x, pool.metadata.y] : []}
         />
         <Box px="m" py="xs" bg="surface" borderRadius="1rem">
-          {LINES.map((line, index) => (
-            <PoolCardTrade
-              {...line}
-              key={v4()}
-              index={index}
-              amount={poolData[index] ?? 'N/A'}
-            />
-          ))}
+          <PoolCardTrade
+            noBorder
+            amount="0.3%"
+            description="Fee"
+            tooltipInfo="Trade fee in percentage"
+          />
+          <PoolCardTrade
+            tooltipInfo={`${data?.metadataX.symbol} reserves`}
+            description={data?.metadataX.symbol ?? 'Balance X'}
+            amount={`${FixedPointMath.toNumber(
+              BigNumber(data?.balanceX.toString() ?? 0),
+              data?.metadataX.decimals
+            )}`}
+          />
+          <PoolCardTrade
+            tooltipInfo={`${data?.metadataY.symbol} reserves`}
+            description={data?.metadataY.symbol ?? 'Balance Y'}
+            amount={`${FixedPointMath.toNumber(
+              BigNumber(data?.balanceY.toString() ?? 0),
+              data?.metadataY.decimals
+            )}`}
+          />
         </Box>
       </Box>
     </Link>

@@ -6,9 +6,9 @@ import { ExclamationCircleSVG, QuestionCircleSVG } from '@/components/svg';
 import { PoolCardTradeProps } from './pool-card.types';
 
 const PoolCardTrade: FC<PoolCardTradeProps> = ({
-  index,
   amount,
   isInfo,
+  noBorder,
   tooltipInfo,
   description,
 }) => (
@@ -17,7 +17,7 @@ const PoolCardTrade: FC<PoolCardTradeProps> = ({
     display="flex"
     borderTop="1px solid"
     justifyContent="space-between"
-    borderColor={index ? 'outlineVariant' : 'transparent'}
+    borderColor={noBorder ? 'transparent' : 'outlineVariant'}
   >
     <Typography
       size="medium"

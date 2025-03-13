@@ -21,8 +21,8 @@ export interface PoolCardTokenInfoProps {
 }
 
 export interface PoolCardTradeProps {
-  index: number;
   isInfo?: boolean;
+  noBorder?: boolean;
   amount: ReactNode;
   description: string;
   tooltipInfo: string;
