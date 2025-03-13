@@ -3,8 +3,8 @@ import useSWR from 'swr';
 
 import { ISrPool } from '@/interface';
 
-export const usePools = (page: number = 1, findQuery = {}) => {
-  return useSWR(
+export const usePools = (page: number = 1, findQuery = {}) =>
+  useSWR(
     `https://aptos-pool-indexer-production.up.railway.app/api/pool/sr-amm?page=${page}&q=${JSON.stringify(findQuery)}&network=${Network.MovementMainnet}&limit=30`,
     async () => {
       const {
@@ -34,4 +34,3 @@ export const usePools = (page: number = 1, findQuery = {}) => {
       refreshWhenHidden: false,
     }
   );
-};
