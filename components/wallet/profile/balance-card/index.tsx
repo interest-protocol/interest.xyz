@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
@@ -31,9 +32,11 @@ const BalanceCard: FC = () => {
 
   const balance = defaultCoins.reduce(
     (acc, { type }) =>
-      coinsMap[type]?.balance.isZero()
+      coinsMap[normalizeSuiAddress(type)]?.balance.isZero()
         ? acc
-        : acc.plus(coinsMap[type]?.balance ?? ZERO_BIG_NUMBER),
+        : acc.plus(
+            coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER
+          ),
     ZERO_BIG_NUMBER
   );
 

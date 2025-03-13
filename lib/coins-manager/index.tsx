@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { type FC, useEffect, useId } from 'react';
@@ -39,7 +40,7 @@ const CoinsManager: FC = () => {
 
             return {
               ...acc,
-              [asset_type]: {
+              [normalizeSuiAddress(asset_type)]: {
                 ...parseToMetadata(metadata),
                 balance: BigNumber(amount),
               },

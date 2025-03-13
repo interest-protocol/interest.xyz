@@ -1,5 +1,8 @@
 import { InterestDex } from '@interest-protocol/aptos-move-dex';
-import { Network } from '@interest-protocol/interest-aptos-v2';
+import {
+  Network,
+  normalizeSuiAddress,
+} from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,
@@ -38,7 +41,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
 
   const { data: price } = useCoinsPrice(token.type);
 
-  const coin = coinsMap[token.type];
+  const coin = coinsMap[normalizeSuiAddress(token.type)];
 
   const balance = FixedPointMath.toNumber(
     coin?.balance ?? ZERO_BIG_NUMBER,

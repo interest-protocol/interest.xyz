@@ -1,4 +1,7 @@
-import { FA_ADDRESSES } from '@interest-protocol/interest-aptos-v2';
+import {
+  FA_ADDRESSES,
+  normalizeSuiAddress,
+} from '@interest-protocol/interest-aptos-v2';
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
@@ -17,7 +20,8 @@ const InputQuoteMaxButton: FC = () => {
 
   const type = FA_ADDRESSES[Network.MovementMainnet].MOVE.toString();
 
-  const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance =
+    coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER;
 
   const handleMax = (percentage: number) => {
     const value = percentage

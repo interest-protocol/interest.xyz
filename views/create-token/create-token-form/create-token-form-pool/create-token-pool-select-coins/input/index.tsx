@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Box } from '@interest-protocol/ui-kit';
 import { ChangeEvent, FC, useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -32,7 +33,9 @@ const Input: FC<InputProps> = ({ label }) => {
   const type = MOVE.address.toString();
   const balance =
     label == 'quote'
-      ? FixedPointMath.toNumber(coinsMap[type]?.balance ?? ZERO_BIG_NUMBER)
+      ? FixedPointMath.toNumber(
+          coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER
+        )
       : getValues('supply');
 
   const handleSetMobile = useCallback(() => {

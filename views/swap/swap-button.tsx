@@ -1,4 +1,7 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
+import {
+  Network,
+  normalizeSuiAddress,
+} from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useState } from 'react';
@@ -32,7 +35,7 @@ const SwapButton = () => {
   const valueOut = useWatch({ control, name: 'to.value' });
   const valueIn = useWatch({ control, name: 'from.value' });
 
-  const coin = coinsMap[from?.type];
+  const coin = coinsMap[normalizeSuiAddress(from?.type)];
 
   const balance = FixedPointMath.toNumber(
     coin?.balance ?? ZERO_BIG_NUMBER,

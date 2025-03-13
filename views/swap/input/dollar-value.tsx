@@ -19,6 +19,8 @@ const AmountInDollar: FC<InputProps> = ({ label }) => {
 
   const { data: prices } = useCoinsPrice(type);
 
+  console.log({ label, type, prices });
+
   if (!(prices?.length && value)) return '--';
 
   return (
