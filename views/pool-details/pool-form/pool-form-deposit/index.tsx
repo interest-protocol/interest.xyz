@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { IPoolForm } from '@/views/pools/pools.types';
-import ManageSlippage from '@/views/swap/manage-slippage';
 
 import PoolField from '../pool-field';
 import { PoolFormProps } from '../pool-field/pool-field.types';
@@ -27,14 +26,6 @@ const PoolDeposit: FC<PoolFormProps> = ({ poolOptionView }) => {
         ))}
       </Box>
       <PoolReceiveSection />
-      <Box>
-        <Typography variant="body" size="large" mb="m">
-          Manage your slippage
-        </Typography>
-        <Box bg="lowestContainer" borderRadius="xs">
-          <ManageSlippage />
-        </Box>
-      </Box>
       <DepositManager />
       <PoolPreviewFormDepositButton />
     </>

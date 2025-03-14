@@ -18,10 +18,9 @@ import { PoolFieldsProps } from './pool-field.types';
 import PoolFieldManager from './pool-field-manager';
 
 const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
+  const { loading } = usePoolDetails();
   const network = useNetwork<Network>();
   const { register, setValue, getValues } = useFormContext<IPoolForm>();
-
-  const { loading } = usePoolDetails();
 
   const isDeposit = poolOptionView === PoolOption.Deposit;
 

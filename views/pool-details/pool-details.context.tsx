@@ -1,11 +1,6 @@
-import {
-  createContext,
-  FC,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-} from 'react';
+import { createContext, FC, PropsWithChildren, useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
+import useSWR from 'swr';
 
 import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { SdkSrAmmConfig, SrAmmPoolWithMetadata } from '@/interface';
@@ -34,10 +29,12 @@ export const PoolDetailsProvider: FC<
   PropsWithChildren<PoolDetailsProviderProps>
 > = ({ address, children }) => {
   const { Provider } = poolDetailsContext;
+  const { pool, config, loading, error } = useSrAmmPool(address);
   const { setValue, getValues } = useFormContext<IPoolForm>();
-  const { pool, config, loading } = useSrAmmPool(address);
 
-  useEffect(() => {
+  console.log({ error, pool, loading });
+
+  useSWR([PoolDetailsProvider.name, pool?.poolAddress], async () => {
     if (pool) {
       setValue(
         'tokenList',
@@ -51,7 +48,7 @@ export const PoolDetailsProvider: FC<
         ...pool.metadata,
       });
     }
-  }, [pool]);
+  });
 
   return <Provider value={{ loading, pool, config }}>{children}</Provider>;
 };

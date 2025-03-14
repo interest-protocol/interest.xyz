@@ -8,18 +8,20 @@ import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
+import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { isAptos, ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
-import { usePoolDetails } from '../../pool-details.context';
 import { NameProps } from './pool-field.types';
 
 const Balance: FC<NameProps> = ({ name }) => {
   const { coinsMap, loading } = useCoins();
-  const { setValue, control } = useFormContext<IPoolForm>();
-  const { loading: loadingPoolsDetails } = usePoolDetails();
+  const { setValue, control, getValues } = useFormContext<IPoolForm>();
+  const { loading: loadingPoolsDetails } = useSrAmmPool(
+    getValues('pool.poolAddress')
+  );
 
   const token = useWatch({ control, name });
 

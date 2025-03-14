@@ -8,11 +8,10 @@ import { IPoolForm } from '@/views/pools/pools.types';
 import { usePoolDetails } from '../../pool-details.context';
 
 const PoolFormDepositReceive: FC = () => {
+  const { loading } = usePoolDetails();
   const { control } = useFormContext<IPoolForm>();
   const value = useWatch({ control, name: 'lpCoin.value' });
   const symbol = useWatch({ control, name: 'lpCoin.symbol' });
-
-  const { loading } = usePoolDetails();
 
   return (
     <Box>

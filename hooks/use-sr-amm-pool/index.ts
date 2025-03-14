@@ -1,47 +1,50 @@
-import { AccountAddress } from '@aptos-labs/ts-sdk';
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
+import { toPairs, values } from 'ramda';
 import useSWR from 'swr';
 
 import { SrAmmPoolWithMetadata } from '@/interface';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
-import { getCoinMetadata, parseToMetadata } from '@/utils';
+import { getCoinsMetadataFromAPI, parseToMetadata } from '@/utils';
 
 import { useInterestDex } from '../use-interest-dex';
+import useSrAmmPoolConfig from '../use-sr-pool-config';
 
 type MetadataKeys = 'metadata' | 'metadataY' | 'metadataX';
 
-const useSrAmmPool = (address: string) => {
+const useSrAmmPool = (address: string, withMetadata = true) => {
   const dex = useInterestDex();
-  const client = useAptosClient();
 
-  const { data: config } = useSWR([useSrAmmPool.name, dex.getConfig.name], () =>
-    dex.getConfig()
-  );
+  const { config } = useSrAmmPoolConfig();
 
   const {
     data: pool,
     isLoading: loading,
     ...rest
-  } = useSWR([useSrAmmPool.name], async () => {
+  } = useSWR([useSrAmmPool.name, address, withMetadata], async () => {
     const srPool = await dex.getPool(address);
 
     const newPool = srPool as unknown as SrAmmPoolWithMetadata;
 
-    const list: ReadonlyArray<[MetadataKeys, AccountAddress]> = [
-      ['metadata', srPool.poolAddress],
-      ['metadataX', srPool.metadataX],
-      ['metadataY', srPool.metadataY],
-    ];
+    if (!withMetadata) return newPool;
 
-    for (const [key, address] of list) {
-      const data = await getCoinMetadata(address.toString(), client);
+    const metadataAddresses: Record<MetadataKeys, string> = {
+      metadata: normalizeSuiAddress(srPool.poolAddress.toString()),
+      metadataX: normalizeSuiAddress(srPool.metadataX.toString()),
+      metadataY: normalizeSuiAddress(srPool.metadataY.toString()),
+    };
 
-      newPool[key] = parseToMetadata(data);
-    }
+    const assetsMetadata = await getCoinsMetadataFromAPI(
+      values(metadataAddresses)
+    );
+
+    for (const [key, address] of toPairs(metadataAddresses))
+      newPool[key] = parseToMetadata(
+        assetsMetadata.find(({ type }) => type === address)!
+      );
 
     return newPool;
   });
 
-  return { loading, pool, config, ...rest };
+  return { loading, config, pool, ...rest };
 };
 
 export default useSrAmmPool;

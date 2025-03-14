@@ -10,6 +10,7 @@ import { NameProps } from './pool-field.types';
 
 const PoolFieldManager: FC<NameProps> = ({ name }) => {
   const { pool } = usePoolDetails();
+
   const { control, setValue, getValues } = useFormContext<IPoolForm>();
 
   const amount = useWatch({ control, name: `${name}.value` });
