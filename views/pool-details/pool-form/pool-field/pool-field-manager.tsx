@@ -1,17 +1,15 @@
 import BigNumber from 'bignumber.js';
-import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { FixedPointMath } from '@/lib';
 import { IPoolForm } from '@/views/pools/pools.types';
 
+import { usePoolDetails } from '../../pool-details.context';
 import { NameProps } from './pool-field.types';
 
 const PoolFieldManager: FC<NameProps> = ({ name }) => {
-  const { query } = useRouter();
-  const { pool } = useSrAmmPool(String(query.address));
+  const { pool } = usePoolDetails();
 
   const { control, setValue, getValues } = useFormContext<IPoolForm>();
 

@@ -3,7 +3,11 @@ import {
   Aptos,
   InputViewFunctionData,
 } from '@aptos-labs/ts-sdk';
-import { COINS, FUNGIBLE_ASSETS } from '@interest-protocol/interest-aptos-v2';
+import {
+  COINS,
+  FUNGIBLE_ASSETS,
+  normalizeSuiAddress,
+} from '@interest-protocol/interest-aptos-v2';
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { pathOr, propOr, values } from 'ramda';
 import invariant from 'tiny-invariant';
@@ -89,12 +93,13 @@ export const getFaPrimaryStore = async (
   }
 };
 
-export const parseToMetadata = ({
-  name,
-  symbol,
-  decimals,
-  ...metadata
-}: MetadataSources): AssetMetadata => {
+export const parseToMetadata = (metadata: MetadataSources): AssetMetadata => {
+  console.log({ metadata });
+
+  const name = metadata.name ?? '';
+  const symbol = metadata.symbol ?? '';
+  const decimals = metadata.decimals ?? 0;
+
   const type = (
     (metadata as CoinMetadata).type ??
     (metadata as FAMetadata).address ??
@@ -145,7 +150,7 @@ export const getCoinMetadata = (
 
 const getCoinMetadataFromAPI = (type: string): Promise<APIMetadata> =>
   fetch(
-    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins/${type}`,
+    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins/${normalizeSuiAddress(type)}`,
     { headers: { network: 'movement' } }
   ).then((res) => res.json());
 
@@ -153,6 +158,6 @@ export const getCoinsMetadataFromAPI = (
   types: ReadonlyArray<string>
 ): Promise<ReadonlyArray<APIMetadata>> =>
   fetch(
-    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins?coinTypes=${types}`,
+    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins?coinTypes=${types.map((type) => normalizeSuiAddress(type))}`,
     { headers: { network: 'movement' } }
   ).then((res) => res.json());

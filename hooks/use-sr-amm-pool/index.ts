@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { toPairs, values } from 'ramda';
 import useSWR from 'swr';
 
@@ -26,9 +27,9 @@ const useSrAmmPool = (address: string, withMetadata = true) => {
     if (!withMetadata) return newPool;
 
     const metadataAddresses: Record<MetadataKeys, string> = {
-      metadata: srPool.poolAddress.toString(),
-      metadataX: srPool.metadataX.toString(),
-      metadataY: srPool.metadataY.toString(),
+      metadata: normalizeSuiAddress(srPool.poolAddress.toString()),
+      metadataX: normalizeSuiAddress(srPool.metadataX.toString()),
+      metadataY: normalizeSuiAddress(srPool.metadataY.toString()),
     };
 
     const assetsMetadata = await getCoinsMetadataFromAPI(

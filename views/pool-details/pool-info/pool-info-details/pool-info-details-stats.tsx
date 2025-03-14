@@ -1,19 +1,17 @@
 import BigNumber from 'bignumber.js';
-import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
-import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { FixedPointMath } from '@/lib';
 
+import { usePoolDetails } from '../../pool-details.context';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
 import ItemStandard from '../components/accordion/item-standard';
 import { POOL_STATISTICS } from '../pool-info.data';
 import PoolInfoLoading from '../pool-info-loading';
 
 const PoolInfoDetailsStats: FC = () => {
-  const { query } = useRouter();
-  const { pool, config, loading } = useSrAmmPool(String(query.address));
+  const { pool, config, loading } = usePoolDetails();
 
   if (!pool || loading) return <PoolInfoLoading />;
 

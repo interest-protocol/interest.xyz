@@ -29,8 +29,10 @@ export const PoolDetailsProvider: FC<
   PropsWithChildren<PoolDetailsProviderProps>
 > = ({ address, children }) => {
   const { Provider } = poolDetailsContext;
-  const { pool, config, loading } = useSrAmmPool(address);
+  const { pool, config, loading, error } = useSrAmmPool(address);
   const { setValue, getValues } = useFormContext<IPoolForm>();
+
+  console.log({ error, pool, loading });
 
   useSWR([PoolDetailsProvider.name, pool?.poolAddress], async () => {
     if (pool) {
