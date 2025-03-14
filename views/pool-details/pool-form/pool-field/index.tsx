@@ -1,17 +1,18 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box } from '@interest-protocol/ui-kit';
+import { useRouter } from 'next/router';
 import { ChangeEvent, FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
 import { TokenIcon } from '@/components';
+import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { parseInputEventToNumberString } from '@/utils';
 import { TokenField } from '@/views/pool-create/select-coins/input/token-field';
 import { IPoolForm, PoolOption } from '@/views/pools/pools.types';
 
-import { usePoolDetails } from '../../pool-details.context';
 import Balance from './balance';
 import MaxButton from './input-max-button';
 import { PoolFieldsProps } from './pool-field.types';
@@ -20,8 +21,8 @@ import PoolFieldManager from './pool-field-manager';
 const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
   const network = useNetwork<Network>();
   const { register, setValue, getValues } = useFormContext<IPoolForm>();
-
-  const { loading } = usePoolDetails();
+  const { query } = useRouter();
+  const { loading } = useSrAmmPool(String(query.address));
 
   const isDeposit = poolOptionView === PoolOption.Deposit;
 

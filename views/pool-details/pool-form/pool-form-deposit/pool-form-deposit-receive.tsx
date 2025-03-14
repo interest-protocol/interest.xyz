@@ -1,18 +1,18 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
+import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { IPoolForm } from '@/views/pools/pools.types';
-
-import { usePoolDetails } from '../../pool-details.context';
 
 const PoolFormDepositReceive: FC = () => {
   const { control } = useFormContext<IPoolForm>();
   const value = useWatch({ control, name: 'lpCoin.value' });
   const symbol = useWatch({ control, name: 'lpCoin.symbol' });
-
-  const { loading } = usePoolDetails();
+  const { query } = useRouter();
+  const { loading } = useSrAmmPool(String(query.address));
 
   return (
     <Box>
