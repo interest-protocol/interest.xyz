@@ -1,5 +1,6 @@
 import { Box, TooltipWrapper, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { ExclamationCircleSVG, QuestionCircleSVG } from '@/components/svg';
 
@@ -8,6 +9,7 @@ import { PoolCardTradeProps } from './pool-card.types';
 const PoolCardTrade: FC<PoolCardTradeProps> = ({
   amount,
   isInfo,
+  loading,
   noBorder,
   tooltipInfo,
   description,
@@ -29,7 +31,7 @@ const PoolCardTrade: FC<PoolCardTradeProps> = ({
     </Typography>
     <Box display="flex" gap="xs" alignItems="center">
       <Typography color="onSurface" size="medium" variant="body">
-        {amount}
+        {loading ? <Skeleton width="5rem" /> : amount}
       </Typography>
       <TooltipWrapper
         bg="onSurface"

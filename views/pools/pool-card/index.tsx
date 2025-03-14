@@ -15,7 +15,7 @@ import PoolCardInfo from './pool-card-info';
 import PoolCardTrade from './pool-card-trade';
 
 const PoolCard: FC<PoolCardProps> = ({ pool }) => {
-  const { pool: data } = useSrAmmPool(pool.poolAddress.toString());
+  const { pool: data, loading } = useSrAmmPool(pool.poolAddress.toString());
 
   return (
     <Link
@@ -64,19 +64,21 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
             tooltipInfo="Trade fee in percentage"
           />
           <PoolCardTrade
-            tooltipInfo={`${data?.metadataX.symbol} reserves`}
-            description={data?.metadataX.symbol ?? 'Balance X'}
+            loading={loading}
+            tooltipInfo={`${pool.metadata.x.symbol} reserves`}
+            description={pool.metadata.x.symbol ?? 'Balance X'}
             amount={`${FixedPointMath.toNumber(
               BigNumber(data?.balanceX.toString() ?? 0),
-              data?.metadataX.decimals
+              pool.metadata.x.decimals
             )}`}
           />
           <PoolCardTrade
-            tooltipInfo={`${data?.metadataY.symbol} reserves`}
-            description={data?.metadataY.symbol ?? 'Balance Y'}
+            loading={loading}
+            tooltipInfo={`${pool.metadata.y.symbol} reserves`}
+            description={pool.metadata.y.symbol ?? 'Balance Y'}
             amount={`${FixedPointMath.toNumber(
               BigNumber(data?.balanceY.toString() ?? 0),
-              data?.metadataY.decimals
+              pool.metadata.y.decimals
             )}`}
           />
         </Box>
