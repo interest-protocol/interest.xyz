@@ -18,6 +18,10 @@ export interface FAMetadata extends Metadata {
   address: AccountAddress;
 }
 
+export interface APIMetadata extends Omit<CoinMetadata, 'iconUri'> {
+  iconUrl: string;
+}
+
 export interface ClientMetadata extends Omit<Metadata, 'iconUri'> {
   asset_type: string;
   token_standard: string;
@@ -31,4 +35,5 @@ export type MetadataSources =
   | CoinMetadata
   | FAMetadata
   | ClientMetadata
+  | APIMetadata
   | Token;

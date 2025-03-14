@@ -15,6 +15,7 @@ import {
 } from '@/lib/coins-manager/coins-manager.types';
 
 import {
+  APIMetadata,
   ClientMetadata,
   CoinMetadata,
   FAMetadata,
@@ -109,6 +110,7 @@ export const parseToMetadata = ({
   const iconUri =
     (metadata as CoinMetadata | FAMetadata).iconUri ??
     (metadata as ClientMetadata).icon_uri ??
+    (metadata as APIMetadata).iconUrl ??
     undefined;
 
   const projectUri =
@@ -128,9 +130,8 @@ export const parseToMetadata = ({
 };
 
 export const getCoinMetadata = (
-  type: string,
-  client: Aptos
-): CoinMetadata | FAMetadata | Promise<ClientMetadata> => {
+  type: string
+): CoinMetadata | FAMetadata | Promise<APIMetadata> => {
   const metadata =
     values(COINS[Network.MovementMainnet]).find((coin) => coin.type === type) ??
     values(FUNGIBLE_ASSETS[Network.MovementMainnet]).find((fa) =>
@@ -139,5 +140,19 @@ export const getCoinMetadata = (
 
   if (metadata) return metadata as CoinMetadata | FAMetadata;
 
-  return client.getFungibleAssetMetadataByAssetType({ assetType: type });
+  return getCoinMetadataFromAPI(type);
 };
+
+const getCoinMetadataFromAPI = (type: string): Promise<APIMetadata> =>
+  fetch(
+    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins/${type}`,
+    { headers: { network: 'movement' } }
+  ).then((res) => res.json());
+
+export const getCoinsMetadataFromAPI = (
+  types: ReadonlyArray<string>
+): Promise<ReadonlyArray<APIMetadata>> =>
+  fetch(
+    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins?coinTypes=${types}`,
+    { headers: { network: 'movement' } }
+  ).then((res) => res.json());

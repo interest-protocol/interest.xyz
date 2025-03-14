@@ -1,7 +1,6 @@
 import { Box } from '@interest-protocol/ui-kit';
 import { FC, useEffect, useState } from 'react';
 
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import {
   AssetMetadata,
   TokenStandard,
@@ -17,8 +16,6 @@ const ModalTokenSearch: FC<ModalTokenSearchProps> = ({
   search,
   handleSelectToken,
 }) => {
-  const client = useAptosClient();
-
   const [isLoading, setIsLoading] = useState(false);
   const [tokenMetadata, setTokenMetadata] = useState<AssetMetadata>();
   const [error, setError] = useState(false);
@@ -31,7 +28,7 @@ const ModalTokenSearch: FC<ModalTokenSearchProps> = ({
       setError(false);
 
       try {
-        const data = await getCoinMetadata(search, client);
+        const data = await getCoinMetadata(search);
 
         setTokenMetadata(parseToMetadata(data));
       } catch (err) {

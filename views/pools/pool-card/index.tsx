@@ -7,6 +7,7 @@ import { v4 } from 'uuid';
 import { Routes, RoutesEnum } from '@/constants';
 import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { FixedPointMath } from '@/lib';
+import { formatMoney } from '@/utils';
 
 import { POOL_DATA } from '../pool.data';
 import { FormFilterValue, PoolCardProps } from './pool-card.types';
@@ -15,7 +16,7 @@ import PoolCardInfo from './pool-card-info';
 import PoolCardTrade from './pool-card-trade';
 
 const PoolCard: FC<PoolCardProps> = ({ pool }) => {
-  const { pool: data, loading } = useSrAmmPool(pool.poolAddress.toString());
+  const { pool: data, loading } = useSrAmmPool(pool.poolAddress, false);
 
   return (
     <Link
@@ -67,19 +68,23 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
             loading={loading}
             tooltipInfo={`${pool.metadata.x.symbol} reserves`}
             description={pool.metadata.x.symbol ?? 'Balance X'}
-            amount={`${FixedPointMath.toNumber(
-              BigNumber(data?.balanceX.toString() ?? 0),
-              pool.metadata.x.decimals
-            )}`}
+            amount={formatMoney(
+              FixedPointMath.toNumber(
+                BigNumber(data?.balanceX.toString() ?? 0),
+                pool.metadata.x.decimals
+              )
+            )}
           />
           <PoolCardTrade
             loading={loading}
             tooltipInfo={`${pool.metadata.y.symbol} reserves`}
             description={pool.metadata.y.symbol ?? 'Balance Y'}
-            amount={`${FixedPointMath.toNumber(
-              BigNumber(data?.balanceY.toString() ?? 0),
-              pool.metadata.y.decimals
-            )}`}
+            amount={formatMoney(
+              FixedPointMath.toNumber(
+                BigNumber(data?.balanceY.toString() ?? 0),
+                pool.metadata.y.decimals
+              )
+            )}
           />
         </Box>
       </Box>
