@@ -6,15 +6,12 @@ import { v4 } from 'uuid';
 
 import { TimesSVG } from '@/components/svg';
 import { updateURL } from '@/utils';
-import { IEarnForm } from '@/views/earn/earn.types';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { FilterItemProps } from '../farm.types';
 
 const FilterSelectedItem: FC = () => {
-  const { control, resetField, setValue } = useFormContext<
-    IEarnForm | IPoolForm
-  >();
+  const { control, resetField, setValue } = useFormContext<IPoolForm>();
   const fields = useWatch({ control, name: 'filterList' });
   const isFindingPool = useWatch({ control, name: 'isFindingPool' });
   const tokens = useWatch({ control, name: 'tokenList' });
