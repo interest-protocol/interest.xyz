@@ -10,9 +10,9 @@ import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import InfoCard from '@/views/components/info-card';
 import InfoCardSkeleton from '@/views/components/info-card/info-card-skeleton';
 
-import { FormFilterValue } from './pool-card/pool-card.types';
 import {
   FilterTypeEnum,
+  FormFilterValue,
   IPoolForm,
   PoolCardListContentProps,
   PoolCardListProps,
