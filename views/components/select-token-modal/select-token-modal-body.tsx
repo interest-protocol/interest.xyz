@@ -3,7 +3,7 @@ import { useWatch } from 'react-hook-form';
 import { useReadLocalStorage } from 'usehooks-ts';
 
 import { LOCAL_STORAGE_VERSION } from '@/constants';
-import { TOKENS } from '@/constants/coin-fa';
+import { TOKENS } from '@/constants/coins';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata } from '@/utils';
@@ -40,8 +40,26 @@ const SelectTokenModalBody: FC<SelectTokenModalBodyProps> = ({
       <ModalTokenBody
         loading={false}
         handleSelectToken={handleSelectToken}
-        tokens={TOKENS.map((metadata) =>
-          parseToMetadata(metadata as CoinMetadata | FAMetadata)
+        tokens={TOKENS.flatMap((metadata) =>
+          metadata.address && metadata.type
+            ? [
+                parseToMetadata({
+                  name: metadata.name,
+                  symbol: metadata.symbol,
+                  iconUri: metadata.iconUri,
+                  address: metadata.address,
+                  decimals: metadata.decimals,
+                  projectUri: metadata.projectUri ?? '',
+                } as FAMetadata),
+                parseToMetadata({
+                  name: metadata.name,
+                  type: metadata.type,
+                  symbol: metadata.symbol,
+                  iconUri: metadata.iconUri,
+                  decimals: metadata.decimals,
+                } as CoinMetadata),
+              ]
+            : parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
         )}
       />
     );

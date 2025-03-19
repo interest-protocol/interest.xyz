@@ -1,13 +1,14 @@
-import {
-  getDefaultClient,
-  Network,
-  SrAmm,
-} from '@interest-protocol/aptos-sr-amm';
+import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk';
+import { InterestV2, Network } from '@interest-protocol/interest-aptos-v2';
 
-const network = Network.Porto;
+import { INDEXER_URL, RPC_URL } from '@/constants';
 
-const client = getDefaultClient(network);
+const network = Network.MovementMainnet;
 
-const dex = new SrAmm({ network, client });
+const client = new Aptos(
+  new AptosConfig({ indexer: INDEXER_URL[network], fullnode: RPC_URL[network] })
+);
+
+const dex = new InterestV2({ network, client });
 
 export const useInterestDex = () => dex;

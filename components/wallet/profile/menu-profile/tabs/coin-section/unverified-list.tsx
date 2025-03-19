@@ -3,8 +3,9 @@ import { useReadLocalStorage } from 'usehooks-ts';
 import { v4 } from 'uuid';
 
 import { LOCAL_STORAGE_VERSION } from '@/constants';
-import { TOKENS } from '@/constants/coin-fa';
+import { TOKENS } from '@/constants/coins';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
+import { parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
 import NoCoin from '../no-coin';
@@ -18,15 +19,35 @@ const UnverifiedCoinList: FC = () => {
     `${LOCAL_STORAGE_VERSION}-movement-dex-hide-lp-token`
   );
 
-  const unverifiedCoins = coins.filter(
-    ({ type, symbol }) =>
-      !TOKENS.some(
-        (token) =>
-          (
-            (token as CoinMetadata).type || (token as FAMetadata).address
-          ).toString() === type
-      ) && (isHideLPToken ? !symbol.includes('sr-LpFa') : true)
+  const tokenTypes = TOKENS.flatMap((metadata) =>
+    metadata.address && metadata.type
+      ? [
+          parseToMetadata({
+            name: metadata.name,
+            symbol: metadata.symbol,
+            iconUri: metadata.iconUri,
+            address: metadata.address,
+            decimals: metadata.decimals,
+            projectUri: metadata.projectUri ?? '',
+          } as FAMetadata).type,
+          parseToMetadata({
+            name: metadata.name,
+            type: metadata.type,
+            symbol: metadata.symbol,
+            iconUri: metadata.iconUri,
+            decimals: metadata.decimals,
+          } as CoinMetadata).type,
+        ]
+      : parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata).type
   );
+
+  const unverifiedCoins = coins.filter(({ type, symbol }) => {
+    const isNotInTokens = !tokenTypes.includes(type);
+    const isNotLPToken = isHideLPToken
+      ? !symbol.toLowerCase().includes('v2-lp')
+      : true;
+    return isNotInTokens && isNotLPToken;
+  });
 
   return (
     <Collapse title={`${unverifiedCoins.length} unverified`}>

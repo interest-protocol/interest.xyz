@@ -15,7 +15,6 @@ const PoolDetailsCollapseItemSkeleton: FC = () => (
     </Typography>
     <Box
       px="m"
-      py="xs"
       display="flex"
       borderRadius="xs"
       bg="lowContainer"

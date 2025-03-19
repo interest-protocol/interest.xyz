@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
-import { PRICE_TYPE } from '@/constants/prices';
+import { MOVE } from '@/constants/coins';
+import { useCoinsPrice } from '@/hooks/use-coins-price';
 import CreateToken from '@/views/create-token';
 import { validationSchema } from '@/views/create-token/create-token-form/create-token-form.validation';
 
@@ -17,21 +18,16 @@ const CreateTokenPage: NextPage = () => {
       decimals: 8,
       fixedSupply: true,
       pool: { active: true },
+      supply: 1_000_000_000_000,
     },
   });
 
+  const { data: price } = useCoinsPrice(MOVE.type);
+
   useEffect(() => {
-    fetch('https://rates-api-production.up.railway.app/api/fetch-quote', {
-      method: 'POST',
-      body: JSON.stringify({ coins: [PRICE_TYPE['MOVE']] }),
-      headers: { 'Content-Type': 'application/json', accept: '*/*' },
-    })
-      .then((response) => response.json())
-      .then((data) =>
-        form.setValue('pool.quoteUsdPrice' as never, data[0].price as never)
-      )
-      .catch(() => null);
-  });
+    if (price)
+      form.setValue('pool.quoteUsdPrice' as never, price[0].price as never);
+  }, [price]);
 
   return (
     <FormProvider {...form}>

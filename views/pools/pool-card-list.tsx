@@ -1,20 +1,16 @@
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
-import BigNumber from 'bignumber.js';
 import { inc } from 'ramda';
 import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
-import { Routes, RoutesEnum } from '@/constants';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { usePools } from '@/hooks/use-pools';
-import { FixedPointMath } from '@/lib';
+import { ISrPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
+import InfoCard from '@/views/components/info-card';
+import InfoCardSkeleton from '@/views/components/info-card/info-card-skeleton';
 
-import InfoCard from '../components/info-card';
-import { FormFilterValue } from '../components/info-card/info-card.types';
-import InfoCardSkeleton from '../components/info-card/info-card-skeleton';
-import { LINES, POOL_DATA } from './pool.data';
+import { FormFilterValue } from './pool-card/pool-card.types';
 import {
   FilterTypeEnum,
   IPoolForm,
@@ -25,19 +21,16 @@ import {
 
 const Pools: FC = () => {
   const [page, setPage] = useState(1);
-  const [pools, setPools] = useState([[]]);
   const { control, getValues } = useFormContext<IPoolForm>();
-
-  const filterProps = useWatch({
-    control,
-    name: 'filterList',
-  });
-  const isFindingPool = useWatch({
-    control,
-    name: 'isFindingPool',
-  });
+  const [pools, setPools] = useState<ReadonlyArray<ReadonlyArray<ISrPool>>>([
+    [],
+  ]);
 
   const tokenList = getValues('tokenList');
+  const [filterProps, isFindingPool] = useWatch({
+    control,
+    name: ['filterList', 'isFindingPool'],
+  });
 
   const { data, isLoading: arePoolsLoading } = usePools(
     page,
@@ -46,16 +39,12 @@ const Pools: FC = () => {
           $and: [
             {
               metadataX: {
-                $in: tokenList?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] || type).toString()
-                ),
+                $in: tokenList?.map(({ type }) => type.toString()),
               },
             },
             {
               metadataY: {
-                $in: tokenList?.map(({ type }) =>
-                  (COIN_TYPE_TO_FA[type] || type).toString()
-                ),
+                $in: tokenList?.map(({ type }) => type.toString()),
               },
             },
           ],
@@ -67,11 +56,7 @@ const Pools: FC = () => {
               filterProp.value === FormFilterValue.all
           )
         ? {}
-        : {
-            poolAddress: {
-              $in: POOL_DATA.map(({ poolAddress }) => poolAddress),
-            },
-          }
+        : {}
   );
 
   useEffect(() => {
@@ -118,12 +103,28 @@ const Position: FC = () => {
     isFindingPool
       ? {
           $and: [
-            { metadataX: { $in: tokenList?.map(({ type }) => type) } },
-            { metadataY: { $in: tokenList?.map(({ type }) => type) } },
-            { poolAddress: { $in: coins?.map(({ type }) => type) } },
+            {
+              metadataX: {
+                $in: tokenList?.map(({ type }) => type.toString()),
+              },
+            },
+            {
+              metadataY: {
+                $in: tokenList?.map(({ type }) => type.toString()),
+              },
+            },
+            {
+              poolAddress: {
+                $in: coins?.map(({ type }) => type.toString()),
+              },
+            },
           ],
         }
-      : { poolAddress: { $in: coins?.map(({ type }) => type) } }
+      : {
+          poolAddress: {
+            $in: coins?.map(({ type }) => type),
+          },
+        }
   );
 
   useEffect(() => {
@@ -136,6 +137,15 @@ const Position: FC = () => {
   useEffect(() => {
     if (data?.pools) setPools([...pools.slice(0, page), data.pools]);
   }, [data?.pools]);
+
+  if (!data?.pools?.length)
+    return (
+      <Box width="100%" color="onSurface" textAlign="center" my="3xl">
+        <Typography size="large" variant="label">
+          There is no pools in your list
+        </Typography>
+      </Box>
+    );
 
   return (
     <PoolCardListContent
@@ -199,19 +209,7 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
         ]}
       >
         {pools?.flatMap((poolPage) =>
-          poolPage.map((pool) => (
-            <InfoCard
-              key={v4()}
-              lines={LINES}
-              tags={['SR-AMM', FormFilterValue['volatile']]}
-              listCoins={pool ? [pool.metadata.x, pool.metadata.y] : []}
-              link={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
-              infoData={[
-                '0.3%',
-                `${FixedPointMath.toNumber(BigNumber(String(pool.bidLiquidity)), pool.metadata.pool.decimals)}`,
-              ]}
-            />
-          ))
+          poolPage.map((pool) => <InfoCard key={v4()} pool={pool} />)
         )}
         {arePoolsLoading && <InfoCardSkeleton isPool />}
       </Box>

@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,
@@ -10,7 +11,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import SubtractBox from '@/components/svg/subtract-box';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
-import { isAptos, ZERO_BIG_NUMBER } from '@/utils';
+import { formatMoney, isAptos, ZERO_BIG_NUMBER } from '@/utils';
 
 import { InputProps } from './input.types';
 
@@ -45,13 +46,14 @@ const Balance: FC<InputProps> = ({ label }) => {
       </Box>
     );
 
-  const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance =
+    coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER;
 
   const handleMax = () => {
     if (label === 'to') return;
 
     const value = balance.minus(
-      FixedPointMath.toBigNumber(isAptos(type) ? 1 : 0)
+      FixedPointMath.toBigNumber(isAptos(type) ? 0.01 : 0)
     );
 
     if (isAptos(type) && !value.isPositive()) {
@@ -62,7 +64,7 @@ const Balance: FC<InputProps> = ({ label }) => {
 
     if (getValues('focus')) setValue('focus', false);
 
-    setValue('slider', 100);
+    setValue('slider', {});
 
     setValue(
       `${label}.value`,
@@ -91,8 +93,8 @@ const Balance: FC<InputProps> = ({ label }) => {
           variant="body"
           whiteSpace="nowrap"
         >
-          {symbol
-            ? `${FixedPointMath.toNumber(balance, decimals).toString()} ${symbol}`
+          {type
+            ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
             : '0'}
         </Typography>
         {loading && (
@@ -131,11 +133,11 @@ const Balance: FC<InputProps> = ({ label }) => {
         />
       </Box>
       <Typography size="small" variant="body" fontSize="s" whiteSpace="nowrap">
-        {symbol
-          ? `${FixedPointMath.toNumber(balance, decimals).toString()} ${symbol}`
+        {type
+          ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
           : '0'}
       </Typography>
-      {loading && (
+      {!coinsMap[normalizeSuiAddress(type)]?.balance && loading && (
         <Box
           mx="xs"
           mt="-1.2rem"

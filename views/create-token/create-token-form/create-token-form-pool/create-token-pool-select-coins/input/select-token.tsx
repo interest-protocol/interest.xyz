@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -61,7 +61,7 @@ const SelectToken: FC<InputProps> = ({ label, isMobile }) => {
         color="onSurface"
         borderRadius="xs"
         nDisabled={{ bg: 'transparent' }}
-        PrefixIcon={<TokenIcon withBg symbol="faMOVE" network={network} />}
+        PrefixIcon={<TokenIcon withBg symbol="MOVE" network={network} />}
       >
         <Typography
           p="xs"
@@ -70,7 +70,7 @@ const SelectToken: FC<InputProps> = ({ label, isMobile }) => {
           whiteSpace="nowrap"
           size={isMobile ? 'large' : 'small'}
         >
-          faMOVE
+          MOVE
         </Typography>
       </Button>
     </Box>

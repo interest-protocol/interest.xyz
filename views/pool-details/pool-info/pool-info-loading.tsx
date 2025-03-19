@@ -5,8 +5,8 @@ import { v4 } from 'uuid';
 import PoolDetailsCollapseItemSkeleton from './components/accordion/item-standard-skeleton';
 
 const PoolInfoLoading: FC = () => (
-  <Box m="1rem">
-    {Array.from({ length: 6 }).map(() => (
+  <Box>
+    {Array.from({ length: 3 }).map(() => (
       <PoolDetailsCollapseItemSkeleton key={v4()} />
     ))}
   </Box>

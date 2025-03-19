@@ -1,5 +1,8 @@
 import { InterestDex } from '@interest-protocol/aptos-move-dex';
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import {
+  Network,
+  normalizeSuiAddress,
+} from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,
@@ -14,40 +17,38 @@ import invariant from 'tiny-invariant';
 
 import { RateDownSVG, RateUpSVG, WrapSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
+import { COIN_TYPE_TO_FA } from '@/constants/coins';
+import { useCoinsPrice } from '@/hooks/use-coins-price';
 import { FixedPointMath } from '@/lib';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
-import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
+import { formatDollars, formatMoney, ZERO_BIG_NUMBER } from '@/utils';
 
 import { CoinCardProps } from '../../../user-info.types';
 import CardWrapper from './card-wrapper';
 import { logWrapCoin } from './coin-card.utils';
 
-const dex = new InterestDex();
+type CoinType = keyof typeof COIN_TYPE_TO_FA;
 
 const CoinCard: FC<CoinCardProps> = ({ token }) => {
-  const client = useAptosClient();
   const network = useNetwork<Network>();
   const { coinsMap, mutate } = useCoins();
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
 
   const symbol = token.symbol;
   const decimals = token.decimals;
 
-  const coin = coinsMap[token.type];
+  const { data: price } = useCoinsPrice(token.type);
+
+  const coin = coinsMap[normalizeSuiAddress(token.type)];
 
   const balance = FixedPointMath.toNumber(
     coin?.balance ?? ZERO_BIG_NUMBER,
     coin?.decimals ?? decimals
   );
+
+  const dex = new InterestDex();
 
   const handleWrapCoin = async () => {
     const id = toast.loading(`Wrapping ${symbol}...`);
@@ -55,41 +56,17 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       invariant(account, 'You should have this coin in your wallet');
       invariant(coin, 'You should have this coin in your wallet');
 
-      let txResult;
       const payload = dex.wrapCoin({
         coinType: token.type,
         amount: BigInt(coin.balance.toString()),
         recipient: account.address,
       });
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
+      const txResult = tx.args;
 
       logWrapCoin(account.address, symbol, network, txResult.hash);
 
@@ -103,6 +80,8 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       toast.dismiss(id);
     }
   };
+
+  const isConvertible = (token.type as CoinType) in COIN_TYPE_TO_FA;
 
   return (
     <CardWrapper
@@ -118,10 +97,10 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       }
       symbol={symbol}
       supportingText={
-        coin?.usdPrice
+        price?.length && price[0].price
           ? formatDollars(
               +BigNumber(balance)
-                .times(BigNumber(coin.usdPrice))
+                .times(BigNumber(price[0].price))
                 .toNumber()
                 .toFixed(3)
             )
@@ -136,19 +115,19 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
           justifyContent="flex-start"
         >
           <Typography size="large" variant="label" lineHeight="1.5rem">
-            {balance}
-            <Box fontSize="Satoshi" as="span">
+            {formatMoney(balance)}
+            <Box fontSize="Satoshi" as="span" ml="2xs">
               {symbol}
             </Box>
           </Typography>
-          {!!coin?.usdPrice24Change && (
+          {!!price?.length && price[0]?.priceChange24HoursPercentage && (
             <Box
               gap="xs"
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
-              {coin.usdPrice24Change < 1 ? (
+              {price?.[0]?.priceChange24HoursPercentage < 1 ? (
                 <RateDownSVG
                   width="1rem"
                   height="1rem"
@@ -171,12 +150,12 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
                 fontSize="0.625rem"
                 lineHeight="1rem"
               >
-                {coin.usdPrice24Change}
+                {(price?.length && price[0]?.priceChange24HoursPercentage) ?? 0}
               </Typography>
             </Box>
           )}
         </Box>
-        {COIN_TYPE_TO_FA[token.type] && (
+        {isConvertible && (
           <TooltipWrapper
             bg="lowContainer"
             tooltipPosition="top"

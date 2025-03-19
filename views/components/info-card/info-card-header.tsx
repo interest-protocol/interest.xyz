@@ -9,22 +9,26 @@ import { InfoCardHeaderProps } from './info-card.types';
 const InfoCardHeader: FC<InfoCardHeaderProps> = ({ tags }) => (
   <Box display="flex" alignItems="center" justifyContent="space-between">
     <Box display="flex" flexWrap="wrap" alignItems="center">
-      {tags?.map((tag) => (
-        <Tag
-          key={v4()}
-          px="0"
-          py="0"
-          mb="2xs"
-          mr="2xs"
-          size="small"
-          height="1.4rem"
-          variant="outline"
-        >
-          <Typography size="small" variant="label">
-            {tag}
-          </Typography>
-        </Tag>
-      ))}
+      {tags?.map((tag) =>
+        tag ? (
+          <Tag
+            key={v4()}
+            px="0"
+            py="0"
+            mb="2xs"
+            mr="2xs"
+            size="small"
+            height="1.4rem"
+            variant="outline"
+          >
+            <Typography size="small" variant="label">
+              {tag}
+            </Typography>
+          </Tag>
+        ) : (
+          true
+        )
+      )}
     </Box>
     <Button
       mb="auto"

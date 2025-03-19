@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Box } from '@interest-protocol/ui-kit';
 import dynamic from 'next/dynamic';
 import { FC } from 'react';
@@ -26,9 +27,9 @@ const SwapFormFieldSlider: FC = () => {
       ? FixedPointMath.toBigNumber(1, getValues('from.decimals'))
       : ZERO_BIG_NUMBER;
 
-  const balance = coinsMap[type]
-    ? coinsMap[type].balance.gt(safeRemoval)
-      ? coinsMap[type].balance.minus(safeRemoval)
+  const balance = coinsMap[normalizeSuiAddress(type)]
+    ? coinsMap[normalizeSuiAddress(type)].balance.gt(safeRemoval)
+      ? coinsMap[normalizeSuiAddress(type)].balance.minus(safeRemoval)
       : ZERO_BIG_NUMBER
     : ZERO_BIG_NUMBER;
 
@@ -40,11 +41,14 @@ const SwapFormFieldSlider: FC = () => {
     Number(fromValue) &&
     !balance.isZero?.()
       ? balance.gt(
-          FixedPointMath.toBigNumber(fromValue, coinsMap[type]?.decimals)
+          FixedPointMath.toBigNumber(
+            fromValue,
+            coinsMap[normalizeSuiAddress(type)]?.decimals
+          )
         )
         ? +FixedPointMath.toBigNumber(
             Number(fromValue) * 100,
-            coinsMap[type]?.decimals
+            coinsMap[normalizeSuiAddress(type)]?.decimals
           )
             .div(balance)
             .decimalPlaces(0, 1)
@@ -59,7 +63,12 @@ const SwapFormFieldSlider: FC = () => {
     setValue('from.valueBN', valueBN);
     setValue(
       'from.value',
-      String(FixedPointMath.toNumber(valueBN, coinsMap[type]?.decimals))
+      String(
+        FixedPointMath.toNumber(
+          valueBN,
+          coinsMap[normalizeSuiAddress(type)]?.decimals
+        )
+      )
     );
 
     setValue('focus', false);
@@ -71,8 +80,8 @@ const SwapFormFieldSlider: FC = () => {
         min={0}
         max={100}
         initial={initial}
-        disabled={!balance || balance.isZero?.() || swapping}
         onChange={handleSliderChange}
+        disabled={!balance || balance.isZero?.() || swapping}
       />
     </Box>
   );

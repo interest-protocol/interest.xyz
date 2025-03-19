@@ -1,51 +1,50 @@
-import { AccountAddress } from '@aptos-labs/ts-sdk';
-import { useEffect, useState } from 'react';
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
+import { toPairs, values } from 'ramda';
+import useSWR from 'swr';
 
-import { SdkSrAmmConfig, SrAmmPoolWithMetadata } from '@/interface';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
-import { getCoinMetadata, parseToMetadata } from '@/utils';
+import { SrAmmPoolWithMetadata } from '@/interface';
+import { getCoinsMetadataFromAPI, parseToMetadata } from '@/utils';
 
 import { useInterestDex } from '../use-interest-dex';
+import useSrAmmPoolConfig from '../use-sr-pool-config';
 
 type MetadataKeys = 'metadata' | 'metadataY' | 'metadataX';
 
-const useSrAmmPool = (address: string) => {
+const useSrAmmPool = (address: string, withMetadata = true) => {
   const dex = useInterestDex();
-  const client = useAptosClient();
-  const [error, setError] = useState<Error>();
-  const [loading, setLoading] = useState(true);
-  const [config, setConfig] = useState<SdkSrAmmConfig>();
-  const [pool, setPool] = useState<SrAmmPoolWithMetadata>();
 
-  useEffect(() => {
-    dex.getConfig().then(setConfig);
-    dex
-      .getPool(address)
-      .then(async (srPool) => {
-        const newPool = srPool as unknown as SrAmmPoolWithMetadata;
+  const { config } = useSrAmmPoolConfig();
 
-        const list: ReadonlyArray<[MetadataKeys, AccountAddress]> = [
-          ['metadata', srPool.poolAddress],
-          ['metadataX', srPool.metadataX],
-          ['metadataY', srPool.metadataY],
-        ];
+  const {
+    data: pool,
+    isLoading: loading,
+    ...rest
+  } = useSWR([useSrAmmPool.name, address, withMetadata], async () => {
+    const srPool = await dex.getPool(address);
 
-        for (const [key, address] of list) {
-          const data = await getCoinMetadata(address.toString(), client);
+    const newPool = srPool as unknown as SrAmmPoolWithMetadata;
 
-          newPool[key] = parseToMetadata(data);
-        }
+    if (!withMetadata) return newPool;
 
-        setPool(newPool);
-      })
-      .catch((e) => {
-        console.warn('>> Error on "useSrAmmPool". More info: ', { e });
-        setError(e);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    const metadataAddresses: Record<MetadataKeys, string> = {
+      metadata: normalizeSuiAddress(srPool.poolAddress.toString()),
+      metadataX: normalizeSuiAddress(srPool.metadataX.toString()),
+      metadataY: normalizeSuiAddress(srPool.metadataY.toString()),
+    };
 
-  return { loading, error, pool, config };
+    const assetsMetadata = await getCoinsMetadataFromAPI(
+      values(metadataAddresses)
+    );
+
+    for (const [key, address] of toPairs(metadataAddresses))
+      newPool[key] = parseToMetadata(
+        assetsMetadata.find(({ type }) => type === address)!
+      );
+
+    return newPool;
+  });
+
+  return { loading, config, pool, ...rest };
 };
 
 export default useSrAmmPool;

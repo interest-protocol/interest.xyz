@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
@@ -18,20 +18,13 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
-  const {
-    account,
-    name: wallet,
-    signTransaction,
-    signAndSubmitTransaction,
-  } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
 
   const handleDeposit = async () => {
     try {
       invariant(account, 'You must be connected to proceed');
       setValue('error', '');
       const [token0, token1] = getValues('tokenList');
-
-      let txResult;
 
       const payload = dex.addLiquidity({
         faA: token0.type,
@@ -41,46 +34,37 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
         amountB: BigInt(token1.valueBN.decimalPlaces(0, 1).toString()),
       });
 
-      if (wallet === 'Razor Wallet') {
-        const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ payload });
 
-        invariant(tx.status === 'Approved', 'Rejected by User');
+      invariant(tx.status === 'Approved', 'Rejected by User');
 
-        txResult = tx.args;
-      } else {
-        const tx = await client.transaction.build.simple({
-          data: payload,
-          sender: account.address,
-        });
-
-        const signedTx = await signTransaction(tx);
-
-        invariant(signedTx.status === 'Approved', 'Rejected by User');
-
-        const senderAuthenticator = signedTx.args;
-
-        txResult = await client.transaction.submit.simple({
-          transaction: tx,
-          senderAuthenticator,
-        });
-      }
-
-      await client.waitForTransaction({
-        transactionHash: txResult.hash,
-        options: { checkSuccess: true },
-      });
+      const txResult = tx.args;
 
       logDepositPool(
         account.address,
         getValues('tokenList.0'),
         getValues('tokenList.1'),
-        Network.Porto,
+        Network.MovementMainnet,
         txResult.hash
       );
 
+      let waitingTx = true;
+
+      do {
+        await client
+          .waitForTransaction({
+            transactionHash: txResult.hash,
+            options: { checkSuccess: true },
+          })
+          .then(() => {
+            waitingTx = false;
+          })
+          .catch();
+      } while (waitingTx);
+
       setValue(
         'explorerLink',
-        EXPLORER_URL[Network.Porto](`txn/${txResult.hash}`)
+        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
       );
     } catch (e) {
       console.warn({ e });

@@ -45,8 +45,8 @@ const MenuProfile: FC<MenuProfileProps> = ({ isOpen, handleCloseProfile }) => {
       flexDirection="column"
       variants={wrapperVariants}
       textTransform="capitalize"
-      top={['0', '0', '0', '3.5rem']}
       justifyContent="space-between"
+      top={['0', '0', '0', '3.5rem']}
       animate={isOpen ? 'open' : 'closed'}
       pointerEvents={isOpen ? 'auto' : 'none'}
       height={['100vh', '100vh', '100vh', '85vh']}

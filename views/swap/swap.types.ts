@@ -1,4 +1,3 @@
-import { InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk';
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 
@@ -12,7 +11,6 @@ export interface ISwapSettings {
 export type SwapToken = AssetMetadata & {
   value: string;
   valueBN: BigNumber;
-  usdPrice: number | null;
   isFetchingSwap?: boolean;
 };
 
@@ -32,7 +30,7 @@ export type SwapPath = {
 export interface SwapForm {
   to: SwapToken;
   focus: boolean;
-  slider: number;
+  slider: object;
   from: SwapToken;
   loading: boolean;
   swapping: boolean;
@@ -41,7 +39,6 @@ export interface SwapForm {
   executionTime: string;
   settings: ISwapSettings;
   path: ReadonlyArray<ReadonlyArray<SwapPath>>;
-  payload: InputGenerateTransactionPayloadData;
 }
 
 export interface AggregatorProps {

@@ -1,3 +1,4 @@
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Button } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -15,9 +16,9 @@ const InputMaxButton: FC<InputProps> = ({ index }) => {
 
   const type = useWatch({ control, name: `tokens.${index}.type` });
   const decimals = useWatch({ control, name: `tokens.${index}.decimals` });
-  const symbol = useWatch({ control, name: `tokens.${index}.symbol` });
 
-  const balance = coinsMap[type]?.balance ?? ZERO_BIG_NUMBER;
+  const balance =
+    coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER;
 
   const handleMax = () => {
     const value = balance.minus(
@@ -45,7 +46,7 @@ const InputMaxButton: FC<InputProps> = ({ index }) => {
       color="onSurface"
       variant="outline"
       borderRadius="2xs"
-      disabled={!symbol}
+      disabled={!type}
       onClick={handleMax}
     >
       MAX

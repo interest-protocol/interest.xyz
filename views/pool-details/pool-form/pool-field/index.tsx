@@ -1,4 +1,4 @@
-import { Network } from '@interest-protocol/aptos-sr-amm';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box } from '@interest-protocol/ui-kit';
 import { ChangeEvent, FC } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -18,10 +18,9 @@ import { PoolFieldsProps } from './pool-field.types';
 import PoolFieldManager from './pool-field-manager';
 
 const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
+  const { loading } = usePoolDetails();
   const network = useNetwork<Network>();
   const { register, setValue, getValues } = useFormContext<IPoolForm>();
-
-  const { loading } = usePoolDetails();
 
   const isDeposit = poolOptionView === PoolOption.Deposit;
 
@@ -31,7 +30,7 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
 
   const token = getValues(fieldName);
 
-  const symbol = token.symbol;
+  const symbol = token?.symbol;
 
   const handleChange = (v: ChangeEvent<HTMLInputElement>) => {
     const amount = parseInputEventToNumberString(v);
@@ -44,7 +43,7 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
     setValue(`${fieldName}.value`, amount);
     setValue(
       `${fieldName}.valueBN`,
-      FixedPointMath.toBigNumber(amount, token.decimals)
+      FixedPointMath.toBigNumber(amount, token?.decimals)
     );
   };
 
@@ -65,7 +64,8 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
                 <TokenIcon
                   withBg
                   network={network}
-                  symbol={isDeposit ? symbol : token.name}
+                  url={token.iconUri}
+                  symbol={isDeposit ? symbol : token?.name}
                 />
                 {symbol}
               </>

@@ -6,34 +6,11 @@ import { LogoSVG } from '@/components/svg';
 import { SuccessModalProps } from './success-modal.types';
 
 const SuccessModal: FC<PropsWithChildren<SuccessModalProps>> = ({
-  transactionTime,
   children,
 }) => (
   <Box width="100%">
     <Box display="flex" flexDirection="column" gap="m" mb="2rem">
       {children}
-      <Typography
-        color="onSurface"
-        textAlign="center"
-        variant="body"
-        size="medium"
-        fontSize="0.75rem"
-        lineHeight="1.5rem"
-        fontWeight="400"
-      >
-        Execution time:
-        <Typography
-          color="primary"
-          textAlign="center"
-          variant="body"
-          size="medium"
-          as="span"
-          fontSize="0.75rem"
-          lineHeight="1.5rem"
-        >
-          {` ${transactionTime}s`}
-        </Typography>
-      </Typography>
     </Box>
     <Box display="flex" justifyContent="center" mb="0.5rem">
       <Typography

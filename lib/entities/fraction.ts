@@ -127,7 +127,7 @@ export class Fraction {
   public toSignificant(
     significantDigits: number,
     format: Record<string, string> = { groupSeparator: '' },
-    rounding: Rounding = Rounding.ROUND_HALF_UP
+    rounding: Rounding = Rounding.ROUND_DOWN
   ): string {
     Decimal.set({
       precision: significantDigits + 1,

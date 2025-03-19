@@ -9,7 +9,7 @@ const PoolCreatePage: NextPage = () => {
   const form = useForm<CreatePoolForm>({
     defaultValues: {
       step: 0,
-      type: 'SR-AMM',
+      type: 'V2(SR-AMM)',
       isStable: false,
       tokens: [
         {
@@ -17,7 +17,6 @@ const PoolCreatePage: NextPage = () => {
           value: '',
           symbol: '',
           decimals: 0,
-          usdPrice: null,
           type: '' as `0x${string}`,
         },
         {
@@ -25,7 +24,6 @@ const PoolCreatePage: NextPage = () => {
           value: '',
           symbol: '',
           decimals: 0,
-          usdPrice: null,
           type: '' as `0x${string}`,
         },
       ],

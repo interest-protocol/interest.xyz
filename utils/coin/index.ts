@@ -6,12 +6,12 @@ import {
 import {
   COINS,
   FUNGIBLE_ASSETS,
-  Network,
-} from '@interest-protocol/aptos-sr-amm';
+  normalizeSuiAddress,
+} from '@interest-protocol/interest-aptos-v2';
+import { Network } from '@interest-protocol/interest-aptos-v2';
 import { pathOr, propOr, values } from 'ramda';
 import invariant from 'tiny-invariant';
 
-import { COIN_TYPE_TO_FA } from '@/constants/coin-fa';
 import { CoinBalance } from '@/interface';
 import {
   AssetMetadata,
@@ -19,6 +19,7 @@ import {
 } from '@/lib/coins-manager/coins-manager.types';
 
 import {
+  APIMetadata,
   ClientMetadata,
   CoinMetadata,
   FAMetadata,
@@ -26,7 +27,7 @@ import {
 } from './coin.types';
 
 export const isAptosCoin = (type: string) =>
-  type.endsWith('1::aptos_coin::AptosCoin');
+  type?.endsWith('1::aptos_coin::AptosCoin');
 
 export const isAptosFA = (type: string) => Number(type) === 0xa;
 
@@ -81,23 +82,24 @@ export const getFaPrimaryStore = async (
     return {
       balance: BigInt(propOr(0, 'balance', x)),
       frozen: propOr(false, 'frozen', x),
-      fa: FUNGIBLE_ASSETS[Network.Porto][key],
+      fa: FUNGIBLE_ASSETS[Network.MovementMainnet][key],
     };
   } catch {
     return {
       balance: BigInt(0),
       frozen: false,
-      fa: FUNGIBLE_ASSETS[Network.Porto][fa],
+      fa: FUNGIBLE_ASSETS[Network.MovementMainnet][fa],
     };
   }
 };
 
-export const parseToMetadata = ({
-  name,
-  symbol,
-  decimals,
-  ...metadata
-}: MetadataSources): AssetMetadata => {
+export const parseToMetadata = (metadata: MetadataSources): AssetMetadata => {
+  console.log({ metadata });
+
+  const name = metadata.name ?? '';
+  const symbol = metadata.symbol ?? '';
+  const decimals = metadata.decimals ?? 0;
+
   const type = (
     (metadata as CoinMetadata).type ??
     (metadata as FAMetadata).address ??
@@ -113,6 +115,7 @@ export const parseToMetadata = ({
   const iconUri =
     (metadata as CoinMetadata | FAMetadata).iconUri ??
     (metadata as ClientMetadata).icon_uri ??
+    (metadata as APIMetadata).iconUrl ??
     undefined;
 
   const projectUri =
@@ -125,29 +128,36 @@ export const parseToMetadata = ({
     name,
     decimals,
     standard,
-    symbol:
-      standard === TokenStandard.FA &&
-      values(COIN_TYPE_TO_FA).some((address) =>
-        address.equals(AccountAddress.from(type))
-      )
-        ? `fa${symbol}`
-        : symbol,
+    symbol: symbol,
     ...(iconUri && { iconUri }),
     ...(projectUri && { projectUri }),
   };
 };
 
 export const getCoinMetadata = (
-  type: string,
-  client: Aptos
-): CoinMetadata | FAMetadata | Promise<ClientMetadata> => {
+  type: string
+): CoinMetadata | FAMetadata | Promise<APIMetadata> => {
   const metadata =
-    values(COINS[Network.Porto]).find((coin) => coin.type === type) ??
-    values(FUNGIBLE_ASSETS[Network.Porto]).find((fa) =>
+    values(COINS[Network.MovementMainnet]).find((coin) => coin.type === type) ??
+    values(FUNGIBLE_ASSETS[Network.MovementMainnet]).find((fa) =>
       fa.address.equals(AccountAddress.from(type))
     );
 
   if (metadata) return metadata as CoinMetadata | FAMetadata;
 
-  return client.getFungibleAssetMetadataByAssetType({ assetType: type });
+  return getCoinMetadataFromAPI(type);
 };
+
+const getCoinMetadataFromAPI = (type: string): Promise<APIMetadata> =>
+  fetch(
+    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins/${normalizeSuiAddress(type)}`,
+    { headers: { network: 'movement' } }
+  ).then((res) => res.json());
+
+export const getCoinsMetadataFromAPI = (
+  types: ReadonlyArray<string>
+): Promise<ReadonlyArray<APIMetadata>> =>
+  fetch(
+    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins?coinTypes=${types.map((type) => normalizeSuiAddress(type))}`,
+    { headers: { network: 'movement' } }
+  ).then((res) => res.json());

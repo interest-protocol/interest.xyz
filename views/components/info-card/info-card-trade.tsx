@@ -1,14 +1,16 @@
 import { Box, TooltipWrapper, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { ExclamationCircleSVG, QuestionCircleSVG } from '@/components/svg';
 
 import { InfoCardTradeProps } from './info-card.types';
 
 const InfoCardTrade: FC<InfoCardTradeProps> = ({
-  index,
   amount,
   isInfo,
+  loading,
+  noBorder,
   tooltipInfo,
   description,
 }) => (
@@ -17,7 +19,7 @@ const InfoCardTrade: FC<InfoCardTradeProps> = ({
     display="flex"
     borderTop="1px solid"
     justifyContent="space-between"
-    borderColor={index ? 'outlineVariant' : 'transparent'}
+    borderColor={noBorder ? 'transparent' : 'outlineVariant'}
   >
     <Typography
       size="medium"
@@ -29,7 +31,7 @@ const InfoCardTrade: FC<InfoCardTradeProps> = ({
     </Typography>
     <Box display="flex" gap="xs" alignItems="center">
       <Typography color="onSurface" size="medium" variant="body">
-        {amount}
+        {loading ? <Skeleton width="5rem" /> : amount}
       </Typography>
       <TooltipWrapper
         bg="onSurface"

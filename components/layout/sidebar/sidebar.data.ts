@@ -1,4 +1,9 @@
-import { CirclePlusSVG, DoubleChevronSVG, PoolSVG } from '@/components/svg';
+import {
+  BridgeSVG,
+  CirclePlusSVG,
+  DoubleChevronSVG,
+  PoolSVG,
+} from '@/components/svg';
 import { Routes, RoutesEnum } from '@/constants';
 
 import { MenuItemProps } from './sidebar.types';
@@ -22,15 +27,15 @@ export const SIDEBAR_ITEMS: ReadonlyArray<
     disabled: false,
   },
   {
-    Icon: PoolSVG,
-    name: 'Earn',
-    path: Routes[RoutesEnum.Earn],
-    disabled: false,
-  },
-  {
     Icon: CirclePlusSVG,
     name: 'Create Token',
     path: Routes[RoutesEnum.TokenCreate],
+    disabled: false,
+  },
+  {
+    Icon: BridgeSVG,
+    name: 'Bridge',
+    path: 'https://bridge.movementnetwork.xyz/',
     disabled: false,
   },
 ];

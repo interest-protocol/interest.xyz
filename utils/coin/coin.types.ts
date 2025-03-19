@@ -1,26 +1,28 @@
 import type { AccountAddress } from '@aptos-labs/ts-sdk';
 
-export interface CoinMetadata {
-  type: string;
+import { Token } from '@/interface';
+
+export interface Metadata {
   name: string;
   symbol: string;
   iconUri: string;
   decimals: number;
 }
 
-export interface FAMetadata {
-  name: string;
-  symbol: string;
-  iconUri: string;
-  decimals: number;
-  projectUri?: undefined;
+export interface CoinMetadata extends Metadata {
+  type: string;
+}
+
+export interface FAMetadata extends Metadata {
+  projectUri?: string;
   address: AccountAddress;
 }
 
-export interface ClientMetadata {
-  name: string;
-  symbol: string;
-  decimals: number;
+export interface APIMetadata extends Omit<CoinMetadata, 'iconUri'> {
+  iconUrl: string;
+}
+
+export interface ClientMetadata extends Omit<Metadata, 'iconUri'> {
   asset_type: string;
   token_standard: string;
   supply_v2?: any | null;
@@ -29,4 +31,9 @@ export interface ClientMetadata {
   project_uri?: string | null;
 }
 
-export type MetadataSources = CoinMetadata | FAMetadata | ClientMetadata;
+export type MetadataSources =
+  | CoinMetadata
+  | FAMetadata
+  | ClientMetadata
+  | APIMetadata
+  | Token;

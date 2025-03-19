@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { ISrPool } from '@/interface';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 export enum FormFilterValue {
@@ -21,24 +22,16 @@ export interface InfoCardTokenCoinsProps {
 }
 
 export interface InfoCardTradeProps {
-  index: number;
   isInfo?: boolean;
+  loading?: boolean;
   amount: ReactNode;
-  description: string;
-  tooltipInfo: string;
-}
-
-interface InfoCardLineProps {
+  noBorder?: boolean;
   description: string;
   tooltipInfo: string;
 }
 
 export interface InfoCardProps {
-  link: string;
-  tags: ReadonlyArray<string>;
-  infoData: ReadonlyArray<string>;
-  listCoins: ReadonlyArray<AssetMetadata>;
-  lines: ReadonlyArray<InfoCardLineProps>;
+  pool: ISrPool;
 }
 
 export interface InfoCardSkeletonProps {

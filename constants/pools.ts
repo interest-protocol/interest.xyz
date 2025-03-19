@@ -1,21 +1,38 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-import { Network, STRICT_POOL } from '@interest-protocol/aptos-sr-amm';
-import { values } from 'ramda';
 
-export const RUCO_POOL = {
-  address: AccountAddress.from(
-    '0x1872148d223089c84e368855fbfcd2c07cc7a6e6589e597094a35928f37dde41'
-  ),
-  faX: AccountAddress.from('0xa'),
-  faY: AccountAddress.from(
-    '0xf0949330b384afdfce50661211adec99aaafb70f2c5ddee993fec4b60947b31e'
-  ),
-  projectUri: 'https://www.interest.xyz',
-  symbol: 'sr-LpFa',
-  name: 'sr-MOVE/RUCO',
-  decimals: 8,
-};
+import { Pools } from '@/interface';
 
-export const POOLS = [...values(STRICT_POOL[Network.Porto]), RUCO_POOL];
+import { MOVE, USDCe, USDTe, WBTCe, WETHe } from './coins';
+
+export const POOLS: ReadonlyArray<Pools> = [
+  {
+    address: AccountAddress.from(
+      '0xe2f780e09eafd359ca5e11fc3d8ff96a4a4a5f0bb3dfdcbc1d6193643f35008a'
+    ),
+    faX: MOVE.address,
+    faY: USDTe.address,
+  },
+  {
+    address: AccountAddress.from(
+      '0xdf7dd8b4965de3f63c6d977b4518ea518b9e254023661135ba82bf7c5513d41a'
+    ),
+    faX: MOVE.address,
+    faY: WBTCe.address,
+  },
+  {
+    address: AccountAddress.from(
+      '0xc41f4a26f98b72b3c69d253adeb9d4766efb534ce38cb8f5b3e0cc229e0d1f91'
+    ),
+    faX: MOVE.address,
+    faY: USDCe.address,
+  },
+  {
+    address: AccountAddress.from(
+      '0x1c015680cfafacf2cddca406572882b5d19af48f335d1211f8a1e1766829abb9'
+    ),
+    faX: MOVE.address,
+    faY: WETHe.address,
+  },
+];
 
 export const fasByPool = POOLS.map(({ faX, faY }) => [faX, faY]);

@@ -5,7 +5,6 @@ import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 export interface Token extends AssetMetadata {
   value: string;
   valueBN: BigNumber;
-  usdPrice: number | null;
 }
 
 export enum CreatePoolStep {
@@ -21,12 +20,12 @@ export interface CreatePoolForm {
   isStable: boolean;
   step: CreatePoolStep;
   explorerLink: string;
-  type: 'SR-AMM';
+  type: 'V2(SR-AMM)';
   tokens: ReadonlyArray<Token>;
 }
 
 export enum CreatePoolMessageEnum {
-  atLeastOneCoin = 'You must have at least 1 MOV on your wallet',
+  atLeastOneCoin = 'You must have at least 0.01 MOVE on your wallet',
   amountSuperior = 'amount is superior than your balance, try to reduce',
   safeBalanceAmount = 'amount is superior than safe balance, try to leave at least 0.1 MOVE',
 }
