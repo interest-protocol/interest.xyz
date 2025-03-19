@@ -9,7 +9,6 @@ import { ArrowDownSVG, ArrowUpSVG } from '@/components/svg';
 import useClickOutsideListenerRef from '@/hooks/use-click-outside-listener-ref';
 import { updateURL } from '@/utils';
 import { FormFilterValue } from '@/views/components/info-card/info-card.types';
-import { IEarnForm } from '@/views/earn/earn.types';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { FilterItemProps } from '../farm.types';
@@ -17,7 +16,7 @@ import { DropdownProps } from './dropdown.types';
 
 const Dropdown: FC<DropdownProps> = ({ label, type, filterData, disabled }) => {
   const boxId = useId();
-  const { control } = useFormContext<IEarnForm | IPoolForm>();
+  const { control } = useFormContext<IPoolForm>();
   const fields = useWatch({ control, name: 'filterList' });
   const { replace } = useFieldArray({
     control,
