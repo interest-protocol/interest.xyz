@@ -23,7 +23,7 @@ const FormInputDollar: FC<InputProps> = ({ index }) => {
     prices && value
       ? formatDollars(
           +BigNumber(value)
-            .times(BigNumber(prices[0].price))
+            .times(BigNumber(prices?.[0]?.price ?? 0))
             .toNumber()
             .toFixed(3)
         )

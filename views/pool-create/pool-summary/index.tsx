@@ -12,6 +12,7 @@ import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 import { formatMoney } from '@/utils';
 
+import { poolAlgorithms } from '../pool-create.data';
 import { CreatePoolForm } from '../pool-create.types';
 import PoolSummaryButton from './pool-summary-button';
 
@@ -20,17 +21,18 @@ const PoolSummary: FC = () => {
   const network = useNetwork<Network>();
 
   const { getValues } = useFormContext<CreatePoolForm>();
-  const { type, isStable, tokens } = getValues();
+  const { curve, algorithm, tokens } = getValues();
 
   return (
     <Box
-      my="xl"
       p="xl"
+      my="xl"
       mx="auto"
       gap="2rem"
+      width="100%"
       bg="container"
+      maxWidth="30rem"
       borderRadius="xs"
-      maxWidth="27.25rem"
     >
       <Typography
         mb="3xl"
@@ -57,7 +59,7 @@ const PoolSummary: FC = () => {
             opacity={0.64}
             color="onSurface"
           >
-            Pool Type
+            Pool Curve
           </Typography>
         </Box>
         <Box
@@ -70,7 +72,7 @@ const PoolSummary: FC = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          {type}
+          {poolAlgorithms[algorithm]}
         </Box>
       </Box>
       <Box
@@ -102,7 +104,7 @@ const PoolSummary: FC = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          {isStable ? 'Stable' : 'Volatile'}
+          {curve}
         </Box>
       </Box>
       <Box

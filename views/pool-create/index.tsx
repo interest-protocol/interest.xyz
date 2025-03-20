@@ -19,13 +19,13 @@ const PoolCreate = () => {
   return (
     <Layout>
       <CreatePoolHeader
+        name={stepTitle[currentStep]}
         onBack={() => {
           currentStep
             ? setValue('step', currentStep - 1)
             : push(Routes[RoutesEnum.Pools]);
           setValue('error', '');
         }}
-        name={stepTitle[currentStep]}
       />
       <Box
         gap="xs"

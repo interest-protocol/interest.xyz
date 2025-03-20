@@ -1,7 +1,8 @@
-import { Box } from '@interest-protocol/ui-kit';
+import { Button, Motion } from '@interest-protocol/ui-kit';
 import { ChangeEvent, FC, useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { TimesSVG } from '@/components/svg';
 import { FixedPointMath } from '@/lib';
 import { parseInputEventToNumberString } from '@/utils';
 import { TokenField } from '@/views/pool-create/select-coins/input/token-field';
@@ -14,7 +15,7 @@ import { InputProps } from './input.types';
 import InputMaxButton from './input-max-button';
 import SelectToken from './select-token';
 
-const Input: FC<InputProps> = ({ index }) => {
+const Input: FC<InputProps> = ({ index, onRemove }) => {
   const { register, getValues, setValue } = useFormContext<CreatePoolForm>();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -26,12 +27,13 @@ const Input: FC<InputProps> = ({ index }) => {
   useEventListener('resize', handleSetMobile, true);
 
   return (
-    <Box
+    <Motion
       width="100%"
-      display=" flex"
+      display="flex"
+      position="relative"
+      alignContent="center"
       flexDirection="column"
       justifyContent="center"
-      alignContent="center"
     >
       <TokenField
         active
@@ -58,7 +60,23 @@ const Input: FC<InputProps> = ({ index }) => {
         ButtonMax={<InputMaxButton index={index} />}
         TokenIcon={<SelectToken index={index} isMobile={isMobile} />}
       />
-    </Box>
+      {onRemove && (
+        <Button
+          isIcon
+          p="3xs"
+          top="-0.5rem"
+          right="-0.25rem"
+          variant="filled"
+          onClick={onRemove}
+          bg="errorContainer"
+          borderRadius="full"
+          position="absolute"
+          color="onErrorContainer"
+        >
+          <TimesSVG width="100%" maxWidth="0.5rem" maxHeight="0.5rem" />
+        </Button>
+      )}
+    </Motion>
   );
 };
 

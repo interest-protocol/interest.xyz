@@ -9,8 +9,7 @@ const PoolCreatePage: NextPage = () => {
   const form = useForm<CreatePoolForm>({
     defaultValues: {
       step: 0,
-      type: 'V2(SR-AMM)',
-      isStable: false,
+      curve: 'volatile',
       tokens: [
         {
           name: '',

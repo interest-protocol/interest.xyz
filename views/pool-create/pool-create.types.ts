@@ -8,8 +8,8 @@ export interface Token extends AssetMetadata {
 }
 
 export enum CreatePoolStep {
-  PoolType,
   PoolAlgorithm,
+  PoolCurve,
   PoolCoins,
   PoolSummary,
 }
@@ -17,29 +17,15 @@ export enum CreatePoolStep {
 export interface CreatePoolForm {
   dex: string;
   error: string;
-  isStable: boolean;
+  algorithm: string;
   step: CreatePoolStep;
   explorerLink: string;
-  type: 'V2(SR-AMM)';
   tokens: ReadonlyArray<Token>;
+  curve: 'stable' | 'volatile';
 }
 
 export enum CreatePoolMessageEnum {
   atLeastOneCoin = 'You must have at least 0.01 MOVE on your wallet',
   amountSuperior = 'amount is superior than your balance, try to reduce',
   safeBalanceAmount = 'amount is superior than safe balance, try to leave at least 0.1 MOVE',
-}
-
-export interface GetByteCodeArgs {
-  imageUrl: string;
-  description: string;
-  coinTypes: string[];
-  isStable: boolean;
-}
-
-export interface ExtractedCoinData {
-  coinType: string;
-  coinObjectId: string;
-  treasuryCap: null | string;
-  coinMetadata: null | string;
 }

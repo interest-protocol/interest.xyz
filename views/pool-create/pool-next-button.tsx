@@ -6,14 +6,14 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useInterestDex } from '@/hooks/use-interest-dex';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
-import { CreatePoolForm, CreatePoolStep } from './pool-create.types';
+import { CreatePoolForm, CreatePoolStep, Token } from './pool-create.types';
 
 const PoolNextButton: FC = () => {
   const dex = useInterestDex();
   const [loading, setLoading] = useState<boolean>(false);
   const { control, setValue, getValues } = useFormContext<CreatePoolForm>();
 
-  const { step, tokens } = useWatch({ control });
+  const { step, tokens, curve, algorithm } = useWatch({ control });
 
   const error = getValues('error');
 
@@ -56,6 +56,8 @@ const PoolNextButton: FC = () => {
 
   const isDisabled = useMemo(() => {
     if (error || loading) return true;
+    if (step === CreatePoolStep.PoolAlgorithm) return !algorithm;
+    if (step === CreatePoolStep.PoolCurve) return !curve;
     if (step === CreatePoolStep.PoolCoins)
       return !tokens?.every(
         ({ value, symbol, decimals }) =>
@@ -69,33 +71,39 @@ const PoolNextButton: FC = () => {
     if (!coinA.type || !coinB.type) return true;
 
     if (!coinA.value || !coinB.value) return true;
-  }, [step, tokens, loading]);
+  }, [step, tokens, curve, algorithm, loading]);
 
   return (
-    <>
-      <Button
-        mx="auto"
-        variant="filled"
-        disabled={isDisabled || !!error}
-        PrefixIcon={
-          loading ? <ProgressIndicator variant="loading" size={16} /> : null
-        }
-        onClick={async () => {
-          if (step === CreatePoolStep.PoolCoins) {
-            const exists = await checkIfPoolExists();
+    <Button
+      mx="auto"
+      variant="filled"
+      disabled={isDisabled || !!error}
+      PrefixIcon={
+        loading ? <ProgressIndicator variant="loading" size={16} /> : null
+      }
+      onClick={async () => {
+        if (step === CreatePoolStep.PoolCoins) {
+          const exists = await checkIfPoolExists();
 
-            if (exists) {
-              setValue('error', 'This pool already exists');
-              return;
-            }
+          if (exists) {
+            setValue('error', 'This pool already exists');
+            return;
           }
+        }
+        if (step === CreatePoolStep.PoolAlgorithm && algorithm === 'sr-amm') {
+          if (tokens && tokens.length)
+            setValue(
+              'tokens',
+              tokens.slice(0, 2) as unknown as ReadonlyArray<Token>
+            );
 
-          setValue('step', step! + 1);
-        }}
-      >
-        Next
-      </Button>
-    </>
+          setValue('step', step! + 2);
+        }
+        setValue('step', step! + 1);
+      }}
+    >
+      Next
+    </Button>
   );
 };
 

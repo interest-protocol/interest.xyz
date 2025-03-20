@@ -11,13 +11,12 @@ const CreatePoolHeader: FC<CreatePoolProps> = ({ name, onBack }) => (
     px="xl"
     mx="auto"
     mb="2.875rem"
-    display="flex"
-    flexWrap="wrap"
+    display="grid"
     maxWidth="65rem"
     borderRadius="xs"
-    position="relative"
     mt={['5xl', '5xl', '5xl', 'xl']}
     gap={['unset', 'm', 'm', 'm', 'm']}
+    gridTemplateColumns="2rem 1fr 2rem"
   >
     <Button
       isIcon
@@ -26,10 +25,7 @@ const CreatePoolHeader: FC<CreatePoolProps> = ({ name, onBack }) => (
       variant="text"
       onClick={onBack}
       color="onSurface"
-      nHover={{
-        bg: 'lowestContainer',
-      }}
-      position={['relative', 'absolute', 'absolute', 'absolute', 'absolute']}
+      nHover={{ bg: 'lowestContainer' }}
     >
       <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
     </Button>
