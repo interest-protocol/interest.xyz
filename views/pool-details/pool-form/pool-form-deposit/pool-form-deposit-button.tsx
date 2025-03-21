@@ -7,14 +7,14 @@ import invariant from 'tiny-invariant';
 
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
-import { useInterestDex } from '@/hooks/use-interest-dex';
+import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 
 import { PoolFormButtonProps } from '../pool-form.types';
 import { logDepositPool } from '../pool-form.utils';
 
 const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
-  const dex = useInterestDex();
+  const dexV2 = useInterestV2Dex();
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
@@ -26,7 +26,7 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
       setValue('error', '');
       const [token0, token1] = getValues('tokenList');
 
-      const payload = dex.addLiquidity({
+      const payload = dexV2.addLiquidity({
         faA: token0.type,
         faB: token1.type,
         recipient: account.address,

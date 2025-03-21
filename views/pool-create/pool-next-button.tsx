@@ -3,13 +3,13 @@ import { Button, ProgressIndicator } from '@interest-protocol/ui-kit';
 import { type FC, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { useInterestDex } from '@/hooks/use-interest-dex';
+import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
 import { CreatePoolForm, CreatePoolStep } from './pool-create.types';
 
 const PoolNextButton: FC = () => {
-  const dex = useInterestDex();
+  const dexV2 = useInterestV2Dex();
   const [loading, setLoading] = useState<boolean>(false);
   const { control, setValue, getValues } = useFormContext<CreatePoolForm>();
 
@@ -33,17 +33,17 @@ const PoolNextButton: FC = () => {
     ];
 
     if (coins.length > 1) {
-      pool = await dex.getPoolAddress({
+      pool = await dexV2.getPoolAddress({
         faA: coins[0].type.toString(),
         faB: coins[1].type.toString(),
       });
     } else if (coins.length === 1) {
-      pool = await dex.getPoolAddress({
+      pool = await dexV2.getPoolAddress({
         faA: coins[0].type.toString(),
         faB: fas[0].type,
       });
     } else {
-      pool = await dex.getPoolAddress({
+      pool = await dexV2.getPoolAddress({
         faA: fas[0].type,
         faB: fas[1].type,
       });

@@ -6,7 +6,7 @@ import { v4 } from 'uuid';
 
 import useEventListener from '@/hooks/use-event-listener';
 
-import { FormFilterValue } from '../pool-card/pool-card.types';
+import { FormFilterValue } from '../pool-v2-card/pool-card.types';
 import { FilterItemProps, FilterTypeEnum, IPoolForm } from '../pools.types';
 import CreatePoolButton from './create-pool-button';
 import FindPoolButton from './find-pool-button';

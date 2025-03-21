@@ -48,7 +48,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
     coin?.decimals ?? decimals
   );
 
-  const dex = new InterestDex();
+  const dexV2 = new InterestDex();
 
   const handleWrapCoin = async () => {
     const id = toast.loading(`Wrapping ${symbol}...`);
@@ -56,7 +56,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       invariant(account, 'You should have this coin in your wallet');
       invariant(coin, 'You should have this coin in your wallet');
 
-      const payload = dex.wrapCoin({
+      const payload = dexV2.wrapCoin({
         coinType: token.type,
         amount: BigInt(coin.balance.toString()),
         recipient: account.address,

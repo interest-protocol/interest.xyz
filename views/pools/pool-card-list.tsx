@@ -4,13 +4,15 @@ import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
+import { POOLS } from '@/constants/pools';
 import { usePools } from '@/hooks/use-pools';
 import { ISrPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
-import PoolCard from './pool-card';
-import { FormFilterValue } from './pool-card/pool-card.types';
-import PoolCardSkeleton from './pool-card/pool-card-skeleton';
+import PoolCurveCard from './pool-curve-card';
+import PoolCard from './pool-v2-card';
+import { FormFilterValue } from './pool-v2-card/pool-card.types';
+import PoolCardSkeleton from './pool-v2-card/pool-card-skeleton';
 import {
   FilterTypeEnum,
   IPoolForm,
@@ -192,6 +194,21 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
         </Typography>
       </Box>
     );
+
+  return (
+    <Box
+      gap="xs"
+      borderRadius="xs"
+      p={['s', 's', 's', 'l']}
+      display={POOLS?.length ? 'grid' : 'flex'}
+      gridTemplateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr', '1fr 1fr 1fr']}
+    >
+      {POOLS.map((pool) => (
+        <PoolCurveCard key={v4()} pool={pool} />
+      ))}
+      {arePoolsLoading && <PoolCardSkeleton />}
+    </Box>
+  );
 
   return (
     <>

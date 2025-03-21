@@ -9,7 +9,7 @@ import { ArrowDownSVG, ArrowUpSVG } from '@/components/svg';
 import useClickOutsideListenerRef from '@/hooks/use-click-outside-listener-ref';
 import { updateURL } from '@/utils';
 
-import { FormFilterValue } from '../../pool-card/pool-card.types';
+import { FormFilterValue } from '../../pool-v2-card/pool-card.types';
 import { FilterItemProps, IPoolForm } from '../../pools.types';
 import { DropdownProps } from './dropdown.types';
 
