@@ -5,10 +5,10 @@ import { v4 } from 'uuid';
 import { FilterSVG } from '@/components/svg';
 
 import Dropdown from './dropdown';
+import { FarmFilterProps } from './farm.types';
 import FilterSelectedItem from './filter-selected-item';
-import { FILTERS_DATA } from './pool-filter.data';
 
-const PoolFilter: FC = () => (
+const FarmFilter: FC<FarmFilterProps> = ({ filterData }) => (
   <Box
     mx="m"
     display="flex"
@@ -36,7 +36,7 @@ const PoolFilter: FC = () => (
       >
         <FilterSVG maxWidth="2rem" maxHeight="2rem" width="100%" />
       </Box>
-      {FILTERS_DATA.map((filter) => (
+      {filterData.map((filter) => (
         <Dropdown
           key={v4()}
           type={filter.type}
@@ -49,4 +49,4 @@ const PoolFilter: FC = () => (
   </Box>
 );
 
-export default PoolFilter;
+export default FarmFilter;

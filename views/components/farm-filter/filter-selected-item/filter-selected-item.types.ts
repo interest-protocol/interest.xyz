@@ -1,4 +1,4 @@
-import { FilterItemProps } from '../../pools.types';
+import { FilterItemProps } from '../farm.types';
 
 export interface FilterSelectedItemProps {
   selectedItem: FilterItemProps;

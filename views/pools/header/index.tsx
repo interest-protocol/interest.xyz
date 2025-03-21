@@ -5,9 +5,13 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import useEventListener from '@/hooks/use-event-listener';
+import {
+  FilterItemProps,
+  FilterTypeEnum,
+} from '@/views/components/farm-filter/farm.types';
+import { FormFilterValue } from '@/views/components/info-card/info-card.types';
 
-import { FormFilterValue } from '../pool-card/pool-card.types';
-import { FilterItemProps, FilterTypeEnum, IPoolForm } from '../pools.types';
+import { IPoolForm } from '../pools.types';
 import CreatePoolButton from './create-pool-button';
 import FindPoolButton from './find-pool-button';
 import { HeaderProps } from './header.types';

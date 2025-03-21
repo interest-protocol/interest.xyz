@@ -7,12 +7,12 @@ import { v4 } from 'uuid';
 import { usePools } from '@/hooks/use-pools';
 import { ISrPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
+import InfoCard from '@/views/components/info-card';
+import InfoCardSkeleton from '@/views/components/info-card/info-card-skeleton';
 
-import PoolCard from './pool-card';
-import { FormFilterValue } from './pool-card/pool-card.types';
-import PoolCardSkeleton from './pool-card/pool-card-skeleton';
 import {
   FilterTypeEnum,
+  FormFilterValue,
   IPoolForm,
   PoolCardListContentProps,
   PoolCardListProps,
@@ -180,7 +180,7 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
           '1fr 1fr 1fr',
         ]}
       >
-        <PoolCardSkeleton />
+        <InfoCardSkeleton isPool />
       </Box>
     );
 
@@ -209,9 +209,9 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
         ]}
       >
         {pools?.flatMap((poolPage) =>
-          poolPage.map((pool) => <PoolCard key={v4()} pool={pool} />)
+          poolPage.map((pool) => <InfoCard key={v4()} pool={pool} />)
         )}
-        {arePoolsLoading && <PoolCardSkeleton />}
+        {arePoolsLoading && <InfoCardSkeleton isPool />}
       </Box>
       {hasMore && (
         <Box mx="m" display="flex" justifyContent="center" onClick={next}>

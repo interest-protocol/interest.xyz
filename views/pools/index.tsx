@@ -3,9 +3,10 @@ import { FC, useState } from 'react';
 
 import Layout from '@/components/layout';
 
+import FarmFilter from '../components/farm-filter';
 import Header from './header';
+import { FILTERS_DATA } from './pool.data';
 import PoolCardList from './pool-card-list';
-import PoolFilter from './pool-filter';
 import { PoolTabEnum } from './pools.types';
 
 const Pools: FC = () => {
@@ -13,26 +14,23 @@ const Pools: FC = () => {
 
   return (
     <Layout>
-      <Box display="flex" flexDirection="column" flex="1">
-        <Box py="xl">
-          <Header setTab={setTab} currentTab={tab} />
-        </Box>
-        <Box
-          px="s"
-          flex="1"
-          gap="2xs"
-          display="flex"
-          bg="container"
-          maxWidth="100%"
-          maxHeight="100%"
-          borderRadius="xs"
-          minHeight="30rem"
-          flexDirection="column"
-          py={['s', 's', 's', '2xl']}
-        >
-          <PoolFilter />
-          <PoolCardList tab={tab} />
-        </Box>
+      <Box py="xl">
+        <Header setTab={setTab} currentTab={tab} />
+      </Box>
+      <Box
+        px="s"
+        gap="2xs"
+        display="flex"
+        bg="container"
+        maxWidth="100%"
+        maxHeight="100%"
+        borderRadius="xs"
+        minHeight="30rem"
+        flexDirection="column"
+        py={['s', 's', 's', '2xl']}
+      >
+        <FarmFilter filterData={FILTERS_DATA} />
+        <PoolCardList tab={tab} />
       </Box>
     </Layout>
   );

@@ -1,7 +1,7 @@
 import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-import PoolCardTrade from '@/views/pools/pool-card/pool-card-trade';
+import InfoCardTrade from '@/views/components/info-card/info-card-trade';
 
 import { PoolPreviewWrapperProps } from '../preview.types';
 
@@ -11,14 +11,14 @@ const PoolPreviewWrapperFooter: FC<PoolPreviewWrapperProps> = ({
 }) => (
   <Box>
     <Box px="m" py="xs" bg="surface" borderRadius="1rem">
-      <PoolCardTrade
+      <InfoCardTrade
         isInfo
         noBorder
         description="Slippage"
         tooltipInfo="Slippage Loss (incl. pricing)"
         amount={`${getValues('settings.slippage')}%`}
       />
-      <PoolCardTrade
+      <InfoCardTrade
         isInfo
         noBorder
         description="Network Fee"

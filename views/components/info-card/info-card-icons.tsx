@@ -8,9 +8,9 @@ import { TokenIcon } from '@/components';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
-import { PoolCardTokenInfoProps } from './pool-card.types';
+import { InfoCardTokenCoinsProps } from './info-card.types';
 
-const PoolCardInfo: FC<PoolCardTokenInfoProps> = ({ coins }) => {
+const InfoCardCoins: FC<InfoCardTokenCoinsProps> = ({ coins }) => {
   const network = useNetwork<Network>();
 
   return (
@@ -65,4 +65,4 @@ const PoolCardInfo: FC<PoolCardTokenInfoProps> = ({ coins }) => {
   );
 };
 
-export default PoolCardInfo;
+export default InfoCardCoins;

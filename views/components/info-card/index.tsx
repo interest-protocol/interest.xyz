@@ -8,14 +8,14 @@ import { Routes, RoutesEnum } from '@/constants';
 import useSrAmmPool from '@/hooks/use-sr-amm-pool';
 import { FixedPointMath } from '@/lib';
 import { formatMoney } from '@/utils';
+import { POOL_DATA } from '@/views/pools/pool.data';
 
-import { POOL_DATA } from '../pool.data';
-import { FormFilterValue, PoolCardProps } from './pool-card.types';
-import PoolCardHeader from './pool-card-header';
-import PoolCardInfo from './pool-card-info';
-import PoolCardTrade from './pool-card-trade';
+import { FormFilterValue, InfoCardProps } from './info-card.types';
+import InfoCardHeader from './info-card-header';
+import InfoCardIcons from './info-card-icons';
+import InfoCardTrade from './info-card-trade';
 
-const PoolCard: FC<PoolCardProps> = ({ pool }) => {
+const InfoCard: FC<InfoCardProps> = ({ pool }) => {
   const { pool: data, loading } = useSrAmmPool(pool.poolAddress, false);
 
   return (
@@ -42,7 +42,7 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
           '.arrow-wrapper': { opacity: 1 },
         }}
       >
-        <PoolCardHeader
+        <InfoCardHeader
           tags={[
             'V2(SR-AMM)',
             FormFilterValue['volatile'],
@@ -53,18 +53,18 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
               : '',
           ]}
         />
-        <PoolCardInfo
+        <InfoCardIcons
           key={v4()}
           coins={pool ? [pool.metadata.x, pool.metadata.y] : []}
         />
         <Box px="m" py="xs" bg="surface" borderRadius="1rem">
-          <PoolCardTrade
+          <InfoCardTrade
             noBorder
             amount="0.3%"
             description="Fee"
             tooltipInfo="Trade fee in percentage"
           />
-          <PoolCardTrade
+          <InfoCardTrade
             loading={loading}
             tooltipInfo={`${pool.metadata.x.symbol} reserves`}
             description={pool.metadata.x.symbol ?? 'Balance X'}
@@ -75,7 +75,7 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
               )
             )}
           />
-          <PoolCardTrade
+          <InfoCardTrade
             loading={loading}
             tooltipInfo={`${pool.metadata.y.symbol} reserves`}
             description={pool.metadata.y.symbol ?? 'Balance Y'}
@@ -92,4 +92,4 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
   );
 };
 
-export default PoolCard;
+export default InfoCard;

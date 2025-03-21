@@ -4,9 +4,9 @@ import { v4 } from 'uuid';
 
 import { ArrowObliqueSVG } from '@/components/svg';
 
-import { PoolCardHeaderProps } from './pool-card.types';
+import { InfoCardHeaderProps } from './info-card.types';
 
-const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
+const InfoCardHeader: FC<InfoCardHeaderProps> = ({ tags }) => (
   <Box display="flex" alignItems="center" justifyContent="space-between">
     <Box display="flex" flexWrap="wrap" alignItems="center">
       {tags?.map((tag) =>
@@ -44,4 +44,4 @@ const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
   </Box>
 );
 
-export default PoolCardHeader;
+export default InfoCardHeader;

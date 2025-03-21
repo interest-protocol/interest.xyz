@@ -8,7 +8,9 @@ import { TokenIcon } from '@/components';
 import { ArrowObliqueSVG } from '@/components/svg';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 
-const PoolCardSkeleton: FC = () => {
+import { InfoCardSkeletonProps } from './info-card.types';
+
+const InfoCardSkeleton: FC<InfoCardSkeletonProps> = ({ isPool }) => {
   const network = useNetwork<Network>();
 
   return (
@@ -34,7 +36,7 @@ const PoolCardSkeleton: FC = () => {
     >
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" flexWrap="wrap" alignItems="center">
-          {Array.from({ length: 2 }, () => (
+          {Array.from({ length: isPool ? 2 : 4 }, () => (
             <Tag
               key={v4()}
               px="0"
@@ -130,4 +132,4 @@ const PoolCardSkeleton: FC = () => {
   );
 };
 
-export default PoolCardSkeleton;
+export default InfoCardSkeleton;

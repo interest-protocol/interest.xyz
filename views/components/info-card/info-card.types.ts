@@ -10,17 +10,18 @@ export enum FormFilterValue {
   'volatile' = 'volatile',
   'clamm' = 'clamm',
   'amm' = 'amm',
+  'farm' = 'farm',
 }
 
-export interface PoolCardHeaderProps {
+export interface InfoCardHeaderProps {
   tags?: ReadonlyArray<string>;
 }
 
-export interface PoolCardTokenInfoProps {
+export interface InfoCardTokenCoinsProps {
   coins: ReadonlyArray<AssetMetadata>;
 }
 
-export interface PoolCardTradeProps {
+export interface InfoCardTradeProps {
   isInfo?: boolean;
   loading?: boolean;
   amount: ReactNode;
@@ -29,6 +30,10 @@ export interface PoolCardTradeProps {
   tooltipInfo: string;
 }
 
-export interface PoolCardProps {
+export interface InfoCardProps {
   pool: ISrPool;
+}
+
+export interface InfoCardSkeletonProps {
+  isPool?: boolean;
 }

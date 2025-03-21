@@ -17,6 +17,10 @@ export interface PoolPageProps {
   address: string;
 }
 
+export interface EarnPageProps {
+  address: string;
+}
+
 export enum PoolTypeEnum {
   CLAMM = 'CLAMM',
   srAMM = 'V2(SR-AMM)',
@@ -57,10 +61,6 @@ export interface Pools {
   address: AccountAddress;
   faX: AccountAddress;
   faY: AccountAddress;
-  projectUri: string;
-  symbol: string;
-  name: string;
-  decimals: number;
 }
 
 export interface SrAmmPoolWithMetadata

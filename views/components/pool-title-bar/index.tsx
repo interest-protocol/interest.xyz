@@ -19,24 +19,13 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
   loading,
   centerTile,
 }) => {
-  const [isMobile, setIsMobile] = useState(false);
-
   const network = useNetwork<Network>();
+  const [isMobile, setIsMobile] = useState(false);
   const { control, setValue } = useFormContext<IPoolForm>();
 
-  const isEarnPoolView = useWatch({
+  const [pool, tokens, isEarnPoolView] = useWatch({
     control: control,
-    name: 'isEarnPoolView',
-  });
-
-  const tokens = useWatch({
-    control: control,
-    name: 'tokenList',
-  });
-
-  const pool = useWatch({
-    control: control,
-    name: 'pool',
+    name: ['pool', 'tokenList', 'isEarnPoolView'],
   });
 
   const isEarnable = Boolean(
@@ -64,41 +53,39 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         mb="xs"
         gap="m"
         mx="auto"
-        display="flex"
+        bg="container"
+        display="grid"
         maxWidth="65rem"
         borderRadius="xs"
         alignItems="center"
         justifyContent="ce"
-        bg="container"
         mt={['5xl', '5xl', '5xl', 'xl']}
+        gridTemplateColumns="1fr auto 1fr"
       >
-        <Button
-          isIcon
-          mr="xs"
-          variant="text"
-          onClick={onBack}
-          color="onSurface"
-          nHover={{
-            bg: 'surface',
-          }}
-        >
-          <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
-        </Button>
         <Box
-          display="flex"
           gap="s"
-          flexWrap="wrap"
-          justifyContent="space-between"
+          display="flex"
+          alignItems="center"
           minWidth={['auto', 'auto', '90%', '93.5%']}
         >
+          <Button
+            isIcon
+            mr="xs"
+            variant="text"
+            onClick={onBack}
+            color="onSurface"
+            nHover={{ bg: 'surface' }}
+          >
+            <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
+          </Button>
           <Box display="flex" gap="s" flexWrap="wrap">
             <Typography
-              size="large"
+              size="small"
               color="onSurface"
               variant="headline"
               textAlign="center"
               ml={centerTile ? 'auto' : ''}
-              fontSize={['xl', 'xl', '3xl', '5xl']}
+              fontSize={['xl', 'xl', '3xl']}
             >
               {loading ? (
                 <Box display="flex" gap="s">
@@ -112,64 +99,65 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
               )}
             </Typography>
           </Box>
-          <Box display="flex" gap="s">
-            <Box
-              gap="s"
-              ml="auto"
-              alignItems="center"
-              display={['none', 'none', 'flex', 'flex']}
-            >
-              {!loading ? (
-                tokens.map(({ symbol }) => (
-                  <TokenIcon
-                    withBg
-                    key={v4()}
-                    symbol={symbol}
-                    network={network}
-                  />
-                ))
-              ) : (
-                <Box display="flex" gap="s">
-                  <Skeleton
-                    width="calc(1.5rem * 1.66)"
-                    height="calc(1.5rem * 1.66)"
-                  />
-                  <Skeleton
-                    width="calc(1.5rem * 1.66)"
-                    height="calc(1.5rem * 1.66)"
-                  />
-                </Box>
-              )}
-            </Box>
+        </Box>
+        {isEarnable ? (
+          <Box
+            mx="auto"
+            display="flex"
+            maxWidth="65rem"
+            justifyContent="center"
+          >
+            <Tabs
+              type="square"
+              onChangeTab={(index: number) => {
+                setValue('isEarnPoolView', Boolean(index));
+              }}
+              defaultTabIndex={+(isEarnPoolView || 0)}
+              items={['Liquidity', 'EARN'].map((tab) => (
+                <Typography
+                  key={v4()}
+                  variant="label"
+                  size={isMobile ? 'small' : 'medium'}
+                >
+                  {tab}
+                </Typography>
+              ))}
+            />
+          </Box>
+        ) : (
+          <Box />
+        )}
+        <Box display="flex" gap="s">
+          <Box
+            gap="s"
+            ml="auto"
+            alignItems="center"
+            display={['none', 'none', 'flex', 'flex']}
+          >
+            {!loading ? (
+              tokens.map(({ symbol }) => (
+                <TokenIcon
+                  withBg
+                  key={v4()}
+                  symbol={symbol}
+                  network={network}
+                />
+              ))
+            ) : (
+              <Box display="flex" gap="s">
+                <Skeleton
+                  width="calc(1.5rem * 1.66)"
+                  height="calc(1.5rem * 1.66)"
+                />
+                <Skeleton
+                  width="calc(1.5rem * 1.66)"
+                  height="calc(1.5rem * 1.66)"
+                />
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
-      {isEarnable && (
-        <Box
-          mx="auto"
-          display="flex"
-          maxWidth="65rem"
-          justifyContent="center"
-          my="2xl"
-        >
-          <Tabs
-            type="square"
-            onChangeTab={(index: number) => {
-              setValue('isEarnPoolView', Boolean(index));
-            }}
-            defaultTabIndex={+(isEarnPoolView || 0)}
-            items={['Liquidity', 'EARN'].map((tab) => (
-              <Typography
-                key={v4()}
-                variant="label"
-                size={isMobile ? 'small' : 'medium'}
-              >
-                {tab}
-              </Typography>
-            ))}
-          />
-        </Box>
-      )}
     </>
   );
 };

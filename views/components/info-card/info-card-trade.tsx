@@ -4,9 +4,9 @@ import Skeleton from 'react-loading-skeleton';
 
 import { ExclamationCircleSVG, QuestionCircleSVG } from '@/components/svg';
 
-import { PoolCardTradeProps } from './pool-card.types';
+import { InfoCardTradeProps } from './info-card.types';
 
-const PoolCardTrade: FC<PoolCardTradeProps> = ({
+const InfoCardTrade: FC<InfoCardTradeProps> = ({
   amount,
   isInfo,
   loading,
@@ -58,4 +58,4 @@ const PoolCardTrade: FC<PoolCardTradeProps> = ({
   </Box>
 );
 
-export default PoolCardTrade;
+export default InfoCardTrade;
