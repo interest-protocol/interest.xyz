@@ -1,4 +1,4 @@
-import { FormFilterValue } from '../pool-card/pool-card.types';
+import { FormFilterValue } from '../pool-v2-card/pool-card.types';
 import { FilterItemProps, FilterTypeEnum } from '../pools.types';
 
 export const ALGORITHM_TYPE: Array<FilterItemProps> = [

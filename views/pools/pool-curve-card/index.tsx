@@ -1,3 +1,4 @@
+import { AccountAddress } from '@aptos-labs/ts-sdk';
 import { Box } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import Link from 'next/link';
@@ -5,22 +6,25 @@ import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { Routes, RoutesEnum } from '@/constants';
-import useSrAmmPool from '@/hooks/use-sr-amm-pool';
+import useCurvePool from '@/hooks/use-curve-pool';
+import { Pools } from '@/interface';
 import { FixedPointMath } from '@/lib';
 import { formatMoney } from '@/utils';
 
 import { POOL_DATA } from '../pool.data';
-import { FormFilterValue, PoolCardProps } from './pool-card.types';
+import { FormFilterValue } from './pool-card.types';
 import PoolCardHeader from './pool-card-header';
 import PoolCardInfo from './pool-card-info';
 import PoolCardTrade from './pool-card-trade';
 
-const PoolCard: FC<PoolCardProps> = ({ pool }) => {
-  const { pool: data, loading } = useSrAmmPool(pool.poolAddress, false);
+const PoolCurveCard: FC<{ pool: Pools }> = ({ pool }) => {
+  const { pool: data, loading } = useCurvePool(pool.address.toString());
+
+  console.log({ data });
 
   return (
     <Link
-      href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
+      href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.address.toString()}`}
     >
       <Box
         p="m"
@@ -46,8 +50,8 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
           tags={[
             'V2(SR-AMM)',
             FormFilterValue['volatile'],
-            POOL_DATA.filter(
-              ({ poolAddress }) => poolAddress == pool.poolAddress
+            POOL_DATA.filter(({ poolAddress }) =>
+              pool.address.equals(AccountAddress.from(poolAddress))
             ).length
               ? 'FARM'
               : '',
@@ -55,7 +59,7 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
         />
         <PoolCardInfo
           key={v4()}
-          coins={pool ? [pool.metadata.x, pool.metadata.y] : []}
+          coins={data?.tokensMetadata ? data.tokensMetadata : []}
         />
         <Box px="m" py="xs" bg="surface" borderRadius="1rem">
           <PoolCardTrade
@@ -64,32 +68,21 @@ const PoolCard: FC<PoolCardProps> = ({ pool }) => {
             description="Fee"
             tooltipInfo="Trade fee in percentage"
           />
-          <PoolCardTrade
-            loading={loading}
-            tooltipInfo={`${pool.metadata.x.symbol} reserves`}
-            description={pool.metadata.x.symbol ?? 'Balance X'}
-            amount={formatMoney(
-              FixedPointMath.toNumber(
-                BigNumber(data?.balanceX.toString() ?? 0),
-                pool.metadata.x.decimals
-              )
-            )}
-          />
-          <PoolCardTrade
-            loading={loading}
-            tooltipInfo={`${pool.metadata.y.symbol} reserves`}
-            description={pool.metadata.y.symbol ?? 'Balance Y'}
-            amount={formatMoney(
-              FixedPointMath.toNumber(
-                BigNumber(data?.balanceY.toString() ?? 0),
-                pool.metadata.y.decimals
-              )
-            )}
-          />
+          {data?.tokensMetadata?.map(({ symbol, decimals }) => (
+            <PoolCardTrade
+              key={v4()}
+              loading={loading}
+              tooltipInfo={`${symbol} reserves`}
+              description={symbol ?? 'Balance X'}
+              amount={formatMoney(
+                FixedPointMath.toNumber(BigNumber(0), decimals)
+              )}
+            />
+          ))}
         </Box>
       </Box>
     </Link>
   );
 };
 
-export default PoolCard;
+export default PoolCurveCard;

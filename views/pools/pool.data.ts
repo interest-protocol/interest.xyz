@@ -1,14 +1,9 @@
 import { POOLS } from '@/constants/pools';
-import { PoolTypeEnum, SrAmmPool } from '@/interface';
+import { Pool, PoolTypeEnum } from '@/interface';
 
-export const POOL_DATA: ReadonlyArray<SrAmmPool> = POOLS.map(
-  ({ address, faX, faY }) => ({
-    isVolatile: true,
-    poolType: PoolTypeEnum.srAMM,
-    poolAddress: address.toString(),
-    coins: {
-      typeX: faX.toString(),
-      typeY: faY.toString(),
-    },
-  })
-);
+export const POOL_DATA: ReadonlyArray<Pool> = POOLS.map(({ address, fas }) => ({
+  isVolatile: true,
+  poolType: PoolTypeEnum.Curve,
+  poolAddress: address.toString(),
+  coins: fas.map((fa) => fa.toString()),
+}));

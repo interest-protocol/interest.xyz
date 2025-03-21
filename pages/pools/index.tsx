@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { SEO } from '@/components';
 import Pools from '@/views/pools';
-import { FormFilterValue } from '@/views/pools/pool-card/pool-card.types';
+import { FormFilterValue } from '@/views/pools/pool-v2-card/pool-card.types';
 import { FilterTypeEnum, IPoolForm } from '@/views/pools/pools.types';
 
 const PoolsPage: NextPage = () => {

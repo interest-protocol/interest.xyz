@@ -5,13 +5,13 @@ import useSWR from 'swr';
 import { SrAmmPoolWithMetadata } from '@/interface';
 import { getCoinsMetadataFromAPI, parseToMetadata } from '@/utils';
 
-import { useInterestDex } from '../use-interest-dex';
+import { useInterestV2Dex } from '../use-interest-dex-v2';
 import useSrAmmPoolConfig from '../use-sr-pool-config';
 
 type MetadataKeys = 'metadata' | 'metadataY' | 'metadataX';
 
 const useSrAmmPool = (address: string, withMetadata = true) => {
-  const dex = useInterestDex();
+  const dexV2 = useInterestV2Dex();
 
   const { config } = useSrAmmPoolConfig();
 
@@ -20,7 +20,7 @@ const useSrAmmPool = (address: string, withMetadata = true) => {
     isLoading: loading,
     ...rest
   } = useSWR([useSrAmmPool.name, address, withMetadata], async () => {
-    const srPool = await dex.getPool(address);
+    const srPool = await dexV2.getPool(address);
 
     const newPool = srPool as unknown as SrAmmPoolWithMetadata;
 

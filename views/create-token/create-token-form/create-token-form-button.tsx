@@ -7,7 +7,7 @@ import invariant from 'tiny-invariant';
 
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
-import { useInterestDex } from '@/hooks/use-interest-dex';
+import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
 import { FixedPointMath } from '@/lib';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import SuccessModal from '@/views/components/success-modal';
@@ -16,7 +16,7 @@ import { ICreateTokenForm } from '../create-token.types';
 import { logCreateToken } from '../create-token.utils';
 
 const CreateTokenFormButton = () => {
-  const dex = useInterestDex();
+  const dexV2 = useInterestV2Dex();
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
@@ -100,8 +100,8 @@ const CreateTokenFormButton = () => {
       };
 
       const payload = values.pool?.active
-        ? dex.deployMemeWithFa(deployMemeWithFaArgs)
-        : dex.createFa(createFaArgs);
+        ? dexV2.deployMemeWithFa(deployMemeWithFaArgs)
+        : dexV2.createFa(createFaArgs);
 
       const startTime = Date.now();
 

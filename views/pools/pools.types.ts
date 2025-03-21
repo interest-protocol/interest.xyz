@@ -4,7 +4,7 @@ import { ISrPool } from '@/interface';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 import { ISwapSettings } from '../swap/swap.types';
-import { FormFilterValue } from './pool-card/pool-card.types';
+import { FormFilterValue } from './pool-v2-card/pool-card.types';
 
 export enum FilterTypeEnum {
   ALGORITHM = 'algorithm',

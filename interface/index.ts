@@ -18,20 +18,15 @@ export interface PoolPageProps {
 }
 
 export enum PoolTypeEnum {
-  CLAMM = 'CLAMM',
-  srAMM = 'V2(SR-AMM)',
+  Curve = 'Curve',
+  srAMM = 'V2',
 }
 
-export interface AmmPoolCoinTypes {
-  typeX: string;
-  typeY: string;
-}
-
-export interface SrAmmPool {
+export interface Pool {
   isVolatile: boolean;
   poolAddress: string;
   poolType: PoolTypeEnum;
-  coins: AmmPoolCoinTypes;
+  coins: ReadonlyArray<string>;
 }
 
 export interface ISrPool {
@@ -54,13 +49,13 @@ export interface ISrPool {
 }
 
 export interface Pools {
-  address: AccountAddress;
-  faX: AccountAddress;
-  faY: AccountAddress;
-  projectUri: string;
-  symbol: string;
   name: string;
+  symbol: string;
   decimals: number;
+  projectUri: string;
+  address: AccountAddress;
+  algorithm: 'v2' | 'curve';
+  fas: ReadonlyArray<AccountAddress>;
 }
 
 export interface SrAmmPoolWithMetadata
