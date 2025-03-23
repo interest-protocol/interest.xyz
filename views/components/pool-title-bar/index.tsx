@@ -1,15 +1,13 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
-import { Box, Button, Tabs, Typography } from '@interest-protocol/ui-kit';
-import { FC, useCallback, useState } from 'react';
+import { Box, Button, Typography } from '@interest-protocol/ui-kit';
+import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
 import { ArrowLeftSVG } from '@/components/svg';
-import useEventListener from '@/hooks/use-event-listener';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
-import { POOL_DATA } from '@/views/pools/pool.data';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { PoolTitleBarProps } from './pool-title-bar.types';
@@ -19,37 +17,13 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
   loading,
   centerTile,
 }) => {
-  const [isMobile, setIsMobile] = useState(false);
-
   const network = useNetwork<Network>();
-  const { control, setValue } = useFormContext<IPoolForm>();
-
-  const isEarnPoolView = useWatch({
-    control: control,
-    name: 'isEarnPoolView',
-  });
+  const { control } = useFormContext<IPoolForm>();
 
   const tokens = useWatch({
     control: control,
     name: 'tokenList',
   });
-
-  const pool = useWatch({
-    control: control,
-    name: 'pool',
-  });
-
-  const isEarnable = Boolean(
-    POOL_DATA.filter(({ poolAddress }) => poolAddress == pool?.poolAddress)
-      .length
-  );
-
-  const handleSetDesktop = useCallback(() => {
-    const mediaIsMobile = !window.matchMedia('(min-width: 65em)').matches;
-    setIsMobile(mediaIsMobile);
-  }, []);
-
-  useEventListener('resize', handleSetDesktop, true);
 
   const name = tokens.reduce(
     (acc, token) => `${acc ? `${acc} • ` : ''}${token?.symbol ?? ''}`,
@@ -64,12 +38,11 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         mb="xs"
         gap="m"
         mx="auto"
+        bg="container"
         display="flex"
         maxWidth="65rem"
         borderRadius="xs"
         alignItems="center"
-        justifyContent="ce"
-        bg="container"
         mt={['5xl', '5xl', '5xl', 'xl']}
       >
         <Button
@@ -78,9 +51,7 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
           variant="text"
           onClick={onBack}
           color="onSurface"
-          nHover={{
-            bg: 'surface',
-          }}
+          nHover={{ bg: 'surface' }}
         >
           <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
         </Button>
@@ -144,32 +115,6 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
           </Box>
         </Box>
       </Box>
-      {isEarnable && (
-        <Box
-          mx="auto"
-          display="flex"
-          maxWidth="65rem"
-          justifyContent="center"
-          my="2xl"
-        >
-          <Tabs
-            type="square"
-            onChangeTab={(index: number) => {
-              setValue('isEarnPoolView', Boolean(index));
-            }}
-            defaultTabIndex={+(isEarnPoolView || 0)}
-            items={['Liquidity', 'EARN'].map((tab) => (
-              <Typography
-                key={v4()}
-                variant="label"
-                size={isMobile ? 'small' : 'medium'}
-              >
-                {tab}
-              </Typography>
-            ))}
-          />
-        </Box>
-      )}
     </>
   );
 };

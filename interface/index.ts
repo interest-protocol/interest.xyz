@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AccountAddress } from '@aptos-labs/ts-sdk';
+import { InterestCurvePool } from '@interest-protocol/interest-aptos-curve';
 import { InterestV2Pool } from '@interest-protocol/interest-aptos-v2';
 import BigNumber from 'bignumber.js';
 
@@ -29,24 +30,30 @@ export interface Pool {
   coins: ReadonlyArray<string>;
 }
 
-export interface ISrPool {
-  supply: bigint;
-  balanceY: bigint;
-  balanceX: bigint;
-  metadataY: string;
-  metadataX: string;
-  isSrMode: boolean;
+type IV2PoolData = Omit<
+  InterestV2Pool,
+  'poolAddress' | 'metadataX' | 'metadataY' | 'balanceX' | 'balanceY'
+>;
+
+type ICurvePoolData = Omit<InterestCurvePool, 'address' | 'fas' | 'data'> &
+  Omit<InterestCurvePool['data'], 'balances'>;
+
+export type IPool = (
+  | {
+      algorithm: 'v2';
+      poolExtraData?: IV2PoolData;
+    }
+  | {
+      algorithm: 'curve';
+      poolExtraData?: ICurvePoolData;
+    }
+) & {
   poolAddress: string;
-  bidLiquidity: bigint;
-  slotBalanceX: bigint;
-  slotBalanceY: bigint;
-  lastSlotTimestamp: bigint;
-  metadata: {
-    x: AssetMetadata;
-    y: AssetMetadata;
-    pool: AssetMetadata;
-  };
-}
+  poolMetadata?: AssetMetadata;
+  balances?: ReadonlyArray<bigint>;
+  tokensAddresses: ReadonlyArray<string>;
+  tokensMetadata?: ReadonlyArray<AssetMetadata>;
+};
 
 export interface Pools {
   name: string;
@@ -56,13 +63,6 @@ export interface Pools {
   address: AccountAddress;
   algorithm: 'v2' | 'curve';
   fas: ReadonlyArray<AccountAddress>;
-}
-
-export interface SrAmmPoolWithMetadata
-  extends Omit<InterestV2Pool, 'metadataX' | 'metadataY'> {
-  metadata: AssetMetadata;
-  metadataX: AssetMetadata;
-  metadataY: AssetMetadata;
 }
 
 export interface CoinBalance {

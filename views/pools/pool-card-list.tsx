@@ -6,11 +6,11 @@ import { v4 } from 'uuid';
 
 import { POOLS } from '@/constants/pools';
 import { usePools } from '@/hooks/use-pools';
-import { ISrPool } from '@/interface';
+import { IPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
 import PoolCurveCard from './pool-curve-card';
-import PoolCard from './pool-v2-card';
+import PoolV2Card from './pool-v2-card';
 import { FormFilterValue } from './pool-v2-card/pool-card.types';
 import PoolCardSkeleton from './pool-v2-card/pool-card-skeleton';
 import {
@@ -24,8 +24,8 @@ import {
 const Pools: FC = () => {
   const [page, setPage] = useState(1);
   const { control, getValues } = useFormContext<IPoolForm>();
-  const [pools, setPools] = useState<ReadonlyArray<ReadonlyArray<ISrPool>>>([
-    [],
+  const [pools, setPools] = useState<ReadonlyArray<ReadonlyArray<IPool>>>([
+    POOLS,
   ]);
 
   const tokenList = getValues('tokenList');
@@ -196,21 +196,6 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
     );
 
   return (
-    <Box
-      gap="xs"
-      borderRadius="xs"
-      p={['s', 's', 's', 'l']}
-      display={POOLS?.length ? 'grid' : 'flex'}
-      gridTemplateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr', '1fr 1fr 1fr']}
-    >
-      {POOLS.map((pool) => (
-        <PoolCurveCard key={v4()} pool={pool} />
-      ))}
-      {arePoolsLoading && <PoolCardSkeleton />}
-    </Box>
-  );
-
-  return (
     <>
       <Box
         gap="xs"
@@ -226,7 +211,13 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
         ]}
       >
         {pools?.flatMap((poolPage) =>
-          poolPage.map((pool) => <PoolCard key={v4()} pool={pool} />)
+          poolPage.map((pool) =>
+            pool.algorithm === 'curve' ? (
+              <PoolCurveCard key={v4()} pool={pool} />
+            ) : (
+              <PoolV2Card key={v4()} pool={pool} />
+            )
+          )
         )}
         {arePoolsLoading && <PoolCardSkeleton />}
       </Box>

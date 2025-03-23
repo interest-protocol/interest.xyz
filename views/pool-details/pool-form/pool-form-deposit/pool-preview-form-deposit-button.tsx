@@ -5,16 +5,19 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useModal } from '@/hooks/use-modal';
 import { IPoolForm } from '@/views/pools/pools.types';
 
+import { usePoolDetails } from '../../pool-details.context';
 import PoolPreview from '../pool-form-preview';
 import PoolFormDepositButton from './pool-form-deposit-button';
 
 const PoolPreviewFormDepositButton: FC = () => {
   const { setModal } = useModal();
+  const { pool } = usePoolDetails();
   const form = useFormContext<IPoolForm>();
-  const { getValues, control } = form;
 
+  const { getValues, control } = form;
   const error = useWatch({ control, name: 'error' });
 
+  const lpTokenValue = useWatch({ control, name: 'lpCoin.value' });
   const firsTokenValue = useWatch({ control, name: 'tokenList.0.value' });
   const secondTokenValue = useWatch({ control, name: 'tokenList.1.value' });
 
@@ -28,7 +31,13 @@ const PoolPreviewFormDepositButton: FC = () => {
         >
           <PoolPreview
             getValues={getValues}
-            onSubmit={<PoolFormDepositButton form={form} />}
+            onSubmit={
+              <PoolFormDepositButton
+                form={form}
+                algorithm={pool!.algorithm}
+                poolAddress={pool!.poolAddress}
+              />
+            }
             isDeposit
           />
         </Motion>,
@@ -41,7 +50,10 @@ const PoolPreviewFormDepositButton: FC = () => {
       );
   };
 
-  const disabled = !!error || !firsTokenValue || !secondTokenValue;
+  const disabled =
+    !!error || pool?.algorithm === 'v2'
+      ? !firsTokenValue || !secondTokenValue
+      : !lpTokenValue;
 
   return (
     <Button

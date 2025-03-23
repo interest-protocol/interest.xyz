@@ -8,7 +8,7 @@ import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
-import useSrAmmPool from '@/hooks/use-sr-amm-pool';
+import useSrAmmPool from '@/hooks/use-v2-pool';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { isAptos, ZERO_BIG_NUMBER } from '@/utils';
@@ -55,6 +55,22 @@ const Balance: FC<NameProps> = ({ name }) => {
     );
   };
 
+  if (loadingPoolsDetails)
+    <Button
+      p="2xs"
+      gap="0.5rem"
+      display="flex"
+      color="onSurface"
+      variant="outline"
+      alignItems="center"
+      onClick={handleMax}
+      borderColor="transparent"
+      nHover={{ bg: 'unset', borderColor: 'primary' }}
+      className="loading-balance"
+    >
+      <Skeleton width="4.5rem" />
+    </Button>;
+
   return (
     <Button
       p="2xs"
@@ -68,14 +84,9 @@ const Balance: FC<NameProps> = ({ name }) => {
       nHover={{ bg: 'unset', borderColor: 'primary' }}
       className="loading-balance"
     >
-      {!loadingPoolsDetails ? (
-        <Typography size="small" variant="body" fontSize="xs">
-          Balance: {FixedPointMath.toNumber(balance, token.decimals) ?? '--'}
-        </Typography>
-      ) : (
-        <Skeleton width="4.5rem" />
-      )}
-
+      <Typography size="small" variant="body" fontSize="xs">
+        Balance: {FixedPointMath.toNumber(balance, token.decimals) ?? '--'}
+      </Typography>
       {loading && <ProgressIndicator variant="loading" size={12} />}
     </Button>
   );

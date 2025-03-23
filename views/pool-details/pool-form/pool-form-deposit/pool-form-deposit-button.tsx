@@ -7,15 +7,21 @@ import invariant from 'tiny-invariant';
 
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
+import { useInterestCurveDex } from '@/hooks/use-interest-dex-curve';
 import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 
 import { PoolFormButtonProps } from '../pool-form.types';
 import { logDepositPool } from '../pool-form.utils';
 
-const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
-  const dexV2 = useInterestV2Dex();
+const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
+  form,
+  algorithm,
+  poolAddress,
+}) => {
   const client = useAptosClient();
+  const dexV2 = useInterestV2Dex();
+  const dexCurve = useInterestCurveDex();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
   const { account, signAndSubmitTransaction } = useAptosWallet();
@@ -24,48 +30,71 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({ form }) => {
     try {
       invariant(account, 'You must be connected to proceed');
       setValue('error', '');
-      const [token0, token1] = getValues('tokenList');
 
-      const payload = dexV2.addLiquidity({
-        faA: token0.type,
-        faB: token1.type,
-        recipient: account.address,
-        amountA: BigInt(token0.valueBN.decimalPlaces(0, 1).toString()),
-        amountB: BigInt(token1.valueBN.decimalPlaces(0, 1).toString()),
-      });
+      let txResult, payload;
 
-      const tx = await signAndSubmitTransaction({ payload });
+      if (algorithm === 'curve') {
+        const tokens = getValues('tokenList');
 
-      invariant(tx.status === 'Approved', 'Rejected by User');
+        payload = dexCurve.addLiquidity({
+          pool: poolAddress,
+          fasIn: tokens.map((token) => token.type),
+          recipient: account.address,
+          minAmountOut: BigInt(getValues('lpCoin.valueBN').toFixed(0) ?? 0),
+          amounts: tokens.map((token) =>
+            BigInt(token.valueBN?.toFixed(0) ?? 0)
+          ),
+        });
+      }
 
-      const txResult = tx.args;
+      if (algorithm === 'v2') {
+        const [token0, token1] = getValues('tokenList');
 
-      logDepositPool(
-        account.address,
-        getValues('tokenList.0'),
-        getValues('tokenList.1'),
-        Network.MovementMainnet,
-        txResult.hash
-      );
+        payload = dexV2.addLiquidity({
+          faA: token0.type,
+          faB: token1.type,
+          recipient: account.address,
+          amountA: BigInt(token0.valueBN.decimalPlaces(0, 1).toString()),
+          amountB: BigInt(token1.valueBN.decimalPlaces(0, 1).toString()),
+        });
+      }
 
-      let waitingTx = true;
+      if (payload) {
+        const tx = await signAndSubmitTransaction({ payload });
 
-      do {
-        await client
-          .waitForTransaction({
-            transactionHash: txResult.hash,
-            options: { checkSuccess: true },
-          })
-          .then(() => {
-            waitingTx = false;
-          })
-          .catch();
-      } while (waitingTx);
+        invariant(tx.status === 'Approved', 'Rejected by User');
 
-      setValue(
-        'explorerLink',
-        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
-      );
+        txResult = tx.args;
+      }
+
+      if (txResult) {
+        logDepositPool(
+          account.address,
+          getValues('tokenList.0'),
+          getValues('tokenList.1'),
+          Network.MovementMainnet,
+          txResult.hash
+        );
+
+        let waitingTx = true;
+
+        do {
+          await client
+            .waitForTransaction({
+              transactionHash: txResult.hash,
+              options: { checkSuccess: true },
+            })
+            .then(() => {
+              waitingTx = false;
+            })
+            .catch();
+        } while (waitingTx);
+
+        setValue(
+          'explorerLink',
+          EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
+        );
+      }
     } catch (e) {
       console.warn({ e });
 

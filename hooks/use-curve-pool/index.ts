@@ -1,18 +1,12 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-import { InterestCurvePool } from '@interest-protocol/interest-aptos-curve';
 import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { values } from 'ramda';
 import useSWR from 'swr';
 
-import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
+import { IPool } from '@/interface';
 import { getCoinsMetadataFromAPI, parseToMetadata } from '@/utils';
 
 import { useInterestCurveDex } from '../use-interest-dex-curve';
-
-interface CurvePool extends InterestCurvePool {
-  poolMetadata?: AssetMetadata;
-  tokensMetadata?: ReadonlyArray<AssetMetadata>;
-}
 
 const useCurvePool = (address: string, withMetadata = true) => {
   const dexCurve = useInterestCurveDex();
@@ -21,45 +15,51 @@ const useCurvePool = (address: string, withMetadata = true) => {
     data: pool,
     isLoading: loading,
     ...rest
-  } = useSWR<CurvePool>(
-    [useCurvePool.name, address, withMetadata],
-    async () => {
-      const curvePool = await dexCurve.getPool(address);
+  } = useSWR<IPool>([useCurvePool.name, address, withMetadata], async () => {
+    const {
+      fas,
+      address: poolAddress,
+      data: { balances, ...otherData },
+      ...curvePool
+    } = await dexCurve.getPool(address);
 
-      console.log({ curvePool });
+    const tokensAddresses = fas.map((tokenAddress) => tokenAddress.toString());
 
-      if (!withMetadata) return curvePool as CurvePool;
+    const newPool = {
+      balances,
+      poolAddress,
+      tokensAddresses,
+      algorithm: 'curve',
+      poolExtraData: { ...otherData, ...curvePool },
+    };
 
-      const metadataAddresses = {
-        poolMetadata: normalizeSuiAddress(curvePool.address.toString()),
-        tokensMetadata: curvePool.fas.map((fa) =>
-          normalizeSuiAddress(fa.toString())
-        ),
-      };
+    if (!withMetadata) return newPool as IPool;
 
-      const assetsMetadata = await getCoinsMetadataFromAPI(
-        values(metadataAddresses).flat()
-      );
+    const metadataAddresses = {
+      poolMetadata: normalizeSuiAddress(poolAddress.toString()),
+      tokensMetadata: fas.map((fa) => normalizeSuiAddress(fa.toString())),
+    };
 
-      const metadata = assetsMetadata.map((apiMetadata) =>
-        parseToMetadata(apiMetadata)
-      );
+    const assetsMetadata = await getCoinsMetadataFromAPI(
+      values(metadataAddresses).flat()
+    );
 
-      return {
-        ...curvePool,
-        poolMetadata: metadata.find(({ type }) =>
-          AccountAddress.from(curvePool.address).equals(
-            AccountAddress.from(type)
-          )
-        ),
-        tokensMetadata: curvePool.fas.map((address) =>
-          metadata.find(({ type }) =>
-            AccountAddress.from(address).equals(AccountAddress.from(type))
-          )
-        ),
-      } as CurvePool;
-    }
-  );
+    const metadata = assetsMetadata.map((apiMetadata) =>
+      parseToMetadata(apiMetadata)
+    );
+
+    return {
+      ...newPool,
+      poolMetadata: metadata.find(({ type }) =>
+        AccountAddress.from(poolAddress).equals(AccountAddress.from(type))
+      ),
+      tokensMetadata: fas.map((address) =>
+        metadata.find(({ type }) =>
+          AccountAddress.from(address).equals(AccountAddress.from(type))
+        )
+      ),
+    } as IPool;
+  });
 
   return { loading, pool, ...rest };
 };
