@@ -9,6 +9,6 @@ const client = new Aptos(
   new AptosConfig({ indexer: INDEXER_URL[network], fullnode: RPC_URL[network] })
 );
 
-const dex = new InterestV2({ network, client });
+const dexV2 = new InterestV2({ network, client });
 
-export const useInterestDex = () => dex;
+export const useInterestV2Dex = () => dexV2;

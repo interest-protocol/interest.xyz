@@ -94,8 +94,6 @@ export const getFaPrimaryStore = async (
 };
 
 export const parseToMetadata = (metadata: MetadataSources): AssetMetadata => {
-  console.log({ metadata });
-
   const name = metadata.name ?? '';
   const symbol = metadata.symbol ?? '';
   const decimals = metadata.decimals ?? 0;

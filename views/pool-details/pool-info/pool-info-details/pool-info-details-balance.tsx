@@ -16,16 +16,16 @@ const PoolInfoDetailsBalance: FC = () => {
 
   return (
     <>
-      {[
-        { ...pool.metadataX, balance: pool.balanceX },
-        { ...pool.metadataY, balance: pool.balanceY },
-      ].map(({ name, symbol, decimals, balance }) => (
+      {pool.tokensMetadata?.map(({ name, symbol, decimals }, index) => (
         <ItemStandard
           key={v4()}
           label={name}
           loading={loading}
           content={`${formatMoney(
-            FixedPointMath.toNumber(BigNumber(String(balance)), decimals)
+            FixedPointMath.toNumber(
+              BigNumber(String(pool.balances?.[index])),
+              pool.algorithm === 'curve' ? 18 : decimals
+            )
           )} ${symbol}`}
         />
       ))}

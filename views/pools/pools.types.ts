@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 
-import { ISrPool } from '@/interface';
+import { IPool } from '@/interface';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 import { ISwapSettings } from '../swap/swap.types';
-import { FormFilterValue } from './pool-card/pool-card.types';
+import { FormFilterValue } from './pool-v2-card/pool-card.types';
 
 export enum FilterTypeEnum {
   ALGORITHM = 'algorithm',
@@ -31,7 +31,7 @@ export interface PoolCardListContentProps {
   next?: () => void;
   hasMore?: boolean;
   arePoolsLoading: boolean;
-  pools?: ReadonlyArray<ReadonlyArray<ISrPool>>;
+  pools?: ReadonlyArray<ReadonlyArray<IPool>>;
 }
 
 export interface PoolTokenWithMetadata extends AssetMetadata {
@@ -43,7 +43,7 @@ export interface PoolTokenWithMetadata extends AssetMetadata {
 export type PoolToken = PoolTokenWithMetadata;
 
 export interface IPoolForm {
-  pool: ISrPool;
+  pool: IPool;
   lpCoin: PoolToken;
   explorerLink: string;
   error: string | null;

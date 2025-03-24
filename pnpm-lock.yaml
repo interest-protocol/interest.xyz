@@ -26,6 +26,9 @@ importers:
       '@interest-protocol/aptos-sr-amm':
         specifier: ^1.1.0
         version: 1.1.0(jiti@1.21.6)(postcss@8.4.31)(typescript@5.7.2)(yaml@2.5.1)
+      '@interest-protocol/interest-aptos-curve':
+        specifier: ^3.0.1
+        version: 3.0.1
       '@interest-protocol/interest-aptos-v2':
         specifier: 4.0.1
         version: 4.0.1
@@ -693,6 +696,9 @@ packages:
 
   '@interest-protocol/aptos-sr-amm@1.1.0':
     resolution: {integrity: sha512-2n1rTUtLDYiPjOkxMCRxwVoDGwgsZeIaXvCM1yk1RSeuszcO1U165Y4e5Fi47XYLlAN9vMOePGDniNm6GJnu7w==}
+
+  '@interest-protocol/interest-aptos-curve@3.0.1':
+    resolution: {integrity: sha512-j0LZSgbPd4XLAhfI2Ys8G/t4L9eB1JLGXUI+RqNbZ42Q54TCLctBl8Kp4IOz+7P2XCdVHb1x3o5KIODW7o7+gQ==}
 
   '@interest-protocol/interest-aptos-v2@4.0.1':
     resolution: {integrity: sha512-EtOssL1+nB/EPzpXDdYYGW9QD46HjNlQwyzKEzMsEhDNW6UhiAVK0JdfAEPeED8w3aL1brOCcAJ1RivbG09bjQ==}
@@ -4693,6 +4699,14 @@ snapshots:
       - tsx
       - typescript
       - yaml
+
+  '@interest-protocol/interest-aptos-curve@3.0.1':
+    dependencies:
+      '@aptos-labs/ts-sdk': 1.33.0
+      ramda: 0.30.1
+      tiny-invariant: 1.3.3
+    transitivePeerDependencies:
+      - debug
 
   '@interest-protocol/interest-aptos-v2@4.0.1':
     dependencies:

@@ -12,7 +12,7 @@ import invariant from 'tiny-invariant';
 
 import { Routes, RoutesEnum } from '@/constants';
 import { useDialog } from '@/hooks';
-import { useInterestDex } from '@/hooks/use-interest-dex';
+import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
 import { FixedPointMath } from '@/lib';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
@@ -21,7 +21,7 @@ import { CreatePoolForm, Token } from '../pool-create.types';
 import { logCreatePool } from '../pool-create.utils';
 
 const PoolSummaryButton: FC = () => {
-  const dex = useInterestDex();
+  const dexV2 = useInterestV2Dex();
   const { push } = useRouter();
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
@@ -54,7 +54,7 @@ const PoolSummaryButton: FC = () => {
       let payload: InputGenerateTransactionPayloadData;
 
       if (coins.length > 1) {
-        payload = dex.addLiquidityCoins({
+        payload = dexV2.addLiquidityCoins({
           coinA: coins[0].type,
           coinB: coins[1].type,
           recipient: account.address,
@@ -70,7 +70,7 @@ const PoolSummaryButton: FC = () => {
           ),
         });
       } else if (coins.length === 1) {
-        payload = dex.addLiquidityOneCoin({
+        payload = dexV2.addLiquidityOneCoin({
           coinA: coins[0].type,
           faB: fas[0].type,
           recipient: account.address,
@@ -86,7 +86,7 @@ const PoolSummaryButton: FC = () => {
           ),
         });
       } else {
-        payload = dex.addLiquidity({
+        payload = dexV2.addLiquidity({
           faA: fas[0].type,
           faB: fas[1].type,
           recipient: account.address,
