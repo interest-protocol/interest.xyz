@@ -9,7 +9,7 @@ import useV2Pool from '@/hooks/use-v2-pool';
 import { FixedPointMath } from '@/lib';
 import { formatMoney } from '@/utils';
 
-import { FormFilterValue, PoolCardProps } from './pool-card.types';
+import { PoolCardProps } from './pool-card.types';
 import PoolCardHeader from './pool-card-header';
 import PoolCardInfo from './pool-card-info';
 import PoolCardTrade from './pool-card-trade';
@@ -41,7 +41,7 @@ const PoolV2Card: FC<PoolCardProps> = ({ pool }) => {
           '.arrow-wrapper': { opacity: 1 },
         }}
       >
-        <PoolCardHeader tags={['V2', FormFilterValue['volatile']]} />
+        <PoolCardHeader tags={['V2', pool.curve]} />
         <PoolCardInfo
           key={v4()}
           coins={pool.tokensMetadata ? pool.tokensMetadata : []}

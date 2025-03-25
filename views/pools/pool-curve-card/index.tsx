@@ -9,7 +9,7 @@ import useCurvePool from '@/hooks/use-curve-pool';
 import { FixedPointMath } from '@/lib';
 import { formatMoney } from '@/utils';
 
-import { FormFilterValue, PoolCurveCardProps } from './pool-card.types';
+import { PoolCurveCardProps } from './pool-card.types';
 import PoolCardHeader from './pool-card-header';
 import PoolCardInfo from './pool-card-info';
 import PoolCardTrade from './pool-card-trade';
@@ -41,7 +41,7 @@ const PoolCurveCard: FC<PoolCurveCardProps> = ({ pool }) => {
           '.arrow-wrapper': { opacity: 1 },
         }}
       >
-        <PoolCardHeader tags={['Curve', FormFilterValue['volatile']]} />
+        <PoolCardHeader tags={['Curve', pool.curve]} />
         <PoolCardInfo key={v4()} coins={pool.tokensMetadata!} />
         <Box px="m" py="xs" bg="surface" borderRadius="1rem">
           <PoolCardTrade

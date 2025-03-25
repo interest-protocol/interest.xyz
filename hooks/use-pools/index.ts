@@ -45,6 +45,7 @@ export const usePools = (page: number = 1, findQuery = {}) =>
         }: IAPIV2Pool) =>
           ({
             algorithm: 'v2',
+            curve: 'volatile',
             poolAddress: poolAddress,
             poolMetadata: metadata.pool,
             tokensAddresses: [metadataX, metadataY],
