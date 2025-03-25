@@ -27,6 +27,7 @@ const useV2Pool = (address: string, withMetadata = true) => {
     const newPool = {
       algorithm: 'v2',
       tokensAddresses,
+      curve: 'volatile',
       poolExtraData: v2Pool,
       balances: [balanceX, balanceY],
       poolAddress: poolAddress.toString(),
