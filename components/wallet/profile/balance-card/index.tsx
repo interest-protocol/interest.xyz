@@ -58,7 +58,7 @@ const BalanceCard: FC = () => {
       </Typography>
       <Typography size="small" opacity="0.7" variant="label" color="onSurface">
         {formatDollars(
-          +BigNumber(balance)
+          +BigNumber(balance, MOVE.decimals)
             .times(BigNumber((price?.length && price[0].price) ?? 0))
             .toNumber()
             .toFixed(3)
