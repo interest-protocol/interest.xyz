@@ -18,6 +18,7 @@ const useCurvePool = (address: string, withMetadata = true) => {
   } = useSWR<IPool>([useCurvePool.name, address, withMetadata], async () => {
     const {
       fas,
+      isStable,
       address: poolAddress,
       data: { balances, ...otherData },
       ...curvePool
@@ -30,6 +31,7 @@ const useCurvePool = (address: string, withMetadata = true) => {
       poolAddress,
       tokensAddresses,
       algorithm: 'curve',
+      curve: isStable ? 'stable' : 'volatile',
       poolExtraData: { ...otherData, ...curvePool },
     };
 
