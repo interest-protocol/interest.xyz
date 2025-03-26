@@ -115,4 +115,8 @@ export const GlobalStyles = css`
     border-radius: 0.5rem;
     border: 5px solid transparent;
   }
+
+  svg > g > circle[fill='white'] {
+    fill: #000;
+  }
 `;

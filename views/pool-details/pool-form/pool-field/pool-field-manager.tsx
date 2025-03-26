@@ -54,29 +54,59 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
             setValue(`tokenList.${index}.value`, '0');
             setValue(`tokenList.${index}.valueBN`, ZERO_BIG_NUMBER);
           });
-        } else
-          curveDex
-            .quoteRemoveLiquidity({
-              pool: pool.poolAddress,
-              amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
-            })
-            .then(({ amountsOut }) => {
-              (amountsOut as Array<string>).forEach((amountOut, index) => {
+        } else {
+          const tokenSelectedIndex = getValues('tokenList').findIndex(
+            ({ type }) => type === getValues('tokenSelected')
+          );
+
+          if (tokenSelectedIndex > -1)
+            curveDex
+              .quoteRemoveLiquidityOneFa({
+                pool: pool.poolAddress,
+                faOut: getValues('tokenSelected')!,
+                amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
+              })
+              .then(({ amountOut }) => {
                 setValue(
-                  `tokenList.${index}.value`,
+                  `tokenList.${tokenSelectedIndex}.value`,
                   String(
                     FixedPointMath.toNumber(
-                      BigNumber(amountOut),
+                      BigNumber(String(amountOut)),
                       getValues('lpCoin.decimals')
                     )
                   )
                 );
                 setValue(
-                  `tokenList.${index}.valueBN`,
+                  `tokenList.${tokenSelectedIndex}.valueBN`,
                   BigNumber(String(amountOut))
                 );
-              });
-            });
+              })
+              .catch(console.log);
+          else
+            curveDex
+              .quoteRemoveLiquidity({
+                pool: pool.poolAddress,
+                amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
+              })
+              .then(({ amountsOut }) => {
+                (amountsOut as Array<string>).forEach((amountOut, index) => {
+                  setValue(
+                    `tokenList.${index}.value`,
+                    String(
+                      FixedPointMath.toNumber(
+                        BigNumber(amountOut),
+                        getValues('lpCoin.decimals')
+                      )
+                    )
+                  );
+                  setValue(
+                    `tokenList.${index}.valueBN`,
+                    BigNumber(String(amountOut))
+                  );
+                });
+              })
+              .catch(console.log);
+        }
       }
 
       return;

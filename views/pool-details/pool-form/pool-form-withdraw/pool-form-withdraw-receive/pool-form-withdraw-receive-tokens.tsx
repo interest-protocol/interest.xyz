@@ -1,43 +1,62 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
-import { Box, Typography } from '@interest-protocol/ui-kit';
+import {
+  Box,
+  ProgressIndicator,
+  RadioButton,
+  Typography,
+} from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
-import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { IPoolForm } from '@/views/pools/pools.types';
 
-const PoolFormWithdrawReceiveTokens: FC = () => {
-  const network = useNetwork<Network>();
+import { SelectionFieldValues, TokenListProps } from '../../pool-form.types';
 
-  const { control } = useFormContext<IPoolForm>();
+const PoolFormWithdrawReceiveTokens: FC<TokenListProps> = ({ type }) => {
+  const { control, setValue } = useFormContext<IPoolForm>();
 
-  const tokenList = useWatch({ control, name: 'tokenList' });
+  const [tokenList, tokenSelected, loading] = useWatch({
+    control,
+    name: ['tokenList', 'tokenSelected', 'isFindingPool'],
+  });
+
+  const isOneCoin = type === SelectionFieldValues.OneCoin;
 
   return (
     <Box>
-      {tokenList.map((token) => (
+      {tokenList.map(({ type, symbol, value, projectUri }) => (
         <Box
-          py="m"
-          px="xs"
+          p="m"
           key={v4()}
           display="flex"
           cursor="pointer"
           alignItems="center"
           justifyContent="space-between"
           transition="all 350ms ease-in-out"
-          nHover={{ bg: 'lowContainer' }}
+          nHover={isOneCoin && { bg: 'lowContainer' }}
+          onClick={() => isOneCoin && setValue('tokenSelected', type)}
         >
-          <Box display="flex" gap="xs" alignItems="center">
-            <TokenIcon withBg network={network} symbol={token.symbol} />
+          <Box display="flex" gap="l" alignItems="center">
+            {isOneCoin && <RadioButton defaultValue={tokenSelected === type} />}
+            <TokenIcon
+              withBg
+              symbol={symbol}
+              url={projectUri}
+              network={Network.MovementMainnet}
+            />
             <Typography variant="body" size="large">
-              {token.symbol}
+              {symbol}
             </Typography>
           </Box>
-          <Typography variant="body" ml="m" mr="m" size="large">
-            {token.value || 0}
-          </Typography>
+          {loading ? (
+            <ProgressIndicator size={16} variant="loading" />
+          ) : (
+            <Typography variant="body" ml="m" size="large">
+              {value || 0}
+            </Typography>
+          )}
         </Box>
       ))}
     </Box>
