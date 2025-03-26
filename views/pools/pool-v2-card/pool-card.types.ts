@@ -10,6 +10,8 @@ export enum FormFilterValue {
   'volatile' = 'volatile',
   'clamm' = 'clamm',
   'amm' = 'amm',
+  'v2' = 'v2',
+  'curve' = 'curve',
 }
 
 export interface PoolCardHeaderProps {

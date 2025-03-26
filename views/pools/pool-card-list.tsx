@@ -34,39 +34,47 @@ const Pools: FC = () => {
     name: ['filterList', 'isFindingPool'],
   });
 
-  const { data, isLoading: arePoolsLoading } = usePools(
-    page,
-    isFindingPool
-      ? {
-          $and: [
-            {
-              metadataX: {
-                $in: tokenList?.map(({ type }) => type.toString()),
-              },
+  const buildFilters = () => {
+    if (isFindingPool) {
+      return {
+        $and: [
+          {
+            metadataX: {
+              $in: tokenList?.map(({ type }) => type.toString()),
             },
-            {
-              metadataY: {
-                $in: tokenList?.map(({ type }) => type.toString()),
-              },
+          },
+          {
+            metadataY: {
+              $in: tokenList?.map(({ type }) => type.toString()),
             },
-          ],
-        }
-      : !filterProps.length ||
-          filterProps?.some(
-            (filterProp) =>
-              filterProp.type === FilterTypeEnum.CATEGORY &&
-              filterProp.value === FormFilterValue.all
-          )
-        ? {}
-        : {}
-  );
+          },
+        ],
+      };
+    }
+
+    if (!filterProps.length) return {};
+
+    const filters = [];
+
+    const categoryFilter = filterProps.find(
+      (filterProp) => filterProp.type === FilterTypeEnum.CATEGORY
+    );
+
+    if (categoryFilter && categoryFilter.value !== FormFilterValue.all) {
+      filters.push({ category: categoryFilter.value });
+    }
+
+    return filters.length ? { $and: filters } : {};
+  };
+
+  const { data, isLoading: arePoolsLoading } = usePools(page, buildFilters());
 
   useEffect(() => {
     if (isFindingPool || page != 1) {
       setPools([[]]);
       setPage(1);
     }
-  }, [isFindingPool, filterProps]);
+  }, [isFindingPool, filterProps.length]);
 
   useEffect(() => {
     if (data?.pools) setPools([...pools.slice(0, page), data.pools]);
