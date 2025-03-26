@@ -12,7 +12,7 @@ export const LOCAL_STORAGE_VERSION = 'v5';
 export const PAGE_SIZE = 50;
 
 export const RPC_URL = {
-  [Network.MovementMainnet]: 'https://rpc.sentio.xyz/movement/v1',
+  [Network.MovementMainnet]: 'https://mainnet.movementnetwork.xyz/v1',
 };
 
 export const INDEXER_URL = {
