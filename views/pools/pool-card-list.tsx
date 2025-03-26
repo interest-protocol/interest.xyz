@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
 import { inc } from 'ramda';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
@@ -9,10 +9,8 @@ import { usePools } from '@/hooks/use-pools';
 import { IPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
-import PoolCurveCard from './pool-curve-card';
-import PoolV2Card from './pool-v2-card';
-import { FormFilterValue } from './pool-v2-card/pool-card.types';
-import PoolCardSkeleton from './pool-v2-card/pool-card-skeleton';
+import PoolCard from './pool-card';
+import PoolCardSkeleton from './pool-card/pool-card-skeleton';
 import {
   FilterTypeEnum,
   IPoolForm,
@@ -51,14 +49,7 @@ const Pools: FC = () => {
             },
           ],
         }
-      : !filterProps.length ||
-          filterProps?.some(
-            (filterProp) =>
-              filterProp.type === FilterTypeEnum.CATEGORY &&
-              filterProp.value === FormFilterValue.all
-          )
-        ? {}
-        : {}
+      : {}
   );
 
   useEffect(() => {
@@ -72,9 +63,31 @@ const Pools: FC = () => {
     if (data?.pools) setPools([...pools.slice(0, page), data.pools]);
   }, [data?.pools]);
 
+  const memoPools = useMemo(
+    () =>
+      pools.map((poolPage) =>
+        poolPage.filter(({ algorithm, curve }) =>
+          filterProps.reduce((result, { type, value }) => {
+            if (type === FilterTypeEnum.ALGORITHM)
+              return result && value === curve;
+
+            if (type === FilterTypeEnum.POOL_TYPE)
+              return result && value === algorithm;
+
+            return result;
+          }, true)
+        )
+      ),
+    [pools, filterProps]
+  );
+
+  useEffect(() => {
+    console.log({ pools, memoPools });
+  }, [memoPools]);
+
   return (
     <PoolCardListContent
-      pools={pools}
+      pools={memoPools}
       done={!!data?.done}
       next={() => setPage(inc)}
       arePoolsLoading={arePoolsLoading}
@@ -211,13 +224,7 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
         ]}
       >
         {pools?.flatMap((poolPage) =>
-          poolPage.map((pool) =>
-            pool.algorithm === 'curve' ? (
-              <PoolCurveCard key={v4()} pool={pool} />
-            ) : (
-              <PoolV2Card key={v4()} pool={pool} />
-            )
-          )
+          poolPage.map((pool) => <PoolCard key={v4()} pool={pool} />)
         )}
         {arePoolsLoading && <PoolCardSkeleton />}
       </Box>

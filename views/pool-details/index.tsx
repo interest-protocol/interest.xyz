@@ -4,15 +4,17 @@ import { FC } from 'react';
 
 import Layout from '@/components/layout';
 import { Routes, RoutesEnum } from '@/constants';
-import { usePool } from '@/hooks/use-pool';
 
 import PoolTitleBar from '../components/pool-title-bar';
+import { usePoolDetails } from './pool-details.context';
 import PoolForm from './pool-form';
 import PoolInfo from './pool-info';
 
 const PoolTitle: FC = () => {
-  const { push, query } = useRouter();
-  const { pool, loading } = usePool(query.address as string);
+  const { push } = useRouter();
+  const { pool, loading } = usePoolDetails();
+
+  console.log({ pool });
 
   return (
     <PoolTitleBar

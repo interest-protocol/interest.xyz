@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { Routes, RoutesEnum } from '@/constants';
-import useV2Pool from '@/hooks/use-v2-pool';
+import { usePool } from '@/hooks/use-pool';
 import { FixedPointMath } from '@/lib';
 import { formatMoney } from '@/utils';
 
@@ -14,8 +14,8 @@ import PoolCardHeader from './pool-card-header';
 import PoolCardInfo from './pool-card-info';
 import PoolCardTrade from './pool-card-trade';
 
-const PoolV2Card: FC<PoolCardProps> = ({ pool }) => {
-  const { pool: data, loading } = useV2Pool(pool.poolAddress, false);
+const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
+  const { pool: data, loading } = usePool(pool.poolAddress);
 
   return (
     <Link
@@ -41,11 +41,8 @@ const PoolV2Card: FC<PoolCardProps> = ({ pool }) => {
           '.arrow-wrapper': { opacity: 1 },
         }}
       >
-        <PoolCardHeader tags={['V2', pool.curve]} />
-        <PoolCardInfo
-          key={v4()}
-          coins={pool.tokensMetadata ? pool.tokensMetadata : []}
-        />
+        <PoolCardHeader tags={[pool.algorithm, pool.curve]} />
+        <PoolCardInfo key={v4()} coins={pool.tokensMetadata!} />
         <Box px="m" py="xs" bg="surface" borderRadius="1rem">
           <PoolCardTrade
             noBorder
@@ -53,16 +50,16 @@ const PoolV2Card: FC<PoolCardProps> = ({ pool }) => {
             description="Fee"
             tooltipInfo="Trade fee in percentage"
           />
-          {pool.tokensMetadata?.map((metadata, index) => (
+          {pool.tokensMetadata!.map(({ symbol, decimals }, index) => (
             <PoolCardTrade
               key={v4()}
               loading={loading}
-              tooltipInfo={`${metadata.symbol} reserves`}
-              description={metadata.symbol ?? 'Balance X'}
+              tooltipInfo={`${symbol} reserves`}
+              description={symbol ?? 'Balance X'}
               amount={formatMoney(
                 FixedPointMath.toNumber(
-                  BigNumber(data?.balances?.[index].toString() ?? 0),
-                  metadata.decimals
+                  BigNumber(String(data?.balances?.[index] ?? 0)),
+                  pool.algorithm === 'curve' ? 18 : decimals
                 )
               )}
             />
@@ -73,4 +70,4 @@ const PoolV2Card: FC<PoolCardProps> = ({ pool }) => {
   );
 };
 
-export default PoolV2Card;
+export default PoolCurveCard;

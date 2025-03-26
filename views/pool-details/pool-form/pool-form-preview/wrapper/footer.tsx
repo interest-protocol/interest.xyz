@@ -1,7 +1,7 @@
 import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-import PoolCardTrade from '@/views/pools/pool-v2-card/pool-card-trade';
+import PoolCardTrade from '@/views/pools/pool-card/pool-card-trade';
 
 import { PoolPreviewWrapperProps } from '../preview.types';
 

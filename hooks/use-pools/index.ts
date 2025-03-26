@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { IPool } from '@/interface';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
-interface IAPIV2Pool {
+export interface IApiV2Pool {
   supply: bigint;
   balanceY: bigint;
   balanceX: bigint;
@@ -42,7 +42,7 @@ export const usePools = (page: number = 1, findQuery = {}) =>
           metadataX,
           metadataY,
           ...pool
-        }: IAPIV2Pool) =>
+        }: IApiV2Pool) =>
           ({
             algorithm: 'v2',
             curve: 'volatile',
