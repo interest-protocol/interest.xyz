@@ -5,10 +5,11 @@ import { useFormContext } from 'react-hook-form';
 import { ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm, PoolOption } from '@/views/pools/pools.types';
 
+import { PoolFormActiveProps } from './pool-form.types';
 import PoolDeposit from './pool-form-deposit';
 import PoolWithdraw from './pool-form-withdraw';
 
-const PoolFormActive: FC<{ isDepositForm: boolean }> = ({ isDepositForm }) => {
+const PoolFormActive: FC<PoolFormActiveProps> = ({ isDepositForm }) => {
   if (isDepositForm) return <PoolDeposit poolOptionView={PoolOption.Deposit} />;
   return <PoolWithdraw poolOptionView={PoolOption.Withdraw} />;
 };

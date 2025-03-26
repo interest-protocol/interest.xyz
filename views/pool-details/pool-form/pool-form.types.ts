@@ -24,3 +24,7 @@ export interface PoolFormButtonProps
   extends Pick<IPool, 'algorithm' | 'poolAddress'> {
   form: UseFormReturn<IPoolForm, any, undefined>;
 }
+
+export interface PoolFormActiveProps {
+  isDepositForm?: boolean;
+}

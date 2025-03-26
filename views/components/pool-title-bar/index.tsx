@@ -71,7 +71,7 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
               ml={centerTile ? 'auto' : ''}
               fontSize={['xl', 'xl', '3xl', '5xl']}
             >
-              {loading ? (
+              {loading || !tokens.length || !tokens[0]?.symbol ? (
                 <Box display="flex" gap="s">
                   <Skeleton width="5rem" height="2rem" />
                   <Skeleton width="5rem" height="2rem" />
@@ -90,7 +90,7 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
               alignItems="center"
               display={['none', 'none', 'flex', 'flex']}
             >
-              {!loading ? (
+              {tokens.length && tokens[0]?.symbol ? (
                 tokens.map(({ symbol }) => (
                   <TokenIcon
                     withBg
