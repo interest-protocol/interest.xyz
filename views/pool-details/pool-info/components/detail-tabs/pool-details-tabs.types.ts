@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface DetaiTabItemProps {
+export interface DetailsTabItemProps {
   item: ReactNode;
   isSelected: boolean;
   onChange: () => void;
