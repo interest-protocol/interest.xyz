@@ -10,12 +10,13 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
+import { ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { SelectionFieldValues, TokenListProps } from '../../pool-form.types';
 
 const PoolFormWithdrawReceiveTokens: FC<TokenListProps> = ({ type }) => {
-  const { control, setValue } = useFormContext<IPoolForm>();
+  const { control, setValue, getValues } = useFormContext<IPoolForm>();
 
   const [tokenList, tokenSelected, loading] = useWatch({
     control,
@@ -36,7 +37,15 @@ const PoolFormWithdrawReceiveTokens: FC<TokenListProps> = ({ type }) => {
           justifyContent="space-between"
           transition="all 350ms ease-in-out"
           nHover={isOneCoin && { bg: 'lowContainer' }}
-          onClick={() => isOneCoin && setValue('tokenSelected', type)}
+          onClick={() => {
+            if (isOneCoin) {
+              setValue('tokenSelected', type);
+              getValues('tokenList').forEach((_, index) => {
+                setValue(`tokenList.${index}.value`, '0');
+                setValue(`tokenList.${index}.valueBN`, ZERO_BIG_NUMBER);
+              });
+            }
+          }}
         >
           <Box display="flex" gap="l" alignItems="center">
             {isOneCoin && <RadioButton defaultValue={tokenSelected === type} />}
