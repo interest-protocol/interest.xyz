@@ -28,6 +28,7 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
         if (!getValues('tokenList').some(({ value }) => Number(value))) {
           setValue('lpCoin.value', '0');
           setValue('lpCoin.valueBN', ZERO_BIG_NUMBER);
+          setValue('error', null);
         } else
           curveDex
             .quoteAddLiquidity({
@@ -47,7 +48,8 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
                 )
               );
               setValue('lpCoin.valueBN', BigNumber(String(amountOut)));
-            });
+            })
+            .catch(() => setValue('error', `INSUFFICIENT BALANCE`));
       } else {
         if (!Number(getValues('lpCoin.value'))) {
           getValues('tokenList').forEach((_, index) => {
@@ -81,7 +83,7 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
                   BigNumber(String(amountOut))
                 );
               })
-              .catch(console.log);
+              .catch(() => setValue('error', `INSUFFICIENT BALANCE`));
           else
             curveDex
               .quoteRemoveLiquidity({
@@ -105,7 +107,7 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
                   );
                 });
               })
-              .catch(console.log);
+              .catch(() => setValue('error', `INSUFFICIENT BALANCE`));
         }
       }
 

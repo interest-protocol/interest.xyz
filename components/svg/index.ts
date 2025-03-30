@@ -87,6 +87,7 @@ export { default as PictureSVG } from './picture';
 export { default as PlusSVG } from './plus';
 export { default as PoolSVG } from './pool';
 export { default as QuestionCircleSVG } from './question-circle';
+export { default as RadioCircleSVG } from './radio-circle';
 export { default as RateDownSVG } from './rate-down';
 export { default as RateUpSVG } from './rate-up';
 export { default as SearchSVG } from './search';

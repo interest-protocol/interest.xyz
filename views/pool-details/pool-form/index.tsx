@@ -20,19 +20,28 @@ const PoolForm: FC = () => {
   );
 
   useEffect(() => {
+    resetAll();
+  }, []);
+
+  const resetAll = () => {
     setValue('lpCoin.value', '');
     setValue('tokenList.0.value', '');
     setValue('tokenList.1.value', '');
     setValue('lpCoin.valueBN', ZERO_BIG_NUMBER);
     setValue('tokenList.0.valueBN', ZERO_BIG_NUMBER);
     setValue('tokenList.1.valueBN', ZERO_BIG_NUMBER);
-  }, [poolOptionView]);
+    setValue('error', null);
+  };
 
+  const onChangeTab = (tabIndex: number) => {
+    resetAll();
+    setPoolOptionView(tabIndex);
+  };
   return (
     <Box
       gap="xl"
-      bg="container"
       display="flex"
+      bg="container"
       borderRadius="xs"
       color="onSurface"
       flexDirection="column"
@@ -41,7 +50,7 @@ const PoolForm: FC = () => {
       <Box overflowX="auto">
         <Tabs
           type="circle"
-          onChangeTab={setPoolOptionView}
+          onChangeTab={onChangeTab}
           items={['Deposit', 'Withdraw']}
           defaultTabIndex={poolOptionView}
         />
