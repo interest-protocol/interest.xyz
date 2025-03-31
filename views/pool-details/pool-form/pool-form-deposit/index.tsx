@@ -6,7 +6,6 @@ import { IPoolForm } from '@/views/pools/pools.types';
 
 import PoolField from '../pool-field';
 import { PoolFormProps } from '../pool-field/pool-field.types';
-import DepositManager from './pool-form-deposit-manager';
 import PoolReceiveSection from './pool-form-deposit-receive';
 import PoolPreviewFormDepositButton from './pool-preview-form-deposit-button';
 
@@ -26,7 +25,6 @@ const PoolDeposit: FC<PoolFormProps> = ({ poolOptionView }) => {
         ))}
       </Box>
       <PoolReceiveSection />
-      <DepositManager />
       <PoolPreviewFormDepositButton />
     </>
   );

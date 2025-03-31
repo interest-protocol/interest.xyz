@@ -5,6 +5,7 @@ import { SEO } from '@/components';
 import { withAddressGuard } from '@/components/hoc';
 import { Routes, RoutesEnum } from '@/constants';
 import { PoolPageProps } from '@/interface';
+import { ZERO_BIG_NUMBER } from '@/utils';
 import PoolDetails from '@/views/pool-details';
 import { PoolDetailsProvider } from '@/views/pool-details/pool-details.context';
 import { IPoolForm } from '@/views/pools/pools.types';
@@ -12,7 +13,11 @@ import { IPoolForm } from '@/views/pools/pools.types';
 const PoolDetailsPage: NextPage<PoolPageProps> = ({ address }) => {
   const form = useForm<IPoolForm>({
     defaultValues: {
-      tokenList: [{ symbol: '' }, { symbol: '' }],
+      tokenList: [
+        { symbol: '', valueBN: ZERO_BIG_NUMBER, value: '' },
+        { symbol: '', valueBN: ZERO_BIG_NUMBER, value: '' },
+      ],
+      lpCoin: { symbol: '', valueBN: ZERO_BIG_NUMBER, value: '' },
       settings: { slippage: '0.1' },
       pool: { poolAddress: address },
     },
