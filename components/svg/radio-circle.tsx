@@ -1,6 +1,6 @@
 import { FC, useId } from 'react';
 
-import { SVGProps } from '../../../interest-ui/src/lib/icons/icons.types';
+import { SVGProps } from './svg.types';
 
 const RadioCircle: FC<SVGProps & { isChecked: boolean }> = ({
   maxWidth,
