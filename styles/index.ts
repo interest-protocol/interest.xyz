@@ -116,6 +116,7 @@ export const GlobalStyles = css`
     border: 5px solid transparent;
   }
 
+  /* Pagination */
   .paginate {
     gap: 0.25rem;
     display: flex;
