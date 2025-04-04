@@ -30,6 +30,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
         mb="m"
         mx="auto"
         bg="surface"
+        position="relative"
         borderRadius="1rem"
         width={['95%', '95%', '95%', '98%', '98%']}
         mt={['3rem', '3rem', '3rem', '1rem', '1rem']}

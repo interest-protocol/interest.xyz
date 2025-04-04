@@ -1,15 +1,15 @@
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
 import { inc } from 'ramda';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
+import { POOLS } from '@/constants/pools';
 import { usePools } from '@/hooks/use-pools';
-import { ISrPool } from '@/interface';
+import { IPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
 import PoolCard from './pool-card';
-import { FormFilterValue } from './pool-card/pool-card.types';
 import PoolCardSkeleton from './pool-card/pool-card-skeleton';
 import {
   FilterTypeEnum,
@@ -22,8 +22,8 @@ import {
 const Pools: FC = () => {
   const [page, setPage] = useState(1);
   const { control, getValues } = useFormContext<IPoolForm>();
-  const [pools, setPools] = useState<ReadonlyArray<ReadonlyArray<ISrPool>>>([
-    [],
+  const [pools, setPools] = useState<ReadonlyArray<ReadonlyArray<IPool>>>([
+    POOLS,
   ]);
 
   const tokenList = getValues('tokenList');
@@ -49,14 +49,7 @@ const Pools: FC = () => {
             },
           ],
         }
-      : !filterProps.length ||
-          filterProps?.some(
-            (filterProp) =>
-              filterProp.type === FilterTypeEnum.CATEGORY &&
-              filterProp.value === FormFilterValue.all
-          )
-        ? {}
-        : {}
+      : {}
   );
 
   useEffect(() => {
@@ -70,9 +63,31 @@ const Pools: FC = () => {
     if (data?.pools) setPools([...pools.slice(0, page), data.pools]);
   }, [data?.pools]);
 
+  const memoPools = useMemo(
+    () =>
+      pools.map((poolPage) =>
+        poolPage.filter(({ algorithm, curve }) =>
+          filterProps.reduce((result, { type, value }) => {
+            if (type === FilterTypeEnum.ALGORITHM)
+              return result && value === curve;
+
+            if (type === FilterTypeEnum.POOL_TYPE)
+              return result && value === algorithm;
+
+            return result;
+          }, true)
+        )
+      ),
+    [pools, filterProps]
+  );
+
+  useEffect(() => {
+    console.log({ pools, memoPools });
+  }, [memoPools]);
+
   return (
     <PoolCardListContent
-      pools={pools}
+      pools={memoPools}
       done={!!data?.done}
       next={() => setPage(inc)}
       arePoolsLoading={arePoolsLoading}

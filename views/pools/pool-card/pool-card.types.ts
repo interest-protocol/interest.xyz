@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { ISrPool } from '@/interface';
+import { IPool } from '@/interface';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 export enum FormFilterValue {
@@ -8,8 +8,8 @@ export enum FormFilterValue {
   'all' = 'all',
   'stable' = 'stable',
   'volatile' = 'volatile',
-  'clamm' = 'clamm',
-  'amm' = 'amm',
+  'curve' = 'curve',
+  'v2' = 'v2',
 }
 
 export interface PoolCardHeaderProps {
@@ -30,5 +30,5 @@ export interface PoolCardTradeProps {
 }
 
 export interface PoolCardProps {
-  pool: ISrPool;
+  pool: IPool;
 }

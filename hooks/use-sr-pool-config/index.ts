@@ -1,12 +1,12 @@
 import useSWR from 'swr';
 
-import { useInterestDex } from '../use-interest-dex';
+import { useInterestV2Dex } from '../use-interest-dex-v2';
 
 const useSrAmmPoolConfig = () => {
-  const dex = useInterestDex();
+  const dexV2 = useInterestV2Dex();
 
   const { data: config, ...rest } = useSWR([useSrAmmPoolConfig.name], () =>
-    dex.getConfig()
+    dexV2.getConfig()
   );
   return { config, ...rest };
 };

@@ -5,11 +5,13 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useModal } from '@/hooks/use-modal';
 import { IPoolForm } from '@/views/pools/pools.types';
 
+import { usePoolDetails } from '../../pool-details.context';
 import PoolPreview from '../pool-form-preview';
 import PoolFormWithdrawButton from './pool-form-withdraw-button';
 
 const PoolPreviewFormWithdrawButton: FC = () => {
   const { setModal } = useModal();
+  const { pool } = usePoolDetails();
   const form = useFormContext<IPoolForm>();
   const { getValues, control } = form;
 
@@ -30,7 +32,13 @@ const PoolPreviewFormWithdrawButton: FC = () => {
       >
         <PoolPreview
           getValues={getValues}
-          onSubmit={<PoolFormWithdrawButton form={form} />}
+          onSubmit={
+            <PoolFormWithdrawButton
+              form={form}
+              algorithm={pool!.algorithm}
+              poolAddress={pool!.poolAddress}
+            />
+          }
         />
       </Motion>,
       {

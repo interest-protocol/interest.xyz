@@ -12,7 +12,18 @@ export const ALGORITHM_TYPE: Array<FilterItemProps> = [
   },
 ];
 
-export const CATEGORY = [
+export const POOL_TYPE: Array<FilterItemProps> = [
+  {
+    type: FilterTypeEnum.POOL_TYPE,
+    value: FormFilterValue.v2,
+  },
+  {
+    type: FilterTypeEnum.POOL_TYPE,
+    value: FormFilterValue.curve,
+  },
+];
+
+export const CATEGORY_TYPE: Array<FilterItemProps> = [
   {
     type: FilterTypeEnum.CATEGORY,
     value: FormFilterValue.official,
@@ -23,15 +34,26 @@ export const CATEGORY = [
   },
 ];
 
-export const FILTERS_DATA = [
-  // {
-  //   label: 'Algorithm',
-  //   data: ALGORITHM_TYPE,
-  //   type: FilterTypeEnum.ALGORITHM,
-  // },
+export const ALGORITHM_DATA = [
   {
-    label: 'Category',
-    data: CATEGORY,
+    label: 'Algorithm',
+    data: ALGORITHM_TYPE,
+    type: FilterTypeEnum.ALGORITHM,
+  },
+];
+
+export const CATEGORY_DATA = [
+  {
+    label: 'category',
+    data: CATEGORY_TYPE,
     type: FilterTypeEnum.CATEGORY,
+  },
+];
+
+export const POOL_TYPE_DATA = [
+  {
+    label: 'Pool type',
+    data: POOL_TYPE,
+    type: FilterTypeEnum.POOL_TYPE,
   },
 ];

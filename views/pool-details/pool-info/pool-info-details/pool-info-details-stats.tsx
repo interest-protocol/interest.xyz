@@ -16,12 +16,7 @@ const PoolInfoDetailsStats: FC = () => {
   if (!pool || loading) return <PoolInfoLoading />;
 
   const statsData = [
-    pool
-      ? FixedPointMath.toNumber(
-          BigNumber(String(pool.bidLiquidity ?? 0)),
-          pool.metadata.decimals
-        )
-      : 'N/A',
+    'N/A',
     config
       ? `${FixedPointMath.toNumber(BigNumber(String(config?.fee)), 9) * 100}%`
       : 'N/A',

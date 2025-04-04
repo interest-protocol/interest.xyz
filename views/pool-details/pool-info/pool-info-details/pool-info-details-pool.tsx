@@ -16,8 +16,8 @@ const PoolInfoDetailsPool: FC = () => {
 
   const infoData = [
     (query.address as string) ?? 'N/A',
-    'V2(SR-AMM)',
-    'Volatile',
+    pool.algorithm.toUpperCase(),
+    pool.curve,
   ];
 
   return (

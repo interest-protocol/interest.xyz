@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AccountAddress } from '@aptos-labs/ts-sdk';
+import { InterestCurvePool } from '@interest-protocol/interest-aptos-curve';
 import { InterestV2Pool } from '@interest-protocol/interest-aptos-v2';
 import BigNumber from 'bignumber.js';
 
@@ -18,56 +19,54 @@ export interface PoolPageProps {
 }
 
 export enum PoolTypeEnum {
-  CLAMM = 'CLAMM',
-  srAMM = 'V2(SR-AMM)',
+  Curve = 'Curve',
+  srAMM = 'V2',
 }
 
-export interface AmmPoolCoinTypes {
-  typeX: string;
-  typeY: string;
-}
-
-export interface SrAmmPool {
+export interface Pool {
   isVolatile: boolean;
   poolAddress: string;
   poolType: PoolTypeEnum;
-  coins: AmmPoolCoinTypes;
+  coins: ReadonlyArray<string>;
 }
 
-export interface ISrPool {
-  supply: bigint;
-  balanceY: bigint;
-  balanceX: bigint;
-  metadataY: string;
-  metadataX: string;
-  isSrMode: boolean;
+type IV2PoolData = Omit<
+  InterestV2Pool,
+  'poolAddress' | 'metadataX' | 'metadataY' | 'balanceX' | 'balanceY'
+>;
+
+type ICurvePoolData = Omit<
+  InterestCurvePool,
+  'address' | 'fas' | 'data' | 'isStable'
+> &
+  Omit<InterestCurvePool['data'], 'balances'>;
+
+export type IPool = (
+  | {
+      algorithm: 'v2';
+      poolExtraData?: IV2PoolData;
+    }
+  | {
+      algorithm: 'curve';
+      poolExtraData?: ICurvePoolData;
+    }
+) & {
   poolAddress: string;
-  bidLiquidity: bigint;
-  slotBalanceX: bigint;
-  slotBalanceY: bigint;
-  lastSlotTimestamp: bigint;
-  metadata: {
-    x: AssetMetadata;
-    y: AssetMetadata;
-    pool: AssetMetadata;
-  };
-}
+  curve: 'volatile' | 'stable';
+  poolMetadata?: AssetMetadata;
+  balances?: ReadonlyArray<bigint>;
+  tokensAddresses: ReadonlyArray<string>;
+  tokensMetadata?: ReadonlyArray<AssetMetadata>;
+};
 
 export interface Pools {
-  address: AccountAddress;
-  faX: AccountAddress;
-  faY: AccountAddress;
-  projectUri: string;
-  symbol: string;
   name: string;
+  symbol: string;
   decimals: number;
-}
-
-export interface SrAmmPoolWithMetadata
-  extends Omit<InterestV2Pool, 'metadataX' | 'metadataY'> {
-  metadata: AssetMetadata;
-  metadataX: AssetMetadata;
-  metadataY: AssetMetadata;
+  projectUri: string;
+  address: AccountAddress;
+  algorithm: 'v2' | 'curve';
+  fas: ReadonlyArray<AccountAddress>;
 }
 
 export interface CoinBalance {

@@ -2,8 +2,9 @@ import { createContext, FC, PropsWithChildren, useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 import useSWR from 'swr';
 
-import useSrAmmPool from '@/hooks/use-sr-amm-pool';
-import { SdkSrAmmConfig, SrAmmPoolWithMetadata } from '@/interface';
+import { usePool } from '@/hooks/use-pool';
+import useSrAmmPoolConfig from '@/hooks/use-sr-pool-config';
+import { IPool, SdkSrAmmConfig } from '@/interface';
 
 import { IPoolForm } from '../pools/pools.types';
 
@@ -14,7 +15,7 @@ interface PoolDetailsProviderProps {
 interface PoolDetailsContext {
   loading: boolean;
   config: SdkSrAmmConfig | undefined;
-  pool: SrAmmPoolWithMetadata | null | undefined;
+  pool: IPool | null | undefined;
 }
 
 const INITIAL: PoolDetailsContext = {
@@ -29,23 +30,23 @@ export const PoolDetailsProvider: FC<
   PropsWithChildren<PoolDetailsProviderProps>
 > = ({ address, children }) => {
   const { Provider } = poolDetailsContext;
-  const { pool, config, loading, error } = useSrAmmPool(address);
+  const { config } = useSrAmmPoolConfig();
+  const { pool, loading } = usePool(address);
   const { setValue, getValues } = useFormContext<IPoolForm>();
-
-  console.log({ error, pool, loading });
 
   useSWR([PoolDetailsProvider.name, pool?.poolAddress], async () => {
     if (pool) {
-      setValue(
-        'tokenList',
-        [pool.metadataX, pool.metadataY].map((metadata, index) => ({
-          ...getValues('tokenList')[index],
-          ...metadata,
-        }))
-      );
+      if (pool.tokensMetadata)
+        setValue(
+          'tokenList',
+          pool.tokensMetadata.map((metadata, index) => ({
+            ...getValues('tokenList')[index],
+            ...metadata,
+          }))
+        );
       setValue('lpCoin', {
         ...getValues('lpCoin'),
-        ...pool.metadata,
+        ...pool.poolMetadata,
       });
     }
   });

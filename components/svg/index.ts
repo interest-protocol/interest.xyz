@@ -85,6 +85,7 @@ export { default as NoSearchSVG } from './no-search';
 export { default as PercentageSVG } from './percentage';
 export { default as PictureSVG } from './picture';
 export { default as PlusSVG } from './plus';
+export { default as PodiumSVG } from './podium';
 export { default as PoolSVG } from './pool';
 export { default as QuestionCircleSVG } from './question-circle';
 export { default as RateDownSVG } from './rate-down';

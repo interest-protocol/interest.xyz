@@ -7,15 +7,21 @@ import invariant from 'tiny-invariant';
 
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
-import { useInterestDex } from '@/hooks/use-interest-dex';
+import { useInterestCurveDex } from '@/hooks/use-interest-dex-curve';
+import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
 import { useModal } from '@/hooks/use-modal';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 
 import { PoolFormButtonProps } from '../pool-form.types';
 
-const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({ form }) => {
-  const dex = useInterestDex();
+const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
+  form,
+  algorithm,
+  poolAddress,
+}) => {
   const client = useAptosClient();
+  const dexV2 = useInterestV2Dex();
+  const dexCurve = useInterestCurveDex();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
   const { handleClose: closeModal } = useModal();
@@ -31,36 +37,53 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({ form }) => {
 
       const lpCoin = getValues('lpCoin');
 
-      const payload = dex.removeLiquidity({
-        lpFa: lpCoin.type,
-        recipient: account.address,
-        amount: BigInt(lpCoin.valueBN.decimalPlaces(0, 1).toString()),
-      });
+      let payload, txResult;
 
-      const tx = await signAndSubmitTransaction({ payload });
+      if (algorithm === 'curve') {
+        payload = dexCurve.removeLiquidity({
+          pool: poolAddress,
+          recipient: account.address,
+          amount: BigInt(lpCoin.valueBN.toFixed(0)),
+          minAmountsOut: getValues('tokenList').map(() => BigInt(0)),
+        });
+      }
 
-      invariant(tx.status === 'Approved', 'Rejected by User');
+      if (algorithm === 'v2') {
+        payload = dexV2.removeLiquidity({
+          lpFa: lpCoin.type,
+          recipient: account.address,
+          amount: BigInt(lpCoin.valueBN.decimalPlaces(0, 1).toString()),
+        });
+      }
 
-      const txResult = tx.args;
+      if (payload) {
+        const tx = await signAndSubmitTransaction({ payload });
 
-      let waitingTx = true;
+        invariant(tx.status === 'Approved', 'Rejected by User');
 
-      do {
-        await client
-          .waitForTransaction({
-            transactionHash: txResult.hash,
-            options: { checkSuccess: true },
-          })
-          .then(() => {
-            waitingTx = false;
-          })
-          .catch();
-      } while (waitingTx);
+        txResult = tx.args;
+      }
 
-      setValue(
-        'explorerLink',
-        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
-      );
+      if (txResult) {
+        let waitingTx = true;
+
+        do {
+          await client
+            .waitForTransaction({
+              transactionHash: txResult.hash,
+              options: { checkSuccess: true },
+            })
+            .then(() => {
+              waitingTx = false;
+            })
+            .catch();
+        } while (waitingTx);
+
+        setValue(
+          'explorerLink',
+          EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
+        );
+      }
     } catch (e) {
       console.warn({ e });
 

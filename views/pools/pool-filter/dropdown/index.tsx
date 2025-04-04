@@ -1,4 +1,5 @@
 import { Box, Button, Motion, RadioButton } from '@interest-protocol/ui-kit';
+import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { not } from 'ramda';
 import { FC, useEffect, useId, useState } from 'react';
@@ -82,15 +83,13 @@ const Dropdown: FC<DropdownProps> = ({ label, type, filterData, disabled }) => {
         <Button
           py="s"
           my="xs"
-          mx={['unset', 'unset', 'unset', 'xs']}
           variant="filled"
           color="onSurface"
+          nHover={{ bg: 'container' }}
           bg={isOpen ? 'onPrimary' : 'surface'}
+          mx={['unset', 'unset', 'unset', 'xs']}
           width={['fill-available', 'fill-available', 'fill-available', '8rem']}
           onClick={() => setOpen(!isOpen)}
-          nHover={{
-            backgroundColor: 'container',
-          }}
           SuffixIcon={
             <Box display="flex" justifyContent="center">
               {isOpen ? (
@@ -107,49 +106,51 @@ const Dropdown: FC<DropdownProps> = ({ label, type, filterData, disabled }) => {
         >
           {label}
         </Button>
-        {!disabled && isOpen && (
-          <Motion
-            animate={{ scale: 1 }}
-            initial={{ scale: 0.85 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div ref={dropdownRef}>
-              <Box
-                mx="s"
-                my="xs"
-                zIndex="1"
-                bg="surface"
-                color="onSurface"
-                display="flex"
-                minWidth={['8rem', '8rem', '8rem', '15rem']}
-                position="absolute"
-                borderRadius="xs"
-                flexDirection="column"
-                cursor={disabled ? 'not-allowed' : 'pointer'}
-              >
-                {filterData.map((value) => (
-                  <Box
-                    p="l"
-                    gap="xs"
-                    key={v4()}
-                    display="flex"
-                    color="onSurface"
-                    borderRadius="xs"
-                    textTransform="capitalize"
-                    justifyContent="space-between"
-                    nHover={{ bg: 'lowestContainer' }}
-                    onClick={() => handleSelect(value)}
-                  >
-                    {value.value}
-                    <RadioButton
-                      defaultValue={selectedOption.value === value.value}
-                    />
-                  </Box>
-                ))}
-              </Box>
-            </div>
-          </Motion>
-        )}
+        <AnimatePresence>
+          {!disabled && isOpen && (
+            <Motion
+              animate={{ scale: 1 }}
+              initial={{ scale: 0.85 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div ref={dropdownRef}>
+                <Box
+                  mx="s"
+                  my="xs"
+                  zIndex="1"
+                  bg="surface"
+                  color="onSurface"
+                  display="flex"
+                  minWidth={['8rem', '8rem', '8rem', '15rem']}
+                  position="absolute"
+                  borderRadius="xs"
+                  flexDirection="column"
+                  cursor={disabled ? 'not-allowed' : 'pointer'}
+                >
+                  {filterData.map((value) => (
+                    <Box
+                      p="l"
+                      gap="xs"
+                      key={v4()}
+                      display="flex"
+                      color="onSurface"
+                      borderRadius="xs"
+                      textTransform="capitalize"
+                      justifyContent="space-between"
+                      nHover={{ bg: 'lowestContainer' }}
+                      onClick={() => handleSelect(value)}
+                    >
+                      {value.value}
+                      <RadioButton
+                        defaultValue={selectedOption.value === value.value}
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </div>
+            </Motion>
+          )}
+        </AnimatePresence>
       </Box>
     </Box>
   );
