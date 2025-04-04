@@ -1,11 +1,10 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC, useState } from 'react';
-import ReactPaginate from 'react-paginate';
+import ResponsivePagination from 'react-responsive-pagination';
 import { v4 } from 'uuid';
 
 import Layout from '@/components/layout';
 import Loading from '@/components/loading';
-import { ChevronLeftSVG, ChevronRightSVG } from '@/components/svg';
 import { formatDollars } from '@/utils';
 
 import { LIMIT } from './leaderboard.data';
@@ -65,33 +64,12 @@ const Leaderboard: FC = () => {
             <Box key={v4()}>{formatDollars(volume / swaps)}</Box>,
             <Box key={v4()}>{formatDollars(volume)}</Box>,
           ])}
+          <Box gridColumn="1/-1" />
           <Box gridColumn="1/-1">
-            <ReactPaginate
-              breakLabel="..."
-              initialPage={page - 1}
-              pageRangeDisplayed={2}
-              renderOnZeroPageCount={null}
-              containerClassName="paginate"
-              onPageChange={({ selected }) => setPage(selected + 1)}
-              pageCount={
-                data && data.totalItems > LIMIT
-                  ? Math.ceil(data?.totalItems / LIMIT)
-                  : 0
-              }
-              previousLabel={
-                <ChevronLeftSVG
-                  width="100%"
-                  maxWidth="0.65rem"
-                  maxHeight="0.65rem"
-                />
-              }
-              nextLabel={
-                <ChevronRightSVG
-                  maxWidth="1rem"
-                  maxHeight="1rem"
-                  width="100%"
-                />
-              }
+            <ResponsivePagination
+              current={page ?? 0}
+              onPageChange={setPage}
+              total={Math.ceil((data?.totalItems ?? 0) / LIMIT)}
             />
           </Box>
           <Box gridColumn="1/-1" />

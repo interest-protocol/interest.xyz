@@ -117,12 +117,13 @@ export const GlobalStyles = css`
   }
 
   /* Pagination */
-  .paginate {
+  .pagination {
     gap: 0.25rem;
     display: flex;
     list-style: none;
+    align-items: center;
     & li {
-      & a {
+      & .page-link {
         width: 2rem;
         height: 2rem;
         display: flex;
@@ -132,22 +133,22 @@ export const GlobalStyles = css`
         border-radius: 0.5rem;
         justify-content: center;
       }
-      &.previous a {
+      & .page-link[aria-label='Previous'] {
         margin-right: 1.5rem;
       }
-      &.next a {
+      & .page-link[aria-label='Next'] {
         margin-left: 1.5rem;
       }
-      &.previous a,
-      &.next a {
+      & .page-link[aria-label='Previous'],
+      & .page-link[aria-label='Next'] {
         color: #b4c5ff;
         border: 1px solid;
       }
-      &.selected a {
+      &.active .page-link {
         color: #000;
         background: #b4c5ff;
       }
-      &.disabled a {
+      &.disabled .page-link {
         color: #ffffffa3;
       }
     }
