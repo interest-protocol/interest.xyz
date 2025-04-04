@@ -115,4 +115,40 @@ export const GlobalStyles = css`
     border-radius: 0.5rem;
     border: 5px solid transparent;
   }
+
+  .paginate {
+    gap: 0.25rem;
+    display: flex;
+    list-style: none;
+    & li {
+      & a {
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        cursor: pointer;
+        color: #b4c5ff;
+        align-items: center;
+        border-radius: 0.5rem;
+        justify-content: center;
+      }
+      &.previous a {
+        margin-right: 1.5rem;
+      }
+      &.next a {
+        margin-left: 1.5rem;
+      }
+      &.previous a,
+      &.next a {
+        color: #b4c5ff;
+        border: 1px solid;
+      }
+      &.selected a {
+        color: #000;
+        background: #b4c5ff;
+      }
+      &.disabled a {
+        color: #ffffffa3;
+      }
+    }
+  }
 `;
