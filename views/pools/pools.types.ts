@@ -17,11 +17,6 @@ export enum PoolTabEnum {
   MyPosition,
 }
 
-export enum PoolOption {
-  Deposit,
-  Withdraw,
-}
-
 export interface PoolCardListProps {
   tab: PoolTabEnum;
 }

@@ -14,7 +14,7 @@ const PoolFormActive: FC<{ isDepositForm: boolean }> = ({ isDepositForm }) => {
   return <PoolWithdraw poolOptionView={PoolOption.Withdraw} />;
 };
 
-const PoolForm: FC = () => {
+const FarmForm: FC = () => {
   const { setValue } = useFormContext<IPoolForm>();
   const [poolOptionView, setPoolOptionView] = useState<PoolOption>(
     PoolOption.Deposit
@@ -46,4 +46,4 @@ const PoolForm: FC = () => {
   );
 };
 
-export default PoolForm;
+export default FarmForm;
