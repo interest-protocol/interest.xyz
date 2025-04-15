@@ -5,19 +5,21 @@ import { useFormContext } from 'react-hook-form';
 import { ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
-import { PoolOption } from '../pool-details.types';
-import PoolDeposit from './pool-form-deposit';
-import PoolWithdraw from './pool-form-withdraw';
+import { PoolFarmsOption } from '../pool-details.types';
+import PoolFormFarms from './pool-form-farms';
 
-const PoolFormActive: FC<{ isDepositForm: boolean }> = ({ isDepositForm }) => {
-  if (isDepositForm) return <PoolDeposit poolOptionView={PoolOption.Deposit} />;
-  return <PoolWithdraw poolOptionView={PoolOption.Withdraw} />;
-};
+const PoolFormActive: FC<{ isStakeForm: boolean }> = ({ isStakeForm }) => (
+  <PoolFormFarms
+    poolOptionView={
+      isStakeForm ? PoolFarmsOption.Stake : PoolFarmsOption.Unstake
+    }
+  />
+);
 
 const FarmForm: FC = () => {
   const { setValue } = useFormContext<IPoolForm>();
-  const [poolOptionView, setPoolOptionView] = useState<PoolOption>(
-    PoolOption.Deposit
+  const [poolFarmOptionView, setPFarmoolOptionView] = useState<PoolFarmsOption>(
+    PoolFarmsOption.Stake
   );
 
   useEffect(() => {
@@ -27,20 +29,22 @@ const FarmForm: FC = () => {
     setValue('lpCoin.valueBN', ZERO_BIG_NUMBER);
     setValue('tokenList.0.valueBN', ZERO_BIG_NUMBER);
     setValue('tokenList.1.valueBN', ZERO_BIG_NUMBER);
-  }, [poolOptionView]);
+  }, [poolFarmOptionView]);
 
   return (
     <>
       <Box display="flex" justifyContent="flex-end">
         <Tabs
           type="circle"
-          onChangeTab={setPoolOptionView}
-          items={['Deposit', 'Withdraw']}
-          defaultTabIndex={poolOptionView}
+          onChangeTab={setPFarmoolOptionView}
+          items={['Stake', 'Unstake']}
+          defaultTabIndex={poolFarmOptionView}
         />
       </Box>
       <Box gridColumn="1/-1">
-        <PoolFormActive isDepositForm={poolOptionView === PoolOption.Deposit} />
+        <PoolFormActive
+          isStakeForm={poolFarmOptionView === PoolFarmsOption.Stake}
+        />
       </Box>
     </>
   );
