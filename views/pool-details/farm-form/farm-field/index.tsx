@@ -30,13 +30,13 @@ const FarmField: FC<FarmFieldProps> = ({ farmMode }) => {
 
   return (
     <>
-      <FarmFieldManager name={fieldName} />
+      <FarmFieldManager />
       <TokenField
         active
         placeholder="0"
         textAlign="right"
         Balance={<Balance farmMode={farmMode} />}
-        ButtonMax={<MaxButton name={fieldName} />}
+        ButtonMax={<MaxButton farmMode={farmMode} />}
         fieldProps={{ bg: 'lowestContainer', p: 'xs' }}
         TokenIcon={
           <Box display="flex" alignItems="center" gap="s">

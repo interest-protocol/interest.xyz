@@ -29,8 +29,6 @@ const FarmFieldBalance: FC<FarmFieldProps> = ({ farmMode }) => {
 
   const farmAccount = useFarmAccount(token.type);
 
-  console.log({ farmAccount, farmMode });
-
   const balance =
     (farmMode
       ? farmAccount.data?.amount && BigNumber(String(farmAccount.data.amount))
