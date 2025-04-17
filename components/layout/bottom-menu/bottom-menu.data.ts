@@ -1,5 +1,4 @@
 import {
-  BridgeSVG,
   CirclePlusSVG,
   DoubleChevronSVG,
   MoreSVG,
@@ -24,11 +23,6 @@ export const BOTTOM_MENU_ITEMS: ReadonlyArray<BottomMenuProps> = [
     Icon: CirclePlusSVG,
     name: 'Create Token',
     path: Routes[RoutesEnum.TokenCreate],
-  },
-  {
-    name: 'Bridge',
-    Icon: BridgeSVG,
-    path: 'https://bridge.movementnetwork.xyz/',
   },
   {
     name: 'More',

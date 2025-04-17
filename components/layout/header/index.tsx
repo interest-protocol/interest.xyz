@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { FC, useCallback, useState } from 'react';
 import { v4 } from 'uuid';
 
+import MenuMobile from '@/components/menu-mobile';
 import { IPXGoldenSVG } from '@/components/svg';
 import Wallet from '@/components/wallet';
 import { Routes, RoutesEnum } from '@/constants';
@@ -131,6 +132,7 @@ const Header: FC = () => {
           display={['flex', 'flex', 'flex', 'none']}
           boxShadow="0 1.5rem 2.875rem -0.625rem rgba(13, 16, 23, 0.16)"
         >
+          <MenuMobile />
           <Box display="flex" alignItems="center">
             <Wallet />
           </Box>

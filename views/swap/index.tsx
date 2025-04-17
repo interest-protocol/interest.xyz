@@ -1,10 +1,7 @@
-import { Box, Button } from '@interest-protocol/ui-kit';
-import Link from 'next/link';
+import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import Layout from '@/components/layout';
-import { PodiumSVG } from '@/components/svg';
-import { Routes, RoutesEnum } from '@/constants';
 
 import Input from './input';
 import SwapFormFieldSlider from './input/swap-manager-slider';
@@ -63,18 +60,6 @@ const Swap: FC = () => (
       </Box>
       <SwapManager />
     </Box>
-    <Link href={Routes[RoutesEnum.Leaderboard]}>
-      <Button
-        left="1rem"
-        bottom="1rem"
-        variant="tonal"
-        color="onSurface"
-        position="absolute"
-        PrefixIcon={<PodiumSVG maxWidth="1rem" maxHeight="1rem" width="10)%" />}
-      >
-        Leaderboard
-      </Button>
-    </Link>
   </Layout>
 );
 
