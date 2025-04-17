@@ -4,50 +4,53 @@ import {
   ProgressIndicator,
   Typography,
 } from '@interest-protocol/ui-kit';
+import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
+import { useFarmAccount } from '@/hooks/use-farm-account';
 import useSrAmmPool from '@/hooks/use-v2-pool';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { isAptos, ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
-import { NameProps } from './pool-field.types';
+import { FarmFieldProps } from './farm-field.types';
 
-const Balance: FC<NameProps> = ({ name }) => {
+const FarmFieldBalance: FC<FarmFieldProps> = ({ farmMode }) => {
   const { coinsMap, loading } = useCoins();
   const { setValue, control, getValues } = useFormContext<IPoolForm>();
   const { loading: loadingPoolsDetails } = useSrAmmPool(
     getValues('pool.poolAddress')
   );
 
-  const token = useWatch({ control, name });
+  const token = useWatch({ control, name: 'lpCoin' });
+
+  const farmAccount = useFarmAccount(token.type);
+
+  console.log({ farmAccount, farmMode });
 
   const balance =
-    (!!token.type && coinsMap[normalizeSuiAddress(token.type)]?.balance) ||
+    (farmMode
+      ? farmAccount.data?.amount && BigNumber(String(farmAccount.data.amount))
+      : !!token.type && coinsMap[normalizeSuiAddress(token.type)]?.balance) ||
     ZERO_BIG_NUMBER;
 
   const handleMax = () => {
-    setValue(`lpCoin.locked`, false);
-    setValue(`tokenList.0.locked`, false);
-    setValue(`tokenList.1.locked`, false);
-    setValue(`${name}.locked`, true);
-
     const value = balance.minus(
       FixedPointMath.toBigNumber(isAptos(token.type) ? 1 : 0, token.decimals)
     );
 
     if (isAptos(token.type) && !value.isPositive()) {
-      setValue(`${name}.value`, '0');
-      setValue(`${name}.valueBN`, ZERO_BIG_NUMBER);
+      setValue(`lpCoin.value`, '0');
+      setValue(`lpCoin.valueBN`, ZERO_BIG_NUMBER);
       return;
     }
 
-    setValue(`${name}.valueBN`, value);
+    setValue(`lpCoin.valueBN`, value);
     setValue(
-      `${name}.value`,
+      `lpCoin.value`,
       FixedPointMath.toNumber(
         value.decimalPlaces(0, 1),
         token.decimals
@@ -92,4 +95,4 @@ const Balance: FC<NameProps> = ({ name }) => {
   );
 };
 
-export default Balance;
+export default FarmFieldBalance;

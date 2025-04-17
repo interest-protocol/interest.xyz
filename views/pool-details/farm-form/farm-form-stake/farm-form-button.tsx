@@ -9,12 +9,12 @@ import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useInterestCurveDex } from '@/hooks/use-interest-dex-curve';
 import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
+import { useModal } from '@/hooks/use-modal';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 
-import { PoolFormButtonProps } from '../pool-form.types';
-import { logDepositPool } from '../pool-form.utils';
+import { PoolFormButtonProps } from '../farm-form.types';
 
-const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
+const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
   form,
   algorithm,
   poolAddress,
@@ -24,38 +24,35 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
   const dexCurve = useInterestCurveDex();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
+  const { handleClose: closeModal } = useModal();
   const { account, signAndSubmitTransaction } = useAptosWallet();
 
-  const handleDeposit = async () => {
+  const error = useWatch({ control, name: 'error' });
+
+  const handleWithdraw = async () => {
     try {
       invariant(account, 'You must be connected to proceed');
+
       setValue('error', '');
 
-      let txResult, payload;
+      const lpCoin = getValues('lpCoin');
+
+      let payload, txResult;
 
       if (algorithm === 'curve') {
-        const tokens = getValues('tokenList');
-
-        payload = dexCurve.addLiquidity({
+        payload = dexCurve.removeLiquidity({
           pool: poolAddress,
-          fasIn: tokens.map((token) => token.type),
           recipient: account.address,
-          minAmountOut: BigInt(getValues('lpCoin.valueBN').toFixed(0) ?? 0),
-          amounts: tokens.map((token) =>
-            BigInt(token.valueBN?.toFixed(0) ?? 0)
-          ),
+          amount: BigInt(lpCoin.valueBN.toFixed(0)),
+          minAmountsOut: getValues('tokenList').map(() => BigInt(0)),
         });
       }
 
       if (algorithm === 'v2') {
-        const [token0, token1] = getValues('tokenList');
-
-        payload = dexV2.addLiquidity({
-          faA: token0.type,
-          faB: token1.type,
+        payload = dexV2.removeLiquidity({
+          lpFa: lpCoin.type,
           recipient: account.address,
-          amountA: BigInt(token0.valueBN.decimalPlaces(0, 1).toString()),
-          amountB: BigInt(token1.valueBN.decimalPlaces(0, 1).toString()),
+          amount: BigInt(lpCoin.valueBN.decimalPlaces(0, 1).toString()),
         });
       }
 
@@ -68,14 +65,6 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
       }
 
       if (txResult) {
-        logDepositPool(
-          account.address,
-          getValues('tokenList.0'),
-          getValues('tokenList.1'),
-          Network.MovementMainnet,
-          txResult.hash
-        );
-
         let waitingTx = true;
 
         do {
@@ -111,49 +100,49 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
     setValue('explorerLink', '');
   };
 
-  const onDeposit = () =>
-    dialog.promise(handleDeposit(), {
+  const onWithdraw = () => {
+    closeModal();
+    dialog.promise(handleWithdraw(), {
       loading: () => ({
-        title: 'Depositing...',
-        message: 'We are Depositing, and you will let you know when it is done',
+        title: 'Withdrawing...',
+        message:
+          'We are Withdrawing, and you will let you know when it is done',
       }),
       success: () => ({
-        title: 'Deposit Successfully',
+        title: 'Withdraw Successfully',
         message:
-          getValues('error') ||
-          'Your deposit was successfully, and you can check it on the Explorer',
+          'Your withdraw was successfully, and you can check it on the Explorer',
         primaryButton: {
           label: 'See on Explorer',
           onClick: gotoExplorer,
         },
       }),
       error: (error) => ({
-        title: 'Deposit Failure',
+        title: 'Withdraw Failure',
         message:
           (error as Error).message ||
-          'Your deposit failed, please try again or contact the support team',
+          'Your withdrawing failed, please try again or contact the support team',
         primaryButton: { label: 'Try again', onClick: handleClose },
       }),
     });
-
-  const error = useWatch({ control, name: 'error' });
+  };
 
   return (
     <Button
       py="s"
-      my="xl"
+      my="l"
       mt="xl"
       mx="auto"
       variant="filled"
-      width="fill-available"
-      onClick={onDeposit}
       disabled={!!error}
+      onClick={onWithdraw}
+      width="fill-available"
     >
       <Typography variant="label" size="large" textAlign="center" width="100%">
-        Confirm Deposit
+        Confirm Withdraw
       </Typography>
     </Button>
   );
 };
 
-export default PoolFormDepositButton;
+export default PoolFormWithdrawButton;

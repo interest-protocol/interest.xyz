@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { DotErrorSVG } from '@/components/svg';
 import { IPoolForm } from '@/views/pools/pools.types';
 
-const WithdrawManager: FC = () => {
+const FarmFormManager: FC = () => {
   const { control } = useFormContext<IPoolForm>();
 
   const error = useWatch({ control, name: 'error' });
@@ -33,4 +33,4 @@ const WithdrawManager: FC = () => {
   );
 };
 
-export default WithdrawManager;
+export default FarmFormManager;

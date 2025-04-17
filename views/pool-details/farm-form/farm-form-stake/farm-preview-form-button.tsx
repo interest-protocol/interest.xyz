@@ -6,10 +6,11 @@ import { useModal } from '@/hooks/use-modal';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { usePoolDetails } from '../../pool-details.context';
-import PoolPreview from '../pool-form-preview';
-import PoolFormWithdrawButton from './pool-form-withdraw-button';
+import { FarmState } from '../farm-form.types';
+import PoolPreview from '../farm-form-preview';
+import PoolFormWithdrawButton from './farm-form-button';
 
-const PoolPreviewFormWithdrawButton: FC = () => {
+const FarmPreviewFormButton: FC<FarmState> = ({ state }) => {
   const { setModal } = useModal();
   const { pool } = usePoolDetails();
   const form = useFormContext<IPoolForm>();
@@ -60,12 +61,12 @@ const PoolPreviewFormWithdrawButton: FC = () => {
       mx="auto"
       variant="filled"
       width="max-content"
-      onClick={removeLiquidity}
       disabled={disabled}
+      onClick={removeLiquidity}
     >
-      Withdraw
+      {state ? 'Unstake' : 'Stake'}
     </Button>
   );
 };
 
-export default PoolPreviewFormWithdrawButton;
+export default FarmPreviewFormButton;

@@ -7,7 +7,7 @@ import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { isAptos, ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
-import { NameProps } from './pool-field.types';
+import { NameProps } from './farm-field.types';
 
 const MaxButton: FC<NameProps> = ({ name }) => {
   const { coinsMap } = useCoins();

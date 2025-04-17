@@ -8,9 +8,9 @@ import { ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { usePoolDetails } from '../../pool-details.context';
-import { NameProps } from './pool-field.types';
+import { NameProps } from './farm-field.types';
 
-const PoolFieldManager: FC<NameProps> = ({ name }) => {
+const FarmFieldManager: FC<NameProps> = ({ name }) => {
   const { pool } = usePoolDetails();
   const curveDex = useInterestCurveDex();
   const { control, setValue, getValues } = useFormContext<IPoolForm>();
@@ -149,4 +149,4 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
   return null;
 };
 
-export default PoolFieldManager;
+export default FarmFieldManager;

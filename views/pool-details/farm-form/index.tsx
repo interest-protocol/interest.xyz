@@ -6,19 +6,11 @@ import { ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { PoolFarmsOption } from '../pool-details.types';
-import PoolFormFarms from './pool-form-farms';
-
-const PoolFormActive: FC<{ isStakeForm: boolean }> = ({ isStakeForm }) => (
-  <PoolFormFarms
-    poolOptionView={
-      isStakeForm ? PoolFarmsOption.Stake : PoolFarmsOption.Unstake
-    }
-  />
-);
+import PoolFormFarms from './farm-form-stake';
 
 const FarmForm: FC = () => {
   const { setValue } = useFormContext<IPoolForm>();
-  const [poolFarmOptionView, setPFarmoolOptionView] = useState<PoolFarmsOption>(
+  const [poolFarmOptionView, setFarmOptionView] = useState<PoolFarmsOption>(
     PoolFarmsOption.Stake
   );
 
@@ -36,15 +28,13 @@ const FarmForm: FC = () => {
       <Box display="flex" justifyContent="flex-end">
         <Tabs
           type="circle"
-          onChangeTab={setPFarmoolOptionView}
+          onChangeTab={setFarmOptionView}
           items={['Stake', 'Unstake']}
           defaultTabIndex={poolFarmOptionView}
         />
       </Box>
       <Box gridColumn="1/-1">
-        <PoolFormActive
-          isStakeForm={poolFarmOptionView === PoolFarmsOption.Stake}
-        />
+        <PoolFormFarms farmMode={poolFarmOptionView} />
       </Box>
     </>
   );

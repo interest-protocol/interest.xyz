@@ -3,12 +3,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { IPool } from '@/interface';
 import { IPoolForm } from '@/views/pools/pools.types';
 
-export interface RadioFieldProps {
-  label: string;
-  type: SelectionFieldValues;
-  currentValue: SelectionFieldValues;
-  handleSelect: (newValue: SelectionFieldValues) => void;
-}
+import { PoolFarmsOption } from '../pool-details.types';
 
 export interface TokenListProps {
   type: SelectionFieldValues;
@@ -23,4 +18,8 @@ export enum SelectionFieldValues {
 export interface PoolFormButtonProps
   extends Pick<IPool, 'algorithm' | 'poolAddress'> {
   form: UseFormReturn<IPoolForm, any, undefined>;
+}
+
+export interface FarmState {
+  state: PoolFarmsOption;
 }
