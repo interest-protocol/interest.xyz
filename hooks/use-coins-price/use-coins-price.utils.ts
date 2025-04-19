@@ -28,7 +28,8 @@ export const getBasedCoins = async (data: ReadonlyArray<TokenPrice>) => {
         (acc, price) => ({ ...acc, [price.coin]: price.price }),
         {} as Record<string, number>
       )
-    );
+    )
+    .catch();
 
   if (empty(basesPricesMap)) return usdCoins;
 

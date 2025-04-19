@@ -17,7 +17,7 @@ export const RPC_URL = {
 
 export const INDEXER_URL = {
   [Network.MovementMainnet]:
-    'https://rpc.sentio.xyz/movement-indexer/v1/graphql',
+    'https://indexer.mainnet.movementnetwork.xyz/v1/graphql',
 };
 
 export const EXPLORER_URL = {

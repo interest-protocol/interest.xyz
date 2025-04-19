@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
-import { Routes, RoutesEnum } from '@/constants';
+import { FARMS_BY_LP, Routes, RoutesEnum } from '@/constants';
 import { usePool } from '@/hooks/use-pool';
 import { FixedPointMath } from '@/lib';
 import { formatMoney, getCoinMetadata, parseToMetadata } from '@/utils';
@@ -19,6 +19,8 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const [isLoading, setLoading] = useState(false);
   const { pool: data, loading } = usePool(pool.poolAddress);
   const [metadata, setMetadata] = useState(pool.tokensMetadata);
+
+  const isFarm = !!FARMS_BY_LP[pool.poolAddress];
 
   useEffect(() => {
     if (metadata || isLoading) return;
@@ -56,7 +58,12 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           '.arrow-wrapper': { opacity: 1 },
         }}
       >
-        <PoolCardHeader tags={[pool.algorithm, pool.curve]} />
+        <PoolCardHeader
+          tags={((isFarm ? [] : []) as string[]).concat([
+            pool.algorithm,
+            pool.curve,
+          ])}
+        />
         <PoolCardInfo key={v4()} coins={metadata ?? []} />
         <Box px="m" py="xs" bg="surface" borderRadius="1rem">
           <PoolCardTrade

@@ -19,12 +19,14 @@ const PoolDetailsForm: FC = () => {
       p={['m', 'm', 'm', 'xl']}
       gridTemplateColumns="1fr 1fr"
     >
-      <Tabs
-        type="circle"
-        onChangeTab={setMode}
-        defaultTabIndex={mode}
-        items={['Liquidity', 'Farm']}
-      />
+      {false && (
+        <Tabs
+          type="circle"
+          onChangeTab={setMode}
+          defaultTabIndex={mode}
+          items={['Liquidity', 'Farm']}
+        />
+      )}
       {[<PoolForm key={v4()} />, <FarmForm key={v4()} />][mode]}
     </Box>
   );

@@ -12,6 +12,6 @@ const client = new Aptos(
   new AptosConfig({ indexer: INDEXER_URL[network], fullnode: RPC_URL[network] })
 );
 
-const curveDex = new InterestCurve({ network, client });
+export const curveDex = new InterestCurve({ network, client });
 
 export const useInterestCurveDex = () => curveDex;

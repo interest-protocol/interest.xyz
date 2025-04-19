@@ -13,7 +13,7 @@ export enum FormFilterValue {
 }
 
 export interface PoolCardHeaderProps {
-  tags?: ReadonlyArray<string>;
+  tags: ReadonlyArray<string>;
 }
 
 export interface PoolCardTokenInfoProps {
