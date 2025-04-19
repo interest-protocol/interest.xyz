@@ -1,4 +1,4 @@
-import { PoolOption } from '@/views/pools/pools.types';
+import { PoolOption } from '../../pool-details.types';
 
 export interface PoolFieldsProps extends PoolFormProps {
   index: number;

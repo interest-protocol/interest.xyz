@@ -1,6 +1,6 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box } from '@interest-protocol/ui-kit';
-import { ChangeEvent, FC } from 'react';
+import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
@@ -12,51 +12,31 @@ import { TokenField } from '@/views/pool-create/select-coins/input/token-field';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { usePoolDetails } from '../../pool-details.context';
-import { PoolOption } from '../../pool-details.types';
-import Balance from './balance';
-import MaxButton from './input-max-button';
-import { PoolFieldsProps } from './pool-field.types';
-import PoolFieldManager from './pool-field-manager';
+import { FarmFieldProps } from './farm-field.types';
+import Balance from './farm-field-balance';
+import FarmFieldManager from './farm-field-manager';
+import MaxButton from './farm-field-max-button';
 
-const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
+const FarmField: FC<FarmFieldProps> = ({ farmMode }) => {
   const { loading } = usePoolDetails();
   const network = useNetwork<Network>();
   const { register, setValue, getValues } = useFormContext<IPoolForm>();
 
-  const isDeposit = poolOptionView === PoolOption.Deposit;
-
-  const fieldName: `tokenList.${number}` | 'lpCoin' = isDeposit
-    ? `tokenList.${index}`
-    : 'lpCoin';
+  const fieldName = 'lpCoin';
 
   const token = getValues(fieldName);
 
   const symbol = token?.symbol;
 
-  const handleChange = (v: ChangeEvent<HTMLInputElement>) => {
-    const amount = parseInputEventToNumberString(v);
-
-    setValue(`lpCoin.locked`, false);
-    setValue(`tokenList.0.locked`, false);
-    setValue(`tokenList.1.locked`, false);
-    setValue(`${fieldName}.locked`, true);
-
-    setValue(`${fieldName}.value`, amount);
-    setValue(
-      `${fieldName}.valueBN`,
-      FixedPointMath.toBigNumber(amount, token?.decimals)
-    );
-  };
-
   return (
     <>
-      <PoolFieldManager name={fieldName} />
+      <FarmFieldManager />
       <TokenField
         active
         placeholder="0"
         textAlign="right"
-        Balance={<Balance name={fieldName} />}
-        ButtonMax={<MaxButton name={fieldName} />}
+        Balance={<Balance farmMode={farmMode} />}
+        ButtonMax={<MaxButton farmMode={farmMode} />}
         fieldProps={{ bg: 'lowestContainer', p: 'xs' }}
         TokenIcon={
           <Box display="flex" alignItems="center" gap="s">
@@ -66,7 +46,7 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
                   withBg
                   network={network}
                   url={token.iconUri}
-                  symbol={isDeposit ? symbol : token?.name}
+                  symbol={token?.name}
                 />
                 {symbol}
               </>
@@ -82,11 +62,21 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
           </Box>
         }
         {...register(`${fieldName}.value`, {
-          onChange: handleChange,
+          onChange: (v) => {
+            const value = parseInputEventToNumberString(v);
+            setValue?.(`${fieldName}.value`, value);
+            setValue?.(
+              `${fieldName}.valueBN`,
+              FixedPointMath.toBigNumber(
+                value,
+                getValues(`${fieldName}.decimals`)
+              )
+            );
+          },
         })}
       />
     </>
   );
 };
 
-export default PoolField;
+export default FarmField;

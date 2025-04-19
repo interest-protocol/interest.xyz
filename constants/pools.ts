@@ -1,62 +1,17 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
+import { MAINNET_POOLS } from '@interest-protocol/interest-aptos-curve';
+import { values } from 'ramda';
 
 import { IPool } from '@/interface';
-import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
-export const POOLS: ReadonlyArray<IPool> = [
-  {
-    curve: 'stable',
+export const POOLS: ReadonlyArray<IPool> = values(MAINNET_POOLS).map(
+  (pool) => ({
     algorithm: 'curve',
-    poolAddress:
-      '0x691877d4f5d4c1177d02f6ca3d399df4624af265533d305c008f6cb15d1567bc',
-    tokensAddresses: [
-      '0x83121c9f9b0527d1f056e21a950d6bf3b9e9e2e8353d0e95ccea726713cbea39',
-      '0xa',
-    ],
-    tokensMetadata: [
-      {
-        decimals: 6,
-        name: 'USDC.e',
-        symbol: 'USDC.e',
-        standard: TokenStandard.FA,
-        type: '0x83121c9f9b0527d1f056e21a950d6bf3b9e9e2e8353d0e95ccea726713cbea39',
-      },
-      {
-        decimals: 8,
-        name: 'Move Coin',
-        symbol: 'MOVE',
-        type: '0x000000000000000000000000000000000000000000000000000000000000000a',
-        standard: TokenStandard.FA,
-      },
-    ],
-  },
-  {
-    curve: 'volatile',
-    algorithm: 'curve',
-    poolAddress:
-      '0x54c89a961dd60e30f1c03ba2c6f5a052e7ed0ba36fcca3c1153f06449199b285',
-    tokensAddresses: [
-      '0x83121c9f9b0527d1f056e21a950d6bf3b9e9e2e8353d0e95ccea726713cbea39',
-      '0xa',
-    ],
-    tokensMetadata: [
-      {
-        decimals: 6,
-        name: 'USDC.e',
-        symbol: 'USDC.e',
-        standard: TokenStandard.FA,
-        type: '0x83121c9f9b0527d1f056e21a950d6bf3b9e9e2e8353d0e95ccea726713cbea39',
-      },
-      {
-        decimals: 8,
-        name: 'Move Coin',
-        symbol: 'MOVE',
-        type: '0x000000000000000000000000000000000000000000000000000000000000000a',
-        standard: TokenStandard.FA,
-      },
-    ],
-  },
-];
+    poolAddress: pool.address.toString(),
+    curve: pool.isStable ? 'stable' : 'volatile',
+    tokensAddresses: pool.fas.map((fa) => fa.toString()),
+  })
+);
 
 export const fasByPool = POOLS.map(({ tokensAddresses }) =>
   tokensAddresses.map((tokenAddress) => AccountAddress.from(tokenAddress))

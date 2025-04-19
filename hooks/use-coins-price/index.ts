@@ -14,4 +14,5 @@ export const useCoinsPrice = (coins?: string | ReadonlyArray<string>) =>
         )
           .then((response) => response.json())
           .then(getBasedCoins)
+          .catch()
   );

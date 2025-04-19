@@ -4,12 +4,13 @@ import { v4 } from 'uuid';
 
 import { ArrowObliqueSVG } from '@/components/svg';
 
+import { TAG_COLOR } from './pool-card.data';
 import { PoolCardHeaderProps } from './pool-card.types';
 
 const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
   <Box display="flex" alignItems="center" justifyContent="space-between">
     <Box display="flex" flexWrap="wrap" alignItems="center">
-      {tags?.map((tag) =>
+      {tags.map((tag) =>
         tag ? (
           <Tag
             key={v4()}
@@ -20,6 +21,9 @@ const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
             size="small"
             height="1.4rem"
             variant="outline"
+            bg={TAG_COLOR[tag].bg}
+            color={TAG_COLOR[tag].color}
+            borderColor={TAG_COLOR[tag].color}
           >
             <Typography size="small" variant="label">
               {tag}
