@@ -8,7 +8,6 @@ import PoolInfo from './pool-info';
 
 const LiquidityView: FC = () => {
   const form = useFormContext<IPoolForm>();
-  const { reset } = form;
   const [poolOptionView, setPoolOptionView] = useState<PoolOption>(
     PoolOption.Deposit
   );
@@ -24,7 +23,7 @@ const LiquidityView: FC = () => {
 
   const handleOptionTab = (index: PoolOption) => {
     setPoolOptionView(index);
-    reset();
+    form.reset();
   };
   return (
     <Box
