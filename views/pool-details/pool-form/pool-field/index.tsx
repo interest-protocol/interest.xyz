@@ -46,6 +46,10 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
       `${fieldName}.valueBN`,
       FixedPointMath.toBigNumber(amount, token?.decimals)
     );
+
+    const balanceValue = getValues(`${fieldName}.valueBN`);
+
+    console.log('Deposit value _> ', FixedPointMath.toNumber(balanceValue));
   };
 
   return (

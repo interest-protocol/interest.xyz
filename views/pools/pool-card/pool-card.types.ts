@@ -5,6 +5,8 @@ import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 export enum FormFilterValue {
   'official' = 'official',
+  'v2' = 'v2',
+  'curve' = 'curve',
   'all' = 'all',
   'stable' = 'stable',
   'volatile' = 'volatile',
