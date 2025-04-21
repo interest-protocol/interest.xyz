@@ -19,4 +19,8 @@ export const TAG_COLOR: Record<string, Record<'color' | 'bg', string>> = {
     color: '#050',
     bg: '#8BF3C5',
   },
+  farm: {
+    color: '#8BF3C5',
+    bg: 'transparent',
+  },
 };
