@@ -27,11 +27,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
     setLoading(true);
 
     Promise.all(pool.tokensAddresses.map((token) => getCoinMetadata(token)))
-      .then((result) => {
-        console.log({ result });
-
-        setMetadata(result.map(parseToMetadata));
-      })
+      .then((result) => setMetadata(result.map(parseToMetadata)))
       .finally(() => setLoading(false));
   }, [pool]);
 
@@ -51,18 +47,18 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
         bg="lowestContainer"
         flexDirection="column"
         border="0.063rem solid"
-        borderColor="outlineVariant"
         justifyContent="space-between"
         transition="all 300ms ease-in-out"
+        borderColor={isFarm ? 'onSuccessContainer' : 'outlineVariant'}
         nHover={{
           cursor: 'pointer',
-          borderColor: '#76767A',
+          borderColor: isFarm ? 'success' : '#76767A',
           boxShadow: '0px 24px 46px -10px rgba(13, 16, 23, 0.16)',
           '.arrow-wrapper': { opacity: 1 },
         }}
       >
         <PoolCardHeader
-          tags={((isFarm ? ['farm'] : []) as string[]).concat([
+          tags={((isFarm ? ['earn'] : []) as string[]).concat([
             pool.algorithm,
             pool.curve,
           ])}

@@ -17,7 +17,7 @@ const FarmRewards: FC = () => {
   return (
     <Box display="flex" flexDirection="column" gap="m">
       <Typography variant="body" size="large">
-        2. Rewards
+        Rewards
       </Typography>
       <Box
         display="flex"

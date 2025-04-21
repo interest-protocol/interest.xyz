@@ -16,11 +16,7 @@ export const TAG_COLOR: Record<string, Record<'color' | 'bg', string>> = {
     bg: 'transparent',
   },
   earn: {
-    color: '#050',
-    bg: '#8BF3C5',
-  },
-  farm: {
-    color: '#8BF3C5',
-    bg: 'transparent',
+    color: 'onSuccessContainer',
+    bg: 'successContainer',
   },
 };
