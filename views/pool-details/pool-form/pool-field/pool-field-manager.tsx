@@ -73,7 +73,7 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
                     String(
                       FixedPointMath.toNumber(
                         BigNumber(amountOut),
-                        getValues('lpCoin.decimals')
+                        getValues(`tokenList.${index}.decimals`)
                       )
                     )
                   );
@@ -102,7 +102,12 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
               );
               setValue(
                 `tokenList.${selectedCoinIndex}.value`,
-                String(FixedPointMath.toNumber(BigNumber(String(amountOut))))
+                String(
+                  FixedPointMath.toNumber(
+                    BigNumber(String(amountOut)),
+                    getValues(`tokenList.${selectedCoinIndex}.decimals`)
+                  )
+                )
               );
             });
           }

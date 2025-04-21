@@ -51,7 +51,7 @@ const PoolPreviewFormWithdrawButton: FC = () => {
 
   const disabled =
     !!error ||
-    [fieldValue, secondValue].some((value) => value === '0' || !value);
+    [fieldValue, secondValue].every((value) => value === '0' || !value);
 
   return (
     <Button
@@ -60,8 +60,8 @@ const PoolPreviewFormWithdrawButton: FC = () => {
       mx="auto"
       variant="filled"
       width="max-content"
-      onClick={removeLiquidity}
       disabled={disabled}
+      onClick={removeLiquidity}
     >
       Withdraw
     </Button>
