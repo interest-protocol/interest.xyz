@@ -98,14 +98,16 @@ export const parseToMetadata = (metadata: MetadataSources): AssetMetadata => {
   const symbol = metadata.symbol ?? '';
   const decimals = metadata.decimals ?? 0;
 
-  const type = (
-    (metadata as CoinMetadata).type ??
-    (metadata as FAMetadata).address ??
-    (metadata as ClientMetadata).asset_type
-  ).toString();
+  const type = String(
+    (metadata as CoinMetadata | APIMetadata).type ??
+      (metadata as FAMetadata).address ??
+      (metadata as ClientMetadata).asset_type
+  );
 
-  const standard = (metadata as CoinMetadata).type
-    ? TokenStandard.COIN
+  const standard = (metadata as CoinMetadata | APIMetadata).type
+    ? type.split('::').length === 1
+      ? TokenStandard.FA
+      : TokenStandard.COIN
     : (metadata as FAMetadata).address
       ? TokenStandard.FA
       : ((metadata as ClientMetadata).token_standard as TokenStandard);
@@ -156,6 +158,6 @@ export const getCoinsMetadataFromAPI = (
   types: ReadonlyArray<string>
 ): Promise<ReadonlyArray<APIMetadata>> =>
   fetch(
-    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins?coinTypes=${types.map((type) => normalizeSuiAddress(type))}`,
+    `https://coin-metadata-api-staging.up.railway.app/api/v1/fetch-coins?coinTypes=${types.map((type) => normalizeSuiAddress(type)).join(',')}`,
     { headers: { network: 'movement' } }
   ).then((res) => res.json());

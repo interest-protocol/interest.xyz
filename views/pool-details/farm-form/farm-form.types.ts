@@ -1,0 +1,25 @@
+import { UseFormReturn } from 'react-hook-form';
+
+import { IPool } from '@/interface';
+import { IPoolForm } from '@/views/pools/pools.types';
+
+import { PoolFarmsOption } from '../pool-details.types';
+
+export interface TokenListProps {
+  type: SelectionFieldValues;
+}
+
+export enum SelectionFieldValues {
+  None,
+  OneCoin,
+  Balance,
+}
+
+export interface PoolFormButtonProps
+  extends Pick<IPool, 'algorithm' | 'poolAddress'> {
+  form: UseFormReturn<IPoolForm, any, undefined>;
+}
+
+export interface FarmState {
+  state: PoolFarmsOption;
+}
