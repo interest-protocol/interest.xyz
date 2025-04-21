@@ -81,6 +81,8 @@ const Pools: FC = () => {
     [pools, filterProps]
   );
 
+  console.log(POOLS, '>>>check', memoPools);
+
   return (
     <PoolCardListContent
       pools={memoPools}

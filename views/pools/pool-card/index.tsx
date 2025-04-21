@@ -21,7 +21,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const [metadata, setMetadata] = useState(pool.tokensMetadata);
 
   const isFarm = !!FARMS_BY_LP[pool.poolAddress];
-
+  console.log(pool, '>>>THIS DATA', metadata);
   useEffect(() => {
     if (metadata || isLoading) return;
 
@@ -31,6 +31,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
       .then((result) => setMetadata(result.map(parseToMetadata)))
       .finally(() => setLoading(false));
   }, [pool]);
+  console.log('>>>THIS DATA ###', metadata);
 
   if (isLoading) return <PoolCardSkeleton />;
 
