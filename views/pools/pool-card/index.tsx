@@ -27,7 +27,11 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
     setLoading(true);
 
     Promise.all(pool.tokensAddresses.map((token) => getCoinMetadata(token)))
-      .then((result) => setMetadata(result.map(parseToMetadata)))
+      .then((result) => {
+        console.log({ result });
+
+        setMetadata(result.map(parseToMetadata));
+      })
       .finally(() => setLoading(false));
   }, [pool]);
 

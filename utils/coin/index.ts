@@ -99,13 +99,15 @@ export const parseToMetadata = (metadata: MetadataSources): AssetMetadata => {
   const decimals = metadata.decimals ?? 0;
 
   const type = String(
-    (metadata as CoinMetadata).type ??
+    (metadata as CoinMetadata | APIMetadata).type ??
       (metadata as FAMetadata).address ??
       (metadata as ClientMetadata).asset_type
   );
 
-  const standard = (metadata as CoinMetadata).type
-    ? TokenStandard.COIN
+  const standard = (metadata as CoinMetadata | APIMetadata).type
+    ? type.split('::').length === 1
+      ? TokenStandard.FA
+      : TokenStandard.COIN
     : (metadata as FAMetadata).address
       ? TokenStandard.FA
       : ((metadata as ClientMetadata).token_standard as TokenStandard);

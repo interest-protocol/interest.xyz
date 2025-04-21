@@ -56,9 +56,7 @@ const PoolCardInfo: FC<PoolCardTokenInfoProps> = ({ coins }) => {
           >
             {coins.flatMap((coin, index) => [
               index ? <>{' • '}</> : '',
-              coin.symbol + coin.standard || (
-                <Skeleton key={v4()} width="4rem" />
-              ),
+              coin.symbol || <Skeleton key={v4()} width="4rem" />,
             ])}
           </Typography>
         }
