@@ -42,7 +42,7 @@ export interface IPoolForm {
   lpCoin: PoolToken;
   explorerLink: string;
   error: string | null;
-  tokenSelected?: string;
+  selectedCoinIndex?: number;
   isFindingPool: boolean;
   settings: ISwapSettings;
   isEarnPoolView?: boolean;

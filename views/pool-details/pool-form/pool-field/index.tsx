@@ -7,6 +7,7 @@ import Skeleton from 'react-loading-skeleton';
 import { TokenIcon } from '@/components';
 import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
+import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 import { parseInputEventToNumberString } from '@/utils';
 import { TokenField } from '@/views/pool-create/select-coins/input/token-field';
 import { IPoolForm } from '@/views/pools/pools.types';
@@ -67,6 +68,7 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
                   network={network}
                   url={token.iconUri}
                   symbol={isDeposit ? symbol : token?.name}
+                  rounded={token.standard === TokenStandard.COIN}
                 />
                 {symbol}
               </>

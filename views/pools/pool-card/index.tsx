@@ -21,14 +21,17 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const [metadata, setMetadata] = useState(pool.tokensMetadata);
 
   const isFarm = !!FARMS_BY_LP[pool.poolAddress];
-
   useEffect(() => {
     if (metadata || isLoading) return;
 
     setLoading(true);
 
     Promise.all(pool.tokensAddresses.map((token) => getCoinMetadata(token)))
-      .then((result) => setMetadata(result.map(parseToMetadata)))
+      .then((result) => {
+        console.log({ result });
+
+        setMetadata(result.map(parseToMetadata));
+      })
       .finally(() => setLoading(false));
   }, [pool]);
 
