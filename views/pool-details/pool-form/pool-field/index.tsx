@@ -70,7 +70,7 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
                   symbol={isDeposit ? symbol : token?.name}
                   rounded={token.standard === TokenStandard.COIN}
                 />
-                {symbol} - {token.standard}
+                {symbol}
               </>
             ) : (
               <Box gap="s" display="flex" alignItems="center">
