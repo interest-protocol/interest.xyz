@@ -84,12 +84,6 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
                 });
               });
           else {
-            console.log(
-              selectedCoinIndex,
-              '>>>>only one',
-              tokenList[selectedCoinIndex].standard,
-              tokenList
-            );
             (tokenList[selectedCoinIndex].standard === TokenStandard.COIN
               ? curveDex.quoteRemoveLiquidityOneCoin({
                   pool: pool.poolAddress,

@@ -35,7 +35,6 @@ export const usePools = (page: number = 1, findQuery = {}) =>
         `https://api.interestlabs.io/v1/movement/pools-v2?page=${page}&q=${JSON.stringify(findQuery)}&network=${Network.MovementMainnet}&limit=30`
       ).then((res) => res.json?.());
 
-      console.log(pools, '>>>POOLS');
       const uniquePools = pools?.map(
         ({
           poolAddress,
