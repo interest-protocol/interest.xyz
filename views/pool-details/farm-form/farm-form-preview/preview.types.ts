@@ -8,16 +8,16 @@ export interface FieldProps {
   getValues: UseFormGetValues<IPoolForm>;
 }
 
-export interface PoolPreviewWrapperHeaderProps {
-  isDeposit?: boolean;
+export interface FarmPreviewWrapperHeaderProps {
+  isStake?: boolean;
 }
 
-export interface PoolPreviewProps
-  extends PoolPreviewWrapperHeaderProps,
+export interface FarmPreviewProps
+  extends FarmPreviewWrapperHeaderProps,
     FieldProps {
   onSubmit: ReactNode;
 }
 
-export interface PoolPreviewWrapperProps extends PoolPreviewProps {
+export interface FarmPreviewWrapperProps extends FarmPreviewProps {
   fees?: SWRResponse<Array<number> | undefined>;
 }

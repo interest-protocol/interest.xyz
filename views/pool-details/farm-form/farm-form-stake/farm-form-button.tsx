@@ -5,22 +5,21 @@ import { FC } from 'react';
 import { useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
-import { EXPLORER_URL } from '@/constants';
+import { EXPLORER_URL, FARMS_BY_LP } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useInterestCurveDex } from '@/hooks/use-interest-dex-curve';
-import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
 import { useModal } from '@/hooks/use-modal';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 
-import { PoolFormButtonProps } from '../farm-form.types';
+import { PoolFarmsOption } from '../../pool-details.types';
+import { FarmFormButtonProps } from '../farm-form.types';
 
-const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
+const FarmFormButton: FC<FarmFormButtonProps> = ({
   form,
-  algorithm,
+  state,
   poolAddress,
 }) => {
   const client = useAptosClient();
-  const dexV2 = useInterestV2Dex();
   const dexCurve = useInterestCurveDex();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
@@ -29,7 +28,7 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
 
   const error = useWatch({ control, name: 'error' });
 
-  const handleWithdraw = async () => {
+  const handleFarm = async () => {
     try {
       invariant(account, 'You must be connected to proceed');
 
@@ -39,20 +38,17 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
 
       let payload, txResult;
 
-      if (algorithm === 'curve') {
-        payload = dexCurve.removeLiquidity({
-          pool: poolAddress,
+      if (state === PoolFarmsOption.Stake) {
+        payload = dexCurve.stake({
+          faIn: poolAddress,
+          amount: BigInt(lpCoin.valueBN.toFixed(0)),
+          farm: FARMS_BY_LP[poolAddress].address.toString(),
+        });
+      } else {
+        payload = dexCurve.unstake({
           recipient: account.address,
           amount: BigInt(lpCoin.valueBN.toFixed(0)),
-          minAmountsOut: getValues('tokenList').map(() => BigInt(0)),
-        });
-      }
-
-      if (algorithm === 'v2') {
-        payload = dexV2.removeLiquidity({
-          lpFa: lpCoin.type,
-          recipient: account.address,
-          amount: BigInt(lpCoin.valueBN.decimalPlaces(0, 1).toString()),
+          farm: FARMS_BY_LP[poolAddress].address.toString(),
         });
       }
 
@@ -100,28 +96,27 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
     setValue('explorerLink', '');
   };
 
-  const onWithdraw = () => {
+  const onFarm = () => {
     closeModal();
-    dialog.promise(handleWithdraw(), {
+    dialog.promise(handleFarm(), {
       loading: () => ({
-        title: 'Withdrawing...',
+        title: state ? 'Unstaking...' : 'Staking...',
         message:
           'We are Withdrawing, and you will let you know when it is done',
       }),
       success: () => ({
-        title: 'Withdraw Successfully',
-        message:
-          'Your withdraw was successfully, and you can check it on the Explorer',
+        title: `${state ? 'Unstake' : 'Stake'} Successfully`,
+        message: `Your ${state ? 'Unstake' : 'Stake'} was successfully, and you can check it on the Explorer`,
         primaryButton: {
           label: 'See on Explorer',
           onClick: gotoExplorer,
         },
       }),
       error: (error) => ({
-        title: 'Withdraw Failure',
+        title: `${state ? 'Unstake' : 'Stake'} Failure`,
         message:
           (error as Error).message ||
-          'Your withdrawing failed, please try again or contact the support team',
+          `Your ${state ? 'Unstake' : 'Stake'} failed, please try again or contact the support team`,
         primaryButton: { label: 'Try again', onClick: handleClose },
       }),
     });
@@ -135,14 +130,14 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
       mx="auto"
       variant="filled"
       disabled={!!error}
-      onClick={onWithdraw}
+      onClick={onFarm}
       width="fill-available"
     >
       <Typography variant="label" size="large" textAlign="center" width="100%">
-        Confirm Withdraw
+        Confirm {state ? 'Unstake' : 'Stake'}
       </Typography>
     </Button>
   );
 };
 
-export default PoolFormWithdrawButton;
+export default FarmFormButton;

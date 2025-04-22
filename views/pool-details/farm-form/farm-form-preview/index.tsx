@@ -2,44 +2,28 @@ import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import LpCoinField from './fields/lp-coin';
-import TokenListFields from './fields/token-list';
-import { PoolPreviewProps } from './preview.types';
+import { FarmPreviewProps } from './preview.types';
 import PoolPreviewWrapper from './wrapper';
 
-const PoolPreview: FC<PoolPreviewProps> = ({
+const FarmPreview: FC<FarmPreviewProps> = ({
+  isStake,
   onSubmit,
   getValues,
-  isDeposit,
-}) => {
-  return (
-    <PoolPreviewWrapper
-      onSubmit={onSubmit}
-      isDeposit={isDeposit}
-      getValues={getValues}
-    >
-      <Box display="flex" flexDirection="column" gap="2xl">
-        <Box display="flex" flexDirection="column" gap="xs">
-          <Typography variant="label" size="small" textTransform="uppercase">
-            {`You will ${isDeposit ? 'deposit' : 'withdraw'}`}
-          </Typography>
-          {isDeposit ? (
-            <TokenListFields getValues={getValues} />
-          ) : (
-            <LpCoinField getValues={getValues} />
-          )}
-        </Box>
-        <Box display="flex" flexDirection="column" gap="xs">
-          <Typography variant="label" size="small" textTransform="uppercase">
-            You will receive (estimated):
-          </Typography>
-          {!isDeposit ? (
-            <TokenListFields getValues={getValues} />
-          ) : (
-            <LpCoinField getValues={getValues} />
-          )}
-        </Box>
+}) => (
+  <PoolPreviewWrapper
+    isStake={isStake}
+    onSubmit={onSubmit}
+    getValues={getValues}
+  >
+    <Box display="flex" flexDirection="column" gap="2xl">
+      <Box display="flex" flexDirection="column" gap="xs">
+        <Typography variant="label" size="small" textTransform="uppercase">
+          {`You will ${isStake ? 'stake' : 'unstake'}`}
+        </Typography>
+        <LpCoinField getValues={getValues} />
       </Box>
-    </PoolPreviewWrapper>
-  );
-};
-export default PoolPreview;
+    </Box>
+  </PoolPreviewWrapper>
+);
+
+export default FarmPreview;

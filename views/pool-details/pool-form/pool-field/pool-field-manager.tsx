@@ -82,7 +82,8 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
                     BigNumber(String(amountOut))
                   );
                 });
-              });
+              })
+              .catch();
           else {
             (tokenList[selectedCoinIndex].standard === TokenStandard.COIN
               ? curveDex.quoteRemoveLiquidityOneCoin({
@@ -95,21 +96,23 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
                   faOut: tokenList[selectedCoinIndex].type,
                   amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
                 })
-            ).then(({ amountOut }) => {
-              setValue(
-                `tokenList.${selectedCoinIndex}.valueBN`,
-                BigNumber(String(amountOut))
-              );
-              setValue(
-                `tokenList.${selectedCoinIndex}.value`,
-                String(
-                  FixedPointMath.toNumber(
-                    BigNumber(String(amountOut)),
-                    getValues(`tokenList.${selectedCoinIndex}.decimals`)
+            )
+              .then(({ amountOut }) => {
+                setValue(
+                  `tokenList.${selectedCoinIndex}.valueBN`,
+                  BigNumber(String(amountOut))
+                );
+                setValue(
+                  `tokenList.${selectedCoinIndex}.value`,
+                  String(
+                    FixedPointMath.toNumber(
+                      BigNumber(String(amountOut)),
+                      getValues(`tokenList.${selectedCoinIndex}.decimals`)
+                    )
                   )
-                )
-              );
-            });
+                );
+              })
+              .catch();
           }
         }
       }
