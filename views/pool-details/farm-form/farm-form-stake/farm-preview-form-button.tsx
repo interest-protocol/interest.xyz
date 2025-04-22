@@ -8,7 +8,7 @@ import { IPoolForm } from '@/views/pools/pools.types';
 import { usePoolDetails } from '../../pool-details.context';
 import { FarmState } from '../farm-form.types';
 import PoolPreview from '../farm-form-preview';
-import PoolFormWithdrawButton from './farm-form-button';
+import FarmFormButton from './farm-form-button';
 
 const FarmPreviewFormButton: FC<FarmState> = ({ state }) => {
   const { setModal } = useModal();
@@ -18,9 +18,9 @@ const FarmPreviewFormButton: FC<FarmState> = ({ state }) => {
 
   const error = useWatch({ control, name: 'error' });
 
-  const [fieldValue, secondValue] = useWatch({
+  const lpCoinValue = useWatch({
     control,
-    name: ['tokenList.0.value', 'tokenList.1.value'],
+    name: 'lpCoin.value',
   });
 
   const removeLiquidity = () =>
@@ -32,11 +32,12 @@ const FarmPreviewFormButton: FC<FarmState> = ({ state }) => {
         transition={{ duration: 0.3 }}
       >
         <PoolPreview
+          isStake={!state}
           getValues={getValues}
           onSubmit={
-            <PoolFormWithdrawButton
+            <FarmFormButton
               form={form}
-              algorithm={pool!.algorithm}
+              state={state}
               poolAddress={pool!.poolAddress}
             />
           }
@@ -50,9 +51,7 @@ const FarmPreviewFormButton: FC<FarmState> = ({ state }) => {
       }
     );
 
-  const disabled =
-    !!error ||
-    [fieldValue, secondValue].some((value) => value === '0' || !value);
+  const disabled = !!error || lpCoinValue === '0' || !lpCoinValue;
 
   return (
     <Button

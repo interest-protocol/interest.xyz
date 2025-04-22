@@ -25,7 +25,7 @@ const FarmForm: FC = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent="flex-end">
+      <Box display="flex" justifyContent={['center', 'flex-start']}>
         <Tabs
           type="circle"
           onChangeTab={setFarmOptionView}

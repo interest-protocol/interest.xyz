@@ -3,9 +3,9 @@ import { FC } from 'react';
 
 import PoolCardTrade from '@/views/pools/pool-card/pool-card-trade';
 
-import { PoolPreviewWrapperProps } from '../preview.types';
+import { FarmPreviewWrapperProps } from '../preview.types';
 
-const PoolPreviewWrapperFooter: FC<PoolPreviewWrapperProps> = ({
+const FarmPreviewWrapperFooter: FC<FarmPreviewWrapperProps> = ({
   onSubmit,
   getValues,
 }) => (
@@ -30,4 +30,4 @@ const PoolPreviewWrapperFooter: FC<PoolPreviewWrapperProps> = ({
   </Box>
 );
 
-export default PoolPreviewWrapperFooter;
+export default FarmPreviewWrapperFooter;
