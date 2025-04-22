@@ -1,16 +1,16 @@
 import { Box, Motion } from '@interest-protocol/ui-kit';
 import { FC, PropsWithChildren } from 'react';
 
-import { PoolPreviewWrapperProps } from '../preview.types';
+import { FarmPreviewWrapperProps } from '../preview.types';
 import PoolPreviewWrapperFooter from './footer';
 import PoolPreviewWrapperHeader from './header';
 
-const PoolPreviewWrapper: FC<PropsWithChildren<PoolPreviewWrapperProps>> = ({
+const FarmPreviewWrapper: FC<PropsWithChildren<FarmPreviewWrapperProps>> = ({
   fees,
+  isStake,
   onSubmit,
   children,
   getValues,
-  isDeposit,
 }) => (
   <Motion
     layout
@@ -27,7 +27,7 @@ const PoolPreviewWrapper: FC<PropsWithChildren<PoolPreviewWrapperProps>> = ({
     boxShadow="0 0 5px #3334"
     transition={{ duration: 0.3 }}
   >
-    <PoolPreviewWrapperHeader isDeposit={isDeposit} />
+    <PoolPreviewWrapperHeader isStake={isStake} />
     <Box
       px="xl"
       display="flex"
@@ -45,4 +45,4 @@ const PoolPreviewWrapper: FC<PropsWithChildren<PoolPreviewWrapperProps>> = ({
   </Motion>
 );
 
-export default PoolPreviewWrapper;
+export default FarmPreviewWrapper;

@@ -11,8 +11,8 @@ const FarmPreview: FC<FarmPreviewProps> = ({
   getValues,
 }) => (
   <PoolPreviewWrapper
+    isStake={isStake}
     onSubmit={onSubmit}
-    isDeposit={isStake}
     getValues={getValues}
   >
     <Box display="flex" flexDirection="column" gap="2xl">

@@ -4,10 +4,10 @@ import { FC } from 'react';
 import { ArrowLeftSVG, TimesSVG } from '@/components/svg';
 import { useModal } from '@/hooks/use-modal';
 
-import { PoolPreviewWrapperHeaderProps } from '../preview.types';
+import { FarmPreviewWrapperHeaderProps } from '../preview.types';
 
-const PoolPreviewWrapperHeader: FC<PoolPreviewWrapperHeaderProps> = ({
-  isDeposit,
+const FarmPreviewWrapperHeader: FC<FarmPreviewWrapperHeaderProps> = ({
+  isStake,
 }) => {
   const { handleClose } = useModal();
 
@@ -23,7 +23,7 @@ const PoolPreviewWrapperHeader: FC<PoolPreviewWrapperHeaderProps> = ({
         <ArrowLeftSVG maxWidth="1.5rem" maxHeight="1rem" width="100%" />
       </Button>
       <Typography variant="title" size="large">
-        {isDeposit ? 'Deposit' : 'Withdraw'}
+        {isStake ? 'Stake' : 'Unstake'}
       </Typography>
       <Button variant="text" isIcon onClick={handleClose} mr="-0.5rem">
         <TimesSVG maxWidth="1rem" maxHeight="1rem" width="100%" />
@@ -32,4 +32,4 @@ const PoolPreviewWrapperHeader: FC<PoolPreviewWrapperHeaderProps> = ({
   );
 };
 
-export default PoolPreviewWrapperHeader;
+export default FarmPreviewWrapperHeader;
