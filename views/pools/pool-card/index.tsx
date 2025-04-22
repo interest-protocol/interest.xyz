@@ -114,7 +114,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
             noBorder
             description="APR"
             tooltipInfo="Revenue for Provide Liquidity"
-            amount={`${formatMoney(((apr?.[0] ?? 0) * 100) / tvl)}%`}
+            amount={`${formatMoney(((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1))}%`}
           />
           <PoolCardTrade
             noBorder
