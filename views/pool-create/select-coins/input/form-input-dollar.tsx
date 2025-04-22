@@ -20,7 +20,7 @@ const FormInputDollar: FC<InputProps> = ({ index }) => {
   const { data: prices } = useCoinsPrice(type);
 
   const usdValue =
-    prices && value
+    prices?.length && value
       ? formatDollars(
           +BigNumber(value)
             .times(BigNumber(prices[0].price))
