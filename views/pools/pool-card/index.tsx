@@ -1,13 +1,10 @@
 import { Box } from '@interest-protocol/ui-kit';
-import BigNumber from 'bignumber.js';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
 import { FARMS_BY_LP, Routes, RoutesEnum } from '@/constants';
-import { usePool } from '@/hooks/use-pool';
-import { FixedPointMath } from '@/lib';
-import { formatMoney, getCoinMetadata, parseToMetadata } from '@/utils';
+import { getCoinMetadata, parseToMetadata } from '@/utils';
 
 import { PoolCardProps } from './pool-card.types';
 import PoolCardHeader from './pool-card-header';
@@ -17,7 +14,6 @@ import PoolCardTrade from './pool-card-trade';
 
 const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const [isLoading, setLoading] = useState(false);
-  const { pool: data, loading } = usePool(pool.poolAddress);
   const [metadata, setMetadata] = useState(pool.tokensMetadata);
 
   const isFarm = !!FARMS_BY_LP[pool.poolAddress];
@@ -68,23 +64,9 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           <PoolCardTrade
             noBorder
             amount="0.3%"
-            description="Fee"
-            tooltipInfo="Trade fee in percentage"
+            description="APR"
+            tooltipInfo="Revenue for Provide Liquidity"
           />
-          {metadata?.map(({ symbol, decimals }, index) => (
-            <PoolCardTrade
-              key={v4()}
-              loading={loading}
-              tooltipInfo={`${symbol} reserves`}
-              description={symbol ?? 'Balance X'}
-              amount={formatMoney(
-                FixedPointMath.toNumber(
-                  BigNumber(String(data?.balances?.[index] ?? 0)),
-                  pool.algorithm === 'curve' ? 18 : decimals
-                )
-              )}
-            />
-          ))}
         </Box>
       </Box>
     </Link>

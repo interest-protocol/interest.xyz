@@ -114,6 +114,7 @@ export { default as WalletSVG } from './wallet';
 export { default as WalletMenuSVG } from './wallet-menu';
 export { default as WarningSVG } from './warning';
 export { default as WirelessSVG } from './wireless';
+export { default as WithdrawSVG } from './withdraw';
 export { default as WrapSVG } from './wrap';
 export { default as XSVG } from './x';
 export { default as XCirlceSVG } from './x-circle';

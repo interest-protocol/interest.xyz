@@ -3,11 +3,21 @@ export enum PoolDetailsTabOption {
   Advance,
 }
 
+export enum PoolDetailsMode {
+  Liquidity,
+  Farm,
+}
+
 export enum PoolOption {
   Deposit,
   Withdraw,
 }
+
 export enum PoolFarmsOption {
   Stake,
   Unstake,
+}
+
+export interface PoolDetailsFormProps {
+  mode: PoolDetailsMode;
 }

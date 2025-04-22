@@ -12,8 +12,10 @@ import { FARMS_BY_LP } from '@/constants';
 import { useFarmAccount } from '@/hooks/use-farm-account';
 import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
-import { getCoinMetadata, parseToMetadata } from '@/utils';
+import { formatMoney, getCoinMetadata, parseToMetadata } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
+
+import FarmFormRewardButton from './farm-form-reward-button';
 
 const FarmFormRewards: FC = () => {
   const network = useNetwork<Network>();
@@ -89,15 +91,23 @@ const FarmFormRewards: FC = () => {
                   </Typography>
                 </Box>
               </Box>
-              <Typography variant="body" ml="m" mr="m" size="large">
-                {loadingBalances ? (
-                  <Skeleton width="4rem" />
-                ) : balances?.[token.type] ? (
-                  FixedPointMath.toNumber(balances[token.type], token.decimals)
-                ) : (
-                  0
-                )}
-              </Typography>
+              <Box display="flex" alignItems="center" mr="xs">
+                <Typography variant="body" ml="m" mr="m" size="large">
+                  {loadingBalances ? (
+                    <Skeleton width="4rem" />
+                  ) : (
+                    formatMoney(
+                      balances?.[token.type]
+                        ? FixedPointMath.toNumber(
+                            balances[token.type],
+                            token.decimals
+                          )
+                        : 0
+                    )
+                  )}
+                </Typography>
+                <FarmFormRewardButton rewardFa={token.type} />
+              </Box>
             </Box>
           ))}
     </Box>

@@ -15,11 +15,12 @@ export enum SelectionFieldValues {
   Balance,
 }
 
-export interface PoolFormButtonProps
-  extends Pick<IPool, 'algorithm' | 'poolAddress'> {
-  form: UseFormReturn<IPoolForm, any, undefined>;
-}
-
 export interface FarmState {
   state: PoolFarmsOption;
+}
+
+export interface FarmFormButtonProps
+  extends FarmState,
+    Pick<IPool, 'poolAddress'> {
+  form: UseFormReturn<IPoolForm, any, undefined>;
 }

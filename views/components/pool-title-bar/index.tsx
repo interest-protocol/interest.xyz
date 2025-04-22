@@ -1,5 +1,5 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
-import { Box, Button, Typography } from '@interest-protocol/ui-kit';
+import { Box, Button, Tabs, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
@@ -7,6 +7,7 @@ import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
 import { ArrowLeftSVG } from '@/components/svg';
+import { FARMS_BY_LP } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 import { IPoolForm } from '@/views/pools/pools.types';
@@ -17,7 +18,11 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
   onBack,
   loading,
   centerTile,
+  modeState: [mode, setMode],
 }) => {
+  const { getValues } = useFormContext<IPoolForm>();
+  const isFarm = !!FARMS_BY_LP[getValues('pool.poolAddress')];
+
   const network = useNetwork<Network>();
   const { control } = useFormContext<IPoolForm>();
 
@@ -41,10 +46,11 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         mx="auto"
         bg="container"
         display="flex"
+        flexWrap="wrap"
         maxWidth="65rem"
         borderRadius="xs"
         alignItems="center"
-        mt={['5xl', '5xl', '5xl', 'xl']}
+        flexDirection="row"
       >
         <Button
           isIcon
@@ -56,26 +62,46 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         >
           <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
         </Button>
-        <Box
-          display="flex"
-          gap="s"
-          flexWrap="wrap"
-          justifyContent="space-between"
-          minWidth={['auto', 'auto', '90%', '93.5%']}
-        >
-          <Box display="flex" gap="s" flexWrap="wrap">
+        <Box gap="s" display="flex" flexWrap="wrap">
+          <Box display="flex" gap="s" flexWrap="wrap" alignItems="center">
+            <Box display="flex" gap="s">
+              <Box gap="s" ml="auto" display="flex" alignItems="center">
+                {!loading ? (
+                  tokens.map(({ symbol, standard }) => (
+                    <TokenIcon
+                      withBg
+                      key={v4()}
+                      size="1rem"
+                      symbol={symbol}
+                      network={network}
+                      rounded={standard === TokenStandard.COIN}
+                    />
+                  ))
+                ) : (
+                  <Box display="flex" gap="s">
+                    <Skeleton
+                      width="calc(1.5rem * 1.66)"
+                      height="calc(1.5rem * 1.66)"
+                    />
+                    <Skeleton
+                      width="calc(1.5rem * 1.66)"
+                      height="calc(1.5rem * 1.66)"
+                    />
+                  </Box>
+                )}
+              </Box>
+            </Box>
             <Typography
-              size="large"
+              size="medium"
+              variant="title"
               color="onSurface"
-              variant="headline"
               textAlign="center"
               ml={centerTile ? 'auto' : ''}
-              fontSize={['xl', 'xl', '3xl', '5xl']}
             >
               {loading ? (
                 <Box display="flex" gap="s">
-                  <Skeleton width="5rem" height="2rem" />
-                  <Skeleton width="5rem" height="2rem" />
+                  <Skeleton width="2rem" height="2rem" />
+                  <Skeleton width="2rem" height="2rem" />
                 </Box>
               ) : (
                 <Box as="span" fontFamily="Satoshi">
@@ -84,38 +110,17 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
               )}
             </Typography>
           </Box>
-          <Box display="flex" gap="s">
-            <Box
-              gap="s"
-              ml="auto"
-              alignItems="center"
-              display={['none', 'none', 'flex', 'flex']}
-            >
-              {!loading ? (
-                tokens.map(({ symbol, standard }) => (
-                  <TokenIcon
-                    withBg
-                    key={v4()}
-                    symbol={symbol}
-                    network={network}
-                    rounded={standard === TokenStandard.COIN}
-                  />
-                ))
-              ) : (
-                <Box display="flex" gap="s">
-                  <Skeleton
-                    width="calc(1.5rem * 1.66)"
-                    height="calc(1.5rem * 1.66)"
-                  />
-                  <Skeleton
-                    width="calc(1.5rem * 1.66)"
-                    height="calc(1.5rem * 1.66)"
-                  />
-                </Box>
-              )}
-            </Box>
-          </Box>
         </Box>
+        {isFarm && (
+          <Box flex="1" display="flex" justifyContent={['center', 'flex-end']}>
+            <Tabs
+              type="circle"
+              onChangeTab={setMode}
+              defaultTabIndex={mode}
+              items={['Liquidity', 'Farm']}
+            />
+          </Box>
+        )}
       </Box>
     </>
   );
