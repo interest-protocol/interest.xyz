@@ -35,7 +35,7 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
     const validValues = Object.values(FormFilterValue);
     let updated = false;
 
-    ['category', 'algorithm'].forEach((key) => {
+    ['algorithm'].forEach((key) => {
       if (
         validFilters[key] &&
         !validValues.includes(validFilters[key] as FormFilterValue)
@@ -60,13 +60,10 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
     const validFilters = cleanInvalidFilters();
     const filters: Array<FilterItemProps> = [];
 
-    ['category', 'algorithm'].forEach((key) => {
+    ['algorithm'].forEach((key) => {
       if (validFilters[key]) {
         filters.push({
-          type:
-            key === 'category'
-              ? FilterTypeEnum.CATEGORY
-              : FilterTypeEnum.ALGORITHM,
+          type: FilterTypeEnum.ALGORITHM,
           value: validFilters[key] as FormFilterValue,
         });
       }
@@ -98,12 +95,7 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
             setTab(index);
             setValue('isFindingPool', false);
             setValue('tokenList', []);
-            setValue('filterList', [
-              {
-                type: FilterTypeEnum.CATEGORY,
-                value: FormFilterValue.official,
-              },
-            ]);
+            setValue('filterList', []);
           }}
           defaultTabIndex={currentTab}
           items={['Pools', 'My Position'].map((tab) => (
