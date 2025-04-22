@@ -4,15 +4,15 @@ import { FC } from 'react';
 
 import Layout from '@/components/layout';
 import { Routes, RoutesEnum } from '@/constants';
-import { usePool } from '@/hooks/use-pool';
 
 import PoolTitleBar from '../components/pool-title-bar';
-import PoolForm from './pool-form';
+import { usePoolDetails } from './pool-details.context';
+import PoolDetailsForm from './pool-details-form';
 import PoolInfo from './pool-info';
 
 const PoolTitle: FC = () => {
-  const { push, query } = useRouter();
-  const { pool, loading } = usePool(query.address as string);
+  const { push } = useRouter();
+  const { pool, loading } = usePoolDetails();
 
   return (
     <PoolTitleBar
@@ -36,7 +36,7 @@ const PoolDetails: FC = () => (
         display={['flex', 'flex', 'flex', 'grid']}
         alignItems={['unset', 'unset', 'unset', 'start']}
       >
-        <PoolForm />
+        <PoolDetailsForm />
         <PoolInfo />
       </Box>
     </Box>

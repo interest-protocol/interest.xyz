@@ -8,6 +8,7 @@ import { v4 } from 'uuid';
 import { TokenIcon } from '@/components';
 import { ArrowLeftSVG } from '@/components/svg';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
+import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 import { PoolTitleBarProps } from './pool-title-bar.types';
@@ -91,12 +92,13 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
               display={['none', 'none', 'flex', 'flex']}
             >
               {tokens.length && tokens[0]?.symbol ? (
-                tokens.map(({ symbol }) => (
+                tokens.map(({ symbol, standard }) => (
                   <TokenIcon
                     withBg
                     key={v4()}
                     symbol={symbol}
                     network={network}
+                    rounded={standard === TokenStandard.COIN}
                   />
                 ))
               ) : (

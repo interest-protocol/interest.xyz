@@ -4,7 +4,7 @@ import { IPool } from '@/interface';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 import { ISwapSettings } from '../swap/swap.types';
-import { FormFilterValue } from './pool-v2-card/pool-card.types';
+import { FormFilterValue } from './pool-card/pool-card.types';
 
 export enum FilterTypeEnum {
   ALGORITHM = 'algorithm',
@@ -15,11 +15,6 @@ export enum FilterTypeEnum {
 export enum PoolTabEnum {
   Pools,
   MyPosition,
-}
-
-export enum PoolOption {
-  Deposit,
-  Withdraw,
 }
 
 export interface PoolCardListProps {
@@ -47,7 +42,7 @@ export interface IPoolForm {
   lpCoin: PoolToken;
   explorerLink: string;
   error: string | null;
-  tokenSelected?: string;
+  selectedCoinIndex?: number;
   isFindingPool: boolean;
   settings: ISwapSettings;
   isEarnPoolView?: boolean;

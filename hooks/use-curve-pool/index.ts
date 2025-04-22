@@ -1,4 +1,5 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
+import { InterestCurvePool } from '@interest-protocol/interest-aptos-curve';
 import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { values } from 'ramda';
 import useSWR from 'swr';
@@ -6,11 +7,13 @@ import useSWR from 'swr';
 import { IPool } from '@/interface';
 import { getCoinsMetadataFromAPI, parseToMetadata } from '@/utils';
 
-import { useInterestCurveDex } from '../use-interest-dex-curve';
+interface InterestCurvePoolAPI extends Omit<InterestCurvePool, 'data'> {
+  data: Omit<InterestCurvePool, 'balances'> & {
+    balances: ReadonlyArray<string>;
+  };
+}
 
 const useCurvePool = (address: string, withMetadata = true) => {
-  const dexCurve = useInterestCurveDex();
-
   const {
     data: pool,
     isLoading: loading,
@@ -18,22 +21,28 @@ const useCurvePool = (address: string, withMetadata = true) => {
   } = useSWR<IPool>([useCurvePool.name, address, withMetadata], async () => {
     const {
       fas,
+      isStable,
       address: poolAddress,
       data: { balances, ...otherData },
       ...curvePool
-    } = await dexCurve.getPool(address);
+    }: InterestCurvePoolAPI = await fetch(
+      `/api/v1/dex/curve/pool/${address}`
+    ).then((res) => res.json());
 
-    const tokensAddresses = fas.map((tokenAddress) => tokenAddress.toString());
+    const tokensAddresses = fas.map((tokenAddress) =>
+      AccountAddress.from(tokenAddress).toString()
+    );
 
     const newPool = {
       balances,
       poolAddress,
       tokensAddresses,
       algorithm: 'curve',
+      curve: isStable ? 'stable' : 'volatile',
       poolExtraData: { ...otherData, ...curvePool },
-    };
+    } as unknown as IPool;
 
-    if (!withMetadata) return newPool as IPool;
+    if (!withMetadata) return newPool;
 
     const metadataAddresses = {
       poolMetadata: normalizeSuiAddress(poolAddress.toString()),

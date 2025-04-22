@@ -3,8 +3,9 @@ import { FC, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { ZERO_BIG_NUMBER } from '@/utils';
-import { IPoolForm, PoolOption } from '@/views/pools/pools.types';
+import { IPoolForm } from '@/views/pools/pools.types';
 
+import { PoolOption } from '../pool-details.types';
 import { PoolFormActiveProps } from './pool-form.types';
 import PoolDeposit from './pool-form-deposit';
 import PoolWithdraw from './pool-form-withdraw';
@@ -30,16 +31,8 @@ const PoolForm: FC = () => {
   }, [poolOptionView]);
 
   return (
-    <Box
-      gap="xl"
-      bg="container"
-      display="flex"
-      borderRadius="xs"
-      color="onSurface"
-      flexDirection="column"
-      p={['m', 'm', 'm', 'xl']}
-    >
-      <Box overflowX="auto">
+    <>
+      <Box display="flex">
         <Tabs
           type="circle"
           onChangeTab={setPoolOptionView}
@@ -47,8 +40,11 @@ const PoolForm: FC = () => {
           defaultTabIndex={poolOptionView}
         />
       </Box>
-      <PoolFormActive isDepositForm={poolOptionView === PoolOption.Deposit} />
-    </Box>
+      <Box gridColumn="1/-1">
+        <PoolFormActive isDepositForm={poolOptionView === PoolOption.Deposit} />
+      </Box>
+    </>
   );
 };
+
 export default PoolForm;

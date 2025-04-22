@@ -35,7 +35,10 @@ type IV2PoolData = Omit<
   'poolAddress' | 'metadataX' | 'metadataY' | 'balanceX' | 'balanceY'
 >;
 
-type ICurvePoolData = Omit<InterestCurvePool, 'address' | 'fas' | 'data'> &
+type ICurvePoolData = Omit<
+  InterestCurvePool,
+  'address' | 'fas' | 'data' | 'isStable'
+> &
   Omit<InterestCurvePool['data'], 'balances'>;
 
 export type IPool = (
@@ -49,8 +52,9 @@ export type IPool = (
     }
 ) & {
   poolAddress: string;
+  curve: 'volatile' | 'stable';
   poolMetadata?: AssetMetadata;
-  balances?: ReadonlyArray<bigint>;
+  balances?: ReadonlyArray<string>;
   tokensAddresses: ReadonlyArray<string>;
   tokensMetadata?: ReadonlyArray<AssetMetadata>;
 };
