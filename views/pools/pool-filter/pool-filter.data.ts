@@ -21,6 +21,10 @@ export const POOL_TYPE: Array<FilterItemProps> = [
     type: FilterTypeEnum.POOL_TYPE,
     value: FormFilterValue.curve,
   },
+  {
+    type: FilterTypeEnum.POOL_TYPE,
+    value: FormFilterValue.earn,
+  },
 ];
 
 export const CATEGORY_TYPE: Array<FilterItemProps> = [

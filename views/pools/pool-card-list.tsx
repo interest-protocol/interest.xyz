@@ -4,6 +4,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
+import { FARMS_BY_LP } from '@/constants';
 import { POOLS } from '@/constants/pools';
 import { usePools } from '@/hooks/use-pools';
 import { IPool } from '@/interface';
@@ -66,13 +67,15 @@ const Pools: FC = () => {
   const memoPools = useMemo(
     () =>
       pools.map((poolPage) =>
-        poolPage.filter(({ algorithm, curve }) =>
+        poolPage.filter(({ algorithm, curve, poolAddress }) =>
           filterProps.reduce((result, { type, value }) => {
             if (type === FilterTypeEnum.ALGORITHM)
               return result && value === curve;
 
-            if (type === FilterTypeEnum.POOL_TYPE)
-              return result && value === algorithm;
+            if (type === FilterTypeEnum.POOL_TYPE) {
+              const isFarm = !!FARMS_BY_LP[poolAddress];
+              return result && (value === algorithm || isFarm);
+            }
 
             return result;
           }, true)
@@ -208,7 +211,7 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
       </Box>
     );
 
-  if (!!pools && !pools.length && done)
+  if (!!pools && !pools?.flatMap((poolPage) => poolPage).length && done)
     return (
       <Box width="100%" color="onSurface" my="3xl">
         <Typography size="small" variant="display">

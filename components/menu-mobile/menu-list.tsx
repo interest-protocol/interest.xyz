@@ -2,13 +2,12 @@ import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
-import { SIDEBAR_ITEMS } from '@/components/layout/sidebar/sidebar.data';
-
 import SideBarMenuListItem from './menu-list-item';
+import { MENU_MOBILE_ITEMS } from './menu-mobile.data';
 
 const MobileMenuList: FC = () => (
   <Box display="flex" flexDirection="column" gap="s">
-    {SIDEBAR_ITEMS.map((item, index) => (
+    {MENU_MOBILE_ITEMS.map((item, index) => (
       <SideBarMenuListItem key={v4()} index={index} {...item} />
     ))}
   </Box>
