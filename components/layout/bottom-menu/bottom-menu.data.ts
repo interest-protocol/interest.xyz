@@ -25,9 +25,7 @@ export const BOTTOM_MENU_ITEMS: ReadonlyArray<BottomMenuProps> = [
     path: Routes[RoutesEnum.TokenCreate],
   },
   {
-    name: 'More',
+    name: 'more',
     Icon: MoreSVG,
-    isHidden: true,
-    path: Routes[RoutesEnum.Swap],
   },
 ];
