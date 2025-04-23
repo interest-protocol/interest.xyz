@@ -118,8 +118,8 @@ const FarmFormRewardButton: FC<{ rewardFa: string }> = ({ rewardFa }) => {
   };
 
   return (
-    <Button isIcon variant="filled" disabled={disabled} onClick={onHarvest}>
-      <WithdrawSVG maxWidth="1rem" maxHeight="1rem" width="100%" />
+    <Button variant="filled" disabled={disabled} onClick={onHarvest}>
+      <WithdrawSVG maxWidth="1rem" maxHeight="1rem" width="100%" /> Claim
     </Button>
   );
 };
