@@ -63,13 +63,7 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         >
           <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
         </Button>
-        <Box
-          gap="s"
-          mx="auto"
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="center"
-        >
+        <Box gap="s" mx="auto" display="flex" flexWrap="wrap" flex="1">
           <Box display="flex" gap="s" flexWrap="wrap" alignItems="center">
             <Box display="flex" gap="s">
               <Box gap="s" ml="auto" display="flex" alignItems="center">
@@ -119,7 +113,7 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
           </Box>
         </Box>
         {isFarm && (
-          <Box flex="1" display="flex" justifyContent={['center', 'flex-end']}>
+          <Box display="flex" justifyContent={['center', 'flex-end']}>
             <Tabs
               type="circle"
               onChangeTab={setMode}
