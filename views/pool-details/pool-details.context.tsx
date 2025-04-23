@@ -36,6 +36,7 @@ export const PoolDetailsProvider: FC<
 
   useSWR([PoolDetailsProvider.name, pool?.poolAddress], async () => {
     if (pool) {
+      setValue('pool', pool);
       if (pool.tokensMetadata)
         setValue(
           'tokenList',
