@@ -8,7 +8,8 @@ import { IPool } from '@/interface';
 import { getCoinsMetadataFromAPI, parseToMetadata } from '@/utils';
 
 interface InterestCurvePoolAPI extends Omit<InterestCurvePool, 'data'> {
-  data: Omit<InterestCurvePool, 'balances'> & {
+  isStable: boolean;
+  data: Omit<InterestCurvePool['data'], 'balances'> & {
     balances: ReadonlyArray<string>;
   };
 }
