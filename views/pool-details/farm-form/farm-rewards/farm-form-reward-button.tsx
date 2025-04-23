@@ -1,5 +1,5 @@
 import { Network } from '@interest-protocol/interest-aptos-curve';
-import { Button } from '@interest-protocol/ui-kit';
+import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { isEmpty, values } from 'ramda';
@@ -118,8 +118,17 @@ const FarmFormRewardButton: FC<{ rewardFa: string }> = ({ rewardFa }) => {
   };
 
   return (
-    <Button variant="filled" disabled={disabled} onClick={onHarvest}>
-      <WithdrawSVG maxWidth="1rem" maxHeight="1rem" width="100%" /> Claim
+    <Button
+      variant="filled"
+      disabled={disabled}
+      onClick={onHarvest}
+      px={['xs', 'xs', 'm']}
+      py={['xs', 'xs', 's']}
+    >
+      <Box width="1rem" height="1rem" display={['none', 'none', 'block']}>
+        <WithdrawSVG maxWidth="100%" maxHeight="100%" width="100%" />
+      </Box>
+      Claim
     </Button>
   );
 };
