@@ -23,7 +23,7 @@ const PoolDeposit: FC<PoolFormProps> = ({ poolOptionView }) => {
         I would like to Deposit...
       </Typography>
       <Box display="flex" flexDirection="column" gap="m">
-        {fields.length && fields[0]?.symbol
+        {fields.length
           ? fields.map(({ id }, index) => (
               <PoolField
                 key={id}
