@@ -33,7 +33,7 @@ const MenuProfile: FC<MenuProfileProps> = ({ isOpen, handleCloseProfile }) => {
     <Motion
       p="xl"
       right="0"
-      zIndex={1}
+      zIndex={10}
       border="1px"
       display="flex"
       bg="container"
