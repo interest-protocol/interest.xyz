@@ -7,6 +7,7 @@ import { IPoolForm } from '@/views/pools/pools.types';
 
 import { PoolFarmsOption } from '../pool-details.types';
 import PoolFormFarms from './farm-form-stake';
+import FarmFormAPR from './farm-rewards/farm-form-apr';
 
 const FarmForm: FC = () => {
   const { setValue } = useFormContext<IPoolForm>();
@@ -25,13 +26,19 @@ const FarmForm: FC = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent={['center', 'flex-start']}>
+      <Box
+        gap="m"
+        display="flex"
+        flexWrap={['wrap-reverse', 'unset']}
+        justifyContent={['center', 'space-between']}
+      >
         <Tabs
           type="circle"
           onChangeTab={setFarmOptionView}
           items={['Stake', 'Unstake']}
           defaultTabIndex={poolFarmOptionView}
         />
+        <FarmFormAPR />
       </Box>
       <Box gridColumn="1/-1">
         <PoolFormFarms farmMode={poolFarmOptionView} />
