@@ -38,10 +38,7 @@ export const useFarms = (lpAddresses: string[]) => {
 
       return fetch(`/api/v1/dex/curve/farms/${farms}`)
         .then((res) => res.json())
-        .then((data) => {
-          console.log({ data });
-          return data;
-        });
+        .then((data) => data);
     }
   );
 };

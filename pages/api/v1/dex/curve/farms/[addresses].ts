@@ -45,8 +45,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     );
 
-    console.log({ parsedData });
-
     res
       .status(200)
       .appendHeader('Cache-Control', `public, max-age=${CACHE_CONFIG.FARM}`)
