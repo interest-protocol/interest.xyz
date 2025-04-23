@@ -10,10 +10,11 @@ export enum FormFilterValue {
   'volatile' = 'volatile',
   'curve' = 'curve',
   'v2' = 'v2',
+  'earn' = 'earn',
 }
 
 export interface PoolCardHeaderProps {
-  tags?: ReadonlyArray<string>;
+  tags: ReadonlyArray<string>;
 }
 
 export interface PoolCardTokenInfoProps {

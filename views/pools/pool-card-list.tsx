@@ -4,6 +4,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
+import { FARMS_BY_LP } from '@/constants';
 import { POOLS } from '@/constants/pools';
 import { usePools } from '@/hooks/use-pools';
 import { IPool } from '@/interface';
@@ -66,13 +67,15 @@ const Pools: FC = () => {
   const memoPools = useMemo(
     () =>
       pools.map((poolPage) =>
-        poolPage.filter(({ algorithm, curve }) =>
+        poolPage.filter(({ algorithm, curve, poolAddress }) =>
           filterProps.reduce((result, { type, value }) => {
             if (type === FilterTypeEnum.ALGORITHM)
               return result && value === curve;
 
-            if (type === FilterTypeEnum.POOL_TYPE)
-              return result && value === algorithm;
+            if (type === FilterTypeEnum.POOL_TYPE) {
+              const isFarm = !!FARMS_BY_LP[poolAddress];
+              return result && (value === algorithm || isFarm);
+            }
 
             return result;
           }, true)
@@ -80,10 +83,6 @@ const Pools: FC = () => {
       ),
     [pools, filterProps]
   );
-
-  useEffect(() => {
-    console.log({ pools, memoPools });
-  }, [memoPools]);
 
   return (
     <PoolCardListContent
@@ -99,8 +98,10 @@ const Pools: FC = () => {
 const Position: FC = () => {
   const { coins } = useCoins();
   const [page, setPage] = useState(1);
-  const [pools, setPools] = useState([[]]);
   const { control, getValues } = useFormContext<IPoolForm>();
+  const [pools, setPools] = useState<ReadonlyArray<ReadonlyArray<IPool>>>([
+    POOLS,
+  ]);
 
   const filterProps = useWatch({
     control,
@@ -153,18 +154,29 @@ const Position: FC = () => {
     if (data?.pools) setPools([...pools.slice(0, page), data.pools]);
   }, [data?.pools]);
 
-  if (!data?.pools?.length)
-    return (
-      <Box width="100%" color="onSurface" textAlign="center" my="3xl">
-        <Typography size="large" variant="label">
-          There is no pools in your list
-        </Typography>
-      </Box>
-    );
+  const memoPools = useMemo(
+    () =>
+      pools.map((poolPage) =>
+        poolPage.filter(
+          ({ poolAddress, algorithm, curve }) =>
+            coins.some(({ type }) => poolAddress === type) &&
+            filterProps.reduce((result, { type, value }) => {
+              if (type === FilterTypeEnum.ALGORITHM)
+                return result && value === curve;
+
+              if (type === FilterTypeEnum.POOL_TYPE)
+                return result && value === algorithm;
+
+              return result;
+            }, true)
+        )
+      ),
+    [pools, filterProps, coins]
+  );
 
   return (
     <PoolCardListContent
-      pools={pools}
+      pools={memoPools}
       done={!!data?.done}
       next={() => setPage(inc)}
       arePoolsLoading={arePoolsLoading}
@@ -199,7 +211,7 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
       </Box>
     );
 
-  if (!!pools && !pools.length && done)
+  if (!!pools && !pools?.flatMap((poolPage) => poolPage).length && done)
     return (
       <Box width="100%" color="onSurface" my="3xl">
         <Typography size="small" variant="display">

@@ -1,9 +1,12 @@
 import BigNumber from 'bignumber.js';
-import { FC, useEffect } from 'react';
+import { isNil } from 'ramda';
+import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import useSWR from 'swr';
 
 import { useInterestCurveDex } from '@/hooks/use-interest-dex-curve';
 import { FixedPointMath } from '@/lib';
+import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 import { ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
@@ -16,11 +19,13 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
   const { control, setValue, getValues } = useFormContext<IPoolForm>();
 
   const amount = useWatch({ control, name: `${name}.value` });
+  const selectedCoinIndex = useWatch({ control, name: 'selectedCoinIndex' });
   const lpCoinDecimals = useWatch({ control, name: `lpCoin.decimals` });
+  const tokenList = useWatch({ control, name: `tokenList` });
   const token0Decimals = useWatch({ control, name: `tokenList.0.decimals` });
-  const token1Decimals = useWatch({ control, name: `tokenList.1.decimals` });
+  const token1Decimals = useWatch({ control, name: `tokenList.0.decimals` });
 
-  useEffect(() => {
+  useSWR([amount, selectedCoinIndex], () => {
     if (!pool) return;
 
     if (pool.algorithm === 'curve') {
@@ -54,29 +59,62 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
             setValue(`tokenList.${index}.value`, '0');
             setValue(`tokenList.${index}.valueBN`, ZERO_BIG_NUMBER);
           });
-        } else
-          curveDex
-            .quoteRemoveLiquidity({
-              pool: pool.poolAddress,
-              amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
-            })
-            .then(({ amountsOut }) => {
-              (amountsOut as Array<string>).forEach((amountOut, index) => {
+        } else {
+          if (isNil(selectedCoinIndex))
+            curveDex
+              .quoteRemoveLiquidity({
+                pool: pool.poolAddress,
+                amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
+              })
+              .then(({ amountsOut }) => {
+                (amountsOut as Array<string>).forEach((amountOut, index) => {
+                  setValue(
+                    `tokenList.${index}.value`,
+                    String(
+                      FixedPointMath.toNumber(
+                        BigNumber(amountOut),
+                        getValues(`tokenList.${index}.decimals`)
+                      )
+                    )
+                  );
+                  setValue(
+                    `tokenList.${index}.valueBN`,
+                    BigNumber(String(amountOut))
+                  );
+                });
+              })
+              .catch();
+          else {
+            (tokenList[selectedCoinIndex].standard === TokenStandard.COIN
+              ? curveDex.quoteRemoveLiquidityOneCoin({
+                  pool: pool.poolAddress,
+                  coinOut: tokenList[selectedCoinIndex].type,
+                  amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
+                })
+              : curveDex.quoteRemoveLiquidityOneFa({
+                  pool: pool.poolAddress,
+                  faOut: tokenList[selectedCoinIndex].type,
+                  amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
+                })
+            )
+              .then(({ amountOut }) => {
                 setValue(
-                  `tokenList.${index}.value`,
+                  `tokenList.${selectedCoinIndex}.valueBN`,
+                  BigNumber(String(amountOut))
+                );
+                setValue(
+                  `tokenList.${selectedCoinIndex}.value`,
                   String(
                     FixedPointMath.toNumber(
-                      BigNumber(amountOut),
-                      getValues('lpCoin.decimals')
+                      BigNumber(String(amountOut)),
+                      getValues(`tokenList.${selectedCoinIndex}.decimals`)
                     )
                   )
                 );
-                setValue(
-                  `tokenList.${index}.valueBN`,
-                  BigNumber(String(amountOut))
-                );
-              });
-            });
+              })
+              .catch();
+          }
+        }
       }
 
       return;
@@ -144,7 +182,7 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
         );
       }
     }
-  }, [amount]);
+  });
 
   return null;
 };

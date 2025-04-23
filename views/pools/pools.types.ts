@@ -17,11 +17,6 @@ export enum PoolTabEnum {
   MyPosition,
 }
 
-export enum PoolOption {
-  Deposit,
-  Withdraw,
-}
-
 export interface PoolCardListProps {
   tab: PoolTabEnum;
 }
@@ -47,7 +42,7 @@ export interface IPoolForm {
   lpCoin: PoolToken;
   explorerLink: string;
   error: string | null;
-  tokenSelected?: string;
+  selectedCoinIndex?: number;
   isFindingPool: boolean;
   settings: ISwapSettings;
   isEarnPoolView?: boolean;

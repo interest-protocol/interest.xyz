@@ -1,0 +1,143 @@
+import { Network } from '@interest-protocol/interest-aptos-v2';
+import { Button, Typography } from '@interest-protocol/ui-kit';
+import { useAptosWallet } from '@razorlabs/wallet-kit';
+import { FC } from 'react';
+import { useWatch } from 'react-hook-form';
+import invariant from 'tiny-invariant';
+
+import { EXPLORER_URL, FARMS_BY_LP } from '@/constants';
+import { useDialog } from '@/hooks';
+import { useInterestCurveDex } from '@/hooks/use-interest-dex-curve';
+import { useModal } from '@/hooks/use-modal';
+import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
+
+import { PoolFarmsOption } from '../../pool-details.types';
+import { FarmFormButtonProps } from '../farm-form.types';
+
+const FarmFormButton: FC<FarmFormButtonProps> = ({
+  form,
+  state,
+  poolAddress,
+}) => {
+  const client = useAptosClient();
+  const dexCurve = useInterestCurveDex();
+  const { dialog, handleClose } = useDialog();
+  const { getValues, control, setValue } = form;
+  const { handleClose: closeModal } = useModal();
+  const { account, signAndSubmitTransaction } = useAptosWallet();
+
+  const error = useWatch({ control, name: 'error' });
+
+  const handleFarm = async () => {
+    try {
+      invariant(account, 'You must be connected to proceed');
+
+      setValue('error', '');
+
+      const lpCoin = getValues('lpCoin');
+
+      let payload, txResult;
+
+      if (state === PoolFarmsOption.Stake) {
+        payload = dexCurve.stake({
+          faIn: poolAddress,
+          amount: BigInt(lpCoin.valueBN.toFixed(0)),
+          farm: FARMS_BY_LP[poolAddress].address.toString(),
+        });
+      } else {
+        payload = dexCurve.unstake({
+          recipient: account.address,
+          amount: BigInt(lpCoin.valueBN.toFixed(0)),
+          farm: FARMS_BY_LP[poolAddress].address.toString(),
+        });
+      }
+
+      if (payload) {
+        const tx = await signAndSubmitTransaction({ payload });
+
+        invariant(tx.status === 'Approved', 'Rejected by User');
+
+        txResult = tx.args;
+      }
+
+      if (txResult) {
+        let waitingTx = true;
+
+        do {
+          await client
+            .waitForTransaction({
+              transactionHash: txResult.hash,
+              options: { checkSuccess: true },
+            })
+            .then(() => {
+              waitingTx = false;
+            })
+            .catch();
+        } while (waitingTx);
+
+        setValue(
+          'explorerLink',
+          EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
+        );
+      }
+    } catch (e) {
+      console.warn({ e });
+
+      if ((e as any)?.data?.error_code === 'mempool_is_full')
+        throw new Error('The mempool is full, try again in a few seconds.');
+
+      throw e;
+    }
+  };
+
+  const gotoExplorer = () => {
+    window.open(getValues('explorerLink'), '_blank', 'noopener,noreferrer');
+
+    setValue('explorerLink', '');
+  };
+
+  const onFarm = () => {
+    closeModal();
+    dialog.promise(handleFarm(), {
+      loading: () => ({
+        title: state ? 'Unstaking...' : 'Staking...',
+        message:
+          'We are Withdrawing, and you will let you know when it is done',
+      }),
+      success: () => ({
+        title: `${state ? 'Unstake' : 'Stake'} Successfully`,
+        message: `Your ${state ? 'Unstake' : 'Stake'} was successfully, and you can check it on the Explorer`,
+        primaryButton: {
+          label: 'See on Explorer',
+          onClick: gotoExplorer,
+        },
+      }),
+      error: (error) => ({
+        title: `${state ? 'Unstake' : 'Stake'} Failure`,
+        message:
+          (error as Error).message ||
+          `Your ${state ? 'Unstake' : 'Stake'} failed, please try again or contact the support team`,
+        primaryButton: { label: 'Try again', onClick: handleClose },
+      }),
+    });
+  };
+
+  return (
+    <Button
+      py="s"
+      my="l"
+      mt="xl"
+      mx="auto"
+      variant="filled"
+      disabled={!!error}
+      onClick={onFarm}
+      width="fill-available"
+    >
+      <Typography variant="label" size="large" textAlign="center" width="100%">
+        Confirm {state ? 'Unstake' : 'Stake'}
+      </Typography>
+    </Button>
+  );
+};
+
+export default FarmFormButton;

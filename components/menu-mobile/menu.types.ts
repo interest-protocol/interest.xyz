@@ -4,10 +4,6 @@ import { SVGProps } from '@/components/svg/svg.types';
 
 import { MenuItemCollapsibleProps } from '../layout/sidebar/sidebar.types';
 
-export interface MenuMobileProps extends MainMenuMobileProps {
-  isOpen?: boolean;
-}
-
 export interface MainMenuMobileProps {
   isOpen?: boolean;
   closeMenu: () => void;

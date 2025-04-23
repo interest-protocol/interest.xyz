@@ -33,6 +33,12 @@ export const SIDEBAR_ITEMS: ReadonlyArray<
     disabled: false,
   },
   {
+    Icon: CirclePlusSVG,
+    name: 'LeaderBoard',
+    path: Routes[RoutesEnum.Leaderboard],
+    disabled: false,
+  },
+  {
     Icon: BridgeSVG,
     name: 'Bridge',
     path: 'https://bridge.movementnetwork.xyz/',

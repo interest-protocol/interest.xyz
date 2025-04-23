@@ -29,13 +29,11 @@ const CreatePoolHeader: FC<CreatePoolProps> = ({ name, onBack }) => (
       nHover={{
         bg: 'lowestContainer',
       }}
-      position={['relative', 'absolute', 'absolute', 'absolute', 'absolute']}
     >
       <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
     </Button>
     <Typography
       size="large"
-      width="100%"
       color="onSurface"
       variant="headline"
       textAlign="center"

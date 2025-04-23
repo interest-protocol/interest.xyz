@@ -54,7 +54,7 @@ export type IPool = (
   poolAddress: string;
   curve: 'volatile' | 'stable';
   poolMetadata?: AssetMetadata;
-  balances?: ReadonlyArray<bigint>;
+  balances?: ReadonlyArray<string>;
   tokensAddresses: ReadonlyArray<string>;
   tokensMetadata?: ReadonlyArray<AssetMetadata>;
 };
