@@ -101,7 +101,7 @@ const PoolCardSkeleton: FC = () => {
         </Box>
       </Box>
       <Box px="m" py="xs" bg="surface" borderRadius="1rem">
-        {Array.from({ length: 3 }, (_, index) => (
+        {Array.from({ length: 2 }, (_, index) => (
           <Box
             py="xs"
             key={v4()}
