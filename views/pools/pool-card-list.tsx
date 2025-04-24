@@ -11,6 +11,7 @@ import { IPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 
 import PoolCard from './pool-card';
+import { FormFilterValue } from './pool-card/pool-card.types';
 import PoolCardSkeleton from './pool-card/pool-card-skeleton';
 import {
   FilterTypeEnum,
@@ -73,8 +74,10 @@ const Pools: FC = () => {
               return result && value === curve;
 
             if (type === FilterTypeEnum.POOL_TYPE) {
+              const isEarn = value === FormFilterValue.earn;
               const isFarm = !!FARMS_BY_LP[poolAddress];
-              return result && (value === algorithm || isFarm);
+
+              return result && (isEarn ? isFarm : value === algorithm);
             }
 
             return result;
@@ -164,8 +167,12 @@ const Position: FC = () => {
               if (type === FilterTypeEnum.ALGORITHM)
                 return result && value === curve;
 
-              if (type === FilterTypeEnum.POOL_TYPE)
-                return result && value === algorithm;
+              if (type === FilterTypeEnum.POOL_TYPE) {
+                const isEarn = value === FormFilterValue.earn;
+                const isFarm = !!FARMS_BY_LP[poolAddress];
+
+                return result && (isEarn ? isFarm : value === algorithm);
+              }
 
               return result;
             }, true)
