@@ -5,6 +5,7 @@ import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { FixedPointMath } from '@/lib';
+import { formatMoney } from '@/utils';
 
 import { usePoolDetails } from '../../pool-details.context';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
@@ -29,8 +30,11 @@ const PoolInfoDetailsPool: FC = () => {
     pool.curve,
     ...(showAdditionalInfo
       ? [
-          poolExtraDataVolatile.a,
-          FixedPointMath.toNumber(BigNumber(poolExtraDataVolatile.gamma), 18),
+          formatMoney(+(+poolExtraDataVolatile.a).toFixed(8)),
+          FixedPointMath.toNumber(
+            BigNumber(poolExtraDataVolatile.gamma),
+            18
+          ).toFixed(8),
         ]
       : []),
   ];

@@ -23,10 +23,10 @@ const PoolInfoDetailsBalance: FC = () => {
           label={name}
           loading={loading}
           content={`${formatMoney(
-            FixedPointMath.toNumber(
+            +FixedPointMath.toNumber(
               BigNumber(String(pool.balances?.[index] ?? 0)),
               pool.algorithm === 'curve' ? 18 : decimals
-            )
+            ).toFixed(6)
           )} ${symbol}`}
         />
       ))}
