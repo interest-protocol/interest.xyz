@@ -8,7 +8,7 @@ const NotFound: FC = () => (
     p="4xl"
     gap="xl"
     flex="1"
-    color="text"
+    color="#E2E2E6"
     display="flex"
     overflowY="auto"
     gridColumn="1/-1"
