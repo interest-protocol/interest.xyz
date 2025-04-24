@@ -19,7 +19,7 @@ export const POOL_INFORMATION: PoolDetailAccordionData = {
   ],
 };
 
-export const POOL_VOLATILE_INFO: Array<PoolDetailAccordionItemData> = [
+export const POOL_CURVE_VOLATILE_INFO: Array<PoolDetailAccordionItemData> = [
   {
     label: 'A',
   },
