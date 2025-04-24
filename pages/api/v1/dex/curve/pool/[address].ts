@@ -4,7 +4,7 @@ import {
 } from '@interest-protocol/interest-aptos-curve';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
-import { pathOr, toPairs } from 'ramda';
+import { pathOr } from 'ramda';
 
 import { CACHE_CONFIG } from '@/constants/cache';
 import { curveDex } from '@/hooks/use-interest-dex-curve';
@@ -88,13 +88,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 midFee: String(data.data.futureFees.midFee),
                 outFee: String(data.data.futureFees.outFee),
               },
-              prices: toPairs(data.data.prices).reduce(
+              prices: data.data.prices /*toPairs(data.data.prices).reduce(
                 (acc, [key, value]) => ({
                   ...acc,
                   [key]: String(value),
                 }),
                 {}
-              ),
+              )*/,
             }),
         balances: data.data.balances.map((balance) => String(balance)),
       },

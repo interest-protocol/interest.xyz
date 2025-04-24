@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { FixedPointMath } from '@/lib';
-import { formatMoney } from '@/utils';
+import { formatDollars } from '@/utils';
 
 import { usePoolDetails } from '../../pool-details.context';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
@@ -16,7 +16,7 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
   const { pool, loading } = usePoolDetails();
-  console.log(pool, '>>>pools');
+
   if (!pool || loading) return <PoolInfoLoading />;
 
   const poolExtraDataVolatile = pool.poolExtraData as unknown as VolatilePool;
@@ -30,11 +30,21 @@ const PoolInfoDetailsPool: FC = () => {
     pool.curve,
     ...(showAdditionalInfo
       ? [
-          formatMoney(+(+poolExtraDataVolatile.a).toFixed(8)),
+          poolExtraDataVolatile.a,
           FixedPointMath.toNumber(
             BigNumber(poolExtraDataVolatile.gamma),
             18
-          ).toFixed(8),
+          ).toFixed(6),
+          formatDollars(
+            +FixedPointMath.toNumber(
+              BigNumber(
+                String(
+                  poolExtraDataVolatile.prices[pool.tokensAddresses[1]].price
+                )
+              ),
+              18
+            ).toFixed(6)
+          ),
         ]
       : []),
   ];

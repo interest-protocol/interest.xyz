@@ -26,7 +26,11 @@ export const POOL_CURVE_VOLATILE_INFO: Array<PoolDetailAccordionItemData> = [
   {
     label: 'Gamma',
   },
+  {
+    label: 'Price',
+  },
 ];
+
 export const POOL_STATISTICS: PoolDetailAccordionData = {
   title: 'STATISTICS',
   data: [
