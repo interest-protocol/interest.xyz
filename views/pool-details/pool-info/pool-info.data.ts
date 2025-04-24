@@ -1,4 +1,7 @@
-import { PoolDetailAccordionData } from './components/accordion/accordion.types';
+import {
+  PoolDetailAccordionData,
+  PoolDetailAccordionItemData,
+} from './components/accordion/accordion.types';
 
 export const POOL_INFORMATION: PoolDetailAccordionData = {
   title: 'POOL INFORMATION',
@@ -16,6 +19,14 @@ export const POOL_INFORMATION: PoolDetailAccordionData = {
   ],
 };
 
+export const POOL_VOLATILE_INFO: Array<PoolDetailAccordionItemData> = [
+  {
+    label: 'A',
+  },
+  {
+    label: 'Gamma',
+  },
+];
 export const POOL_STATISTICS: PoolDetailAccordionData = {
   title: 'STATISTICS',
   data: [

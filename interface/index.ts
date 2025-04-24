@@ -30,12 +30,12 @@ export interface Pool {
   coins: ReadonlyArray<string>;
 }
 
-type IV2PoolData = Omit<
+export type IV2PoolData = Omit<
   InterestV2Pool,
   'poolAddress' | 'metadataX' | 'metadataY' | 'balanceX' | 'balanceY'
 >;
 
-type ICurvePoolData = Omit<
+export type ICurvePoolData = Omit<
   InterestCurvePool,
   'address' | 'fas' | 'data' | 'isStable'
 > &

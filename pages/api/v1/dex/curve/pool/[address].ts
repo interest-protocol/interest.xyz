@@ -56,6 +56,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               maxA: String(data.data.maxA),
               minA: String(data.data.minA),
               d: String(data.data.d),
+              a: String(data.data.a),
+              gamma: String(data.data.gamma),
               rebalancingParams: {
                 extraProfit: String(data.data.rebalancingParams.extraProfit),
                 adjustmentStep: String(
