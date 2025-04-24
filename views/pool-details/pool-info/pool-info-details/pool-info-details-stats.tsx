@@ -5,6 +5,7 @@ import { v4 } from 'uuid';
 import { FixedPointMath } from '@/lib';
 
 import { usePoolDetails } from '../../pool-details.context';
+import Accordion from '../components/accordion';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
 import ItemStandard from '../components/accordion/item-standard';
 import { POOL_STATISTICS } from '../pool-info.data';
@@ -15,6 +16,8 @@ const PoolInfoDetailsStats: FC = () => {
 
   if (!pool || loading) return <PoolInfoLoading />;
 
+  if (pool.algorithm == 'curve') return;
+
   const statsData = [
     'N/A',
     config
@@ -23,7 +26,7 @@ const PoolInfoDetailsStats: FC = () => {
   ];
 
   return (
-    <>
+    <Accordion title={POOL_STATISTICS.title} noBorder>
       {(
         POOL_STATISTICS.data as Array<PoolDetailAccordionItemStandardProps>
       ).map(({ label, popupInfo, isCopyClipBoard }, index) => (
@@ -36,7 +39,7 @@ const PoolInfoDetailsStats: FC = () => {
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}
-    </>
+    </Accordion>
   );
 };
 
