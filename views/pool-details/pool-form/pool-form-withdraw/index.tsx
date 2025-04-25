@@ -1,4 +1,4 @@
-import { Box, Typography } from '@interest-protocol/ui-kit';
+import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import PoolField from '../pool-field';
@@ -9,9 +9,6 @@ import PoolPreviewFormWithdrawButton from './pool-preview-form-withdraw-button';
 
 const PoolFormWithdraw: FC<PoolFormProps> = ({ poolOptionView }) => (
   <>
-    <Typography size="large" variant="title" fontSize="2xl">
-      I would like to Withdraw...
-    </Typography>
     <Box display="flex" flexDirection="column" gap="m">
       <PoolField index={0} poolOptionView={poolOptionView} />
       <Selection />
