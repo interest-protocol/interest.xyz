@@ -30,11 +30,8 @@ const PoolInfoDetailsPool: FC = () => {
     pool.curve,
     ...(showAdditionalInfo
       ? [
-          poolExtraDataVolatile.a,
-          FixedPointMath.toNumber(
-            BigNumber(poolExtraDataVolatile.gamma),
-            18
-          ).toFixed(6),
+          FixedPointMath.toNumber(BigNumber(poolExtraDataVolatile.a), 4),
+          FixedPointMath.toNumber(BigNumber(poolExtraDataVolatile.gamma), 10),
           formatDollars(
             +FixedPointMath.toNumber(
               BigNumber(
@@ -43,7 +40,7 @@ const PoolInfoDetailsPool: FC = () => {
                 )
               ),
               18
-            ).toFixed(6)
+            )
           ),
         ]
       : []),
