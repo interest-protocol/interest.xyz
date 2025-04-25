@@ -13,20 +13,25 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsBalance: FC = () => {
   const { pool, loading } = usePoolDetails();
 
-  if (!pool || loading) return <PoolInfoLoading />;
+  if (!pool || loading)
+    return (
+      <Accordion title="Live balance">
+        <PoolInfoLoading />
+      </Accordion>
+    );
 
   return (
     <Accordion title="Live balance" noBorder={pool.algorithm === 'curve'}>
-      {pool.tokensMetadata?.map(({ name, symbol, decimals }, index) => (
+      {pool.tokensMetadata?.map(({ symbol, decimals }, index) => (
         <ItemStandard
           key={v4()}
-          label={name}
+          label={symbol}
           loading={loading}
           content={`${formatMoney(
-            FixedPointMath.toNumber(
+            +FixedPointMath.toNumber(
               BigNumber(String(pool.balances?.[index] ?? 0)),
               pool.algorithm === 'curve' ? 18 : decimals
-            )
+            ).toFixed(6)
           )} ${symbol}`}
         />
       ))}
