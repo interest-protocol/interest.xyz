@@ -50,6 +50,7 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         borderRadius="xs"
         flexDirection="row"
         alignItems="center"
+        position="sticky"
         px={['m', 'm', 'xl']}
       >
         <Button
