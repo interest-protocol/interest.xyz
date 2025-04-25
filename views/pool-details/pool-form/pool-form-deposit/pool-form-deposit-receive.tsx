@@ -15,8 +15,8 @@ const PoolFormDepositReceive: FC = () => {
 
   return (
     <Box>
-      <Typography variant="body" size="large" mb="m">
-        You will receive (estimated):
+      <Typography variant="body" size="large" mt="m" mb="xs">
+        Receive:
       </Typography>
       <Box borderRadius="xs" bg="lowestContainer" py="xs">
         <Box

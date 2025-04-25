@@ -6,7 +6,7 @@ import FarmFormRewards from './farm-form-rewards';
 const FarmRewards: FC = () => (
   <Box display="flex" flexDirection="column" gap="m">
     <Typography variant="body" size="large">
-      Rewards
+      Rewards:
     </Typography>
     <Box
       display="flex"
