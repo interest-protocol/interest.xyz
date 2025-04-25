@@ -59,7 +59,7 @@ const PoolInfoDetailsPool: FC = () => {
           label={label}
           loading={loading}
           popupInfo={popupInfo}
-          content={infoData[index]}
+          content={infoData[index].toUpperCase()}
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}
