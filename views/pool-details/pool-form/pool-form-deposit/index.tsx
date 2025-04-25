@@ -1,4 +1,4 @@
-import { Box, Typography } from '@interest-protocol/ui-kit';
+import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
@@ -19,9 +19,6 @@ const PoolDeposit: FC<PoolFormProps> = ({ poolOptionView }) => {
 
   return (
     <>
-      <Typography size="large" variant="title" fontSize="2xl">
-        I would like to Deposit...
-      </Typography>
       <Box display="flex" flexDirection="column" gap="m">
         {fields.length
           ? fields.map(({ id }, index) => (
