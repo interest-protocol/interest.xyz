@@ -14,7 +14,12 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsStats: FC = () => {
   const { pool, config, loading } = usePoolDetails();
 
-  if (!pool || loading) return <PoolInfoLoading />;
+  if (!pool || loading)
+    return (
+      <Accordion title={POOL_STATISTICS.title} noBorder>
+        <PoolInfoLoading />
+      </Accordion>
+    );
 
   if (pool.algorithm == 'curve') return;
 
