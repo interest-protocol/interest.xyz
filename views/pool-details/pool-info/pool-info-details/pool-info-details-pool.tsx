@@ -1,4 +1,7 @@
-import { VolatilePool } from '@interest-protocol/interest-aptos-curve';
+import {
+  StablePool,
+  VolatilePool,
+} from '@interest-protocol/interest-aptos-curve';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
@@ -10,7 +13,11 @@ import { formatDollars } from '@/utils';
 import { usePoolDetails } from '../../pool-details.context';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
 import ItemStandard from '../components/accordion/item-standard';
-import { POOL_CURVE_VOLATILE_INFO, POOL_INFORMATION } from '../pool-info.data';
+import {
+  POOL_CURVE_STABLE_INFO,
+  POOL_CURVE_VOLATILE_INFO,
+  POOL_INFORMATION,
+} from '../pool-info.data';
 import PoolInfoLoading from '../pool-info-loading';
 
 const PoolInfoDetailsPool: FC = () => {
@@ -19,30 +26,36 @@ const PoolInfoDetailsPool: FC = () => {
 
   if (!pool || loading) return <PoolInfoLoading />;
 
-  const poolExtraDataVolatile = pool.poolExtraData as unknown as VolatilePool;
+  const isVolatile = pool.curve == 'volatile';
+  const isV2 = pool.algorithm == 'v2';
 
-  const showAdditionalInfo =
-    pool.curve == 'volatile' && pool.algorithm == 'curve';
+  const getVolatileData = () => {
+    const poolExtraData = pool.poolExtraData as unknown as VolatilePool;
+    const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]]?.price;
+    const price = priceRaw
+      ? formatDollars(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18))
+      : '0';
+
+    return [
+      FixedPointMath.toNumber(BigNumber(poolExtraData.a), 4),
+      FixedPointMath.toNumber(BigNumber(poolExtraData.gamma), 10),
+      price,
+    ];
+  };
+
+  const getStableData = () => {
+    const poolExtraData = pool.poolExtraData as unknown as StablePool;
+    return [FixedPointMath.toNumber(BigNumber(String(poolExtraData.a)), 4)];
+  };
 
   const infoData = [
     (query.address as string) ?? 'N/A',
     pool.algorithm.toUpperCase(),
     pool.curve,
-    ...(showAdditionalInfo
-      ? [
-          FixedPointMath.toNumber(BigNumber(poolExtraDataVolatile.a), 4),
-          FixedPointMath.toNumber(BigNumber(poolExtraDataVolatile.gamma), 10),
-          formatDollars(
-            +FixedPointMath.toNumber(
-              BigNumber(
-                String(
-                  poolExtraDataVolatile.prices[pool.tokensAddresses[1]].price
-                )
-              ),
-              18
-            )
-          ),
-        ]
+    ...(pool.algorithm === 'curve'
+      ? isVolatile
+        ? getVolatileData()
+        : getStableData()
       : []),
   ];
 
@@ -51,7 +64,11 @@ const PoolInfoDetailsPool: FC = () => {
       {(
         [
           ...POOL_INFORMATION.data,
-          ...(showAdditionalInfo ? POOL_CURVE_VOLATILE_INFO : []),
+          ...(!isV2
+            ? isVolatile
+              ? POOL_CURVE_VOLATILE_INFO
+              : POOL_CURVE_STABLE_INFO
+            : []),
         ] as Array<PoolDetailAccordionItemStandardProps>
       ).map(({ label, popupInfo, isCopyClipBoard }, index) => (
         <ItemStandard
@@ -59,7 +76,7 @@ const PoolInfoDetailsPool: FC = () => {
           label={label}
           loading={loading}
           popupInfo={popupInfo}
-          content={infoData[index].toUpperCase()}
+          content={`${infoData[index]}`.toUpperCase()}
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}

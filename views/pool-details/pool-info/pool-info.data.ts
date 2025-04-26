@@ -31,6 +31,12 @@ export const POOL_CURVE_VOLATILE_INFO: Array<PoolDetailAccordionItemData> = [
   },
 ];
 
+export const POOL_CURVE_STABLE_INFO: Array<PoolDetailAccordionItemData> = [
+  {
+    label: 'A',
+  },
+];
+
 export const POOL_STATISTICS: PoolDetailAccordionData = {
   title: 'STATISTICS',
   data: [

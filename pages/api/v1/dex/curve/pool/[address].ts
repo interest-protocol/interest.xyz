@@ -39,6 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ...(isStable(data.data)
           ? {
               ...data.data,
+              a: String(data.data.a),
               initialA: String(data.data.initialA),
               futureA: String(data.data.futureA),
               initialATime: String(data.data.initialATime),
@@ -88,13 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 midFee: String(data.data.futureFees.midFee),
                 outFee: String(data.data.futureFees.outFee),
               },
-              prices: data.data.prices /*toPairs(data.data.prices).reduce(
-                (acc, [key, value]) => ({
-                  ...acc,
-                  [key]: String(value),
-                }),
-                {}
-              )*/,
+              prices: data.data.prices,
             }),
         balances: data.data.balances.map((balance) => String(balance)),
       },
