@@ -4,7 +4,7 @@ import {
 } from '@interest-protocol/interest-aptos-curve';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
-import { pathOr, toPairs } from 'ramda';
+import { pathOr } from 'ramda';
 
 import { CACHE_CONFIG } from '@/constants/cache';
 import { curveDex } from '@/hooks/use-interest-dex-curve';
@@ -39,6 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ...(isStable(data.data)
           ? {
               ...data.data,
+              a: String(data.data.a),
               initialA: String(data.data.initialA),
               futureA: String(data.data.futureA),
               initialATime: String(data.data.initialATime),
@@ -56,6 +57,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               maxA: String(data.data.maxA),
               minA: String(data.data.minA),
               d: String(data.data.d),
+              a: String(data.data.a),
+              gamma: String(data.data.gamma),
               rebalancingParams: {
                 extraProfit: String(data.data.rebalancingParams.extraProfit),
                 adjustmentStep: String(
@@ -86,13 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 midFee: String(data.data.futureFees.midFee),
                 outFee: String(data.data.futureFees.outFee),
               },
-              prices: toPairs(data.data.prices).reduce(
-                (acc, [key, value]) => ({
-                  ...acc,
-                  [key]: String(value),
-                }),
-                {}
-              ),
+              prices: data.data.prices,
             }),
         balances: data.data.balances.map((balance) => String(balance)),
       },

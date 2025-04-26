@@ -15,7 +15,7 @@ const PoolInfoDetailsBalance: FC = () => {
 
   if (!pool || loading)
     return (
-      <Accordion title="Live balance">
+      <Accordion title="Live balance" noBorder>
         <PoolInfoLoading />
       </Accordion>
     );
