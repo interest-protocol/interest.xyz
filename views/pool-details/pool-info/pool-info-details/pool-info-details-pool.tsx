@@ -37,9 +37,19 @@ const PoolInfoDetailsPool: FC = () => {
       : '0';
 
     return [
-      FixedPointMath.toNumber(BigNumber(poolExtraData.a), 4),
-      FixedPointMath.toNumber(BigNumber(poolExtraData.gamma), 10),
+      FixedPointMath.toNumber(BigNumber(poolExtraData.a), 0),
+      FixedPointMath.toNumber(
+        BigNumber(poolExtraData.gamma),
+        0
+      ).toExponential(),
       price,
+      formatDollars(
+        FixedPointMath.toNumber(
+          BigNumber(String(poolExtraData.virtualPrice)),
+          18
+        ),
+        4
+      ),
     ];
   };
 
