@@ -45,7 +45,7 @@ const PoolInfoDetailsPool: FC = () => {
 
   const getStableData = () => {
     const poolExtraData = pool.poolExtraData as unknown as StablePool;
-    return [FixedPointMath.toNumber(BigNumber(String(poolExtraData.a)), 4)];
+    return [FixedPointMath.toNumber(BigNumber(String(poolExtraData.a)), 0)];
   };
 
   const infoData = [
