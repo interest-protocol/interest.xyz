@@ -23,7 +23,6 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
   const { pool, loading } = usePoolDetails();
-
   if (!pool || loading) return <PoolInfoLoading />;
 
   const isVolatile = pool.curve == 'volatile';
@@ -33,9 +32,8 @@ const PoolInfoDetailsPool: FC = () => {
     const poolExtraData = pool.poolExtraData as unknown as VolatilePool;
     const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]]?.price;
     const price = priceRaw
-      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18))} ${pool.tokensMetadata?.[0]?.symbol}`
+      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
       : '0';
-
     return [
       FixedPointMath.toNumber(BigNumber(poolExtraData.a), 0),
       FixedPointMath.toNumber(
@@ -85,7 +83,11 @@ const PoolInfoDetailsPool: FC = () => {
       ).map(({ label, popupInfo, isCopyClipBoard }, index) => (
         <ItemStandard
           key={v4()}
-          label={label}
+          label={
+            label == 'Price'
+              ? `${pool.tokensMetadata?.[1]?.symbol} price`
+              : label
+          }
           loading={loading}
           popupInfo={popupInfo}
           content={`${infoData[index]}`.toUpperCase()}
