@@ -8,7 +8,7 @@ import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { FixedPointMath } from '@/lib';
-import { formatDollars } from '@/utils';
+import { formatDollars, formatMoney } from '@/utils';
 
 import { usePoolDetails } from '../../pool-details.context';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
@@ -23,7 +23,6 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
   const { pool, loading } = usePoolDetails();
-
   if (!pool || loading) return <PoolInfoLoading />;
 
   const isVolatile = pool.curve == 'volatile';
@@ -33,19 +32,30 @@ const PoolInfoDetailsPool: FC = () => {
     const poolExtraData = pool.poolExtraData as unknown as VolatilePool;
     const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]]?.price;
     const price = priceRaw
-      ? formatDollars(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18))
+      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
       : '0';
-
     return [
-      FixedPointMath.toNumber(BigNumber(poolExtraData.a), 4),
-      FixedPointMath.toNumber(BigNumber(poolExtraData.gamma), 10),
+      FixedPointMath.toNumber(BigNumber(poolExtraData.a), 0),
+      FixedPointMath.toNumber(
+        BigNumber(poolExtraData.gamma),
+        0
+      ).toExponential(),
       price,
+      formatDollars(
+        FixedPointMath.toNumber(
+          BigNumber(String(poolExtraData.virtualPrice)),
+          18
+        ),
+        4
+      ),
     ];
   };
 
   const getStableData = () => {
     const poolExtraData = pool.poolExtraData as unknown as StablePool;
-    return [FixedPointMath.toNumber(BigNumber(String(poolExtraData.a)), 4)];
+    return [
+      FixedPointMath.toNumber(BigNumber(String(poolExtraData.initialA)), 0),
+    ];
   };
 
   const infoData = [
@@ -73,7 +83,11 @@ const PoolInfoDetailsPool: FC = () => {
       ).map(({ label, popupInfo, isCopyClipBoard }, index) => (
         <ItemStandard
           key={v4()}
-          label={label}
+          label={
+            label == 'Price'
+              ? `${pool.tokensMetadata?.[1]?.symbol} price`
+              : label
+          }
           loading={loading}
           popupInfo={popupInfo}
           content={`${infoData[index]}`.toUpperCase()}
