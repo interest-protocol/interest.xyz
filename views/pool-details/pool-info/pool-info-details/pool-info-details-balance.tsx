@@ -27,8 +27,6 @@ const PoolInfoDetailsBalance: FC = () => {
     {} as Record<string, AssetMetadata>
   );
 
-  console.log({ metadata });
-
   return (
     <Accordion title="Live balance" noBorder={pool.algorithm === 'curve'}>
       {pool.tokensAddresses?.map((address, index) => (
