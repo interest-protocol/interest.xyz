@@ -8,7 +8,7 @@ import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { FixedPointMath } from '@/lib';
-import { formatDollars } from '@/utils';
+import { formatDollars, formatMoney } from '@/utils';
 
 import { usePoolDetails } from '../../pool-details.context';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
@@ -33,7 +33,7 @@ const PoolInfoDetailsPool: FC = () => {
     const poolExtraData = pool.poolExtraData as unknown as VolatilePool;
     const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]]?.price;
     const price = priceRaw
-      ? formatDollars(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18))
+      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18))} ${pool.tokensMetadata?.[0]?.symbol}`
       : '0';
 
     return [
@@ -55,7 +55,9 @@ const PoolInfoDetailsPool: FC = () => {
 
   const getStableData = () => {
     const poolExtraData = pool.poolExtraData as unknown as StablePool;
-    return [FixedPointMath.toNumber(BigNumber(String(poolExtraData.a)), 0)];
+    return [
+      FixedPointMath.toNumber(BigNumber(String(poolExtraData.initialA)), 0),
+    ];
   };
 
   const infoData = [

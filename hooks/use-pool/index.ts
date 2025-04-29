@@ -5,5 +5,5 @@ export const usePool = (address: string) => {
   const v2Pool = useV2Pool(address);
   const curvePool = useCurvePool(address);
 
-  return v2Pool.pool ? v2Pool : curvePool;
+  return v2Pool.loading || v2Pool.pool ? v2Pool : curvePool;
 };
