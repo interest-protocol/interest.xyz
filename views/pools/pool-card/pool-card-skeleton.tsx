@@ -29,7 +29,7 @@ const PoolCardSkeleton: FC = () => {
         cursor: 'pointer',
         borderColor: '#76767A',
         boxShadow: '0px 24px 46px -10px rgba(13, 16, 23, 0.16)',
-        '.arrow-wrapper': { opacity: 1 },
+        '.arrow-wrapper': { display: 'block' },
       }}
     >
       <Box display="flex" alignItems="center" justifyContent="space-between">
