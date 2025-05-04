@@ -227,6 +227,7 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
       </Box>
     );
 
+  console.log(pools, '>>>pools');
   return (
     <>
       <Box
@@ -259,9 +260,6 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
 const PoolCardListFiltered: FC<{ pools: ReadonlyArray<IPool> }> = ({
   pools,
 }) => {
-  const { control } = useFormContext<IPoolForm>();
-
-  const search = useWatch({ control, name: 'search' });
 
   const filteredPool = search
     ? pools.filter((pool) =>

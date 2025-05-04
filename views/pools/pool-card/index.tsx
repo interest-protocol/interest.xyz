@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import Link from 'next/link';
 import { isEmpty } from 'ramda';
 import { FC } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import useSWR from 'swr';
 import { v4 } from 'uuid';
 
@@ -19,6 +20,7 @@ import {
   parseToMetadata,
 } from '@/utils';
 
+import { IPoolForm } from '../pools.types';
 import { PoolCardProps } from './pool-card.types';
 import PoolCardHeader from './pool-card-header';
 import PoolCardInfo from './pool-card-info';
@@ -32,6 +34,9 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const { data: prices } = useCoinsPrice(
     Array.from(new Set([...pool.tokensAddresses, MOVE.address.toString()]))
   );
+
+  const { control } = useFormContext<IPoolForm>();
+  const search = useWatch({ control, name: 'search' });
 
   const { data: metadata, isLoading } = useSWR(
     ['pool-metadata', pool.tokensAddresses, pool.poolAddress],
@@ -102,6 +107,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           '.arrow-wrapper': { opacity: 1 },
         }}
       >
+        {search}
         <PoolCardHeader
           tags={((isFarm ? ['earn'] : []) as string[]).concat([
             pool.algorithm,
