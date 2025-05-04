@@ -99,13 +99,13 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           cursor: 'pointer',
           borderColor: isFarm ? 'success' : '#76767A',
           boxShadow: '0px 24px 46px -10px rgba(13, 16, 23, 0.16)',
-          '.arrow-wrapper': { opacity: 1 },
+          '.arrow-wrapper': { display: 'block' },
         }}
       >
         <PoolCardHeader
           tags={((isFarm ? ['earn'] : []) as string[]).concat([
             pool.algorithm,
-            pool.curve,
+            pool.algorithm != 'v2' ? pool.curve : '',
           ])}
         />
         <PoolCardInfo key={v4()} coins={metadata ?? []} />

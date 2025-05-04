@@ -37,7 +37,7 @@ const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
     <Button
       mb="auto"
       isIcon
-      opacity="0"
+      display="none"
       variant="text"
       color="onSurface"
       className="arrow-wrapper"
