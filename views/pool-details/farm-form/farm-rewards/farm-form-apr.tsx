@@ -61,9 +61,9 @@ const FarmFormAPR: FC = () => {
         )
       : 0;
 
-  const apr = farms?.[0]?.rewards.map(({ rewardFa, rewardsPerSecond }) =>
+  const apr = farms?.[0]?.rewards.map(({ rewardFa }) =>
     FixedPointMath.toNumber(
-      BigNumber(String(rewardsPerSecond))
+      BigNumber(String(0))
         .times(
           prices?.find(({ coin }) => coin === MOVE.address.toString())?.price ??
             0
