@@ -2,7 +2,7 @@ import { Box } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import Link from 'next/link';
 import { isEmpty } from 'ramda';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import useSWR from 'swr';
 import { v4 } from 'uuid';
@@ -13,6 +13,7 @@ import { useCoinsPrice } from '@/hooks/use-coins-price';
 import { useFarms } from '@/hooks/use-farms';
 import { usePool } from '@/hooks/use-pool';
 import { FixedPointMath } from '@/lib';
+import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import {
   formatDollars,
   formatMoney,
@@ -34,6 +35,9 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const { data: prices } = useCoinsPrice(
     Array.from(new Set([...pool.tokensAddresses, MOVE.address.toString()]))
   );
+  const [filteredTokens, setFilteredTokens] = useState<
+    Array<AssetMetadata> | undefined
+  >([]);
 
   const { control } = useFormContext<IPoolForm>();
   const search = useWatch({ control, name: 'search' });
@@ -81,7 +85,21 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
     )
   );
 
+  useEffect(() => {
+    const tmp = metadata
+      ? metadata.filter(
+          (token) =>
+            token.symbol.toLowerCase().includes(search?.toLowerCase() || '') ||
+            token.name.toLowerCase().includes(search?.toLowerCase() || '') ||
+            token.type.toLowerCase().includes(search?.toLowerCase() || '')
+        )
+      : [];
+    setFilteredTokens(tmp);
+  }, [metadata, search]);
+
   if (isLoading) return <PoolCardSkeleton />;
+
+  if (search && !filteredTokens?.length) return;
 
   return (
     <Link
@@ -107,7 +125,6 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           '.arrow-wrapper': { opacity: 1 },
         }}
       >
-        {search}
         <PoolCardHeader
           tags={((isFarm ? ['earn'] : []) as string[]).concat([
             pool.algorithm,

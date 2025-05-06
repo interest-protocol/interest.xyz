@@ -227,7 +227,6 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
       </Box>
     );
 
-  console.log(pools, '>>>pools');
   return (
     <>
       <Box
@@ -256,18 +255,6 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
     </>
   );
 };
-/*
-const PoolCardListFiltered: FC<{ pools: ReadonlyArray<IPool> }> = ({
-  pools,
-}) => {
-
-  const filteredPool = search
-    ? pools.filter((pool) =>
-        pool.poolAddress.toLowerCase().includes(search.toLowerCase() || '')
-      )
-    : pools;
-  return pools.map((pool) => <PoolCard key={v4()} pool={pool} />);
-};*/
 
 const PoolCardList: FC<PoolCardListProps> = ({ tab }) =>
   tab === PoolTabEnum.Pools ? <Pools /> : <Position />;
