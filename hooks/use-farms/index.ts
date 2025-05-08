@@ -36,13 +36,7 @@ export const useFarms = (lpAddresses: string[]) => {
 
       if (!farms || !Array.isArray(farms) || !farms.length) return;
 
-      return fetch(`/api/v1/dex/curve/farm/${farms}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log({ data });
-
-          return data;
-        });
+      return fetch(`/api/v1/dex/curve/farm/${farms}`).then((res) => res.json());
     }
   );
 };
