@@ -45,7 +45,7 @@ export interface IPoolForm {
   selectedCoinIndex?: number;
   isFindingPool: boolean;
   settings: ISwapSettings;
-  isEarnPoolView?: boolean;
+  search?: string;
   tokenList: ReadonlyArray<PoolToken>;
   filterList: ReadonlyArray<FilterItemProps>;
 }
