@@ -13,16 +13,19 @@ const SwapPage: NextPage = () => {
   const form = useForm<SwapForm>({
     defaultValues: {
       from: {
-        ...TOKENS.map((metadata) =>
-          parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
-        )[0],
+        ...parseToMetadata({
+          name: TOKENS[0].name,
+          symbol: TOKENS[0].symbol,
+          iconUri: TOKENS[0].iconUri,
+          address: TOKENS[0].address,
+          decimals: TOKENS[0].decimals,
+          projectUri: TOKENS[0].projectUri ?? '',
+        } as FAMetadata),
         value: '',
         valueBN: ZERO_BIG_NUMBER,
       },
       to: {
-        ...TOKENS.map((metadata) =>
-          parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
-        )[1],
+        ...parseToMetadata(TOKENS[1] as unknown as CoinMetadata | FAMetadata),
         value: '',
         valueBN: ZERO_BIG_NUMBER,
       },
