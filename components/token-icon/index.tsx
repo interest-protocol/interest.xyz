@@ -215,6 +215,7 @@ const TokenIcon: FC<TokenIconProps> = ({
                 objectFit: 'cover',
                 width: `calc(${size} * 1.66)`,
                 height: `calc(${size} * 1.66)`,
+                position: 'absolute',
               }}
             />
           </Box>
@@ -272,6 +273,7 @@ const TokenIcon: FC<TokenIconProps> = ({
                   objectFit: 'cover',
                   width: `calc(${size} * 1.66)`,
                   height: `calc(${size} * 1.66)`,
+                  position: 'absolute',
                 }}
               />
             )}
