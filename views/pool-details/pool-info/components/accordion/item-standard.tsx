@@ -50,7 +50,7 @@ const PoolDetailsCollapseItemStandard: FC<
             whiteSpace="nowrap"
             textOverflow="ellipsis"
           >
-            {loading ? <Skeleton width="5rem" /> : content}
+            {loading ? <Skeleton width="5rem" /> : content.value}
           </Typography>
         </Box>
         {!loading && (
@@ -77,7 +77,10 @@ const PoolDetailsCollapseItemStandard: FC<
               <ClipboardSVG
                 onClick={(e) => {
                   e.stopPropagation();
-                  copyToClipboard(content.toString(), clipBoardSuccessMessage);
+                  copyToClipboard(
+                    (content.copyClipboard || '').toString(),
+                    clipBoardSuccessMessage
+                  );
                 }}
                 width="1.25rem"
                 cursor="pointer"
