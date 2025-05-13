@@ -7,8 +7,9 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
+import { useFarms } from '@/hooks/use-farms';
 import { FixedPointMath } from '@/lib';
-import { formatDollars, formatMoney } from '@/utils';
+import { formatAddress, formatDollars, formatMoney } from '@/utils';
 
 import { usePoolDetails } from '../../pool-details.context';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
@@ -23,6 +24,7 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
   const { pool, loading } = usePoolDetails();
+  const { data: farms } = useFarms([pool.poolAddress]);
   if (!pool || loading) return <PoolInfoLoading />;
 
   const isVolatile = pool.curve == 'volatile';
@@ -59,7 +61,7 @@ const PoolInfoDetailsPool: FC = () => {
   };
 
   const infoData = [
-    (query.address as string) ?? 'N/A',
+    formatAddress(query.address as string) ?? 'N/A',
     pool.algorithm.toUpperCase(),
     pool.curve,
     ...(pool.algorithm === 'curve'
@@ -90,7 +92,7 @@ const PoolInfoDetailsPool: FC = () => {
           }
           loading={loading}
           popupInfo={popupInfo}
-          content={`${infoData[index]}`.toUpperCase()}
+          content={`${infoData[index]}`}
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}

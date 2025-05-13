@@ -148,3 +148,6 @@ export function isHexString(value: any, length?: number): boolean {
   }
   return true;
 }
+
+export const formatAddress = (address: string): string =>
+  `${address.slice(0, 6)}...${address.slice(-4)}`;
