@@ -8,7 +8,7 @@ import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { FixedPointMath } from '@/lib';
-import { formatDollars, formatMoney } from '@/utils';
+import { formatAddress, formatDollars, formatMoney } from '@/utils';
 
 import { usePoolDetails } from '../../pool-details.context';
 import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
@@ -59,7 +59,7 @@ const PoolInfoDetailsPool: FC = () => {
   };
 
   const infoData = [
-    (query.address as string) ?? 'N/A',
+    formatAddress(query.address as string) ?? 'N/A',
     pool.algorithm.toUpperCase(),
     pool.curve,
     ...(pool.algorithm === 'curve'
@@ -90,7 +90,7 @@ const PoolInfoDetailsPool: FC = () => {
           }
           loading={loading}
           popupInfo={popupInfo}
-          content={`${infoData[index]}`.toUpperCase()}
+          content={`${infoData[index]}`}
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}
