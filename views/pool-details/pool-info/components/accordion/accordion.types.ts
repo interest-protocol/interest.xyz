@@ -15,7 +15,12 @@ export interface PoolDetailAccordionItemData {
 export interface PoolDetailAccordionItemStandardProps
   extends PoolDetailAccordionItemData {
   loading: boolean;
-  content: string | number;
+  content: ContentDataProps;
+}
+
+export interface ContentDataProps {
+  value: string | number;
+  copyClipboard?: string;
 }
 
 export interface PoolDetailAccordionItemCoinProps {

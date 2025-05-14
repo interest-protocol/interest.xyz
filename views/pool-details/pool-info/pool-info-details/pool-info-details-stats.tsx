@@ -40,7 +40,7 @@ const PoolInfoDetailsStats: FC = () => {
           label={label}
           loading={loading}
           popupInfo={popupInfo}
-          content={statsData[index]}
+          content={{ value: statsData[index] }}
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}
