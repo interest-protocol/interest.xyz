@@ -32,7 +32,11 @@ const PoolForm: FC = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent={['center', 'flex-start']}>
+      <Box
+        display="flex"
+        justifyContent={['center', 'flex-start']}
+        mx={['auto', 'auto', 'auto', 'unset']}
+      >
         <Tabs
           type="circle"
           onChangeTab={setPoolOptionView}

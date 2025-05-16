@@ -63,7 +63,7 @@ const PoolFilter: FC = () => {
             />
           ))}
         </Box>
-        <Box>
+        <Box mb="xs">
           <TextField
             fontSize="medium"
             placeholder="Search pools"
