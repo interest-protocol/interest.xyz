@@ -82,7 +82,8 @@ const Dropdown: FC<DropdownProps> = ({ label, type, filterData, disabled }) => {
       <Box>
         <Button
           py="s"
-          my="xs"
+          mb="xs"
+          mt={['unset', 'unset', 'unset', 'xs']}
           variant="filled"
           color="onSurface"
           nHover={{ bg: 'container' }}

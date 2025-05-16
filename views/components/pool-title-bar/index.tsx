@@ -48,73 +48,93 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
         flexWrap="wrap"
         maxWidth="65rem"
         borderRadius="xs"
-        flexDirection="row"
+        flexDirection={['column', 'column', 'row', 'row']}
+        justifyContent="space-between"
         alignItems="center"
         position="sticky"
         px={['m', 'm', 'xl']}
       >
-        <Button
-          isIcon
-          mr="xs"
-          p="unset"
-          variant="text"
-          onClick={onBack}
-          color="onSurface"
-          nHover={{ bg: 'surface' }}
+        <Box
+          display="flex"
+          gridTemplateColumns="2rem 1fr"
+          width={['100%', '100%', '100%', 'auto']}
         >
-          <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
-        </Button>
-        <Box gap="s" mx="auto" display="flex" flexWrap="wrap" flex="1">
-          <Box display="flex" gap="s" flexWrap="wrap" alignItems="center">
-            <Box display="flex" gap="s">
-              <Box gap="s" ml="auto" display="flex" alignItems="center">
-                {!loading ? (
-                  tokens.map(({ symbol, standard }) => (
-                    <TokenIcon
-                      withBg
-                      key={v4()}
-                      size="1rem"
-                      symbol={symbol}
-                      network={network}
-                      rounded={standard === TokenStandard.COIN}
-                    />
-                  ))
-                ) : (
+          <Button
+            isIcon
+            mr="xs"
+            p="unset"
+            variant="text"
+            onClick={onBack}
+            color="onSurface"
+            nHover={{ bg: 'surface' }}
+          >
+            <ArrowLeftSVG width="1.5rem" maxWidth="1.5rem" maxHeight="1.5rem" />
+          </Button>
+          <Box
+            gap="s"
+            flex="1"
+            mx="auto"
+            display="flex"
+            flexWrap="wrap"
+            justifyContent="center"
+            pr="2rem"
+          >
+            <Box display="flex" gap="s" flexWrap="wrap" alignItems="center">
+              <Box display="flex" gap="s">
+                <Box gap="s" ml="auto" display="flex" alignItems="center">
+                  {!loading ? (
+                    tokens.map(({ symbol, standard }) => (
+                      <TokenIcon
+                        withBg
+                        key={v4()}
+                        size="1rem"
+                        symbol={symbol}
+                        network={network}
+                        rounded={standard === TokenStandard.COIN}
+                      />
+                    ))
+                  ) : (
+                    <Box display="flex" gap="s">
+                      <Skeleton
+                        width="calc(1.5rem * 1.66)"
+                        height="calc(1.5rem * 1.66)"
+                      />
+                      <Skeleton
+                        width="calc(1.5rem * 1.66)"
+                        height="calc(1.5rem * 1.66)"
+                      />
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+              <Typography
+                size="medium"
+                variant="title"
+                color="onSurface"
+                textAlign="center"
+                ml={centerTile ? 'auto' : ''}
+              >
+                {loading || !tokens.length || !tokens[0]?.symbol ? (
                   <Box display="flex" gap="s">
-                    <Skeleton
-                      width="calc(1.5rem * 1.66)"
-                      height="calc(1.5rem * 1.66)"
-                    />
-                    <Skeleton
-                      width="calc(1.5rem * 1.66)"
-                      height="calc(1.5rem * 1.66)"
-                    />
+                    <Skeleton width="2rem" height="2rem" />
+                    <Skeleton width="2rem" height="2rem" />
+                  </Box>
+                ) : (
+                  <Box as="span" fontFamily="Satoshi">
+                    {name}
                   </Box>
                 )}
-              </Box>
+              </Typography>
             </Box>
-            <Typography
-              size="medium"
-              variant="title"
-              color="onSurface"
-              textAlign="center"
-              ml={centerTile ? 'auto' : ''}
-            >
-              {loading || !tokens.length || !tokens[0]?.symbol ? (
-                <Box display="flex" gap="s">
-                  <Skeleton width="2rem" height="2rem" />
-                  <Skeleton width="2rem" height="2rem" />
-                </Box>
-              ) : (
-                <Box as="span" fontFamily="Satoshi">
-                  {name}
-                </Box>
-              )}
-            </Typography>
           </Box>
+          <Box />
         </Box>
         {isFarm && (
-          <Box display="flex" justifyContent={['center', 'flex-end']}>
+          <Box
+            display="flex"
+            justifyContent={['center', 'flex-end']}
+            mx={['auto', 'auto', 'auto', 'unset']}
+          >
             <Tabs
               type="circle"
               onChangeTab={setMode}

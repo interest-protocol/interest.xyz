@@ -7,12 +7,14 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
-import { useFarms } from '@/hooks/use-farms';
 import { FixedPointMath } from '@/lib';
 import { formatAddress, formatDollars, formatMoney } from '@/utils';
 
 import { usePoolDetails } from '../../pool-details.context';
-import { PoolDetailAccordionItemStandardProps } from '../components/accordion/accordion.types';
+import {
+  ContentDataProps,
+  PoolDetailAccordionItemStandardProps,
+} from '../components/accordion/accordion.types';
 import ItemStandard from '../components/accordion/item-standard';
 import {
   POOL_CURVE_STABLE_INFO,
@@ -24,46 +26,57 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
   const { pool, loading } = usePoolDetails();
-  const { data: farms } = useFarms([pool.poolAddress]);
   if (!pool || loading) return <PoolInfoLoading />;
 
   const isVolatile = pool.curve == 'volatile';
   const isV2 = pool.algorithm == 'v2';
 
-  const getVolatileData = () => {
+  const getVolatileData = (): ReadonlyArray<ContentDataProps> => {
     const poolExtraData = pool.poolExtraData as unknown as VolatilePool;
     const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]]?.price;
     const price = priceRaw
       ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
       : '0';
     return [
-      FixedPointMath.toNumber(BigNumber(poolExtraData.a), 0),
-      FixedPointMath.toNumber(
-        BigNumber(poolExtraData.gamma),
-        0
-      ).toExponential(),
-      price,
-      formatDollars(
-        FixedPointMath.toNumber(
-          BigNumber(String(poolExtraData.virtualPrice)),
-          18
+      { value: FixedPointMath.toNumber(BigNumber(poolExtraData.a), 0) },
+      {
+        value: FixedPointMath.toNumber(
+          BigNumber(poolExtraData.gamma),
+          0
+        ).toExponential(),
+      },
+      { value: price },
+      {
+        value: formatDollars(
+          FixedPointMath.toNumber(
+            BigNumber(String(poolExtraData.virtualPrice)),
+            18
+          ),
+          4
         ),
-        4
-      ),
+      },
     ];
   };
 
-  const getStableData = () => {
+  const getStableData = (): ReadonlyArray<ContentDataProps> => {
     const poolExtraData = pool.poolExtraData as unknown as StablePool;
     return [
-      FixedPointMath.toNumber(BigNumber(String(poolExtraData.initialA)), 0),
+      {
+        value: FixedPointMath.toNumber(
+          BigNumber(String(poolExtraData.initialA)),
+          0
+        ),
+      },
     ];
   };
 
-  const infoData = [
-    formatAddress(query.address as string) ?? 'N/A',
-    pool.algorithm.toUpperCase(),
-    pool.curve,
+  const infoData: ReadonlyArray<ContentDataProps> = [
+    {
+      value: formatAddress(query.address as string) ?? 'N/A',
+      copyClipboard: query.address as string,
+    },
+    { value: pool.algorithm.toUpperCase() },
+    { value: pool.curve },
     ...(pool.algorithm === 'curve'
       ? isVolatile
         ? getVolatileData()
@@ -92,7 +105,7 @@ const PoolInfoDetailsPool: FC = () => {
           }
           loading={loading}
           popupInfo={popupInfo}
-          content={`${infoData[index]}`}
+          content={infoData[index]}
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}

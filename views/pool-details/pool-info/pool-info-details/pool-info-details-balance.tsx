@@ -34,14 +34,16 @@ const PoolInfoDetailsBalance: FC = () => {
           key={v4()}
           loading={loading}
           label={metadata?.[normalizeSuiAddress(address)]?.symbol ?? ''}
-          content={`${formatMoney(
-            +FixedPointMath.toNumber(
-              BigNumber(String(pool.balances?.[index] ?? 0)),
-              pool.algorithm === 'curve'
-                ? 18
-                : (metadata?.[normalizeSuiAddress(address)]?.decimals ?? 8)
-            ).toFixed(6)
-          )} ${metadata?.[normalizeSuiAddress(address)]?.symbol}`}
+          content={{
+            value: `${formatMoney(
+              +FixedPointMath.toNumber(
+                BigNumber(String(pool.balances?.[index] ?? 0)),
+                pool.algorithm === 'curve'
+                  ? 18
+                  : (metadata?.[normalizeSuiAddress(address)]?.decimals ?? 8)
+              ).toFixed(6)
+            )} ${metadata?.[normalizeSuiAddress(address)]?.symbol}`,
+          }}
         />
       ))}
     </Accordion>
