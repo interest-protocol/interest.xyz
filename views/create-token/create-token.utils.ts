@@ -25,7 +25,6 @@ export const getBase64 = async (file: File) => {
 export const logCreateToken = (
   address: string,
   symbol: string,
-  deploy: boolean,
   network: Network,
   txDigest: string
 ) =>
@@ -39,7 +38,7 @@ export const logCreateToken = (
     body: JSON.stringify({
       address,
       txDigest,
-      kind: deploy ? 'createAndDeployToken' : 'createToken',
+      kind: 'createToken',
       data: {
         symbol,
       },

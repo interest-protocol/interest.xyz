@@ -8,7 +8,6 @@ import useEventListener from '@/hooks/use-event-listener';
 
 import { FormFilterValue } from '../pool-card/pool-card.types';
 import { FilterItemProps, FilterTypeEnum, IPoolForm } from '../pools.types';
-import CreatePoolButton from './create-pool-button';
 import FindPoolButton from './find-pool-button';
 import { HeaderProps } from './header.types';
 
@@ -110,7 +109,6 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
         />
         <Box display="flex" gap="s">
           <FindPoolButton />
-          <CreatePoolButton />
         </Box>
       </Box>
     </Box>

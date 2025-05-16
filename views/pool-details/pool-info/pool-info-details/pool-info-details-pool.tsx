@@ -26,6 +26,7 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
   const { pool, loading } = usePoolDetails();
+
   if (!pool || loading) return <PoolInfoLoading />;
 
   const isVolatile = pool.curve == 'volatile';
