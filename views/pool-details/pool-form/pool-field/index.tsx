@@ -18,7 +18,6 @@ import Balance from './balance';
 import MaxButton from './input-max-button';
 import { PoolFieldsProps } from './pool-field.types';
 import PoolFieldManager from './pool-field-manager';
-import TokenInputDollar from './token-input-dollar';
 
 const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
   const { loading } = usePoolDetails();
@@ -59,9 +58,6 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
         textAlign="right"
         Balance={<Balance name={fieldName} />}
         ButtonMax={<MaxButton name={fieldName} />}
-        Bottom={
-          <TokenInputDollar index={index} poolOptionView={poolOptionView} />
-        }
         fieldProps={{ bg: 'lowestContainer', p: 'xs' }}
         TokenIcon={
           <Box display="flex" alignItems="center" gap="s">

@@ -19,6 +19,22 @@ export const POOL_INFORMATION: PoolDetailAccordionData = {
   ],
 };
 
+export const FARM_INFORMATION: PoolDetailAccordionData = {
+  title: 'FARM INFORMATION',
+  data: [
+    {
+      label: 'Address',
+      isCopyClipBoard: true,
+    },
+    {
+      label: 'Staked Balance',
+    },
+    {
+      label: 'APR',
+    },
+  ],
+};
+
 export const POOL_CURVE_VOLATILE_INFO: Array<PoolDetailAccordionItemData> = [
   {
     label: 'A',

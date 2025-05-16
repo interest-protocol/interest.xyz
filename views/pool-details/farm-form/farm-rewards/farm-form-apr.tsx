@@ -15,7 +15,7 @@ import { formatMoney, getCoinMetadata, parseToMetadata } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
 const FarmFormAPR: FC = () => {
-  const { getValues } = useFormContext<IPoolForm>();
+  const { getValues, setValue } = useFormContext<IPoolForm>();
   const { data: farms } = useFarms([getValues('pool.poolAddress')]);
   const { data: prices } = useCoinsPrice(
     Array.from(
@@ -73,6 +73,11 @@ const FarmFormAPR: FC = () => {
     )
   );
 
+  const aprValue = formatMoney(
+    ((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1)
+  );
+  if (!getValues('apr')) setValue('apr', aprValue);
+
   return (
     <Box
       py={['m', 'unset']}
@@ -94,14 +99,7 @@ const FarmFormAPR: FC = () => {
       </Box>
       <Box display="flex" alignItems="center">
         <Typography variant="body" ml="xs" size="medium">
-          {isLoading ? (
-            <Skeleton width="4rem" />
-          ) : (
-            formatMoney(
-              ((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1)
-            )
-          )}
-          %
+          {isLoading ? <Skeleton width="4rem" /> : aprValue}%
         </Typography>
       </Box>
     </Box>

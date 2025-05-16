@@ -46,6 +46,7 @@ export interface IPoolForm {
   isFindingPool: boolean;
   settings: ISwapSettings;
   search?: string;
+  apr?: string;
   tokenList: ReadonlyArray<PoolToken>;
   filterList: ReadonlyArray<FilterItemProps>;
 }

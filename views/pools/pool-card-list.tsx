@@ -34,36 +34,18 @@ const Pools: FC = () => {
     name: ['filterList', 'isFindingPool'],
   });
 
-  const { data, isLoading: arePoolsLoading } = usePools(
-    page,
-    isFindingPool
-      ? {
-          $and: [
-            {
-              metadataX: {
-                $in: tokenList?.map(({ type }) => type.toString()),
-              },
-            },
-            {
-              metadataY: {
-                $in: tokenList?.map(({ type }) => type.toString()),
-              },
-            },
-          ],
-        }
-      : {}
-  );
-
   useEffect(() => {
     if (isFindingPool || page != 1) {
-      setPools([[]]);
+      setPools([
+        POOLS.filter(
+          (pool) =>
+            tokenList[0].type == pool?.tokensAddresses?.[0] &&
+            tokenList[1].type == pool?.tokensAddresses?.[1]
+        ),
+      ]);
       setPage(1);
     }
   }, [isFindingPool, filterProps]);
-
-  useEffect(() => {
-    if (data?.pools) setPools([...pools.slice(0, page), data.pools]);
-  }, [data?.pools]);
 
   const memoPools = useMemo(
     () =>
@@ -89,11 +71,11 @@ const Pools: FC = () => {
 
   return (
     <PoolCardListContent
+      done={true}
+      hasMore={false}
       pools={memoPools}
-      done={!!data?.done}
+      arePoolsLoading={false}
       next={() => setPage(inc)}
-      arePoolsLoading={arePoolsLoading}
-      hasMore={(data?.totalPages ?? 0) > page}
     />
   );
 };

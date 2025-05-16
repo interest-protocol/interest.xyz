@@ -43,7 +43,7 @@ const PoolDetails: FC = () => {
           alignItems={['unset', 'unset', 'unset', 'start']}
         >
           <PoolDetailsForm mode={mode} />
-          <PoolInfo />
+          <PoolInfo mode={mode} />
         </Box>
       </Box>
     </Layout>
