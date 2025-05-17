@@ -41,12 +41,28 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
     setValue(`tokenList.0.locked`, false);
     setValue(`tokenList.1.locked`, false);
     setValue(`${fieldName}.locked`, true);
-
-    setValue(`${fieldName}.value`, amount);
-    setValue(
-      `${fieldName}.valueBN`,
-      FixedPointMath.toBigNumber(amount, token?.decimals)
-    );
+    if (getValues('syncBalances'))
+      for (
+        let tmpIndex = 0;
+        tmpIndex < getValues('tokenList').length;
+        tmpIndex++
+      ) {
+        setValue(`tokenList.${tmpIndex}.value`, amount);
+        setValue(
+          `tokenList.${tmpIndex}.valueBN`,
+          FixedPointMath.toBigNumber(
+            amount,
+            getValues(`tokenList.${tmpIndex}.decimals`)
+          )
+        );
+      }
+    else {
+      setValue(`${fieldName}.value`, amount);
+      setValue(
+        `${fieldName}.valueBN`,
+        FixedPointMath.toBigNumber(amount, token?.decimals)
+      );
+    }
   };
 
   return (

@@ -30,14 +30,14 @@ const PoolFieldManager: FC<NameProps> = ({ name }) => {
 
     if (pool.algorithm === 'curve') {
       if (name !== 'lpCoin') {
-        if (!getValues('tokenList').some(({ value }) => Number(value))) {
+        if (!tokenList.some(({ value }) => Number(value))) {
           setValue('lpCoin.value', '0');
           setValue('lpCoin.valueBN', ZERO_BIG_NUMBER);
         } else
           curveDex
             .quoteAddLiquidity({
               pool: pool.poolAddress,
-              amountsIn: getValues('tokenList').map((token) =>
+              amountsIn: tokenList.map((token) =>
                 BigInt(token.valueBN?.isZero() ? 0 : token.valueBN.toFixed(0))
               ),
             })
