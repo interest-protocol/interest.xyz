@@ -1,7 +1,7 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { isEmpty } from 'ramda';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
@@ -76,7 +76,10 @@ const FarmFormAPR: FC = () => {
   const aprValue = formatMoney(
     ((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1)
   );
-  if (!getValues('apr')) setValue('apr', aprValue);
+
+  useEffect(() => {
+    setValue('apr', aprValue);
+  }, [farms, isLoading]);
 
   return (
     <Box

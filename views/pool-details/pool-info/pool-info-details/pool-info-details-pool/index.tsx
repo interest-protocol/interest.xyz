@@ -10,18 +10,19 @@ import { v4 } from 'uuid';
 import { FixedPointMath } from '@/lib';
 import { formatAddress, formatDollars, formatMoney } from '@/utils';
 
-import { usePoolDetails } from '../../pool-details.context';
+import { usePoolDetails } from '../../../pool-details.context';
 import {
   ContentDataProps,
   PoolDetailAccordionItemStandardProps,
-} from '../components/accordion/accordion.types';
-import ItemStandard from '../components/accordion/item-standard';
+} from '../../components/accordion/accordion.types';
+import ItemStandard from '../../components/accordion/item-standard';
 import {
   POOL_CURVE_STABLE_INFO,
   POOL_CURVE_VOLATILE_INFO,
   POOL_INFORMATION,
-} from '../pool-info.data';
-import PoolInfoLoading from '../pool-info-loading';
+} from '../../pool-info.data';
+import PoolInfoLoading from '../../pool-info-loading';
+import OtherInfoDetails from './other-details';
 
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
@@ -78,6 +79,7 @@ const PoolInfoDetailsPool: FC = () => {
     },
     { value: pool.algorithm.toUpperCase() },
     { value: pool.curve },
+    { value: formatDollars(123) },
     ...(pool.algorithm === 'curve'
       ? isVolatile
         ? getVolatileData()
@@ -110,6 +112,7 @@ const PoolInfoDetailsPool: FC = () => {
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}
+      <OtherInfoDetails pool={pool} />
     </>
   );
 };

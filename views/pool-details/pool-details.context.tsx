@@ -34,23 +34,31 @@ export const PoolDetailsProvider: FC<
   const { pool, loading } = usePool(address);
   const { setValue, getValues } = useFormContext<IPoolForm>();
 
-  useSWR([PoolDetailsProvider.name, pool?.poolAddress], async () => {
-    if (pool) {
-      setValue('pool', pool);
-      if (pool.tokensMetadata)
-        setValue(
-          'tokenList',
-          pool.tokensMetadata.map((metadata, index) => ({
-            ...getValues('tokenList')[index],
-            ...metadata,
-          }))
-        );
-      setValue('lpCoin', {
-        ...getValues('lpCoin'),
-        ...pool.poolMetadata,
-      });
+  useSWR(
+    [PoolDetailsProvider.name, pool?.poolAddress],
+    async () => {
+      if (pool) {
+        setValue('pool', pool);
+        if (pool.tokensMetadata)
+          setValue(
+            'tokenList',
+            pool.tokensMetadata.map((metadata, index) => ({
+              ...getValues('tokenList')[index],
+              ...metadata,
+            }))
+          );
+        setValue('lpCoin', {
+          ...getValues('lpCoin'),
+          ...pool.poolMetadata,
+        });
+      }
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+      refreshWhenHidden: false,
     }
-  });
+  );
 
   return <Provider value={{ loading, pool, config }}>{children}</Provider>;
 };

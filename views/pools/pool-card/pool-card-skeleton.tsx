@@ -34,7 +34,7 @@ const PoolCardSkeleton: FC = () => {
     >
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" flexWrap="wrap" alignItems="center">
-          {Array.from({ length: 2 }, () => (
+          {Array.from({ length: 3 }, () => (
             <Tag
               key={v4()}
               px="0"

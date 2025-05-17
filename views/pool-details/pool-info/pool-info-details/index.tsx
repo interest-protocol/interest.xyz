@@ -7,14 +7,16 @@ import PoolInfoDetailsBalance from './pool-info-details-balance';
 import PoolInfoDetailsPool from './pool-info-details-pool';
 import PoolInfoDetailsStats from './pool-info-details-stats';
 
-const PoolDetails: FC = () => (
-  <Box>
-    <Accordion title={POOL_INFORMATION.title}>
-      <PoolInfoDetailsPool />
-    </Accordion>
-    <PoolInfoDetailsBalance />
-    <PoolInfoDetailsStats />
-  </Box>
-);
+const PoolDetails: FC = () => {
+  return (
+    <Box>
+      <Accordion title={POOL_INFORMATION.title}>
+        <PoolInfoDetailsPool />
+      </Accordion>
+      <PoolInfoDetailsBalance />
+      <PoolInfoDetailsStats />
+    </Box>
+  );
+};
 
 export default PoolDetails;

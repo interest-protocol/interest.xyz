@@ -37,6 +37,34 @@ export interface PoolTokenWithMetadata extends AssetMetadata {
 
 export type PoolToken = PoolTokenWithMetadata;
 
+export interface Metric {
+  coins: ReadonlyArray<string>;
+  poolId: string;
+  balances: ReadonlyArray<string>;
+  symbols: ReadonlyArray<string>;
+  adminFee: number;
+  isStable: boolean;
+  metrics: {
+    tvl: string;
+    tvl1D: string;
+    tvl7D: string;
+    tvl30D: string;
+    apr: string;
+    fees: string;
+    fees1D: string;
+    fees7D: string;
+    fees30D: string;
+    volume: string;
+    volume1D: string;
+    volume7D: string;
+    volume30D: string;
+    revenue: string;
+    revenue1D: string;
+    revenue7D: string;
+    revenue30D: string;
+  };
+}
+
 export interface IPoolForm {
   pool: IPool;
   lpCoin: PoolToken;
@@ -47,6 +75,7 @@ export interface IPoolForm {
   settings: ISwapSettings;
   search?: string;
   apr?: string;
+  metrics?: ReadonlyArray<Metric>;
   tokenList: ReadonlyArray<PoolToken>;
   filterList: ReadonlyArray<FilterItemProps>;
 }
