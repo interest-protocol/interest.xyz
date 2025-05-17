@@ -55,6 +55,9 @@ const OtherInfoDetails: FC<PoolCardProps> = ({ pool }) => {
         )
       : 0;
 
+  const volume = metrics?.data?.filter(
+    (metric) => metric.poolId == pool.poolAddress
+  );
   return (
     <>
       <ItemStandard
@@ -68,13 +71,9 @@ const OtherInfoDetails: FC<PoolCardProps> = ({ pool }) => {
         label="Volume"
         loading={loadingVolume}
         content={{
-          value: formatDollars(
-            Number(
-              metrics?.data?.filter(
-                (metric) => metric.poolId == pool.poolAddress
-              )?.[0].metrics.volume ?? '0'
-            )
-          ),
+          value: volume?.length
+            ? formatDollars(Number(volume?.[0].metrics.volume))
+            : 'N/A',
         }}
       />
     </>

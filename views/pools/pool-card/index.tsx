@@ -101,12 +101,9 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
 
   if (search && !filteredTokens?.length) return;
 
-  const volume = Number(
-    getValues('metrics')?.filter(
-      (metric) => metric.poolId == pool.poolAddress
-    )?.[0].metrics.volume ?? '0'
+  const volume = getValues('metrics')?.filter(
+    (metric) => metric.poolId == pool.poolAddress
   );
-
   return (
     <Link
       href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
@@ -154,7 +151,11 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           <PoolCardTrade
             noBorder
             description="Volume"
-            amount={formatDollars(volume)}
+            amount={
+              volume?.length
+                ? formatDollars(Number(volume?.[0].metrics.volume))
+                : 'N/A'
+            }
             tooltipInfo="Volume"
           />
         </Box>
