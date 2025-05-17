@@ -75,6 +75,7 @@ export interface IPoolForm {
   settings: ISwapSettings;
   search?: string;
   apr?: string;
+  syncBalances?: boolean;
   metrics?: ReadonlyArray<Metric>;
   tokenList: ReadonlyArray<PoolToken>;
   filterList: ReadonlyArray<FilterItemProps>;
