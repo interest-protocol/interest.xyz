@@ -3,7 +3,9 @@ import useSWR from 'swr';
 import { Metric } from '@/views/pools/pools.types';
 
 export interface IAPIMetrics {
+  tvl: number;
   total: number;
+  volume: number;
   totalPages: number;
   data: ReadonlyArray<Metric>;
 }
