@@ -21,7 +21,7 @@ const SyncButton: FC = () => {
       onClick={() => setValue('syncBalances', not(syncBalance))}
     >
       <Typography variant="label" size="large">
-        Synchronise the balances
+        Balanced
       </Typography>
       <ToggleButton
         name="syncButton"

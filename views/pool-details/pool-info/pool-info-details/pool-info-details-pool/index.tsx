@@ -79,7 +79,6 @@ const PoolInfoDetailsPool: FC = () => {
     },
     { value: pool.algorithm.toUpperCase() },
     { value: pool.curve },
-    { value: formatDollars(123) },
     ...(pool.algorithm === 'curve'
       ? isVolatile
         ? getVolatileData()

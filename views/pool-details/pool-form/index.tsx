@@ -36,6 +36,14 @@ const PoolForm: FC = () => {
       <Box
         display="flex"
         justifyContent={['center', 'space-between']}
+        alignItems="center"
+        gap="m"
+        flexDirection={[
+          'column-reverse',
+          'column-reverse',
+          'column-reverse',
+          'row',
+        ]}
         mx={['auto', 'auto', 'auto', 'unset']}
       >
         <Tabs
