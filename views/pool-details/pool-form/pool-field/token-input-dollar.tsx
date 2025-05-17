@@ -13,7 +13,7 @@ import { PoolOption } from '../../pool-details.types';
 import { PoolFieldsProps } from './pool-field.types';
 
 const TokenInputDollar: FC<PoolFieldsProps> = ({ poolOptionView, index }) => {
-  const { getValues, control } = useFormContext<IPoolForm>();
+  const { getValues } = useFormContext<IPoolForm>();
   const { pool, loading } = usePoolDetails();
 
   if (loading) return;
@@ -30,8 +30,6 @@ const TokenInputDollar: FC<PoolFieldsProps> = ({ poolOptionView, index }) => {
     address: key,
     ...value,
   }));
-
-  console.log(index, token?.type, '>>>check', prices[index].price);
 
   return (
     <Typography

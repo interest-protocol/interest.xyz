@@ -109,7 +109,7 @@ export const formatMoney = (
 };
 
 export const formatDollars = (money: number, max = 6): string =>
-  '$' + formatMoney(money, max);
+  formatMoney(money, max) + ' $';
 
 export const parseInputEventToNumberString = (
   event: ChangeEvent<HTMLInputElement>,

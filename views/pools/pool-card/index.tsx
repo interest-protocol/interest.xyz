@@ -39,7 +39,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
     Array<AssetMetadata> | undefined
   >([]);
 
-  const { control } = useFormContext<IPoolForm>();
+  const { control, getValues } = useFormContext<IPoolForm>();
   const search = useWatch({ control, name: 'search' });
 
   const { data: metadata, isLoading } = useSWR(
@@ -101,6 +101,12 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
 
   if (search && !filteredTokens?.length) return;
 
+  const volume = Number(
+    getValues('metrics')?.filter(
+      (metric) => metric.poolId == pool.poolAddress
+    )?.[0].metrics.volume ?? '0'
+  );
+
   return (
     <Link
       href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
@@ -144,6 +150,12 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
             description="TVL"
             amount={formatDollars(tvl)}
             tooltipInfo="Total Value Locked"
+          />
+          <PoolCardTrade
+            noBorder
+            description="Volume"
+            amount={formatDollars(volume)}
+            tooltipInfo="Volume"
           />
         </Box>
       </Box>

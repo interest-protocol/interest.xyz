@@ -6,6 +6,7 @@ import { v4 } from 'uuid';
 
 import { FARMS_BY_LP } from '@/constants';
 import { POOLS } from '@/constants/pools';
+import { useMetrics } from '@/hooks';
 import { usePools } from '@/hooks/use-pools';
 import { IPool } from '@/interface';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
@@ -238,7 +239,15 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
   );
 };
 
-const PoolCardList: FC<PoolCardListProps> = ({ tab }) =>
-  tab === PoolTabEnum.Pools ? <Pools /> : <Position />;
+const PoolCardList: FC<PoolCardListProps> = ({ tab }) => {
+  const { setValue, getValues } = useFormContext<IPoolForm>();
+  const { data: metrics, isLoading } = useMetrics();
+
+  useEffect(() => {
+    if (!isLoading && !getValues('metrics')) setValue('metrics', metrics?.data);
+  }, [isLoading]);
+
+  return tab === PoolTabEnum.Pools ? <Pools /> : <Position />;
+};
 
 export default PoolCardList;
