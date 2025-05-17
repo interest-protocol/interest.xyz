@@ -79,7 +79,7 @@ const FarmFormAPR: FC = () => {
 
   useEffect(() => {
     setValue('apr', aprValue);
-  }, [farms, isLoading]);
+  }, [farms, apr, isLoading]);
 
   return (
     <Box
