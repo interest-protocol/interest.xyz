@@ -110,6 +110,7 @@ export { default as USDSVG } from './usd';
 export { default as USDCSVG } from './usdc';
 export { default as USDTSVG } from './usdt';
 export { default as UserSVG } from './user';
+export { default as VolumeSVG } from './volume';
 export { default as WalletSVG } from './wallet';
 export { default as WalletMenuSVG } from './wallet-menu';
 export { default as WarningSVG } from './warning';

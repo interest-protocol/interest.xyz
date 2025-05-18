@@ -150,13 +150,23 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           />
           <PoolCardTrade
             noBorder
-            description="24h volume"
+            description="Fees (24h)"
             amount={
               volume?.length
-                ? formatDollars(Number(volume?.[0].metrics.volume))
+                ? formatDollars(Number(volume?.[0].metrics.fees1D))
                 : 'N/A'
             }
-            tooltipInfo="24h volume"
+            tooltipInfo="Fees (24h)"
+          />
+          <PoolCardTrade
+            noBorder
+            description="Volume (24h)"
+            amount={
+              volume?.length
+                ? formatDollars(Number(volume?.[0].metrics.volume1D))
+                : 'N/A'
+            }
+            tooltipInfo="Volume (24h)"
           />
         </Box>
       </Box>
