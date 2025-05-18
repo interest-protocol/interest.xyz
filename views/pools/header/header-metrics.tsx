@@ -1,9 +1,9 @@
-import { Box, Typography } from '@interest-protocol/ui-kit';
+import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
-import Skeleton from 'react-loading-skeleton';
 
 import { useMetrics } from '@/hooks';
-import { formatDollars } from '@/utils';
+
+import HeaderInfoCard from './header-info-card';
 
 const HeaderMetrics: FC = () => {
   const { data: metrics, isLoading } = useMetrics();
@@ -11,32 +11,30 @@ const HeaderMetrics: FC = () => {
   const loading = isLoading || !metrics;
 
   return (
-    <Box color="onSurface" display="flex" alignItems="center" gap="m">
-      <Typography as="p" variant="label" size="large">
-        Volume:{' '}
-        <Typography as="span" variant="label" size="large" color="primary">
-          {loading ? (
-            <Skeleton height="100%" width="4rem" />
-          ) : metrics?.tvl ? (
-            formatDollars(Number(metrics?.tvl))
-          ) : (
-            '--'
-          )}
-        </Typography>
-      </Typography>
-      •
-      <Typography as="p" variant="label" size="large">
-        TVL:{' '}
-        <Typography as="span" variant="label" size="large" color="primary">
-          {loading ? (
-            <Skeleton height="100%" width="4rem" />
-          ) : metrics?.volume ? (
-            formatDollars(Number(metrics?.volume))
-          ) : (
-            '--'
-          )}
-        </Typography>
-      </Typography>
+    <Box
+      width="100%"
+      mb="m"
+      display="grid"
+      gridTemplateColumns={['1fr', '1fr', '1fr 1fr 1fr', '1fr 1fr 1fr']}
+      gap="m"
+    >
+      <HeaderInfoCard
+        value={metrics?.summary.tvl || '0'}
+        isLoading={loading}
+        title="TVL"
+      />
+      <HeaderInfoCard
+        value={metrics?.summary.volume || '0'}
+        title="Cumulative Volume"
+        isLoading={loading}
+        isVolume
+      />
+      <HeaderInfoCard
+        value={metrics?.summary.volume1D || '0'}
+        title="Trading Volume (24H)"
+        isLoading={loading}
+        isVolume
+      />
     </Box>
   );
 };

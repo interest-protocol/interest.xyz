@@ -11,3 +11,10 @@ export interface HeaderProps {
   setTab: Dispatch<SetStateAction<PoolTabEnum>>;
   currentTab: PoolTabEnum;
 }
+
+export interface HeaderInfoCardProps {
+  title: string;
+  value: string;
+  isVolume?: boolean;
+  isLoading?: boolean;
+}

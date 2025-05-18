@@ -82,6 +82,7 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
       alignItems="center"
       justifyContent="space-between"
     >
+      <HeaderMetrics />
       <Box
         gap="s"
         width="100%"
@@ -89,12 +90,6 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
         justifyContent="space-between"
         alignItems="center"
         display={isMobile ? (showSearchField ? 'none' : 'flex') : 'flex'}
-        flexDirection={[
-          'column-reverse',
-          'column-reverse',
-          'column-reverse',
-          'row',
-        ]}
       >
         <Tabs
           type="square"
@@ -115,19 +110,7 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
             </Typography>
           ))}
         />
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          flexDirection={[
-            'column-reverse',
-            'column-reverse',
-            'column-reverse',
-            'row',
-          ]}
-          gap="s"
-        >
-          <HeaderMetrics />
+        <Box display="flex" justifyContent="space-between" gap="s">
           <FindPoolButton />
         </Box>
       </Box>

@@ -1,11 +1,9 @@
 import useSWR from 'swr';
 
-import { Metric } from '@/views/pools/pools.types';
+import { Metric, MetricItemProps } from '@/views/pools/pools.types';
 
 export interface IAPIMetrics {
-  tvl: number;
-  total: number;
-  volume: number;
+  summary: MetricItemProps;
   totalPages: number;
   data: ReadonlyArray<Metric>;
 }
