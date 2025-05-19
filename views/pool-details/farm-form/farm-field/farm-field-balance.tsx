@@ -86,7 +86,8 @@ const FarmFieldBalance: FC<FarmFieldProps> = ({ farmMode }) => {
       className="loading-balance"
     >
       <Typography size="small" variant="body" fontSize="xs">
-        Balance: {FixedPointMath.toNumber(balance, token.decimals) ?? '--'}
+        Balance:{' '}
+        {FixedPointMath.toNumber(balance, token.decimals).toFixed(4) ?? '--'}
       </Typography>
       {loading && <ProgressIndicator variant="loading" size={12} />}
     </Button>

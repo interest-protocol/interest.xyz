@@ -56,7 +56,7 @@ const HeaderInfoCard: FC<HeaderInfoCardProps> = ({
       </Box>
       <Typography size="large" lineHeight="l" variant="title" color="#000000A3">
         <Typography as="span" variant="label" size="large" color="primary">
-          {isLoading ? <Skeleton width="50%" /> : formatDollars(+value)}
+          {isLoading ? <Skeleton width="50%" /> : formatDollars(+value, 2)}
         </Typography>
       </Typography>
     </Box>
