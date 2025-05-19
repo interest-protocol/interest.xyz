@@ -82,7 +82,7 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                 </Box>
               </Box>
               <Typography variant="body" ml="m" mr="m" size="large">
-                {token.value || 0}
+                {(+token.value).toFixed(4) || 0}
               </Typography>
             </Box>
           ))

@@ -140,20 +140,31 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
             noBorder
             description="APR"
             tooltipInfo="Annual Percentage Rate"
-            amount={`${formatMoney(((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1))}%`}
+            amount={`${formatMoney(+(((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1)).toFixed(2))} %`}
           />
           <PoolCardTrade
             noBorder
             description="TVL"
-            amount={formatDollars(tvl)}
+            amount={formatDollars(+tvl.toFixed(2))}
             tooltipInfo="Total Value Locked"
+          />
+          <PoolCardTrade
+            noBorder
+            description="Farm APR"
+            amount={
+              volume?.length
+                ? formatMoney(+Number(volume?.[0].metrics.farmApr).toFixed(2)) +
+                  ' %'
+                : 'N/A'
+            }
+            tooltipInfo="Farm APR"
           />
           <PoolCardTrade
             noBorder
             description="Fees (24h)"
             amount={
               volume?.length
-                ? formatDollars(Number(volume?.[0].metrics.fees1D))
+                ? formatDollars(+Number(volume?.[0].metrics.fees1D).toFixed(2))
                 : 'N/A'
             }
             tooltipInfo="Fees (24h)"
@@ -163,7 +174,9 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
             description="Volume (24h)"
             amount={
               volume?.length
-                ? formatDollars(Number(volume?.[0].metrics.volume1D))
+                ? formatDollars(
+                    +Number(volume?.[0].metrics.volume1D).toFixed(2)
+                  )
                 : 'N/A'
             }
             tooltipInfo="Volume (24h)"

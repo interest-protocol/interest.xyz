@@ -74,7 +74,8 @@ const FarmFormAPR: FC = () => {
   );
 
   const aprValue = formatMoney(
-    ((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1)
+    ((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1),
+    2
   );
 
   useEffect(() => {

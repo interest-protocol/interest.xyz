@@ -53,6 +53,7 @@ export interface MetricItemProps {
   tvl7D: string;
   tvl30D: string;
   apr: string;
+  farmApr: string;
   fees: string;
   fees1D: string;
   fees7D: string;

@@ -70,7 +70,9 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
         const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]]?.price;
         const price = FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18);
 
-        const newAmount = String(newIndex ? +amount / price : +amount * price);
+        const newAmount = String(
+          (newIndex ? +amount / price : +amount * price).toFixed(4)
+        );
         setValue(`tokenList.${newIndex}.value`, newAmount);
         setValue(
           `tokenList.${newIndex}.valueBN`,
