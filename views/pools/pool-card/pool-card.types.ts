@@ -27,9 +27,17 @@ export interface PoolCardTradeProps {
   amount: ReactNode;
   noBorder?: boolean;
   description: string;
-  tooltipInfo: string;
+  tooltipInfo: string | ReadonlyArray<PoolCardTradeTooltipItemProps>;
 }
 
+export interface PoolCardTradeTooltipItemProps {
+  label: string;
+  value: string;
+}
+
+export interface PoolCardTradeTooltipListProps {
+  tooltipList: ReadonlyArray<PoolCardTradeTooltipItemProps>;
+}
 export interface PoolCardProps {
   pool: IPool;
 }

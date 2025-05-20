@@ -5,6 +5,7 @@ import Skeleton from 'react-loading-skeleton';
 import { ExclamationCircleSVG, QuestionCircleSVG } from '@/components/svg';
 
 import { PoolCardTradeProps } from './pool-card.types';
+import PoolCardTradeTooltipList from './pool-card-trade-tooltip-item copy';
 
 const PoolCardTrade: FC<PoolCardTradeProps> = ({
   amount,
@@ -29,17 +30,30 @@ const PoolCardTrade: FC<PoolCardTradeProps> = ({
     >
       {description}
     </Typography>
-    <Box display="flex" gap="xs" alignItems="center">
+    <Box
+      gap="xs"
+      display="flex"
+      alignItems="center"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
       <Typography color="onSurface" size="medium" variant="body">
         {loading ? <Skeleton width="5rem" /> : amount}
       </Typography>
       <TooltipWrapper
         bg="onSurface"
+        borderRadius="0.5rem"
+        width="max-content"
         tooltipPosition="left"
         tooltipContent={
-          <Typography variant="body" size="medium" color="surface">
-            {tooltipInfo}
-          </Typography>
+          typeof tooltipInfo === 'string' ? (
+            <Typography variant="body" size="medium" color="surface">
+              {tooltipInfo}
+            </Typography>
+          ) : (
+            <PoolCardTradeTooltipList tooltipList={tooltipInfo} />
+          )
         }
       >
         <Box color="onSurface">
