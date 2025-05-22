@@ -3,6 +3,7 @@ import { FC } from 'react';
 
 import { useMetrics } from '@/hooks';
 
+import { PoolHeaderIconEnum } from './header.types';
 import HeaderInfoCard from './header-info-card';
 
 const HeaderMetrics: FC = () => {
@@ -19,21 +20,22 @@ const HeaderMetrics: FC = () => {
       gap="m"
     >
       <HeaderInfoCard
-        value={metrics?.summary.tvl || '0'}
-        isLoading={loading}
         title="TVL"
+        isLoading={loading}
+        value={metrics?.summary.tvl || '0'}
+        type={PoolHeaderIconEnum.tvl}
       />
       <HeaderInfoCard
-        value={metrics?.summary.volume || '0'}
+        isLoading={loading}
         title="Cumulative Volume"
-        isLoading={loading}
-        isVolume
+        type={PoolHeaderIconEnum.volume}
+        value={metrics?.summary.volume || '0'}
       />
       <HeaderInfoCard
-        value={metrics?.summary.volume1D || '0'}
-        title="Trading Volume (24H)"
         isLoading={loading}
-        isVolume
+        title="Trading Volume (24H)"
+        type={PoolHeaderIconEnum.volume}
+        value={metrics?.summary.volume1D || '0'}
       />
     </Box>
   );

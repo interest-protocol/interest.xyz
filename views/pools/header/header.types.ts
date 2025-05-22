@@ -15,6 +15,12 @@ export interface HeaderProps {
 export interface HeaderInfoCardProps {
   title: string;
   value: string;
-  isVolume?: boolean;
   isLoading?: boolean;
+  type: PoolHeaderIconEnum;
+}
+
+export enum PoolHeaderIconEnum {
+  volume,
+  tvl,
+  apr,
 }

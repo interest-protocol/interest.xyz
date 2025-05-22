@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { useFarms } from '@/hooks/use-farms';
@@ -17,12 +17,8 @@ import ItemStandard from '../components/accordion/item-standard';
 import { FARM_INFORMATION } from '../pool-info.data';
 
 const FarmInfoDetailsPool: FC = () => {
-  const { getValues, control } = useFormContext<IPoolForm>();
+  const { getValues } = useFormContext<IPoolForm>();
   const { data: farms, isLoading } = useFarms([getValues('pool.poolAddress')]);
-  const apr = useWatch({
-    control: control,
-    name: 'apr',
-  });
   if (!farms || isLoading) return <PoolInfoLoading />;
 
   const infoData: ReadonlyArray<ContentDataProps> = [
@@ -36,7 +32,6 @@ const FarmInfoDetailsPool: FC = () => {
         4
       ),
     },
-    { value: `${apr || 0}%` || '' },
   ];
 
   return (
