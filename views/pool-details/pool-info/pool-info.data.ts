@@ -29,9 +29,6 @@ export const FARM_INFORMATION: PoolDetailAccordionData = {
     {
       label: 'Staked Balance',
     },
-    {
-      label: 'APR',
-    },
   ],
 };
 

@@ -22,7 +22,6 @@ import {
   POOL_INFORMATION,
 } from '../../pool-info.data';
 import PoolInfoLoading from '../../pool-info-loading';
-import OtherInfoDetails from './other-details';
 
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
@@ -40,10 +39,10 @@ const PoolInfoDetailsPool: FC = () => {
       ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
       : '0';
     return [
-      { value: FixedPointMath.toNumber(BigNumber(poolExtraData.a), 0) },
+      { value: FixedPointMath.toNumber(BigNumber(poolExtraData?.a || '0'), 0) },
       {
         value: FixedPointMath.toNumber(
-          BigNumber(poolExtraData.gamma),
+          BigNumber(poolExtraData?.gamma || '0'),
           0
         ).toExponential(),
       },
@@ -51,7 +50,7 @@ const PoolInfoDetailsPool: FC = () => {
       {
         value: formatDollars(
           FixedPointMath.toNumber(
-            BigNumber(String(poolExtraData.virtualPrice)),
+            BigNumber(String(poolExtraData?.virtualPrice || 0)),
             18
           ),
           4
@@ -111,7 +110,6 @@ const PoolInfoDetailsPool: FC = () => {
           isCopyClipBoard={isCopyClipBoard}
         />
       ))}
-      <OtherInfoDetails pool={pool} />
     </>
   );
 };
