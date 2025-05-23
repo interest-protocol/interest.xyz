@@ -117,7 +117,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
                 ? formatMoney(
                     +(
                       Number(volume?.[0].metrics.farmApr) +
-                      Number(volume?.[0].metrics.fees)
+                      Number(volume?.[0].metrics.apr)
                     ).toFixed(2)
                   ) + ' %'
                 : 'N/A'

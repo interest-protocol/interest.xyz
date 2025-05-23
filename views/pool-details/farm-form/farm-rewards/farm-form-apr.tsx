@@ -20,7 +20,7 @@ const FarmFormAPR: FC = () => {
       );
       if (volume) {
         const apr = formatMoney(
-          +volume[0].metrics.farmApr + Number(+volume[0].metrics.fees)
+          +volume[0].metrics.farmApr + Number(+volume[0].metrics.apr)
         );
         setValue('apr', apr);
         setAprValue(apr);

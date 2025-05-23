@@ -27,5 +27,5 @@ export interface FarmFormButtonProps
 
 export type MetricPoolDetails = Pick<
   MetricItemProps,
-  'tvl' | 'fees' | 'volume1D' | 'farmApr'
+  'tvl' | 'apr' | 'volume1D' | 'farmApr'
 >;
