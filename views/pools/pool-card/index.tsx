@@ -125,16 +125,6 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           />
           <PoolCardTrade
             noBorder
-            description="TVL"
-            amount={
-              volume?.length
-                ? formatDollars(+Number(volume?.[0].metrics.tvl).toFixed(2))
-                : 'N/A'
-            }
-            tooltipInfo="Total Value Locked"
-          />
-          <PoolCardTrade
-            noBorder
             description="Volume (24h)"
             amount={
               volume?.length
@@ -144,6 +134,16 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
                 : 'N/A'
             }
             tooltipInfo="Volume (24h)"
+          />
+          <PoolCardTrade
+            noBorder
+            description="TVL"
+            amount={
+              volume?.length
+                ? formatDollars(+Number(volume?.[0].metrics.tvl).toFixed(2))
+                : 'N/A'
+            }
+            tooltipInfo="Total Value Locked"
           />
         </Box>
       </Box>
