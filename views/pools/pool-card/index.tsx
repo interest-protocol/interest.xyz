@@ -106,7 +106,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
               },
               {
                 value: volume?.length
-                  ? formatMoney(+Number(volume?.[0].metrics.fees).toFixed(2)) +
+                  ? formatMoney(+Number(volume?.[0].metrics.apr).toFixed(2)) +
                     ' %'
                   : 'N/A',
                 label: 'Fees APR',
