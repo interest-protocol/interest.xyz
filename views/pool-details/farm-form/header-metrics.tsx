@@ -13,7 +13,7 @@ const DEFAULT_METRIC: MetricPoolDetails = {
   tvl: 'N/A',
   farmApr: 'N/A',
   volume1D: 'N/A',
-  fees: 'N/A',
+  apr: 'N/A',
 };
 
 const HeaderMetrics: FC = () => {
@@ -46,7 +46,7 @@ const HeaderMetrics: FC = () => {
         title="APR"
         isLoading={loading}
         type={PoolHeaderIconEnum.apr}
-        value={metric ? `${Number(metric.farmApr) + Number(metric.fees)}` : '0'}
+        value={metric ? `${Number(metric.farmApr) + Number(metric.apr)}` : '0'}
       />
       <HeaderInfoCard
         title="TVL"
