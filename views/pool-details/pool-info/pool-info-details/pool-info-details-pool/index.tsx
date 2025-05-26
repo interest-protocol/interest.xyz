@@ -50,6 +50,7 @@ const PoolInfoDetailsPool: FC = () => {
         ).toExponential(),
       },
       { value: price },
+      { value: lastPrice },
       {
         value: formatDollars(
           FixedPointMath.toNumber(
@@ -59,7 +60,6 @@ const PoolInfoDetailsPool: FC = () => {
           4
         ),
       },
-      { value: lastPrice },
     ];
   };
 
@@ -104,8 +104,8 @@ const PoolInfoDetailsPool: FC = () => {
         <ItemStandard
           key={v4()}
           label={
-            label == 'Price'
-              ? `${pool.tokensMetadata?.[1]?.symbol} price`
+            label == 'Price' || label == 'Last Price'
+              ? `${pool.tokensMetadata?.[1]?.symbol} ${label}`
               : label
           }
           loading={loading}

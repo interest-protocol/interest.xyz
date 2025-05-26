@@ -17,6 +17,9 @@ const PoolPreviewFormWithdrawButton: FC = () => {
 
   const error = useWatch({ control, name: 'error' });
 
+  const selectedCoinIndex = useWatch({ control, name: 'selectedCoinIndex' });
+
+  const hasCoinSelected = selectedCoinIndex[0] || selectedCoinIndex[1];
   const [fieldValue, secondValue] = useWatch({
     control,
     name: ['tokenList.0.value', 'tokenList.1.value'],
@@ -51,7 +54,8 @@ const PoolPreviewFormWithdrawButton: FC = () => {
 
   const disabled =
     !!error ||
-    [fieldValue, secondValue].every((value) => value === '0' || !value);
+    [fieldValue, secondValue].every((value) => value === '0' || !value) ||
+    !hasCoinSelected;
 
   return (
     <Button
