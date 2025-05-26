@@ -48,7 +48,7 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                     onClick={() => {
                       setValue(
                         `selectedCoinIndex.${index}`,
-                        selectedCoinIndex ? !selectedCoinIndex[index] : false
+                        !selectedCoinIndex[index]
                       );
                       tokenList.forEach((_, internalIndex) => {
                         setValue(`tokenList.${internalIndex}.value`, '0');
@@ -64,11 +64,7 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                       maxWidth="1.2rem"
                       maxHeight="1.2rem"
                       status={
-                        selectedCoinIndex
-                          ? selectedCoinIndex[index]
-                            ? 'checked'
-                            : 'unchecked'
-                          : 'unchecked'
+                        selectedCoinIndex[index] ? 'checked' : 'unchecked'
                       }
                     />
                   </Typography>
@@ -76,12 +72,12 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                 <Box display="flex" gap="xs" alignItems="center">
                   <TokenIcon withBg network={network} symbol={token.symbol} />
                   <Typography variant="body" size="large">
-                    {token.symbol}- {selectedCoinIndex}
+                    {token.symbol}
                   </Typography>
                 </Box>
               </Box>
               <Typography variant="body" ml="m" mr="m" size="large">
-                {(+token.value).toFixed(4) || 0}
+                {selectedCoinIndex[index] ? (+token.value).toFixed(4) || 0 : 0}
               </Typography>
             </Box>
           ))
