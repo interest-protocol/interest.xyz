@@ -19,9 +19,7 @@ const FarmFormAPR: FC = () => {
         (metric) => metric.poolId == getValues('pool.poolAddress')
       );
       if (volume) {
-        const apr = formatMoney(
-          +volume[0].metrics.farmApr + Number(+volume[0].metrics.apr)
-        );
+        const apr = formatMoney(+volume[0].metrics.farmApr);
         setValue('apr', apr);
         setAprValue(apr);
         return;
@@ -45,7 +43,7 @@ const FarmFormAPR: FC = () => {
     >
       <Box display="flex" alignItems="center">
         <Typography variant="body" size="medium">
-          APR:
+          Farm APR:
         </Typography>
       </Box>
       <Box display="flex" alignItems="center">
