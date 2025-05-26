@@ -45,6 +45,9 @@ export const POOL_CURVE_VOLATILE_INFO: Array<PoolDetailAccordionItemData> = [
   {
     label: 'Virtual Price',
   },
+  {
+    label: 'Last Price',
+  },
 ];
 
 export const POOL_CURVE_STABLE_INFO: Array<PoolDetailAccordionItemData> = [
