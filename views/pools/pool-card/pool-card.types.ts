@@ -32,7 +32,7 @@ export interface PoolCardTradeProps {
 
 export interface PoolCardTradeTooltipItemProps {
   label: string;
-  value: string;
+  value: ReactNode;
 }
 
 export interface PoolCardTradeTooltipListProps {

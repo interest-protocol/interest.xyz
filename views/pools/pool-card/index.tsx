@@ -2,6 +2,7 @@ import { Box } from '@interest-protocol/ui-kit';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
 import { v4 } from 'uuid';
 
@@ -113,37 +114,41 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
               },
             ]}
             amount={
-              volume?.length
-                ? formatMoney(
-                    +(
-                      Number(volume?.[0].metrics.farmApr) +
-                      Number(volume?.[0].metrics.apr)
-                    ).toFixed(2)
-                  ) + ' %'
-                : 'N/A'
+              volume?.length ? (
+                formatMoney(
+                  +(
+                    Number(volume?.[0].metrics.farmApr) +
+                    Number(volume?.[0].metrics.apr)
+                  ).toFixed(2)
+                ) + ' %'
+              ) : (
+                <Skeleton width="4rem" />
+              )
             }
           />
           <PoolCardTrade
             noBorder
             description="Volume (24h)"
-            amount={
-              volume?.length
-                ? formatDollars(
-                    +Number(volume?.[0].metrics.volume1D).toFixed(2)
-                  )
-                : 'N/A'
-            }
             tooltipInfo="Volume (24h)"
+            amount={
+              volume?.length ? (
+                formatDollars(+Number(volume?.[0].metrics.volume1D).toFixed(2))
+              ) : (
+                <Skeleton width="4rem" />
+              )
+            }
           />
           <PoolCardTrade
             noBorder
             description="TVL"
-            amount={
-              volume?.length
-                ? formatDollars(+Number(volume?.[0].metrics.tvl).toFixed(2))
-                : 'N/A'
-            }
             tooltipInfo="Total Value Locked"
+            amount={
+              volume?.length ? (
+                formatDollars(+Number(volume?.[0].metrics.tvl).toFixed(2))
+              ) : (
+                <Skeleton width="4rem" />
+              )
+            }
           />
         </Box>
       </Box>
