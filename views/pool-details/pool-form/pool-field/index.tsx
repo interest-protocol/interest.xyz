@@ -99,7 +99,7 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
         placeholder="0"
         textAlign="right"
         Balance={<Balance name={fieldName} />}
-        ButtonMax={<MaxButton name={fieldName} />}
+        ButtonMax={<MaxButton name={fieldName} index={index} />}
         fieldProps={{ bg: 'lowestContainer', p: 'xs' }}
         TokenIcon={
           <Box display="flex" alignItems="center" gap="s">
