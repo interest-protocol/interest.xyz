@@ -1,6 +1,5 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
-import { isNil } from 'ramda';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
@@ -48,8 +47,8 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                     cursor="pointer"
                     onClick={() => {
                       setValue(
-                        'selectedCoinIndex',
-                        selectedCoinIndex === index ? undefined : index
+                        `selectedCoinIndex.${index}`,
+                        selectedCoinIndex ? !selectedCoinIndex[index] : false
                       );
                       tokenList.forEach((_, internalIndex) => {
                         setValue(`tokenList.${internalIndex}.value`, '0');
@@ -65,11 +64,11 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                       maxWidth="1.2rem"
                       maxHeight="1.2rem"
                       status={
-                        isNil(selectedCoinIndex)
-                          ? 'active'
-                          : selectedCoinIndex === index
+                        selectedCoinIndex
+                          ? selectedCoinIndex[index]
                             ? 'checked'
                             : 'unchecked'
+                          : 'unchecked'
                       }
                     />
                   </Typography>
@@ -77,7 +76,7 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                 <Box display="flex" gap="xs" alignItems="center">
                   <TokenIcon withBg network={network} symbol={token.symbol} />
                   <Typography variant="body" size="large">
-                    {token.symbol}
+                    {token.symbol}- {selectedCoinIndex}
                   </Typography>
                 </Box>
               </Box>
