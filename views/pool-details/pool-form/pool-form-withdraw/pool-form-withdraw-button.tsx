@@ -1,7 +1,6 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
-import { isNil } from 'ramda';
 import { FC } from 'react';
 import { useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
@@ -39,9 +38,9 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
       const lpCoin = getValues('lpCoin');
 
       let payload, txResult;
-
+      const selectedCoinIndex = getValues('selectedCoinIndex');
       if (algorithm === 'curve') {
-        if (isNil(getValues('selectedCoinIndex'))) {
+        if (selectedCoinIndex[0] && selectedCoinIndex[1]) {
           payload = dexCurve.removeLiquidity({
             pool: poolAddress,
             recipient: account.address,
@@ -49,12 +48,17 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
             minAmountsOut: getValues('tokenList').map(() => BigInt(0)),
           });
         } else {
+          const tmpIndex = selectedCoinIndex
+            ? selectedCoinIndex[0]
+              ? 0
+              : 1
+            : 0;
           payload = dexCurve.removeLiquidityOneFa({
             pool: lpCoin.type,
             minAmountOut: BigInt(0),
             recipient: account.address,
             amount: BigInt(lpCoin.valueBN.decimalPlaces(0, 1).toString()),
-            faOut: getValues('tokenList')[getValues('selectedCoinIndex')!].type,
+            faOut: getValues('tokenList')[tmpIndex!].type,
           });
         }
       }

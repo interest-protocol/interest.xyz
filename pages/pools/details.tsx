@@ -15,6 +15,7 @@ const PoolDetailsPage: NextPage<PoolPageProps> = ({ address }) => {
       tokenList: [{ symbol: '' }, { symbol: '' }],
       settings: { slippage: '0.1' },
       pool: { poolAddress: address },
+      selectedCoinIndex: [true, true],
     },
   });
 

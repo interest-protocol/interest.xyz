@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import { isNil } from 'ramda';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import useSWR from 'swr';
@@ -60,7 +59,7 @@ const PoolFieldManager: FC<Omit<NameProps, 'index'>> = ({ name }) => {
             setValue(`tokenList.${index}.valueBN`, ZERO_BIG_NUMBER);
           });
         } else {
-          if (isNil(selectedCoinIndex))
+          if (selectedCoinIndex[0] && selectedCoinIndex[1])
             curveDex
               .quoteRemoveLiquidity({
                 pool: pool.poolAddress,
@@ -85,29 +84,30 @@ const PoolFieldManager: FC<Omit<NameProps, 'index'>> = ({ name }) => {
               })
               .catch();
           else {
-            (tokenList[selectedCoinIndex].standard === TokenStandard.COIN
+            const tmpIndex = selectedCoinIndex[0] ? 0 : 1;
+            (tokenList[tmpIndex].standard === TokenStandard.COIN
               ? curveDex.quoteRemoveLiquidityOneCoin({
                   pool: pool.poolAddress,
-                  coinOut: tokenList[selectedCoinIndex].type,
+                  coinOut: tokenList[tmpIndex].type,
                   amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
                 })
               : curveDex.quoteRemoveLiquidityOneFa({
                   pool: pool.poolAddress,
-                  faOut: tokenList[selectedCoinIndex].type,
+                  faOut: tokenList[tmpIndex].type,
                   amountIn: BigInt(getValues('lpCoin.valueBN').toFixed(0)),
                 })
             )
               .then(({ amountOut }) => {
                 setValue(
-                  `tokenList.${selectedCoinIndex}.valueBN`,
+                  `tokenList.${tmpIndex}.valueBN`,
                   BigNumber(String(amountOut))
                 );
                 setValue(
-                  `tokenList.${selectedCoinIndex}.value`,
+                  `tokenList.${tmpIndex}.value`,
                   String(
                     FixedPointMath.toNumber(
                       BigNumber(String(amountOut)),
-                      getValues(`tokenList.${selectedCoinIndex}.decimals`)
+                      getValues(`tokenList.${tmpIndex}.decimals`)
                     )
                   )
                 );
