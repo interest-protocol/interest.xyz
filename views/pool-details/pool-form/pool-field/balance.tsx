@@ -14,9 +14,9 @@ import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { isAptos, ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
 
-import { NameProps } from './pool-field.types';
+import { MaxButtonProps as NameProps } from './pool-field.types';
 
-const Balance: FC<NameProps> = ({ name }) => {
+const Balance: FC<Omit<NameProps, 'index'>> = ({ name }) => {
   const { coinsMap, loading } = useCoins();
   const { setValue, control, getValues } = useFormContext<IPoolForm>();
   const { loading: loadingPoolsDetails } = useSrAmmPool(
