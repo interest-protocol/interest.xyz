@@ -21,13 +21,8 @@ const CreateTokenFormButton = () => {
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
   const { account, signAndSubmitTransaction } = useAptosWallet();
-  const {
-    control,
-    setValue,
-    getValues,
-    reset,
-    formState: { errors },
-  } = useFormContext<ICreateTokenForm>();
+  const { control, setValue, getValues, reset } =
+    useFormContext<ICreateTokenForm>();
 
   const values = useWatch({ control });
 
@@ -43,12 +38,7 @@ const CreateTokenFormButton = () => {
     account &&
     !loading &&
     String(values.decimals) &&
-    values.supply &&
-    (values.pool?.active
-      ? Number(values.pool.quoteValue) &&
-        Number(values.pool.tokenValue) &&
-        Object.keys(errors).length == 0
-      : true)
+    values.supply
   );
 
   const handleCreateToken = async () => {
@@ -59,7 +49,6 @@ const CreateTokenFormButton = () => {
 
       const {
         name,
-        pool,
         symbol,
         supply,
         decimals,
@@ -81,27 +70,7 @@ const CreateTokenFormButton = () => {
         ),
       };
 
-      const deployMemeWithFaArgs = {
-        name: name || '',
-        symbol: symbol || '',
-        iconURI,
-        decimals,
-        projectURI,
-        recipient: account!.address,
-        totalSupply: BigInt(
-          FixedPointMath.toBigNumber(supply!, decimals).toString()
-        ),
-        liquidityMemeAmount: BigInt(
-          FixedPointMath.toBigNumber(pool!.tokenValue!, decimals).toString()
-        ),
-        liquidityAptosAmount: BigInt(
-          FixedPointMath.toBigNumber(pool!.quoteValue!).toString()
-        ),
-      };
-
-      const payload = values.pool?.active
-        ? dexV2.deployMemeWithFa(deployMemeWithFaArgs)
-        : dexV2.createFa(createFaArgs);
+      const payload = dexV2.createFa(createFaArgs);
 
       const startTime = Date.now();
 
@@ -132,7 +101,6 @@ const CreateTokenFormButton = () => {
       logCreateToken(
         account!.address,
         symbol || '',
-        !!pool?.active,
         Network.MovementMainnet,
         txResult.hash
       );

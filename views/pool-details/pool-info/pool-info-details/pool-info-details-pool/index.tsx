@@ -10,22 +10,23 @@ import { v4 } from 'uuid';
 import { FixedPointMath } from '@/lib';
 import { formatAddress, formatDollars, formatMoney } from '@/utils';
 
-import { usePoolDetails } from '../../pool-details.context';
+import { usePoolDetails } from '../../../pool-details.context';
 import {
   ContentDataProps,
   PoolDetailAccordionItemStandardProps,
-} from '../components/accordion/accordion.types';
-import ItemStandard from '../components/accordion/item-standard';
+} from '../../components/accordion/accordion.types';
+import ItemStandard from '../../components/accordion/item-standard';
 import {
   POOL_CURVE_STABLE_INFO,
   POOL_CURVE_VOLATILE_INFO,
   POOL_INFORMATION,
-} from '../pool-info.data';
-import PoolInfoLoading from '../pool-info-loading';
+} from '../../pool-info.data';
+import PoolInfoLoading from '../../pool-info-loading';
 
 const PoolInfoDetailsPool: FC = () => {
   const { query } = useRouter();
   const { pool, loading } = usePoolDetails();
+
   if (!pool || loading) return <PoolInfoLoading />;
 
   const isVolatile = pool.curve == 'volatile';
@@ -33,23 +34,27 @@ const PoolInfoDetailsPool: FC = () => {
 
   const getVolatileData = (): ReadonlyArray<ContentDataProps> => {
     const poolExtraData = pool.poolExtraData as unknown as VolatilePool;
-    const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]]?.price;
-    const price = priceRaw
-      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
+    const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]];
+    const price = priceRaw.price
+      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw.price)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
+      : '0';
+    const lastPrice = priceRaw.lastPrice
+      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw.lastPrice)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
       : '0';
     return [
-      { value: FixedPointMath.toNumber(BigNumber(poolExtraData.a), 0) },
+      { value: FixedPointMath.toNumber(BigNumber(poolExtraData?.a || '0'), 0) },
       {
         value: FixedPointMath.toNumber(
-          BigNumber(poolExtraData.gamma),
+          BigNumber(poolExtraData?.gamma || '0'),
           0
         ).toExponential(),
       },
       { value: price },
+      { value: lastPrice },
       {
         value: formatDollars(
           FixedPointMath.toNumber(
-            BigNumber(String(poolExtraData.virtualPrice)),
+            BigNumber(String(poolExtraData?.virtualPrice || 0)),
             18
           ),
           4
@@ -99,8 +104,8 @@ const PoolInfoDetailsPool: FC = () => {
         <ItemStandard
           key={v4()}
           label={
-            label == 'Price'
-              ? `${pool.tokensMetadata?.[1]?.symbol} price`
+            label == 'Price' || label == 'Last Price'
+              ? `${pool.tokensMetadata?.[1]?.symbol} ${label}`
               : label
           }
           loading={loading}

@@ -8,9 +8,9 @@ import useEventListener from '@/hooks/use-event-listener';
 
 import { FormFilterValue } from '../pool-card/pool-card.types';
 import { FilterItemProps, FilterTypeEnum, IPoolForm } from '../pools.types';
-import CreatePoolButton from './create-pool-button';
 import FindPoolButton from './find-pool-button';
 import { HeaderProps } from './header.types';
+import HeaderMetrics from './header-metrics';
 
 const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
   const { setValue, control } = useFormContext<IPoolForm>();
@@ -82,11 +82,13 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
       alignItems="center"
       justifyContent="space-between"
     >
+      <HeaderMetrics />
       <Box
         gap="s"
         width="100%"
         flexWrap="wrap"
         justifyContent="space-between"
+        alignItems="center"
         display={isMobile ? (showSearchField ? 'none' : 'flex') : 'flex'}
       >
         <Tabs
@@ -108,9 +110,8 @@ const Header: FC<HeaderProps> = ({ currentTab, setTab }) => {
             </Typography>
           ))}
         />
-        <Box display="flex" gap="s">
+        <Box display="flex" justifyContent="space-between" gap="s">
           <FindPoolButton />
-          <CreatePoolButton />
         </Box>
       </Box>
     </Box>

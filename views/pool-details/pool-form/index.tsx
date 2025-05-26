@@ -9,6 +9,7 @@ import { PoolOption } from '../pool-details.types';
 import { PoolFormActiveProps } from './pool-form.types';
 import PoolDeposit from './pool-form-deposit';
 import PoolWithdraw from './pool-form-withdraw';
+import SyncButton from './sync-button';
 
 const PoolFormActive: FC<PoolFormActiveProps> = ({ isDepositForm }) => {
   if (isDepositForm) return <PoolDeposit poolOptionView={PoolOption.Deposit} />;
@@ -34,7 +35,15 @@ const PoolForm: FC = () => {
     <>
       <Box
         display="flex"
-        justifyContent={['center', 'flex-start']}
+        justifyContent={['center', 'space-between']}
+        alignItems="center"
+        gap="m"
+        flexDirection={[
+          'column-reverse',
+          'column-reverse',
+          'column-reverse',
+          'row',
+        ]}
         mx={['auto', 'auto', 'auto', 'unset']}
       >
         <Tabs
@@ -43,6 +52,7 @@ const PoolForm: FC = () => {
           items={['Deposit', 'Withdraw']}
           defaultTabIndex={poolOptionView}
         />
+        {poolOptionView === PoolOption.Deposit && <SyncButton />}
       </Box>
       <Box gridColumn="1/-1">
         <PoolFormActive isDepositForm={poolOptionView === PoolOption.Deposit} />

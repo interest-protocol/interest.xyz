@@ -23,6 +23,7 @@ const SwapTopSliderItem: FC<SwapBottomMenuItemProps> = ({
       onClick={onClick}
       alignItems="center"
       justifyContent="center"
+      width="max-content"
     >
       <TokenIcon
         size="1.5rem"
@@ -34,17 +35,15 @@ const SwapTopSliderItem: FC<SwapBottomMenuItemProps> = ({
       <Typography size="medium" variant="title" color="primary">
         {symbol}
       </Typography>
-      <Box>
-        <Typography
-          size="medium"
-          variant="title"
-          textAlign="left"
-          fontWeight="500"
-          color="onSurface"
-        >
-          {price}
-        </Typography>
-      </Box>
+      <Typography
+        size="medium"
+        variant="title"
+        textAlign="left"
+        fontWeight="500"
+        color="onSurface"
+      >
+        {price}
+      </Typography>
     </Box>
   );
 };

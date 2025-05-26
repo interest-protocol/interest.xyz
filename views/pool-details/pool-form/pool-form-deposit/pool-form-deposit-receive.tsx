@@ -46,7 +46,7 @@ const PoolFormDepositReceive: FC = () => {
             </Typography>
           </Box>
           <Typography variant="body" ml="m" size="large">
-            {loading ? <Skeleton width="2rem" /> : value || 0}
+            {loading ? <Skeleton width="2rem" /> : (+value).toFixed(4) || 0}
           </Typography>
         </Box>
       </Box>

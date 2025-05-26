@@ -32,6 +32,8 @@ const ConnectWalletButton: FC = () => {
         bg: '#1F1F1F',
       }}
       onClick={handleOpenModal}
+      display="flex"
+      justifyContent="center"
     >
       Connect
       <Typography

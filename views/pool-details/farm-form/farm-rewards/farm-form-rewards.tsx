@@ -102,7 +102,8 @@ const FarmFormRewards: FC = () => {
                             balances[token.type],
                             token.decimals
                           )
-                        : 0
+                        : 0,
+                      4
                     )
                   )}
                 </Typography>

@@ -8,6 +8,7 @@ export interface PoolFormProps {
   poolOptionView: PoolOption;
 }
 
-export interface NameProps {
+export interface MaxButtonProps {
+  index: number;
   name: `tokenList.${number}` | 'lpCoin';
 }

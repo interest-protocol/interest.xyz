@@ -1,18 +1,12 @@
 import { Box } from '@interest-protocol/ui-kit';
-import BigNumber from 'bignumber.js';
 import Link from 'next/link';
-import { isEmpty } from 'ramda';
 import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
 import { v4 } from 'uuid';
 
 import { FARMS_BY_LP, Routes, RoutesEnum } from '@/constants';
-import { MOVE } from '@/constants/coins';
-import { useCoinsPrice } from '@/hooks/use-coins-price';
-import { useFarms } from '@/hooks/use-farms';
-import { usePool } from '@/hooks/use-pool';
-import { FixedPointMath } from '@/lib';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import {
   formatDollars,
@@ -30,16 +24,11 @@ import PoolCardTrade from './pool-card-trade';
 
 const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const isFarm = !!FARMS_BY_LP[pool.poolAddress];
-  const { pool: data } = usePool(pool.poolAddress);
-  const { data: farms } = useFarms([pool.poolAddress]);
-  const { data: prices } = useCoinsPrice(
-    Array.from(new Set([...pool.tokensAddresses, MOVE.address.toString()]))
-  );
   const [filteredTokens, setFilteredTokens] = useState<
     Array<AssetMetadata> | undefined
   >([]);
 
-  const { control } = useFormContext<IPoolForm>();
+  const { control, getValues } = useFormContext<IPoolForm>();
   const search = useWatch({ control, name: 'search' });
 
   const { data: metadata, isLoading } = useSWR(
@@ -51,38 +40,6 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
         pool.tokensAddresses.map((token) => getCoinMetadata(token))
       ).then((result) => result.map(parseToMetadata));
     }
-  );
-
-  const tokenPrices = pool.tokensAddresses.map(
-    (address) => prices?.find(({ coin }) => coin === address)?.price ?? 0
-  );
-
-  const tokenBalances = data?.balances;
-  const tokenDecimals = metadata?.map?.(({ decimals }) => decimals);
-
-  const tvl =
-    tokenBalances && tokenDecimals && !isEmpty(tokenDecimals)
-      ? tokenBalances?.reduce(
-          (acc, balance, index) =>
-            acc +
-            FixedPointMath.toNumber(
-              BigNumber(balance).times(tokenPrices[index]),
-              pool.algorithm === 'curve' ? 18 : tokenDecimals[index]
-            ),
-          0
-        )
-      : 0;
-
-  const apr = farms?.[0]?.rewards.map(({ rewardFa, rewardsPerSecond }) =>
-    FixedPointMath.toNumber(
-      BigNumber(String(rewardsPerSecond))
-        .times(
-          prices?.find(({ coin }) => coin === MOVE.address.toString())?.price ??
-            0
-        )
-        .times(60 * 60 * 24 * 365),
-      rewardFa.decimals
-    )
   );
 
   useEffect(() => {
@@ -101,6 +58,9 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
 
   if (search && !filteredTokens?.length) return;
 
+  const volume = getValues('metrics')?.filter(
+    (metric) => metric.poolId == pool.poolAddress
+  );
   return (
     <Link
       href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
@@ -136,14 +96,59 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           <PoolCardTrade
             noBorder
             description="APR"
-            tooltipInfo="Annual Percentage Rate"
-            amount={`${formatMoney(((apr?.[0] && !isNaN(apr[0]) ? apr[0] : 0) * 100) / (tvl || 1))}%`}
+            tooltipInfo={[
+              {
+                value: volume?.length
+                  ? formatMoney(
+                      +Number(volume?.[0].metrics.farmApr).toFixed(2)
+                    ) + ' %'
+                  : 'N/A',
+                label: 'Farm APR',
+              },
+              {
+                value: volume?.length
+                  ? formatMoney(+Number(volume?.[0].metrics.apr).toFixed(2)) +
+                    ' %'
+                  : 'N/A',
+                label: 'Fees APR',
+              },
+            ]}
+            amount={
+              volume?.length ? (
+                formatMoney(
+                  +(
+                    Number(volume?.[0].metrics.farmApr) +
+                    Number(volume?.[0].metrics.apr)
+                  ).toFixed(2)
+                ) + ' %'
+              ) : (
+                <Skeleton width="4rem" />
+              )
+            }
+          />
+          <PoolCardTrade
+            noBorder
+            description="Volume (24h)"
+            tooltipInfo="Volume (24h)"
+            amount={
+              volume?.length ? (
+                formatDollars(+Number(volume?.[0].metrics.volume1D).toFixed(2))
+              ) : (
+                <Skeleton width="4rem" />
+              )
+            }
           />
           <PoolCardTrade
             noBorder
             description="TVL"
-            amount={formatDollars(tvl)}
             tooltipInfo="Total Value Locked"
+            amount={
+              volume?.length ? (
+                formatDollars(+Number(volume?.[0].metrics.tvl).toFixed(2))
+              ) : (
+                <Skeleton width="4rem" />
+              )
+            }
           />
         </Box>
       </Box>

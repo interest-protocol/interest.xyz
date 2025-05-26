@@ -7,6 +7,7 @@ import { Routes, RoutesEnum } from '@/constants';
 
 import PoolTitleBar from '../components/pool-title-bar';
 import { PoolTitleBarProps } from '../components/pool-title-bar/pool-title-bar.types';
+import HeaderMetrics from './farm-form/header-metrics';
 import { usePoolDetails } from './pool-details.context';
 import { PoolDetailsMode } from './pool-details.types';
 import PoolDetailsForm from './pool-details-form';
@@ -31,6 +32,7 @@ const PoolDetails: FC = () => {
   return (
     <Layout>
       <Box>
+        <HeaderMetrics />
         <PoolTitle modeState={[mode, setMode]} />
         <Box
           gap="xs"
@@ -43,7 +45,7 @@ const PoolDetails: FC = () => {
           alignItems={['unset', 'unset', 'unset', 'start']}
         >
           <PoolDetailsForm mode={mode} />
-          <PoolInfo />
+          <PoolInfo mode={mode} />
         </Box>
       </Box>
     </Layout>

@@ -15,10 +15,6 @@ export const ALGORITHM_TYPE: Array<FilterItemProps> = [
 export const POOL_TYPE: Array<FilterItemProps> = [
   {
     type: FilterTypeEnum.POOL_TYPE,
-    value: FormFilterValue.v2,
-  },
-  {
-    type: FilterTypeEnum.POOL_TYPE,
     value: FormFilterValue.curve,
   },
   {

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
+import ConnectWalletButton from '@/components/wallet/connect-wallet';
 import { EXPLORER_URL } from '@/constants';
 import { useDialog } from '@/hooks';
 import { FixedPointMath } from '@/lib';
@@ -150,29 +151,33 @@ const SwapButton = () => {
 
   return (
     <Box display="flex" flexDirection="column" mt="xs">
-      <Button
-        height="2rem"
-        variant="filled"
-        borderRadius="s"
-        onClick={onSwap}
-        disabled={disabled}
-        justifyContent="center"
-        nDisabled={{
-          bg: error ? '#f6465d' : 'highestContainer',
-          ':hover': {
-            background: error ? '#f6465d' : '#343438',
-            color: '#909094',
-          },
-        }}
-      >
-        <Typography
-          variant="label"
-          size="large"
-          color={error ? '#fff' : 'none'}
+      {account?.address ? (
+        <Button
+          height="2rem"
+          variant="filled"
+          borderRadius="s"
+          onClick={onSwap}
+          disabled={disabled}
+          justifyContent="center"
+          nDisabled={{
+            bg: error ? '#f6465d' : 'highestContainer',
+            ':hover': {
+              background: error ? '#f6465d' : '#343438',
+              color: '#909094',
+            },
+          }}
         >
-          {loading ? 'Swapping...' : error ? error : 'Confirm Swap'}
-        </Typography>
-      </Button>
+          <Typography
+            variant="label"
+            size="large"
+            color={error ? '#fff' : 'none'}
+          >
+            {loading ? 'Swapping...' : error ? error : 'Confirm Swap'}
+          </Typography>
+        </Button>
+      ) : (
+        <ConnectWalletButton />
+      )}
     </Box>
   );
 };

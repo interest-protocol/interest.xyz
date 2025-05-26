@@ -6,7 +6,6 @@ import { parseInputEventToNumberString } from '@/utils';
 
 import { ICreateTokenForm } from '../create-token.types';
 import CreateTokenFormButton from './create-token-form-button';
-import CreateTokenFormPool from './create-token-form-pool';
 import CreateTokenFormImage from './create-token-form-upload-image';
 
 const CreateTokenForm: FC = () => {
@@ -128,24 +127,8 @@ const CreateTokenForm: FC = () => {
               fieldProps={{ borderRadius: 'xs', height: '2.8rem' }}
             />
           </Box>
+          <CreateTokenFormButton />
         </Box>
-      </Box>
-      <Box
-        px="l"
-        py="2xl"
-        mx="auto"
-        width="100%"
-        bg="container"
-        maxWidth="37rem"
-        overflow="hidden"
-        borderRadius="xs"
-        color="onSurface"
-      >
-        <Typography variant="headline" size="small">
-          Coin features
-        </Typography>
-        <CreateTokenFormPool />
-        <CreateTokenFormButton />
       </Box>
     </Box>
   );

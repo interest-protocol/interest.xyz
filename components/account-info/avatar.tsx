@@ -7,6 +7,7 @@ import { FC } from 'react';
 import { UserSVG } from '@/components/svg';
 import { EXPLORER_URL } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
+import { formatAddress } from '@/utils';
 
 import { AvatarProps } from './account-info.types';
 
@@ -83,7 +84,7 @@ const Avatar: FC<AvatarProps> = ({
             color="onSurface"
             width="max-content"
           >
-            {address.slice(0, 6)}...{address.slice(-4)}
+            {formatAddress(address)}
           </Typography>
         </Link>
       )}
