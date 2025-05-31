@@ -1,4 +1,4 @@
-import { Box } from '@interest-protocol/ui-kit';
+import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -31,6 +31,38 @@ const HeaderMetrics: FC = () => {
       setMetric(tmpMetric?.length ? tmpMetric[0].metrics : DEFAULT_METRIC);
     }
   }, [isLoading, metrics]);
+
+  if (!isLoading && !metrics?.data)
+    return (
+      <Box
+        width="100%"
+        display="flex"
+        mb="m"
+        gap="m"
+        bg="#f6465d7d"
+        p="s"
+        maxWidth="65rem"
+        mx="auto"
+        borderRadius="1rem"
+        justifyContent="center"
+      >
+        <a
+          href="http://discord.gg/movementlabsxyz"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Typography
+            size="small"
+            color="#909094"
+            textAlign="center"
+            variant="headline"
+            fontSize={['0.85rem', '0.85rem', '1rem']}
+          >
+            Movement RPC under Maintenance. Contact us on discord
+          </Typography>
+        </a>
+      </Box>
+    );
 
   return (
     <Box

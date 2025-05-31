@@ -2,7 +2,6 @@ import { Box } from '@interest-protocol/ui-kit';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
 import { v4 } from 'uuid';
 
@@ -102,28 +101,26 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
                   ? formatMoney(
                       +Number(volume?.[0].metrics.farmApr).toFixed(2)
                     ) + ' %'
-                  : 'N/A',
+                  : '0.00',
                 label: 'Farm APR',
               },
               {
                 value: volume?.length
                   ? formatMoney(+Number(volume?.[0].metrics.apr).toFixed(2)) +
                     ' %'
-                  : 'N/A',
+                  : '0.00',
                 label: 'Fees APR',
               },
             ]}
             amount={
-              volume?.length ? (
-                formatMoney(
-                  +(
-                    Number(volume?.[0].metrics.farmApr) +
-                    Number(volume?.[0].metrics.apr)
-                  ).toFixed(2)
-                ) + ' %'
-              ) : (
-                <Skeleton width="4rem" />
-              )
+              volume?.length
+                ? formatMoney(
+                    +(
+                      Number(volume?.[0].metrics.farmApr) +
+                      Number(volume?.[0].metrics.apr)
+                    ).toFixed(2)
+                  ) + ' %'
+                : '0.00'
             }
           />
           <PoolCardTrade
@@ -131,11 +128,11 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
             description="Volume (24h)"
             tooltipInfo="Volume (24h)"
             amount={
-              volume?.length ? (
-                formatDollars(+Number(volume?.[0].metrics.volume1D).toFixed(2))
-              ) : (
-                <Skeleton width="4rem" />
-              )
+              volume?.length
+                ? formatDollars(
+                    +Number(volume?.[0].metrics.volume1D).toFixed(2)
+                  )
+                : '0.00'
             }
           />
           <PoolCardTrade
@@ -143,11 +140,9 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
             description="TVL"
             tooltipInfo="Total Value Locked"
             amount={
-              volume?.length ? (
-                formatDollars(+Number(volume?.[0].metrics.tvl).toFixed(2))
-              ) : (
-                <Skeleton width="4rem" />
-              )
+              volume?.length
+                ? formatDollars(+Number(volume?.[0].metrics.tvl).toFixed(2))
+                : '0.00'
             }
           />
         </Box>

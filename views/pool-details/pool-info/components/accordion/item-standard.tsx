@@ -1,4 +1,9 @@
-import { Box, TooltipWrapper, Typography } from '@interest-protocol/ui-kit';
+import {
+  Box,
+  Button,
+  TooltipWrapper,
+  Typography,
+} from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
@@ -74,7 +79,13 @@ const PoolDetailsCollapseItemStandard: FC<
               </TooltipWrapper>
             )}
             {isCopyClipBoard && (
-              <ClipboardSVG
+              <Button
+                p="unset"
+                fontSize="xs"
+                border="none"
+                variant="outline"
+                borderRadius="2xs"
+                color="onSurface"
                 onClick={(e) => {
                   e.stopPropagation();
                   copyToClipboard(
@@ -82,11 +93,14 @@ const PoolDetailsCollapseItemStandard: FC<
                     clipBoardSuccessMessage
                   );
                 }}
-                width="1.25rem"
-                cursor="pointer"
-                maxWidth="1.25rem"
-                maxHeight="1.25rem"
-              />
+              >
+                <ClipboardSVG
+                  width="1.25rem"
+                  cursor="pointer"
+                  maxWidth="1.25rem"
+                  maxHeight="1.25rem"
+                />
+              </Button>
             )}
           </Box>
         )}

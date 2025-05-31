@@ -25,6 +25,7 @@ export interface PoolCardListContentProps {
   done: boolean;
   next?: () => void;
   hasMore?: boolean;
+  type: PoolTabEnum;
   arePoolsLoading: boolean;
   pools?: ReadonlyArray<ReadonlyArray<IPool>>;
 }
