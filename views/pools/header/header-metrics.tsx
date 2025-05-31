@@ -1,4 +1,4 @@
-import { Box } from '@interest-protocol/ui-kit';
+import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import { useMetrics } from '@/hooks';
@@ -9,7 +9,35 @@ import HeaderInfoCard from './header-info-card';
 const HeaderMetrics: FC = () => {
   const { data: metrics, isLoading } = useMetrics();
 
-  const loading = isLoading || !metrics;
+  if (!isLoading && !metrics?.data)
+    return (
+      <Box
+        width="100%"
+        display="flex"
+        mb="m"
+        gap="m"
+        bg="#f6465d7d"
+        p="s"
+        borderRadius="1rem"
+        justifyContent="center"
+      >
+        <a
+          href="http://discord.gg/movementlabsxyz"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Typography
+            variant="headline"
+            size="small"
+            textAlign="center"
+            color="#909094"
+            fontSize={['0.85rem', '0.85rem', '1rem']}
+          >
+            Movement RPC under Maintenance. Contact us on discord
+          </Typography>
+        </a>
+      </Box>
+    );
 
   return (
     <Box
@@ -21,21 +49,21 @@ const HeaderMetrics: FC = () => {
     >
       <HeaderInfoCard
         title="TVL"
-        isLoading={loading}
-        value={metrics?.summary.tvl || '0'}
+        isLoading={isLoading}
+        value={metrics?.summary?.tvl || '0'}
         type={PoolHeaderIconEnum.tvl}
       />
       <HeaderInfoCard
-        isLoading={loading}
+        isLoading={isLoading}
         title="Cumulative Volume"
         type={PoolHeaderIconEnum.volume}
-        value={metrics?.summary.volume || '0'}
+        value={metrics?.summary?.volume || '0'}
       />
       <HeaderInfoCard
-        isLoading={loading}
+        isLoading={isLoading}
         title="Trading Volume (24H)"
         type={PoolHeaderIconEnum.volume}
-        value={metrics?.summary.volume1D || '0'}
+        value={metrics?.summary?.volume1D || '0'}
       />
     </Box>
   );

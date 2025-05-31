@@ -76,6 +76,7 @@ const Pools: FC = () => {
       hasMore={false}
       pools={memoPools}
       arePoolsLoading={false}
+      type={PoolTabEnum.Pools}
       next={() => setPage(inc)}
     />
   );
@@ -169,6 +170,7 @@ const Position: FC = () => {
       pools={memoPools}
       done={!!data?.done}
       next={() => setPage(inc)}
+      type={PoolTabEnum.MyPosition}
       arePoolsLoading={arePoolsLoading}
       hasMore={(data?.totalPages ?? 0) > page}
     />
@@ -178,6 +180,7 @@ const Position: FC = () => {
 const PoolCardListContent: FC<PoolCardListContentProps> = ({
   done,
   next,
+  type,
   pools,
   hasMore,
   arePoolsLoading,
@@ -203,9 +206,9 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
 
   if (!!pools && !pools?.flatMap((poolPage) => poolPage).length && done)
     return (
-      <Box width="100%" color="onSurface" my="3xl">
+      <Box color="onSurface" m="auto">
         <Typography size="small" variant="display">
-          No pool found!
+          {`No ${['Pool', 'Position'][type]} found!`}
         </Typography>
       </Box>
     );
