@@ -23,7 +23,7 @@ const FarmFormAPR: FC = () => {
         setValue('apr', apr);
         setAprValue(apr);
         return;
-      } else setValue('apr', '0');
+      } else setValue('apr', '0.00');
     }
   }, [isLoading]);
 

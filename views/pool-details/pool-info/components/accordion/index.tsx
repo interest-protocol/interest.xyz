@@ -1,4 +1,4 @@
-import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
+import { Box, Button, Motion, Typography } from '@interest-protocol/ui-kit';
 import { FC, useState } from 'react';
 
 import { PoolDetailAccordionProps } from './accordion.types';
@@ -42,7 +42,16 @@ const PoolDetailCollapse: FC<PoolDetailAccordionProps> = ({
           display="flex"
           alignItems="center"
         >
-          <CollapseIcon />
+          <Button
+            p="unset"
+            fontSize="xs"
+            border="none"
+            variant="outline"
+            borderRadius="2xs"
+            color="onSurface"
+          >
+            <CollapseIcon />
+          </Button>
         </Motion>
       </Box>
       <Motion
