@@ -41,7 +41,7 @@ const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
       display="none"
       color="onSurface"
       className="arrow-wrapper"
-      nHover={{ bg: 'surface' }}
+      nHover={{ color: 'primary', bg: 'surface' }}
     >
       <ArrowObliqueSVG maxHeight="1.5rem" maxWidth="1.5rem" width="1.5rem" />
     </Button>
