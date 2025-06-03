@@ -60,6 +60,16 @@ const PoolInfoDetailsPool: FC = () => {
           4
         ),
       },
+      {
+        value: `${formatMoney(
+          FixedPointMath.toNumber(BigNumber(String(poolExtraData.fees.midFee)))
+        )} %`,
+      },
+      {
+        value: `${formatMoney(
+          FixedPointMath.toNumber(BigNumber(String(poolExtraData.fees.outFee)))
+        )} %`,
+      },
     ];
   };
 
