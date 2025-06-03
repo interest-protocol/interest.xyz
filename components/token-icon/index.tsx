@@ -82,6 +82,7 @@ const TokenIcon: FC<TokenIconProps> = ({
         position="relative"
         alignItems="center"
         justifyContent="center"
+        mr={!ChainIcon ? 'unset' : 'xs'}
       >
         <Box
           display="flex"
@@ -134,6 +135,7 @@ const TokenIcon: FC<TokenIconProps> = ({
         position="relative"
         alignItems="center"
         justifyContent="center"
+        mr={!ChainIcon ? 'unset' : 'xs'}
       >
         <Box
           display="flex"
@@ -184,6 +186,7 @@ const TokenIcon: FC<TokenIconProps> = ({
         position="relative"
         alignItems="center"
         justifyContent="center"
+        mr={!ChainIcon ? 'unset' : 'xs'}
       >
         <Box
           display="flex"
@@ -241,6 +244,7 @@ const TokenIcon: FC<TokenIconProps> = ({
         position="relative"
         alignItems="center"
         justifyContent="center"
+        mr={!ChainIcon ? 'unset' : 'xs'}
       >
         <Box
           display="flex"
@@ -299,6 +303,7 @@ const TokenIcon: FC<TokenIconProps> = ({
       position="relative"
       alignItems="center"
       justifyContent="center"
+      mr={!ChainIcon ? 'unset' : 'xs'}
     >
       <Box
         bg="black"

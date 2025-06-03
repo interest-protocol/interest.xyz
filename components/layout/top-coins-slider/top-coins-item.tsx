@@ -6,7 +6,7 @@ import { useCoinsPrice } from '@/hooks/use-coins-price';
 import { Token } from '@/interface';
 import { formatDollars } from '@/utils';
 
-import BottomMenuItem from './swap-top-slider-item';
+import SwapTopSliderItem from './swap-top-slider-item';
 
 const TopCoinItem: FC<{
   token: Token;
@@ -17,11 +17,11 @@ const TopCoinItem: FC<{
   return (
     <Box gap="s" display="flex">
       <Box>
-        <BottomMenuItem
+        <SwapTopSliderItem
           symbol={token.symbol}
           iconUri={token.iconUri}
           onClick={handleTokenSelect}
-          price={formatDollars((price?.length && price[0].price) ?? 0)}
+          price={formatDollars((price?.length && price[0].price) ?? 0, 4)}
         />
       </Box>
       <Box gap="xs" display="flex" alignItems="center" justifyContent="center">
