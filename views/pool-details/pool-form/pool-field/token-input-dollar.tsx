@@ -41,7 +41,7 @@ const TokenInputDollar: FC<PoolFieldsProps> = ({ poolOptionView, index }) => {
       {token?.value
         ? formatDollars(
             FixedPointMath.toNumber(
-              BigNumber(String(prices[index].price), 18),
+              BigNumber(String(prices[index]?.price), 18),
               18
             ) * +token?.value
           )

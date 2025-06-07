@@ -207,7 +207,7 @@ const PoolCardListContent: FC<PoolCardListContentProps> = ({
   if (!!pools && !pools?.flatMap((poolPage) => poolPage).length && done)
     return (
       <Box color="onSurface" m="auto">
-        <Typography size="small" variant="display">
+        <Typography size="small" variant="display" textAlign="center">
           {`No ${['Pool', 'Position'][type]} found!`}
         </Typography>
       </Box>
