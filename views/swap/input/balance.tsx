@@ -134,7 +134,7 @@ const Balance: FC<InputProps> = ({ label }) => {
       </Box>
       <Typography size="small" variant="body" fontSize="s" whiteSpace="nowrap">
         {type
-          ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
+          ? `${formatMoney(FixedPointMath.toNumber(balance, decimals), 4)} ${symbol}`
           : '0'}
       </Typography>
       {!coinsMap[normalizeSuiAddress(type)]?.balance && loading && (
