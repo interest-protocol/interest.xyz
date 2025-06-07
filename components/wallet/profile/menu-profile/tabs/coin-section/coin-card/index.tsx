@@ -83,6 +83,8 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
 
   const isConvertible = (token.type as CoinType) in COIN_TYPE_TO_FA;
 
+  if ((!coin || coin.balance.isZero()) && isConvertible) return;
+
   return (
     <CardWrapper
       TokenIcon={
