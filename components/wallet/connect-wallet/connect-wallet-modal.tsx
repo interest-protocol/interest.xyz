@@ -5,15 +5,23 @@ import { v4 } from 'uuid';
 
 import { ArrowLeftSVG, TimesSVG } from '@/components/svg';
 
+import { CUSTOM_WALLETS } from './connect-wallet.data';
 import { ConnectWalletModalProps } from './connect-wallet.types';
 
 const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
   const { allAvailableWallets, select } = useAptosWallet();
 
   const handleConnect = async (name: string) => {
+    if (!allAvailableWallets.length)
+      return window.open(name, '_blank')?.focus();
+
     await select(name);
     handleClose();
   };
+
+  const WALLETS = !allAvailableWallets.length
+    ? CUSTOM_WALLETS
+    : allAvailableWallets;
 
   return (
     <Box
@@ -46,14 +54,20 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" gap="s">
-        {allAvailableWallets.map(({ label, name, iconUrl }) => (
+        {WALLETS.map(({ label, name, iconUrl, downloadUrl }) => (
           <Button
-            px="s"
             key={v4()}
+            px="s"
             variant="tonal"
             color="onSurface"
             borderRadius="xs"
-            onClick={() => handleConnect(name)}
+            onClick={() =>
+              handleConnect(
+                allAvailableWallets.length
+                  ? name
+                  : downloadUrl.browserExtension || ''
+              )
+            }
           >
             <Box as="span" display="flex" alignItems="center" gap="s">
               <img src={iconUrl} alt={label} width="40" />
