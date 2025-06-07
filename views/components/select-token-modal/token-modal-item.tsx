@@ -67,17 +67,6 @@ const TokenModalItem: FC<TokenModalItemProps> = ({
           >
             {symbol}
           </Typography>
-          <Typography
-            size="small"
-            opacity="0.6"
-            variant="body"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            maxWidth={['unset', '5rem']}
-          >
-            {isFA ? 'Fungible Asset' : 'Coin'}
-          </Typography>
         </Box>
       </Box>
     </Box>
