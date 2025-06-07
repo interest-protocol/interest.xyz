@@ -68,7 +68,7 @@ const MaxButton: FC<MaxButtonProps> = ({ name, index }) => {
       } else {
         const poolExtraData = pool.poolExtraData as unknown as VolatilePool;
         const priceRaw =
-          poolExtraData.prices[pool.tokensAddresses[1]]?.lastPrice;
+          poolExtraData?.prices[pool.tokensAddresses[1]]?.lastPrice;
         const price = FixedPointMath.toNumber(BigNumber(String(priceRaw)), 18);
 
         const newAmount = String(

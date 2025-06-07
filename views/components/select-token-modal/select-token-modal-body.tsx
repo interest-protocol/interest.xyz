@@ -51,13 +51,6 @@ const SelectTokenModalBody: FC<SelectTokenModalBodyProps> = ({
                   decimals: metadata.decimals,
                   projectUri: metadata.projectUri ?? '',
                 } as FAMetadata),
-                parseToMetadata({
-                  name: metadata.name,
-                  type: metadata.type,
-                  symbol: metadata.symbol,
-                  iconUri: metadata.iconUri,
-                  decimals: metadata.decimals,
-                } as CoinMetadata),
               ]
             : parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
         )}

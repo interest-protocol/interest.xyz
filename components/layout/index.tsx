@@ -4,6 +4,7 @@ import { FC, PropsWithChildren } from 'react';
 import SwapBottomMenu from '@/components/layout/bottom-menu';
 
 import ErrorBoundary from '../error-boundary';
+import FloatingButtons from './floating-buttons';
 import Header from './header';
 import { LayoutProps } from './layout.types';
 
@@ -87,6 +88,7 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
             </Box>
           </Box>
         </Box>
+        <FloatingButtons />
       </Box>
     </Box>
     <SwapBottomMenu />

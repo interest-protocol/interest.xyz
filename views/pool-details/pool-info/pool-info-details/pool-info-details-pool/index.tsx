@@ -34,11 +34,11 @@ const PoolInfoDetailsPool: FC = () => {
 
   const getVolatileData = (): ReadonlyArray<ContentDataProps> => {
     const poolExtraData = pool.poolExtraData as unknown as VolatilePool;
-    const priceRaw = poolExtraData.prices[pool.tokensAddresses[1]];
-    const price = priceRaw.price
-      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw.price)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
+    const priceRaw = poolExtraData?.prices[pool.tokensAddresses[1]];
+    const price = priceRaw?.price
+      ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw?.price)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
       : '0';
-    const lastPrice = priceRaw.lastPrice
+    const lastPrice = priceRaw?.lastPrice
       ? `${formatMoney(FixedPointMath.toNumber(BigNumber(String(priceRaw.lastPrice)), 18), 6)} ${pool.tokensMetadata?.[0]?.symbol}`
       : '0';
     return [

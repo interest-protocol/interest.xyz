@@ -92,7 +92,7 @@ const SwapBackground = memo(() => {
         >
           <Motion
             scale="1"
-            filter="blur(10px)"
+            filter="blur(0px)"
             variants={{
               initial: { y: 0 },
               hover: {
@@ -163,7 +163,7 @@ const SwapBackground = memo(() => {
         >
           <Motion
             scale="1"
-            filter="blur(10px)"
+            filter="blur(0px)"
             variants={{
               initial: { y: 0 },
               hover: {
