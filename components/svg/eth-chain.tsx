@@ -10,7 +10,7 @@ const ETHChain: FC<SVGProps> = ({ maxWidth, maxHeight, ...props }) => (
     {...props}
   >
     <g clipPath="url(#clip0_60_1017)">
-      <rect width="24" height="24" fill="#627EEA" />
+      <rect width="24" height="24" rx="11.5" fill="#627EEA" />
       <path
         d="M12.17 6L12.0918 6.26582V13.9794L12.17 14.0575L15.7506 11.941L12.17 6Z"
         fill="white"

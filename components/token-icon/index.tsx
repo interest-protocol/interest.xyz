@@ -121,6 +121,7 @@ const TokenIcon: FC<TokenIconProps> = ({
             overflow="hidden"
             position="absolute"
             borderRadius="full"
+            background="red"
           >
             <ChainIcon maxHeight={size} maxWidth={size} width="100%" />
           </Box>
