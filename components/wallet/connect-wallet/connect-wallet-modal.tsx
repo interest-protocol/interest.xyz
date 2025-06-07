@@ -5,15 +5,21 @@ import { v4 } from 'uuid';
 
 import { ArrowLeftSVG, TimesSVG } from '@/components/svg';
 
+import { CUSTOM_WALLETS } from './connect-wallet.data';
 import { ConnectWalletModalProps } from './connect-wallet.types';
 
 const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
   const { allAvailableWallets, select } = useAptosWallet();
 
   const handleConnect = async (name: string) => {
+    if (allAvailableWallets.length) return;
     await select(name);
     handleClose();
   };
+
+  const WALLETS = !allAvailableWallets.length
+    ? CUSTOM_WALLETS
+    : allAvailableWallets;
 
   return (
     <Box
@@ -46,32 +52,42 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" gap="s">
-        {allAvailableWallets.map(({ label, name, iconUrl }) => (
-          <Button
-            px="s"
+        {WALLETS.map(({ label, name, iconUrl, downloadUrl }) => (
+          // eslint-disable-next-line jsx-a11y/anchor-is-valid
+          <a
+            href={
+              allAvailableWallets.length ? '#' : downloadUrl.browserExtension
+            }
+            target="_blank"
+            rel="noreferrer"
             key={v4()}
-            variant="tonal"
-            color="onSurface"
-            borderRadius="xs"
-            onClick={() => handleConnect(name)}
           >
-            <Box as="span" display="flex" alignItems="center" gap="s">
-              <img src={iconUrl} alt={label} width="40" />
-              <Typography as="span" size="large" variant="label">
-                {label}
-              </Typography>
-            </Box>
-            <Box>
-              <Box
-                as="span"
-                rotate="180deg"
-                display="inline-flex"
-                transformOrigin="50% 50%"
-              >
-                <ArrowLeftSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
+            <Button
+              width="fill-available"
+              px="s"
+              variant="tonal"
+              color="onSurface"
+              borderRadius="xs"
+              onClick={() => handleConnect(name)}
+            >
+              <Box as="span" display="flex" alignItems="center" gap="s">
+                <img src={iconUrl} alt={label} width="40" />
+                <Typography as="span" size="large" variant="label">
+                  {label}
+                </Typography>
               </Box>
-            </Box>
-          </Button>
+              <Box>
+                <Box
+                  as="span"
+                  rotate="180deg"
+                  display="inline-flex"
+                  transformOrigin="50% 50%"
+                >
+                  <ArrowLeftSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
+                </Box>
+              </Box>
+            </Button>
+          </a>
         ))}
       </Box>
     </Box>
