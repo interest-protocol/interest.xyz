@@ -22,7 +22,6 @@ type CoinType = keyof typeof COIN_TYPE_TO_FA;
 const FloatingButtons: FC = () => {
   const network = useNetwork<Network>();
   const { coinsMap, mutate, loading: coinsLoading } = useCoins();
-  //const [loading, setLoading] = useState(false);
   const { account, signAndSubmitTransaction } = useAptosWallet();
 
   const verifiedTokens = TOKENS.flatMap((metadata) =>
@@ -53,12 +52,10 @@ const FloatingButtons: FC = () => {
   );
 
   const hasCoinTokenWithBalance = useMemo(() => {
-    // Durante loading, se não tem dados ainda, retorna false
     if (coinsLoading && Object.keys(coinsMap).length === 0) {
       return false;
     }
 
-    // Se tem dados (mesmo durante loading), verifica normalmente
     return coinTokens.some((token) => {
       const coin = coinsMap[normalizeSuiAddress(token.type)];
       return coin && !coin.balance.isZero();
