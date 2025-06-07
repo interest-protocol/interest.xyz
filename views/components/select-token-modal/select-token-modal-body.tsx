@@ -41,7 +41,18 @@ const SelectTokenModalBody: FC<SelectTokenModalBodyProps> = ({
         loading={false}
         handleSelectToken={handleSelectToken}
         tokens={TOKENS.flatMap((metadata) =>
-          parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
+          metadata.address && metadata.type
+            ? [
+                parseToMetadata({
+                  name: metadata.name,
+                  symbol: metadata.symbol,
+                  iconUri: metadata.iconUri,
+                  address: metadata.address,
+                  decimals: metadata.decimals,
+                  projectUri: metadata.projectUri ?? '',
+                } as FAMetadata),
+              ]
+            : parseToMetadata(metadata as unknown as CoinMetadata | FAMetadata)
         )}
       />
     );
