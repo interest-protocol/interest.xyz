@@ -29,7 +29,7 @@ export const logCreateToken = (
   network: Network,
   txDigest: string
 ) =>
-  fetch(`https://api.staging.interestlabs.io/v1/quest`, {
+  fetch(`https://api.interestlabs.io/v1/quests`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -37,23 +37,19 @@ export const logCreateToken = (
       'Access-Control-Request-Method': 'POST',
     },
     body: JSON.stringify({
-      name: `Create Custom Token`,
-      summary: `Create Custom Token`,
-      value: {
-        quest: {
-          address,
-          txDigest,
-          kind: 'createToken',
-          data: {
-            coin: {
-              symbol,
-              amount: value,
-              type: 'CUSTOM',
-            },
+      quest: {
+        address,
+        txDigest,
+        kind: 'createToken',
+        data: {
+          coin: {
+            symbol,
+            amount: value,
+            type: 'CUSTOM',
           },
         },
-        profileField: 'createToken',
-        network,
       },
+      profileField: 'createToken',
+      network,
     } as Omit<Quest, 'timestamp'>),
   });

@@ -24,42 +24,38 @@ export interface PoolData {
 }
 
 export type Quest = {
-  name: string;
-  summary: string;
-  value: {
-    quest: {
-      address: string;
-      txDigest: string;
-      timestamp: number;
-    } & (
-      | {
-          kind: 'swap';
-          data: SwapData;
-        }
-      | {
-          kind: 'createToken';
-          data: TokenData;
-        }
-      | {
-          kind: 'createAndDeployToken';
-          data: TokenData;
-        }
-      | {
-          kind: 'createPool';
-          data: PoolData;
-        }
-      | {
-          kind: 'addLiquidity';
-          data: PoolData;
-        }
-      | {
-          kind: 'wrapCoin';
-          data: TokenData;
-        }
-    );
-    profileField: string;
-    network: string;
-  };
+  quest: {
+    address: string;
+    txDigest: string;
+    timestamp: number;
+  } & (
+    | {
+        kind: 'swap';
+        data: SwapData;
+      }
+    | {
+        kind: 'createToken';
+        data: TokenData;
+      }
+    | {
+        kind: 'createAndDeployToken';
+        data: TokenData;
+      }
+    | {
+        kind: 'createPool';
+        data: PoolData;
+      }
+    | {
+        kind: 'addLiquidity';
+        data: PoolData;
+      }
+    | {
+        kind: 'wrapCoin';
+        data: TokenData;
+      }
+  );
+  profileField: string;
+  network: string;
 };
 
 export type QuestDocument = Document & Quest;
