@@ -1,7 +1,4 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
-
-import { Quest } from '@/server/model/quest';
-
+/*
 export const logWrapCoin = (
   address: string,
   symbol: string,
@@ -24,3 +21,4 @@ export const logWrapCoin = (
       },
     } as Omit<Quest, 'timestamp'>),
   });
+*/

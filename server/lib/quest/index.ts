@@ -60,7 +60,7 @@ export const addQuest = async (
 ) => {
   await dbConnect();
 
-  const questProfile = await findQuestProfile(quest.address);
+  const questProfile = await findQuestProfile(quest.quest.address);
 
   const todayTimestamp = getExactDayTimestamp();
   const weekTimestamp = getFirstWeekDayTimestamp();
@@ -68,7 +68,7 @@ export const addQuest = async (
   await updateMetrics(
     network,
     !questProfile.weeks?.includes(weekTimestamp),
-    quest.kind
+    quest.quest.kind
   );
 
   const finalQuest = { ...quest, timestamp: todayTimestamp };
@@ -116,9 +116,9 @@ export const findSwapBySymbols = async (
     .exec();
 
   return swapQuests.find(
-    ({ data }) =>
-      (data as SwapData).coinIn.symbol === symbolIn &&
-      (data as SwapData).coinOut.symbol === symbolOut
+    ({ quest }) =>
+      (quest.data as SwapData).coinIn.symbol === symbolIn &&
+      (quest.data as SwapData).coinOut.symbol === symbolOut
   );
 };
 
@@ -137,9 +137,9 @@ export const findAddLiquidityBySymbols = async (
     .exec();
 
   return addLiquidityQuests.find(
-    ({ data }) =>
-      (data as PoolData).coinA.symbol === symbolIn &&
-      (data as PoolData).coinB.symbol === symbolOut
+    ({ quest }) =>
+      (quest.data as PoolData).coinA.symbol === symbolIn &&
+      (quest.data as PoolData).coinB.symbol === symbolOut
   );
 };
 
@@ -150,7 +150,9 @@ export const findWrapBySymbol = async (symbol: string, address: string) => {
     .lean()
     .exec();
 
-  return wrapQuests.find(({ data }) => (data as TokenData).symbol === symbol);
+  return wrapQuests.find(
+    ({ quest }) => (quest.data as TokenData).coin.symbol === symbol
+  );
 };
 
 export const findMetrics = async (network: Network) => {

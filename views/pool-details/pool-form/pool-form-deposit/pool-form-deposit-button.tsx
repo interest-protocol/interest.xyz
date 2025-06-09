@@ -69,6 +69,7 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
 
       if (txResult) {
         logDepositPool(
+          poolAddress,
           account.address,
           getValues('tokenList.0'),
           getValues('tokenList.1'),

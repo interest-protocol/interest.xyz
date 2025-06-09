@@ -2,7 +2,6 @@ import {
   InputGenerateTransactionPayloadData,
   UserTransactionResponse,
 } from '@aptos-labs/ts-sdk';
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useRouter } from 'next/router';
@@ -18,7 +17,6 @@ import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.h
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 
 import { CreatePoolForm, Token } from '../pool-create.types';
-import { logCreatePool } from '../pool-create.utils';
 
 const PoolSummaryButton: FC = () => {
   const dexV2 = useInterestV2Dex();
@@ -115,13 +113,15 @@ const PoolSummaryButton: FC = () => {
           .catch();
       } while (waitingTx);
 
+      /*
+      TODO: Update this
       logCreatePool(
         account.address,
         tokens[0],
         tokens[1],
         Network.MovementMainnet,
         txResult.hash
-      );
+      );*/
 
       const pool = await client
         .getTransactionByHash({ transactionHash: txResult.hash })

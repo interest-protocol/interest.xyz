@@ -99,8 +99,9 @@ const CreateTokenFormButton = () => {
       setValue('executionTime', String(endTime));
 
       logCreateToken(
-        account!.address,
         symbol || '',
+        `${supply}`,
+        account!.address,
         Network.MovementMainnet,
         txResult.hash
       );

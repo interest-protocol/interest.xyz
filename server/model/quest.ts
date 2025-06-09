@@ -2,7 +2,7 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 
 const modelName = 'InterestDEXQueryMovementMainnet';
 
-interface Coin {
+export interface Coin {
   type: string;
   symbol: string;
   amount: string;
@@ -14,44 +14,49 @@ export interface SwapData {
 }
 
 export interface TokenData {
-  symbol: string;
+  coin: Coin;
 }
 
 export interface PoolData {
+  poolId: string;
   coinA: Coin;
   coinB: Coin;
 }
 
 export type Quest = {
-  address: string;
-  txDigest: string;
-  timestamp: number;
-} & (
-  | {
-      kind: 'swap';
-      data: SwapData;
-    }
-  | {
-      kind: 'createToken';
-      data: TokenData;
-    }
-  | {
-      kind: 'createAndDeployToken';
-      data: TokenData;
-    }
-  | {
-      kind: 'createPool';
-      data: PoolData;
-    }
-  | {
-      kind: 'addLiquidity';
-      data: PoolData;
-    }
-  | {
-      kind: 'wrapCoin';
-      data: TokenData;
-    }
-);
+  quest: {
+    address: string;
+    txDigest: string;
+    timestamp: number;
+  } & (
+    | {
+        kind: 'swap';
+        data: SwapData;
+      }
+    | {
+        kind: 'createToken';
+        data: TokenData;
+      }
+    | {
+        kind: 'createAndDeployToken';
+        data: TokenData;
+      }
+    | {
+        kind: 'createPool';
+        data: PoolData;
+      }
+    | {
+        kind: 'addLiquidity';
+        data: PoolData;
+      }
+    | {
+        kind: 'wrapCoin';
+        data: TokenData;
+      }
+  );
+  profileField: string;
+  network: string;
+};
 
 export type QuestDocument = Document & Quest;
 
