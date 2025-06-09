@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const body = req.body as Quest;
 
-    const data = await addQuest(body, body.kind, network);
+    const data = await addQuest(body, body.quest.kind, network);
 
     return res.json(data);
   } catch (e) {

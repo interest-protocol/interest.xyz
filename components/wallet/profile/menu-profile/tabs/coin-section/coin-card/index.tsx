@@ -27,7 +27,6 @@ import { formatDollars, formatMoney, ZERO_BIG_NUMBER } from '@/utils';
 
 import { CoinCardProps } from '../../../user-info.types';
 import CardWrapper from './card-wrapper';
-import { logWrapCoin } from './coin-card.utils';
 
 type CoinType = keyof typeof COIN_TYPE_TO_FA;
 
@@ -66,9 +65,10 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
 
       invariant(tx.status === 'Approved', 'Rejected by User');
 
-      const txResult = tx.args;
+      // TODO: Update this logs
+      /*const txResult = tx.args;
 
-      logWrapCoin(account.address, symbol, network, txResult.hash);
+      logWrapCoin(account.address, symbol, network, txResult.hash);*/
 
       toast.success(`${symbol} wrapped successfully!`);
     } catch (e) {
