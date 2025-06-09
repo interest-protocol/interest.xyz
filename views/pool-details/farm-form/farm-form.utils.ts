@@ -4,13 +4,14 @@ import { Quest } from '@/server/model/quest';
 import { PoolToken } from '@/views/pools/pools.types';
 
 export const logDepositPool = (
+  poolId: string,
   address: string,
   tokenA: PoolToken,
   tokenB: PoolToken,
   network: Network,
   txDigest: string
 ) =>
-  fetch(`/api/v1/log-quest?network=${network}`, {
+  fetch(`https://api.staging.interestlabs.io/v1/quest`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -18,20 +19,29 @@ export const logDepositPool = (
       'Access-Control-Request-Method': 'POST',
     },
     body: JSON.stringify({
-      address,
-      txDigest,
-      kind: 'addLiquidity',
-      data: {
-        coinA: {
-          type: tokenA.type,
-          amount: tokenA.value,
-          symbol: tokenA.symbol,
+      name: `Add ${tokenA.symbol}-${tokenA.symbol} Liquidity`,
+      summary: `Add ${tokenA.symbol}-${tokenA.symbol} Liquidity`,
+      value: {
+        quest: {
+          address,
+          txDigest,
+          kind: 'addLiquidity',
+          data: {
+            poolId,
+            coinA: {
+              type: tokenA.type,
+              amount: tokenA.value,
+              symbol: tokenA.symbol,
+            },
+            coinB: {
+              type: tokenB.type,
+              amount: tokenB.value,
+              symbol: tokenB.symbol,
+            },
+          },
         },
-        coinB: {
-          type: tokenB.type,
-          amount: tokenB.value,
-          symbol: tokenB.symbol,
-        },
+        profileField: 'addLiquidity',
+        network,
       },
     } as Omit<Quest, 'timestamp'>),
   });

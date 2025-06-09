@@ -23,12 +23,13 @@ export const getBase64 = async (file: File) => {
 };
 
 export const logCreateToken = (
-  address: string,
   symbol: string,
+  value: string,
+  address: string,
   network: Network,
   txDigest: string
 ) =>
-  fetch(`/api/v1/log-quest?network=${network}`, {
+  fetch(`https://api.staging.interestlabs.io/v1/quest`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -36,11 +37,23 @@ export const logCreateToken = (
       'Access-Control-Request-Method': 'POST',
     },
     body: JSON.stringify({
-      address,
-      txDigest,
-      kind: 'createToken',
-      data: {
-        symbol,
+      name: `Create Custom Token`,
+      summary: `Create Custom Token`,
+      value: {
+        quest: {
+          address,
+          txDigest,
+          kind: 'createToken',
+          data: {
+            coin: {
+              symbol,
+              amount: value,
+              type: 'CUSTOM',
+            },
+          },
+        },
+        profileField: 'createToken',
+        network,
       },
     } as Omit<Quest, 'timestamp'>),
   });

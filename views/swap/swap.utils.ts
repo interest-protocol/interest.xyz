@@ -13,7 +13,7 @@ export const logSwap = (
   network: Network,
   txDigest: string
 ) =>
-  fetch(`/api/v1/log-quest?network=${network}`, {
+  fetch(`https://api.staging.interestlabs.io/v1/quest`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -21,20 +21,28 @@ export const logSwap = (
       'Access-Control-Request-Method': 'POST',
     },
     body: JSON.stringify({
-      address,
-      txDigest,
-      kind: 'swap',
-      data: {
-        coinIn: {
-          type: from.type,
-          amount: from.value,
-          symbol: from.symbol,
+      name: `Swap ${from.symbol} to ${to.symbol}`,
+      summary: `Swap ${from.symbol} to ${to.symbol}`,
+      value: {
+        quest: {
+          address,
+          txDigest,
+          kind: 'swap',
+          data: {
+            coinIn: {
+              type: from.type,
+              amount: from.value,
+              symbol: from.symbol,
+            },
+            coinOut: {
+              type: to.type,
+              amount: to.value,
+              symbol: to.symbol,
+            },
+          },
         },
-        coinOut: {
-          type: from.type,
-          amount: to.value,
-          symbol: to.symbol,
-        },
+        profileField: 'swap',
+        network,
       },
     } as Omit<Quest, 'timestamp'>),
   });

@@ -1,8 +1,5 @@
 import { InterestDex } from '@interest-protocol/aptos-move-dex';
-import {
-  Network,
-  normalizeSuiAddress,
-} from '@interest-protocol/interest-aptos-v2';
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, TooltipWrapper } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC, useMemo } from 'react';
@@ -10,9 +7,7 @@ import toast from 'react-hot-toast';
 import invariant from 'tiny-invariant';
 
 import { WrapSVG } from '@/components/svg';
-import { logWrapCoin } from '@/components/wallet/profile/menu-profile/tabs/coin-section/coin-card/coin-card.utils';
 import { COIN_TYPE_TO_FA, TOKENS } from '@/constants/coins';
-import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { parseToMetadata } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
@@ -20,7 +15,7 @@ import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 type CoinType = keyof typeof COIN_TYPE_TO_FA;
 
 const FloatingButtons: FC = () => {
-  const network = useNetwork<Network>();
+  //const network = useNetwork<Network>();
   const { coinsMap, mutate, loading: coinsLoading } = useCoins();
   const { account, signAndSubmitTransaction } = useAptosWallet();
 
@@ -83,9 +78,10 @@ const FloatingButtons: FC = () => {
 
         invariant(tx.status === 'Approved', 'Rejected by User');
 
-        const txResult = tx.args;
+        //TODO: update
+        //const txResult = tx.args;
 
-        logWrapCoin(account.address, symbol, network, txResult.hash);
+        //logWrapCoin(account.address, symbol, network, txResult.hash);
 
         toast.success(`${symbol} wrapped successfully!`);
       } catch (e) {
