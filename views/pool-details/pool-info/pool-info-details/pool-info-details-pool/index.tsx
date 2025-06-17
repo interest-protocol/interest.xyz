@@ -44,10 +44,11 @@ const PoolInfoDetailsPool: FC = () => {
     return [
       { value: FixedPointMath.toNumber(BigNumber(poolExtraData?.a || '0'), 0) },
       {
-        value: FixedPointMath.toNumber(
-          BigNumber(poolExtraData?.gamma || '0'),
-          0
-        ).toExponential(),
+        value: `${
+          (FixedPointMath.toNumber(BigNumber(poolExtraData?.gamma || '0'), 0) /
+            1e18) *
+          100
+        } %`,
       },
       { value: price },
       { value: lastPrice },
