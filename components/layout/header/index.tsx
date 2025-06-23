@@ -1,12 +1,9 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useState } from 'react';
 import { v4 } from 'uuid';
 
-import { IPXGoldenSVG } from '@/components/svg';
 import Wallet from '@/components/wallet';
-import { Routes, RoutesEnum } from '@/constants';
 import useEventListener from '@/hooks/use-event-listener';
 
 import { SIDEBAR_ITEMS } from '../sidebar/sidebar.data';
@@ -37,44 +34,34 @@ const Header: FC = () => {
   useEventListener('resize', handleSetDesktop, true);
 
   return (
-    <Box display="flex" position="relative" flexDirection="column" bg="#000000">
+    <Box display="flex" position="relative" flexDirection="column">
       <Box
         width="100%"
         display="flex"
         alignItems="center"
-        py={isMobile ? 'xs' : 's'}
+        py={isMobile ? 'xs' : '1rem'}
         px={isMobile ? 'm' : '2xl'}
         justifyContent="space-between"
       >
-        {!isMobile ? (
-          <LogoWrapper />
-        ) : (
-          <Box>
-            <Link href={Routes[RoutesEnum.Swap]}>
-              <Box
-                display="flex"
-                width="2.5rem"
-                height="2.5em"
-                color="onSurface"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <IPXGoldenSVG width="100%" maxWidth="100%" maxHeight="100%" />
-              </Box>
-            </Link>
-          </Box>
-        )}
+        <LogoWrapper isShort={isMobile} />
         {!isMobile && (
           <Box
-            gap="m"
+            gap="2rem"
             display="flex"
             alignItems="center"
             justifyContent="center"
+            py="1rem"
+            px="2rem"
+            nHover={{
+              bg: '#9CA3AF33',
+              backdropFilter: 'blur(8px)',
+              boxShadow: '0px 0px 0px 1px #9CA3AF4D',
+            }}
+            borderRadius="full"
+            transition="all 350ms ease-in-out"
           >
             {SIDEBAR_ITEMS.map(({ name, path }) => (
               <Box
-                py="l"
-                px="xs"
                 key={v4()}
                 display="flex"
                 cursor="pointer"
@@ -82,20 +69,21 @@ const Header: FC = () => {
                 borderRadius="xs"
                 alignItems="center"
                 alignContent="center"
-                nHover={{ color: 'primary' }}
+                fontWeight={asPath === path ? '500' : '400'}
+                nHover={{ color: '#fff' }}
                 onClick={() => goToPath(path)}
                 transition="all 350ms ease-in-out"
-                opacity={asPath === path ? '1' : '.6'}
-                color={asPath === path ? 'primary' : 'onSurface'}
+                color={asPath === path ? '#fff' : '#9CA3AF'}
               >
                 <Typography
                   size="large"
+                  color="inherit"
                   variant="label"
-                  color="onSurface"
+                  fontSize="1rem"
+                  fontFamily="Inter"
                   width="max-content"
-                  nHover={{
-                    opacity: 0.7,
-                  }}
+                  lineHeight="1.5rem"
+                  textTransform="capitalize"
                 >
                   {name}
                 </Typography>

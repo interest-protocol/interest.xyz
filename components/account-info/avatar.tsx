@@ -34,27 +34,14 @@ const Avatar: FC<AvatarProps> = ({
 
   return (
     <Box
-      p="xs"
-      gap="s"
       display="flex"
       cursor="pointer"
-      borderRadius="xs"
       transition="0.3s"
       alignItems="center"
-      nHover={{ bg: 'highestContainer' }}
+      py="0.75rem"
+      px="1.5rem"
+      boxShadow="0px 1px 2px 0px #0000000D"
     >
-      {withNameOrAddress && nameOrAddressPosition === 'left' && (
-        <Typography
-          ml="0.5rem"
-          size="large"
-          variant="label"
-          color="onSurface"
-          width="max-content"
-          display={['none', 'none', 'none', 'block', 'block']}
-        >
-          {address.slice(0, 6)}...{address.slice(-4)}
-        </Typography>
-      )}
       <Box
         bg="primary"
         width={SIZE}
@@ -83,10 +70,26 @@ const Avatar: FC<AvatarProps> = ({
             variant="label"
             color="onSurface"
             width="max-content"
+            fontFamily="Inter"
           >
             {formatAddress(address)}
           </Typography>
         </Link>
+      )}
+      {withNameOrAddress && nameOrAddressPosition === 'left' && (
+        <Typography
+          ml="0.5rem"
+          size="large"
+          variant="label"
+          color="onSurface"
+          width="max-content"
+          fontFamily="Inter"
+          fontWeight="500"
+          fontSize="1rem"
+          display={['none', 'none', 'none', 'block', 'block']}
+        >
+          {address.slice(0, 6)}...{address.slice(-4)}
+        </Typography>
       )}
     </Box>
   );
