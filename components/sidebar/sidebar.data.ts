@@ -1,6 +1,6 @@
-import { IMenuSection } from './menu.types';
+import { ISidebarSection } from './sidebar.types';
 
-export const MENU_SECTIONS: IMenuSection[] = [
+export const SIDEBAR_SECTIONS: ISidebarSection[] = [
   {
     title: 'Interest Dex',
     items: [

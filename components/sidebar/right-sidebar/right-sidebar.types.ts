@@ -1,4 +1,4 @@
-export interface IRightMenuProps {
+export interface IRightSidebarProps {
   children: React.ReactNode;
   onClose: () => void;
 }

@@ -1,10 +1,11 @@
 import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-import { IMenuClosedProps } from '@/components/menu/components/MenuClosed/menu-closed.types';
-import CaretRight from '@/components/svg/caret-right';
+import CaretLeft from '@/components/svg/caret-left';
 
-const MenuClosed: FC<IMenuClosedProps> = ({ onClose }) => {
+import { ISidebarClosedProps } from './sidebar-closed.types';
+
+const SidebarClosed: FC<ISidebarClosedProps> = ({ onClose }) => {
   return (
     <Box
       padding="1rem"
@@ -12,11 +13,11 @@ const MenuClosed: FC<IMenuClosedProps> = ({ onClose }) => {
       height="60rem"
       nHover={{
         bg: '#12131380',
-        borderRadius: '0.75rem 0 0 0.75rem',
+        borderRadius: '0 0.75rem 0.75rem 0',
       }}
       display="block"
     >
-      <CaretRight
+      <CaretLeft
         maxWidth="20"
         maxHeight="20"
         cursor="pointer"
@@ -26,4 +27,4 @@ const MenuClosed: FC<IMenuClosedProps> = ({ onClose }) => {
   );
 };
 
-export default MenuClosed;
+export default SidebarClosed;

@@ -6,10 +6,10 @@ import Github from '@/components/svg/github';
 import SidebarLogo from '@/components/svg/sidebar-logo';
 import X from '@/components/svg/x';
 
-import { MENU_SECTIONS } from '../../menu.data';
-import MenuSection from './menu-section';
+import { SIDEBAR_SECTIONS } from '../../sidebar.data';
+import MenuSection from './sidebar-section';
 
-const MenuContent: FC = () => {
+const SidebarContent: FC = () => {
   return (
     <Box
       p="1.5rem"
@@ -24,7 +24,7 @@ const MenuContent: FC = () => {
         <SidebarLogo maxWidth="40" maxHeight="40" />
       </Box>
 
-      {MENU_SECTIONS.map((section) => (
+      {SIDEBAR_SECTIONS.map((section) => (
         <MenuSection key={section.title} section={section} />
       ))}
 
@@ -65,4 +65,4 @@ const MenuContent: FC = () => {
   );
 };
 
-export default MenuContent;
+export default SidebarContent;

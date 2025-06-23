@@ -1,10 +1,10 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-import MenuList from '../MenuList';
-import { IMenuSectionProps } from './menu-section.types';
+import SidebarList from '../SidebarList';
+import { ISidebarSectionProps } from './sidebar-section.types';
 
-const MenuSection: FC<IMenuSectionProps> = ({ section }) => {
+const SidebarSection: FC<ISidebarSectionProps> = ({ section }) => {
   if (section.items.length === 0) return null;
 
   return (
@@ -20,9 +20,9 @@ const MenuSection: FC<IMenuSectionProps> = ({ section }) => {
       >
         {section.title}
       </Typography>
-      <MenuList items={section.items} />
+      <SidebarList items={section.items} />
     </Box>
   );
 };
 
-export default MenuSection;
+export default SidebarSection;

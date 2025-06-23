@@ -4,9 +4,9 @@ import { FC } from 'react';
 
 import ExternalLink from '@/components/svg/external-link';
 
-import { IMenuListProps } from './menu-list.types';
+import { ISidebarListProps } from './sidebar-list.types';
 
-const MenuList: FC<IMenuListProps> = ({ items }) => {
+const SidebarList: FC<ISidebarListProps> = ({ items }) => {
   const normalizeItems = items.map((item) =>
     typeof item === 'string'
       ? { label: item, href: '#', isExternal: false }
@@ -74,4 +74,4 @@ const MenuList: FC<IMenuListProps> = ({ items }) => {
   );
 };
 
-export default MenuList;
+export default SidebarList;
