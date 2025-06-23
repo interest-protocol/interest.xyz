@@ -8,3 +8,7 @@ export interface MenuItemsProps {
   name: string;
   path: string;
 }
+
+export interface LogoWrapperProps {
+  isShort?: boolean;
+}

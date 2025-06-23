@@ -17,16 +17,11 @@ const ConnectWalletButton: FC = () => {
 
   return (
     <Button
-      color="#fff"
-      px={['s', 'l']}
-      bg="#1F1F1F"
-      borderRadius="m"
+      color="#002A78"
+      bg="#B4C5FF"
       variant="filled"
-      border="1px solid #B4C5FF"
       nHover={{
-        borderColor: '#B4C5FF',
-        bg: '#1f1f1fbe',
-        color: '#fff',
+        bg: '#8BA5FF',
       }}
       nFocus={{
         bg: '#1F1F1F',
@@ -34,6 +29,14 @@ const ConnectWalletButton: FC = () => {
       onClick={handleOpenModal}
       display="flex"
       justifyContent="center"
+      fontFamily="Inter"
+      fontWeight="500"
+      fontSize="1rem"
+      lineHeight="1.5rem"
+      boxShadow="0px 1px 2px 0px #0000000D"
+      borderRadius="12px"
+      py="0.625rem"
+      px="1.5rem"
     >
       Connect
       <Typography
