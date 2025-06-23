@@ -14,8 +14,7 @@ const SidebarContent: FC = () => {
     <Box
       p="1.5rem"
       bg="#121313"
-      width="14.5rem"
-      overflowY="hidden"
+      width={['75%', '80%', '80%', '14.5rem']}
       border="1px solid"
       borderColor="outlineVariant"
       borderRadius="0.75rem"
