@@ -7,12 +7,16 @@ import { IRightSidebarProps } from './right-sidebar.types';
 const RightSidebar: FC<IRightSidebarProps> = ({ onClose, children }) => {
   return (
     <Box
+      top="0"
+      right="0"
       width="100%"
+      pt="1.875rem"
+      pr="1.875rem"
+      bg="#0000004D"
       display="flex"
-      top="1.875rem"
-      right="1.875rem"
       position="fixed"
       flexDirection="column"
+      backdropFilter="blur(10px)"
     >
       <Box
         display="flex"
