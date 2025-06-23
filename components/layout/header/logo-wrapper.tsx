@@ -16,6 +16,7 @@ const LogoWrapper: FC<LogoWrapperProps> = ({ isShort }) => {
       custom: true,
       onClose: handleClose,
     });
+
   return (
     <Box
       color="#9CA3AF"
@@ -37,10 +38,14 @@ const LogoWrapper: FC<LogoWrapperProps> = ({ isShort }) => {
           maxWidth="100%"
           maxHeight="100%"
           isShort={isShort}
-          onClick={handleOpenModal}
         />
       </Box>
-      <ChevronDownSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
+      <ChevronDownSVG
+        maxHeight="1rem"
+        maxWidth="1rem"
+        width="100%"
+        onClick={handleOpenModal}
+      />
     </Box>
   );
 };
