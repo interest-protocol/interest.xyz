@@ -8,12 +8,16 @@ import { ISidebarProps } from './sidebar.types';
 const Sidebar: FC<ISidebarProps> = ({ onClose }) => {
   return (
     <Box
+      top="0"
+      left="0"
       width="100%"
       display="flex"
-      top="1.875rem"
-      left="1.875rem"
+      pt="1.875rem"
+      pl="1.875rem"
+      bg="#0000004D"
       position="fixed"
       flexDirection="column"
+      backdropFilter="blur(10px)"
     >
       <Box
         display="flex"
