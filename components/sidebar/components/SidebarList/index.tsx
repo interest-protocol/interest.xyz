@@ -25,48 +25,42 @@ const SidebarList: FC<ISidebarListProps> = ({ items }) => {
           nHover={{ bg: 'surfaceContainerHighest' }}
         >
           {isExternal ? (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                gap: '4px',
-              }}
-            >
-              <Typography
-                size="medium"
-                variant="body"
-                color="#9CA3AF"
-                fontWeight="600"
-                fontSize="0.75rem"
-                fontFamily="Inter"
+            <Link href={href} rel="noreferrer" target="_blank">
+              <Box
+                gap="4px"
+                display="flex"
+                alignItems="center"
+                textDecoration="none"
               >
-                {label}
-              </Typography>
-              <ExternalLink maxWidth="16" maxHeight="16" />
-            </a>
+                <Typography
+                  size="medium"
+                  variant="body"
+                  color="#9CA3AF"
+                  fontWeight="600"
+                  fontSize="0.75rem"
+                  fontFamily="Inter"
+                  nHover={{ color: '#B4C5FF' }}
+                >
+                  {label}
+                </Typography>
+                <ExternalLink maxWidth="16" maxHeight="16" />
+              </Box>
+            </Link>
           ) : (
-            <Link
-              href={href}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-              }}
-            >
-              <Typography
-                variant="body"
-                size="medium"
-                color="#9CA3AF"
-                fontWeight="600"
-                fontSize="0.75rem"
-                fontFamily="Inter"
-              >
-                {label}
-              </Typography>
+            <Link href={href}>
+              <Box display="flex" alignItems="center" textDecoration="none">
+                <Typography
+                  variant="body"
+                  size="medium"
+                  color="#9CA3AF"
+                  fontWeight="600"
+                  fontSize="0.75rem"
+                  fontFamily="Inter"
+                  nHover={{ color: '#B4C5FF' }}
+                >
+                  {label}
+                </Typography>
+              </Box>
             </Link>
           )}
         </Box>
