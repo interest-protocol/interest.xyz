@@ -14,10 +14,12 @@ const SidebarContent: FC = () => {
     <Box
       p="1.5rem"
       bg="#121313"
-      width={['75%', '80%', '80%', '14.5rem']}
+      height="100%"
+      overflowY="auto"
       border="1px solid"
-      borderColor="outlineVariant"
       borderRadius="0.75rem"
+      borderColor="outlineVariant"
+      width={['90%', '90%', '90%', '14.5rem']}
     >
       <Box mb="m">
         <SidebarLogo maxWidth="40" maxHeight="40" />
@@ -27,15 +29,15 @@ const SidebarContent: FC = () => {
         <MenuSection key={section.title} section={section} />
       ))}
 
-      <Box mt="8rem">
+      <Box mt={['2rem', '4rem', '6rem', '8rem']}>
         <Typography
           mb="m"
           size="small"
           variant="title"
           color="#FFFFFF"
+          fontWeight="600"
           fontFamily="Inter"
           fontSize="0.75rem"
-          fontWeight="600"
         >
           Social
         </Typography>

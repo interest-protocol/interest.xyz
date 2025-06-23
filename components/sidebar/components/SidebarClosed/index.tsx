@@ -8,14 +8,14 @@ import { ISidebarClosedProps } from './sidebar-closed.types';
 const SidebarClosed: FC<ISidebarClosedProps> = ({ onClose }) => {
   return (
     <Box
-      padding="1rem"
+      p="1rem"
       width="3.5rem"
-      height="60rem"
+      height="100%"
+      display="block"
       nHover={{
         bg: '#12131380',
         borderRadius: '0 0.75rem 0.75rem 0',
       }}
-      display="block"
     >
       <CaretLeft
         maxWidth="20"
