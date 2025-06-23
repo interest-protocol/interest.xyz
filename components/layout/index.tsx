@@ -24,13 +24,13 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
       flexDirection="column"
       gridTemplateRows="auto 1fr"
       pb={['8rem', '8rem', '8rem', 'unset']}
+      bg="#030712"
       display={['flex', 'flex', 'flex', 'grid']}
     >
       <Header />
       <Box
         mb="m"
         mx="auto"
-        bg="surface"
         position="relative"
         borderRadius="1rem"
         width={['95%', '95%', '95%', '98%', '98%']}

@@ -62,13 +62,19 @@ const Profile: FC = () => {
       bg={
         menuIsDropdown
           ? ['container', 'container', 'container', 'unset']
-          : 'unset'
+          : '#9CA3AF1A'
       }
       position={
         menuIsDropdown
           ? ['absolute', 'absolute', 'absolute', 'relative']
           : 'relative'
       }
+      borderRadius="0.75rem"
+      border="1px solid #9CA3AF1A"
+      nHover={{
+        bg: '#9CA3AF33',
+      }}
+      transition="all 300ms ease-in-out"
     >
       <Box
         gap="m"
@@ -82,7 +88,6 @@ const Profile: FC = () => {
         ]}
       >
         <Avatar
-          isLarge
           withNameOrAddress
           nameOrAddressPosition="left"
           accountAddress={currentAccount?.address}
