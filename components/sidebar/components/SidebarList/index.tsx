@@ -14,7 +14,7 @@ const SidebarList: FC<ISidebarListProps> = ({ items }) => {
   );
 
   return (
-    <Box as="ul" p="0" m="0" listStyle="none" gap="4px">
+    <Box as="ul" p="0" m="0" listStyle="none">
       {normalizeItems.map(({ label, href, isExternal }) => (
         <Box
           as="li"
@@ -33,6 +33,7 @@ const SidebarList: FC<ISidebarListProps> = ({ items }) => {
                 display: 'flex',
                 alignItems: 'center',
                 textDecoration: 'none',
+                gap: '4px',
               }}
             >
               <Typography
