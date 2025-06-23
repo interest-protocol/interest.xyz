@@ -1,10 +1,10 @@
 import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-import MenuClosed from './components/MenuClosed';
-import { IRightMenuProps } from './right-menu.types';
+import SidebarClosed from './components/SidebarClosed';
+import { IRightSidebarProps } from './right-sidebar.types';
 
-const RightMenu: FC<IRightMenuProps> = ({ onClose, children }) => {
+const RightSidebar: FC<IRightSidebarProps> = ({ onClose, children }) => {
   return (
     <Box
       display="flex"
@@ -15,10 +15,10 @@ const RightMenu: FC<IRightMenuProps> = ({ onClose, children }) => {
       flexDirection="row"
       transform={'translateX(0)'}
     >
-      <MenuClosed onClose={onClose} />
+      <SidebarClosed onClose={onClose} />
       {children}
     </Box>
   );
 };
 
-export default RightMenu;
+export default RightSidebar;

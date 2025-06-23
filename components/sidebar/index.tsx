@@ -1,11 +1,11 @@
 import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-import MenuClosed from './components/MenuClosed';
-import MenuContent from './components/MenuContent';
-import { IMenuProps } from './menu.types';
+import MenuClosed from './components/SidebarClosed';
+import MenuContent from './components/SidebarContent';
+import { ISidebarProps } from './sidebar.types';
 
-const Menu: FC<IMenuProps> = ({ onClose }) => {
+const Sidebar: FC<ISidebarProps> = ({ onClose }) => {
   return (
     <Box
       display="flex"
@@ -22,4 +22,4 @@ const Menu: FC<IMenuProps> = ({ onClose }) => {
   );
 };
 
-export default Menu;
+export default Sidebar;
