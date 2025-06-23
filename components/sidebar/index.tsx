@@ -18,7 +18,6 @@ const Sidebar: FC<ISidebarProps> = ({ onClose }) => {
       <Box
         display="flex"
         flexDirection="row"
-        transform={'translateX(0)'}
         transition="transform 0.3s ease-in-out"
         width={['100%', '100%', '100%', '18rem']}
         height={['100vh', '100vh', '100vh', '60rem']}
