@@ -1,6 +1,6 @@
 import { ISidebarSection } from './sidebar.types';
 
-export const SIDEBAR_SECTIONS: ISidebarSection[] = [
+export const SIDEBAR_SECTIONS: ReadonlyArray<ISidebarSection> = [
   {
     title: 'Interest Dex',
     items: [
