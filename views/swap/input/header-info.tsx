@@ -2,7 +2,6 @@ import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { FormProvider, useFormContext, useWatch } from 'react-hook-form';
 
-import { CogsSVG } from '@/components/svg';
 import { useModal } from '@/hooks/use-modal';
 
 import SwapSettingsForm from '../swap-settings-form';
@@ -14,13 +13,12 @@ const HeaderInfo: FC<InputProps> = ({ label }) => {
 
   const symbol = useWatch({ control: form.control, name: `${label}.symbol` });
 
-  const handleOpenSettings = () =>
-    setModal(
-      <FormProvider {...form}>
-        <SwapSettingsForm />
-      </FormProvider>,
-      { isOpen: true, custom: true, onClose: handleClose }
-    );
+  setModal(
+    <FormProvider {...form}>
+      <SwapSettingsForm />
+    </FormProvider>,
+    { isOpen: true, custom: true, onClose: handleClose }
+  );
 
   return (
     <Box
@@ -29,7 +27,7 @@ const HeaderInfo: FC<InputProps> = ({ label }) => {
       color="onSurface"
       alignItems="flex-end"
     >
-      <Typography variant="label" size="large" fontSize="s">
+      <Typography variant="label" size="large" fontSize="s" fontFamily="Inter">
         {label == 'from' ? 'Sell' : 'BUY'}
         <Typography
           as="span"
@@ -41,20 +39,6 @@ const HeaderInfo: FC<InputProps> = ({ label }) => {
           : {symbol}
         </Typography>
       </Typography>
-      {label == 'from' && (
-        <Box
-          role="button"
-          lineHeight="0"
-          cursor="pointer"
-          color="onSurface"
-          aria-label="Settings"
-          onClick={handleOpenSettings}
-          transition="transform 500ms ease-in-out"
-          nHover={{ transform: 'rotate(180deg)' }}
-        >
-          <CogsSVG maxWidth="1.25rem" maxHeight="1.25rem" width="100%" />
-        </Box>
-      )}
     </Box>
   );
 };

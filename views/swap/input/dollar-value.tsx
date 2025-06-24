@@ -19,24 +19,21 @@ const AmountInDollar: FC<InputProps> = ({ label }) => {
 
   const { data: prices } = useCoinsPrice(type);
 
-  if (!(prices?.length && value)) return '--';
+  if (!(prices?.length && value)) return '$0';
 
   return (
     <Box display="flex" gap="s" alignItems="center" flexWrap="wrap">
-      <Typography
-        size="small"
-        fontSize="s"
-        variant="body"
-        color={value ? 'outline' : 'onSurface'}
-      >
+      <Typography size="small" fontSize="s" variant="body" color="#D1D5DB">
         {prices && value
           ? formatDollars(
               +BigNumber(value)
                 .times(BigNumber(prices[0].price))
                 .toNumber()
-                .toFixed(3)
+                .toFixed(2),
+              6,
+              'start'
             )
-          : '--'}{' '}
+          : '0'}{' '}
       </Typography>
       {label == 'to' && <PriceImpact />}
     </Box>
