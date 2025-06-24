@@ -90,22 +90,22 @@ const SelectToken: FC<InputProps> = ({ label }) => {
 
   return (
     <Button
-      py="2xs"
+      py="3xs"
       pr="s"
       fontSize="s"
       variant="tonal"
       color="onSurface"
-      borderRadius="xs"
+      borderRadius="l"
       disabled={swapping}
       onClick={openModal}
-      bg="highestContainer"
+      bg="#030712"
       opacity={swapping ? 0.7 : 1}
-      pl={currentSymbol ? '2xs' : 'm'}
+      pl="0"
       {...(currentSymbol && {
         PrefixIcon: (
           <TokenIcon
             withBg
-            size="1.1rem"
+            size="1.5rem"
             network={network}
             symbol={currentSymbol}
             rounded={currentToken.standard === TokenStandard.COIN}
@@ -116,17 +116,19 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       <Typography
         size="large"
         maxWidth="12ch"
+        color="#9CA3AF"
         variant="label"
         overflow="hidden"
         whiteSpace="nowrap"
         fontFamily="Satoshi"
         textOverflow="ellipsis"
         width={['0px', 'auto']}
+        fontWeight="500"
         display={[currentSymbol ? 'none' : 'block', 'block']}
       >
         {formattedSymbol}
       </Typography>
-      <ChevronDownSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
+      <ChevronDownSVG maxHeight="1.25rem" maxWidth="1.25rem" width="100%" />
     </Button>
   );
 };

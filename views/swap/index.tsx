@@ -4,7 +4,6 @@ import { FC } from 'react';
 import Layout from '@/components/layout';
 
 import Input from './input';
-import SwapFormFieldSlider from './input/swap-manager-slider';
 import ToInput from './input/to-input';
 import SwapBackground from './swap-background';
 import SwapButton from './swap-button';
@@ -30,12 +29,11 @@ const Swap: FC = () => (
             py="l"
             px="xl"
             display="flex"
-            bg="container"
+            bg="#9CA3AF1A"
             borderRadius="s"
             flexDirection="column"
           >
             <Input label="from" />
-            <SwapFormFieldSlider />
           </Box>
           <Box
             my="-1.4rem"
@@ -49,7 +47,7 @@ const Swap: FC = () => (
             py="s"
             px="xl"
             display="flex"
-            bg="container"
+            bg="#9CA3AF1A"
             borderRadius="s"
             flexDirection="column"
           >

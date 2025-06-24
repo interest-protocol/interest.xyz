@@ -1,4 +1,5 @@
 import { Box, TextField } from '@interest-protocol/ui-kit';
+import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
@@ -12,6 +13,8 @@ import SelectToken from './select-token';
 const ToInput: FC = () => {
   const { control, getValues } = useFormContext();
 
+  const { account } = useAptosWallet();
+
   const value = useWatch({ control, name: 'to.value' });
 
   return (
@@ -19,7 +22,7 @@ const ToInput: FC = () => {
       <HeaderInfo label="to" />
       <Box
         py="l"
-        gap="0.5rem"
+        gap="0.875rem"
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
@@ -43,7 +46,7 @@ const ToInput: FC = () => {
               lineHeight="l"
               placeholder="0"
               color="onSurface"
-              fontFamily="Proto"
+              fontFamily="Inter"
               fontSize={['2xl', '4xl']}
               fieldProps={{
                 width: '100%',
@@ -56,10 +59,13 @@ const ToInput: FC = () => {
           </Box>
           <SelectToken label="to" />
         </Box>
-        <Box display="flex" justifyContent="space-between" color="outline">
-          <AmountInDollar label="to" />
-          <Balance label="to" />
-        </Box>
+
+        {account?.address && (
+          <Box display="flex" justifyContent="space-between" color="outline">
+            <AmountInDollar label="to" />
+            <Balance label="to" />
+          </Box>
+        )}
       </Box>
     </Box>
   );

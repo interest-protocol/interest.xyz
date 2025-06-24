@@ -1,4 +1,5 @@
 import { Box, TextField } from '@interest-protocol/ui-kit';
+import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { ChangeEvent, FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
@@ -13,6 +14,8 @@ import SelectToken from './select-token';
 
 const Input: FC<InputProps> = ({ label }) => {
   const { register, setValue, getValues, control } = useFormContext();
+
+  const { account } = useAptosWallet();
 
   useWatch({ control, name: 'focus' });
 
@@ -40,8 +43,8 @@ const Input: FC<InputProps> = ({ label }) => {
               width="100%"
               lineHeight="l"
               placeholder="0"
-              color="onSurface"
-              fontFamily="Proto"
+              color="#6B7280"
+              fontFamily="Inter"
               fontSize={['2xl', '4xl']}
               disabled={label === 'to' || swapping}
               fieldProps={{
@@ -76,10 +79,12 @@ const Input: FC<InputProps> = ({ label }) => {
           </Box>
           <SelectToken label={label} />
         </Box>
-        <Box display="flex" justifyContent="space-between" color="outline">
-          <AmountInDollar label={label} />
-          <Balance label={label} />
-        </Box>
+        {account?.address && (
+          <Box display="flex" justifyContent="space-between" color="outline">
+            <AmountInDollar label={label} />
+            <Balance label={label} />
+          </Box>
+        )}
       </Box>
     </>
   );
