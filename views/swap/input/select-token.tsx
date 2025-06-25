@@ -31,33 +31,33 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     ],
   });
 
-  const { symbol: currentSymbol } = currentToken ?? {
-    symbol: undefined,
-    type: undefined,
-  };
+  const sanitizedToken =
+    label === 'to' && !currentToken?.manuallySelected
+      ? undefined
+      : currentToken;
 
-  const formattedSymbol = currentSymbol
-    ? currentSymbol
-    : !currentSymbol && type
-      ? type
-      : 'Select token';
+  const { symbol: currentSymbol } = sanitizedToken ?? {};
+
+  const formattedSymbol = currentSymbol ?? type ?? 'Select token';
 
   const onSelect = async (metadata: AssetMetadata) => {
-    if (metadata.type == opposite.type) return;
+    if (metadata.type === opposite?.type) return;
 
     if (
-      metadata.standard === opposite.standard &&
-      metadata.symbol === opposite.symbol
-    )
+      metadata.standard === opposite?.standard &&
+      metadata.symbol === opposite?.symbol
+    ) {
       setValue(label === 'to' ? 'from' : 'to', {
         ...currentToken,
         value: '',
       });
+    }
 
     setValue(label, {
       ...metadata,
       value: '',
       valueBN: ZERO_BIG_NUMBER,
+      manuallySelected: true,
     });
 
     if (label === 'from') {
@@ -88,47 +88,72 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       }
     );
 
+  const isToWithoutToken = label === 'to' && !currentSymbol;
+
   return (
     <Button
-      py="3xs"
-      pr="s"
-      fontSize="s"
-      variant="tonal"
-      color="onSurface"
-      borderRadius="l"
-      disabled={swapping}
       onClick={openModal}
-      bg="#030712"
+      disabled={swapping}
+      variant="tonal"
+      borderRadius="l"
+      color="onSurface"
       opacity={swapping ? 0.7 : 1}
-      pl="0"
-      {...(currentSymbol && {
-        PrefixIcon: (
+      bg={isToWithoutToken ? '#B4C5FF' : '#030712'}
+      py={isToWithoutToken ? '0.375rem' : '3xs'}
+      px={isToWithoutToken ? '0.75rem' : '0'}
+      pr={isToWithoutToken ? undefined : 's'}
+      minWidth={isToWithoutToken ? '6.75rem' : undefined}
+      display={isToWithoutToken ? 'flex' : undefined}
+      alignItems={isToWithoutToken ? 'center' : undefined}
+      justifyContent={isToWithoutToken ? 'center' : undefined}
+      nHover={{ ...(isToWithoutToken ? { bg: '#B4C5FF' } : {}) }}
+      PrefixIcon={
+        !isToWithoutToken && currentSymbol ? (
           <TokenIcon
             withBg
             size="1.5rem"
             network={network}
             symbol={currentSymbol}
-            rounded={currentToken.standard === TokenStandard.COIN}
+            rounded={sanitizedToken?.standard === TokenStandard.COIN}
           />
-        ),
-      })}
+        ) : undefined
+      }
     >
-      <Typography
-        size="large"
-        maxWidth="12ch"
-        color="#9CA3AF"
-        variant="label"
-        overflow="hidden"
-        whiteSpace="nowrap"
-        fontFamily="Satoshi"
-        textOverflow="ellipsis"
-        width={['0px', 'auto']}
-        fontWeight="500"
-        display={[currentSymbol ? 'none' : 'block', 'block']}
-      >
-        {formattedSymbol}
-      </Typography>
-      <ChevronDownSVG maxHeight="1.25rem" maxWidth="1.25rem" width="100%" />
+      {isToWithoutToken ? (
+        <Typography
+          size="medium"
+          variant="label"
+          color="#002A78"
+          fontWeight="500"
+          fontFamily="Inter"
+          textAlign="center"
+          fontSize="0.875rem"
+        >
+          Select token
+        </Typography>
+      ) : (
+        <Typography
+          size="large"
+          maxWidth="12ch"
+          color="#9CA3AF"
+          variant="label"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          fontFamily="Satoshi"
+          textOverflow="ellipsis"
+          width={['0px', 'auto']}
+          fontWeight="500"
+          display={[currentSymbol ? 'none' : 'block', 'block']}
+        >
+          {formattedSymbol}
+        </Typography>
+      )}
+      <ChevronDownSVG
+        maxHeight="1.25rem"
+        maxWidth="1.25rem"
+        width="100%"
+        color={isToWithoutToken ? '#002A78' : undefined}
+      />
     </Button>
   );
 };
