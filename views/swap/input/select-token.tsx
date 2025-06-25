@@ -89,23 +89,22 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     );
 
   const isToWithoutToken = label === 'to' && !currentSymbol;
+  const style = label == 'to' && isToWithoutToken;
 
   return (
     <Button
-      onClick={openModal}
-      disabled={swapping}
+      py="3xs"
+      height="2rem"
+      fontSize="s"
       variant="tonal"
-      borderRadius="l"
       color="onSurface"
+      borderRadius="l"
+      disabled={swapping}
+      onClick={openModal}
+      bg={style ? '#B4C5FF' : '#030712'}
+      pl={style ? '0.75rem' : '0'}
+      pr={style ? '0.75rem' : '0.75rem'}
       opacity={swapping ? 0.7 : 1}
-      bg={isToWithoutToken ? '#B4C5FF' : '#030712'}
-      py={isToWithoutToken ? '0.375rem' : '3xs'}
-      px={isToWithoutToken ? '0.75rem' : '0'}
-      pr={isToWithoutToken ? undefined : 's'}
-      minWidth={isToWithoutToken ? '6.75rem' : undefined}
-      display={isToWithoutToken ? 'flex' : undefined}
-      alignItems={isToWithoutToken ? 'center' : undefined}
-      justifyContent={isToWithoutToken ? 'center' : undefined}
       nHover={{ ...(isToWithoutToken ? { bg: '#B4C5FF' } : {}) }}
       PrefixIcon={
         !isToWithoutToken && currentSymbol ? (
