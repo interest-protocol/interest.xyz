@@ -17,6 +17,8 @@ const ToInput: FC = () => {
 
   const value = useWatch({ control, name: 'to.value' });
 
+  const selectedToken = useWatch({ control, name: 'to' });
+
   return (
     <Box>
       <HeaderInfo label="to" />
@@ -60,7 +62,7 @@ const ToInput: FC = () => {
           <SelectToken label="to" />
         </Box>
 
-        {account?.address && (
+        {account?.address && selectedToken?.manuallySelected && (
           <Box display="flex" justifyContent="space-between" color="outline">
             <AmountInDollar label="to" />
             <Balance label="to" />
