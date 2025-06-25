@@ -15,7 +15,7 @@ import { FC } from 'react';
 import toast from 'react-hot-toast';
 import invariant from 'tiny-invariant';
 
-import { RateDownSVG, RateUpSVG, WrapSVG } from '@/components/svg';
+import { WrapSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
 import { COIN_TYPE_TO_FA } from '@/constants/coins';
 import { useCoinsPrice } from '@/hooks/use-coins-price';
@@ -90,7 +90,7 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       TokenIcon={
         <TokenIcon
           withBg
-          size="1.5rem"
+          size="1.25rem"
           symbol={symbol}
           network={network}
           url={token.iconUri}
@@ -116,7 +116,14 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <Typography size="large" variant="label" lineHeight="1.5rem">
+          <Typography
+            size="large"
+            variant="body"
+            lineHeight="1rem"
+            fontSize="0.875rem"
+            fontWeight="500"
+            fontFamily="Inter"
+          >
             {formatMoney(balance)}
             <Box fontSize="Satoshi" as="span" ml="2xs">
               {symbol}
@@ -124,33 +131,31 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
           </Typography>
           {!!price?.length && price[0]?.priceChange24HoursPercentage && (
             <Box
-              gap="xs"
+              mt="0.15rem"
               display="flex"
               alignItems="center"
               justifyContent="center"
+              border="1px solid #9CA3AF1A"
+              px="0.5rem"
+              borderRadius="full"
+              bg={
+                ['#16A24A33', '#E53E3E33'][
+                  Number(price?.[0]?.priceChange24HoursPercentage < 1)
+                ]
+              }
+              color={
+                ['#5CD187', '#FF8181'][
+                  Number(price?.[0]?.priceChange24HoursPercentage < 1)
+                ]
+              }
             >
-              {price?.[0]?.priceChange24HoursPercentage < 1 ? (
-                <RateDownSVG
-                  width="1rem"
-                  height="1rem"
-                  maxHeight="100%"
-                  maxWidth="100%"
-                />
-              ) : (
-                <RateUpSVG
-                  width="1rem"
-                  height="1rem"
-                  maxHeight="100%"
-                  maxWidth="100%"
-                />
-              )}
               <Typography
                 size="large"
-                opacity={0.7}
                 variant="label"
-                color="onSurface"
                 fontSize="0.625rem"
                 lineHeight="1rem"
+                fontWeight="500"
+                fontFamily="Inter"
               >
                 {(price?.length && price[0]?.priceChange24HoursPercentage) ?? 0}
               </Typography>

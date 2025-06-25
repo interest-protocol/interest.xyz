@@ -28,10 +28,14 @@ const Collapse: FC<CollapseProps> = ({ title, children }) => {
         justifyContent="space-between"
       >
         <Typography
+          color="#fff"
           size="small"
-          opacity="0.7"
           variant="label"
-          color="onSurface"
+          fontWeight="500"
+          fontFamily="Inter"
+          fontSize="0.85rem"
+          lineHeight="1.5rem"
+          textTransform="uppercase"
         >
           {title}
         </Typography>
@@ -52,7 +56,7 @@ const Collapse: FC<CollapseProps> = ({ title, children }) => {
         variants={variants}
         flexDirection="column"
         animate={isExpanded ? 'collapsed' : 'rest'}
-        mb={['10rem', '10rem', '10rem', 'unset']}
+        mb={['10rem', '10rem', '10rem', '2rem']}
       >
         {children}
       </Motion>
