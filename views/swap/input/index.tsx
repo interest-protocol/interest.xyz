@@ -45,7 +45,7 @@ const Input: FC<InputProps> = ({ label }) => {
               placeholder="0"
               color="#6B7280"
               fontFamily="Inter"
-              fontSize={['2xl', '4xl']}
+              fontSize={['2xl', '2.25rem']}
               disabled={label === 'to' || swapping}
               fieldProps={{
                 width: '100%',

@@ -47,9 +47,9 @@ const ToInput: FC = () => {
               width="100%"
               lineHeight="l"
               placeholder="0"
-              color="onSurface"
+              color={value ? '#FFFFFF' : 'onSurface'}
               fontFamily="Inter"
-              fontSize={['2xl', '4xl']}
+              fontSize={['2xl', '2.25rem']}
               fieldProps={{
                 width: '100%',
                 border: 'none',
