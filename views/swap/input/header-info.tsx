@@ -17,7 +17,7 @@ const HeaderInfo: FC<InputProps> = ({ label }) => {
       alignItems="flex-end"
     >
       <Typography variant="label" size="large" fontSize="s" fontFamily="Inter">
-        {label == 'from' ? 'Sell' : 'BUY'}
+        {label == 'from' ? 'Sell' : 'Buy'}
         <Typography
           as="span"
           size="small"
