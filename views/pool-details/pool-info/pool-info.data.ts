@@ -49,10 +49,7 @@ export const POOL_CURVE_VOLATILE_INFO: Array<PoolDetailAccordionItemData> = [
     label: 'Virtual Price',
   },
   {
-    label: 'Mid Fee',
-  },
-  {
-    label: 'Out Fee',
+    label: 'Swap Fee',
   },
 ];
 
