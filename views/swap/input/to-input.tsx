@@ -19,6 +19,8 @@ const ToInput: FC = () => {
 
   const selectedToken = useWatch({ control, name: 'to' });
 
+  const isEmpty = !value || isNaN(+value) || +value <= 0;
+
   return (
     <Box>
       <HeaderInfo label="to" />
@@ -37,7 +39,7 @@ const ToInput: FC = () => {
             justifyContent="flex-end"
           >
             <TextField
-              disabled
+              readOnly
               value={
                 isExponential(+value)
                   ? (+value).toFixed(getValues('to.decimals'))
@@ -47,9 +49,10 @@ const ToInput: FC = () => {
               width="100%"
               lineHeight="l"
               placeholder="0"
-              color={value ? '#FFFFFF' : 'onSurface'}
+              color={isEmpty ? '#6B7280' : '#FFFFFF'}
               fontFamily="Inter"
               fontSize={['2xl', '2.25rem']}
+              opacity="1"
               fieldProps={{
                 width: '100%',
                 border: 'none',

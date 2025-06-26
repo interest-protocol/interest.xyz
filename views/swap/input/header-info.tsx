@@ -8,6 +8,12 @@ const HeaderInfo: FC<InputProps> = ({ label }) => {
   const form = useFormContext();
 
   const symbol = useWatch({ control: form.control, name: `${label}.symbol` });
+  const toValue = useWatch({ control: form.control, name: 'to.value' });
+
+  const isValueEmpty = !toValue || isNaN(+toValue) || +toValue <= 0;
+
+  const labelText =
+    label === 'from' ? 'Sell' : label === 'to' && isValueEmpty ? 'Buy' : 'Sell';
 
   return (
     <Box
@@ -16,8 +22,14 @@ const HeaderInfo: FC<InputProps> = ({ label }) => {
       color="onSurface"
       alignItems="flex-end"
     >
-      <Typography variant="label" size="large" fontSize="s" fontFamily="Inter">
-        {label == 'from' ? 'Sell' : 'Buy'}
+      <Typography
+        size="large"
+        variant="label"
+        color="#9CA3AF"
+        fontFamily="Inter"
+        fontSize="0.868125rem"
+      >
+        {labelText}
         <Typography
           as="span"
           size="small"

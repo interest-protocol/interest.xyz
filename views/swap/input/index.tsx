@@ -21,6 +21,9 @@ const Input: FC<InputProps> = ({ label }) => {
 
   const swapping = useWatch({ control, name: 'swapping' });
 
+  const rawValue = getValues(`${label}.value`);
+  const isEmpty = !rawValue || isNaN(+rawValue) || +rawValue <= 0;
+
   return (
     <>
       <HeaderInfo label={label} />
@@ -43,7 +46,7 @@ const Input: FC<InputProps> = ({ label }) => {
               width="100%"
               lineHeight="l"
               placeholder="0"
-              color="#6B7280"
+              color={isEmpty ? '#6B7280' : '#FFFFFF'}
               fontFamily="Inter"
               fontSize={['2xl', '2.25rem']}
               disabled={label === 'to' || swapping}
