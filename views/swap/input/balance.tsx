@@ -49,6 +49,8 @@ const Balance: FC<InputProps> = ({ label }) => {
   const balance =
     coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER;
 
+  const numericBalance = FixedPointMath.toNumber(balance, decimals);
+
   const handleMax = () => {
     if (label === 'to') return;
 
@@ -146,8 +148,10 @@ const Balance: FC<InputProps> = ({ label }) => {
         whiteSpace="nowrap"
       >
         {type
-          ? `${formatMoney(FixedPointMath.toNumber(balance, decimals), 4)}`
-          : '0'}
+          ? numericBalance === 0
+            ? `0.${'0'.repeat(4)}`
+            : formatMoney(numericBalance, 4)
+          : '0.0000'}
       </Typography>
       <MaxBadge />
 
