@@ -1,11 +1,10 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import Link from 'next/link';
 import { FC } from 'react';
 
 import { UserSVG } from '@/components/svg';
-import { EXPLORER_URL } from '@/constants';
+import { EXPLORER_URL, Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { formatAddress } from '@/utils';
 
