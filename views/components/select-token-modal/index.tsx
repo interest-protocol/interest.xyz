@@ -9,6 +9,7 @@ import { FC } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { SearchSVG, TimesSVG } from '@/components/svg';
+import CloseSearch from '@/components/svg/close-search';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 import {
@@ -36,57 +37,96 @@ const SelectTokenModal: FC<SelectTokenModalProps> = ({
     closeModal();
   };
 
+  const searchValue = form.watch('search');
+
   return (
     <FormProvider {...form}>
       <Motion
         layout
+        gap="1rem"
+        bg="#121313"
         display="flex"
-        bg="container"
-        height="41rem"
-        maxHeight="90vh"
+        maxHeight="33rem"
         overflow="hidden"
         color="onSurface"
-        borderRadius="xs"
+        borderRadius="s"
+        padding="1.25rem"
         flexDirection="column"
-        width={['90vw', '25rem']}
+        width={['90vw', '32rem']}
         boxShadow="0 0 5px #3334"
+        border="1px solid #FFFFFF1A"
         maxWidth={['25rem', 'unset']}
         transition={{ duration: 0.3 }}
       >
-        <Box
-          py="s"
-          px="l"
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Typography variant="title" size="large" fontSize="xl">
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography
+            size="large"
+            fontSize="xl"
+            variant="title"
+            fontWeight="700"
+            fontFamily="Inter"
+          >
             Select Token
           </Typography>
           <Button variant="text" isIcon onClick={closeModal} mr="-0.5rem">
             <TimesSVG maxWidth="0.8rem" maxHeight="0.8rem" width="100%" />
           </Button>
         </Box>
-        <Box mx="xl" display="flex" gap="3xs" flexDirection="column">
+        <Box display="flex" flexDirection="column" gap="1rem">
           <Box>
             <TextField
               fontSize="medium"
               {...form.register('search')}
               placeholder="Search token"
               nPlaceholder={{ opacity: 0.7 }}
-              fieldProps={{ height: '3.5rem', mb: 'm', borderRadius: 'xs' }}
+              fieldProps={{
+                height: '2.75rem',
+                borderRadius: 'xs',
+                color: '#FFFFFF',
+                backgroundColor: '#202123',
+                border: searchValue?.trim() ? '1px solid #9CA3AF' : 'none',
+              }}
+              fontFamily="Inter"
               Prefix={
-                <SearchSVG maxWidth="1rem" maxHeight="1rem" width="100%" />
+                <SearchSVG
+                  width="100%"
+                  color="#6B7280"
+                  maxWidth="0.9375rem"
+                  maxHeight="0.9375rem"
+                />
+              }
+              Suffix={
+                searchValue?.trim() ? (
+                  <Box
+                    cursor="pointer"
+                    maxWidth="0.9375rem"
+                    maxHeight="0.9375rem"
+                    onClick={() => form.setValue('search', '')}
+                  >
+                    <CloseSearch
+                      width="100%"
+                      color="#6B7280"
+                      maxWidth="0.9375rem"
+                      maxHeight="0.9375rem"
+                    />
+                  </Box>
+                ) : null
               }
             />
           </Box>
-          <SelectTokenFilter control={form.control} setValue={form.setValue} />
+          {searchValue === '' && (
+            <SelectTokenFilter
+              control={form.control}
+              setValue={form.setValue}
+            />
+          )}
         </Box>
         <Box
           flex="1"
+          bg="#121313"
           display="flex"
           overflowY="auto"
-          bg="lowContainer"
+          maxHeight="20rem"
           flexDirection="column"
         >
           <SelectTokenModalBody
