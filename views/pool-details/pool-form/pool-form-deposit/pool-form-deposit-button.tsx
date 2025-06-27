@@ -1,11 +1,10 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
 import { useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
-import { EXPLORER_URL } from '@/constants';
+import { EXPLORER_URL, Network } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useInterestCurveDex } from '@/hooks/use-interest-dex-curve';
 import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
@@ -73,7 +72,7 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
           account.address,
           getValues('tokenList.0'),
           getValues('tokenList.1'),
-          Network.MovementMainnet,
+          Network.MAINNET,
           txResult.hash
         );
 
@@ -93,7 +92,7 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
 
         setValue(
           'explorerLink',
-          EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
+          EXPLORER_URL[Network.MAINNET](`txn/${txResult.hash}`)
         );
       }
     } catch (e) {

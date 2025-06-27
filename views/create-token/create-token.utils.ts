@@ -1,6 +1,6 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import Resizer from 'react-image-file-resizer';
 
+import { Network } from '@/constants';
 import { Quest } from '@/server/model/quest';
 
 export const getBase64 = async (file: File) => {

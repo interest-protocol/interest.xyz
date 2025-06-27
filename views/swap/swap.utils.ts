@@ -1,6 +1,6 @@
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-import { Network } from '@interest-protocol/interest-aptos-v2';
 
+import { Network } from '@/constants';
 import { fasByPool } from '@/constants/pools';
 import { Quest } from '@/server/model/quest';
 

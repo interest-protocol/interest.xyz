@@ -1,11 +1,10 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
-import { EXPLORER_URL } from '@/constants';
+import { EXPLORER_URL, Network } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useInterestV2Dex } from '@/hooks/use-interest-dex-v2';
 import { FixedPointMath } from '@/lib';
@@ -102,13 +101,13 @@ const CreateTokenFormButton = () => {
         symbol || '',
         `${supply}`,
         account!.address,
-        Network.MovementMainnet,
+        Network.MAINNET,
         txResult.hash
       );
 
       setValue(
         'explorerLink',
-        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
+        EXPLORER_URL[Network.MAINNET](`txn/${txResult.hash}`)
       );
     } catch (e) {
       console.warn({ e });

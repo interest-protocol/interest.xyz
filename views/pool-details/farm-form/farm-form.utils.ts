@@ -1,5 +1,4 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
-
+import { Network } from '@/constants';
 import { Quest } from '@/server/model/quest';
 import { PoolToken } from '@/views/pools/pools.types';
 
