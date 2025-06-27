@@ -1,4 +1,3 @@
-import { Network } from '@interest-protocol/interest-aptos-curve';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
@@ -8,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
 import { WithdrawSVG } from '@/components/svg';
-import { EXPLORER_URL, FARMS_BY_LP } from '@/constants';
+import { EXPLORER_URL, FARMS_BY_LP, Network } from '@/constants';
 import { useDialog } from '@/hooks';
 import { useFarmAccount } from '@/hooks/use-farm-account';
 import { useInterestCurveDex } from '@/hooks/use-interest-dex-curve';
@@ -72,7 +71,7 @@ const FarmFormRewardButton: FC<{ rewardFa: string }> = ({ rewardFa }) => {
 
       setValue(
         'explorerLink',
-        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
+        EXPLORER_URL[Network.MAINNET](`txn/${txResult.hash}`)
       );
     } catch (e) {
       console.warn({ e });
