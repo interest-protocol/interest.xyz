@@ -20,6 +20,7 @@ const TokenIcon: FC<TokenIconProps> = ({
   withBg,
   network,
   rounded,
+  withBorder,
   size = '1.5rem',
   loaderSize = 16,
 }) => {
@@ -65,6 +66,7 @@ const TokenIcon: FC<TokenIconProps> = ({
           height={`calc(${size} * 1.66)`}
           borderRadius={rounded || !withBg ? 'full' : 'xs'}
           {...(withBg && { bg: 'onSurface', color: 'surface' })}
+          border={withBorder ? '1px solid #FFFFFF' : undefined}
         >
           <DefaultTokenSVG
             width="100%"
@@ -92,6 +94,7 @@ const TokenIcon: FC<TokenIconProps> = ({
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
           borderRadius={rounded ? 'full' : 'xs'}
+          border={withBorder ? '1px solid #FFFFFF' : undefined}
           {...(withBg && { bg: 'onSurface', color: 'surface' })}
         >
           <Box
@@ -150,6 +153,7 @@ const TokenIcon: FC<TokenIconProps> = ({
             bg: icon.bg || 'onSurface',
             color: icon.color || 'surface',
           })}
+          border={withBorder ? '1px solid #FFFFFF' : undefined}
         >
           <icon.Icon
             width="100%"
@@ -196,6 +200,7 @@ const TokenIcon: FC<TokenIconProps> = ({
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
           borderRadius={rounded ? 'full' : 'xs'}
+          border={withBorder ? '1px solid #FFFFFF' : undefined}
         >
           <Box
             overflow="hidden"
@@ -254,12 +259,14 @@ const TokenIcon: FC<TokenIconProps> = ({
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
           borderRadius={rounded ? 'full' : 'xs'}
+          border={withBorder ? '1px solid #FFFFFF' : undefined}
         >
           <Box
             overflow="hidden"
             width={`calc(${size} * 1.66)`}
             height={`calc(${size} * 1.66)`}
             borderRadius={rounded ? 'full' : 'xs'}
+            border={withBorder ? '1px solid #FFFFFF' : undefined}
           >
             {isLoading && (
               <Box position="absolute" top="-0.5rem" left="0.9rem">
@@ -278,6 +285,7 @@ const TokenIcon: FC<TokenIconProps> = ({
                   width: `calc(${size} * 1.66)`,
                   height: `calc(${size} * 1.66)`,
                   position: 'absolute',
+                  border: `${withBorder ? '1px solid #FFFFFFF' : 'none'}`,
                 }}
               />
             )}
@@ -316,6 +324,7 @@ const TokenIcon: FC<TokenIconProps> = ({
         width={`calc(${size} * 1.66)`}
         height={`calc(${size} * 1.66)`}
         borderRadius={rounded || !withBg ? 'full' : 'xs'}
+        border={withBorder ? '1px solid #FFFFFF' : undefined}
         {...(withBg && { bg: 'onSurface', color: 'surface' })}
       >
         <DefaultTokenSVG
