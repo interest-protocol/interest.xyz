@@ -82,11 +82,12 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
               <Box display="flex" gap="s">
                 <Box gap="s" ml="auto" display="flex" alignItems="center">
                   {!loading ? (
-                    tokens.map(({ symbol, standard }) => (
+                    tokens.map(({ symbol, standard, iconUri }) => (
                       <TokenIcon
                         withBg
                         key={v4()}
                         size="1rem"
+                        url={iconUri}
                         symbol={symbol}
                         network={network}
                         rounded={standard === TokenStandard.COIN}
