@@ -1,8 +1,5 @@
 import { InterestDex } from '@interest-protocol/aptos-move-dex';
-import {
-  Network,
-  normalizeSuiAddress,
-} from '@interest-protocol/interest-aptos-v2';
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import {
   Box,
   Button,
@@ -17,6 +14,7 @@ import invariant from 'tiny-invariant';
 
 import { RateDownSVG, RateUpSVG, WrapSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
+import { Network } from '@/constants';
 import { COIN_TYPE_TO_FA } from '@/constants/coins';
 import { useCoinsPrice } from '@/hooks/use-coins-price';
 import { FixedPointMath } from '@/lib';

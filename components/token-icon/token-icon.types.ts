@@ -1,5 +1,6 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { FC } from 'react';
+
+import { Network } from '@/constants';
 
 import { SVGProps } from '../svg';
 

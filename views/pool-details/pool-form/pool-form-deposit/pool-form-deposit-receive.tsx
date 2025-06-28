@@ -1,10 +1,10 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
 import { TokenIcon } from '@/components';
+import { Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 import { IPoolForm } from '@/views/pools/pools.types';
@@ -25,10 +25,11 @@ const PoolFormDepositReceive: FC = () => {
       <Typography variant="body" size="large" mt="m" mb="xs">
         Receive:
       </Typography>
-      <Box borderRadius="xs" bg="lowestContainer" py="xs">
+      <Box borderRadius="xs" bg="lowestContainer">
         <Box
           py="xs"
-          px="m"
+          pl="xs"
+          pr="m"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
