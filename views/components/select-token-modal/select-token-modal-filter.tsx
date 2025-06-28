@@ -41,14 +41,14 @@ const SelectTokenFilter: FC<SelectTokenFilterProps> = ({
           {filterSelected === item && (
             <Motion
               layout
-              py="8px"
-              px="95px"
-              mt={'-21%'}
+              py="0.5rem"
+              px={['2rem', '5.9375rem']}
+              mt={['-28%', '-21%', '-20.5%', '-20.5%']}
               bg="#B4C5FF33"
               color="#FFFFFF"
               height="2.75rem"
               fontWeight="500"
-              maxWidth="232px"
+              maxWidth="14.5rem"
               fontFamily="Inter"
               borderRadius="9999px"
             />
