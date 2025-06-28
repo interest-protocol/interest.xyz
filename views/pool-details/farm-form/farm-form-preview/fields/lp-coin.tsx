@@ -1,9 +1,9 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import { TokenIcon } from '@/components';
 import IPX from '@/components/svg/ipx';
+import { Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 

@@ -1,5 +1,4 @@
 import { VolatilePool } from '@interest-protocol/interest-aptos-curve';
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { ChangeEvent, FC } from 'react';
@@ -7,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
 import { TokenIcon } from '@/components';
+import { Network } from '@/constants';
 import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';

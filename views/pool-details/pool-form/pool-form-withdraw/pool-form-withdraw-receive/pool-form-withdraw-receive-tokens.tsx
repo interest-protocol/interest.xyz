@@ -1,4 +1,3 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -7,6 +6,7 @@ import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
 import { CheckboxSVG } from '@/components/svg';
+import { Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { ZERO_BIG_NUMBER } from '@/utils';
 import { usePoolDetails } from '@/views/pool-details/pool-details.context';

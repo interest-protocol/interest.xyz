@@ -1,8 +1,8 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Tag, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import { TokenIcon } from '@/components';
+import { Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 
 import { PoolDetailAccordionItemCoinProps } from './accordion.types';
