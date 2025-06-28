@@ -70,7 +70,12 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                   </Typography>
                 )}
                 <Box display="flex" gap="xs" alignItems="center">
-                  <TokenIcon withBg network={network} symbol={token.symbol} />
+                  <TokenIcon
+                    withBg
+                    network={network}
+                    url={token.iconUri}
+                    symbol={token.symbol}
+                  />
                   <Typography variant="body" size="large">
                     {token.symbol}
                   </Typography>
