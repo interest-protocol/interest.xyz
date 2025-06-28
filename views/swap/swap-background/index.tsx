@@ -1,10 +1,10 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
 import { memo, useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
+import { Network } from '@/constants';
 import { TOKENS } from '@/constants/coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';

@@ -1,4 +1,3 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, Tabs, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -7,7 +6,7 @@ import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
 import { ArrowLeftSVG } from '@/components/svg';
-import { FARMS_BY_LP } from '@/constants';
+import { FARMS_BY_LP, Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { TokenStandard } from '@/lib/coins-manager/coins-manager.types';
 import { IPoolForm } from '@/views/pools/pools.types';
@@ -83,11 +82,12 @@ const PoolTitleBar: FC<PoolTitleBarProps> = ({
               <Box display="flex" gap="s">
                 <Box gap="s" ml="auto" display="flex" alignItems="center">
                   {!loading ? (
-                    tokens.map(({ symbol, standard }) => (
+                    tokens.map(({ symbol, standard, iconUri }) => (
                       <TokenIcon
                         withBg
                         key={v4()}
                         size="1rem"
+                        url={iconUri}
                         symbol={symbol}
                         network={network}
                         rounded={standard === TokenStandard.COIN}

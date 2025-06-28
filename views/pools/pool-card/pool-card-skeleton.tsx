@@ -1,4 +1,3 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, Tag, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -6,6 +5,7 @@ import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
 import { ArrowObliqueSVG } from '@/components/svg';
+import { Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 
 const PoolCardSkeleton: FC = () => {

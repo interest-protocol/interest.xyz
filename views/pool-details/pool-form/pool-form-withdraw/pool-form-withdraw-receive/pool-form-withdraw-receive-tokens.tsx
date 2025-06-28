@@ -1,4 +1,3 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -7,6 +6,7 @@ import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
 import { CheckboxSVG } from '@/components/svg';
+import { Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { ZERO_BIG_NUMBER } from '@/utils';
 import { usePoolDetails } from '@/views/pool-details/pool-details.context';
@@ -70,7 +70,12 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                   </Typography>
                 )}
                 <Box display="flex" gap="xs" alignItems="center">
-                  <TokenIcon withBg network={network} symbol={token.symbol} />
+                  <TokenIcon
+                    withBg
+                    network={network}
+                    url={token.iconUri}
+                    symbol={token.symbol}
+                  />
                   <Typography variant="body" size="large">
                     {token.symbol}
                   </Typography>

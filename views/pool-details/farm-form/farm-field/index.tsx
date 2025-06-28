@@ -1,10 +1,10 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
 import { TokenIcon } from '@/components';
+import { Network } from '@/constants';
 import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { parseInputEventToNumberString } from '@/utils';

@@ -1,7 +1,4 @@
-import {
-  Network,
-  normalizeSuiAddress,
-} from '@interest-protocol/interest-aptos-v2';
+import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useState } from 'react';
@@ -9,11 +6,10 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
 import ConnectWalletButton from '@/components/wallet/connect-wallet';
-import { EXPLORER_URL } from '@/constants';
+import { EXPLORER_URL, Network } from '@/constants';
 import { useDialog } from '@/hooks';
 import { FixedPointMath } from '@/lib';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
-import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { ZERO_BIG_NUMBER } from '@/utils';
 
@@ -23,7 +19,6 @@ import { logSwap } from './swap.utils';
 
 const SwapButton = () => {
   const client = useAptosClient();
-  const network = useNetwork<Network>();
   const { coinsMap, mutate } = useCoins();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
@@ -80,11 +75,11 @@ const SwapButton = () => {
         },
       });
 
-      logSwap(account!.address, from, to, network, txResult.hash);
+      logSwap(account!.address, from, to, Network.MAINNET, txResult.hash);
 
       setValue(
         'explorerLink',
-        EXPLORER_URL[Network.MovementMainnet](`txn/${txResult.hash}`)
+        EXPLORER_URL[Network.MAINNET](`txn/${txResult.hash}`)
       );
     } catch (e) {
       console.warn(e);

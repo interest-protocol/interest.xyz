@@ -1,4 +1,3 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
@@ -8,7 +7,7 @@ import useSWR from 'swr';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
-import { FARMS_BY_LP } from '@/constants';
+import { FARMS_BY_LP, Network } from '@/constants';
 import { useFarmAccount } from '@/hooks/use-farm-account';
 import { FixedPointMath } from '@/lib';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';

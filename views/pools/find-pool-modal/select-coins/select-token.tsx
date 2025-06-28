@@ -1,10 +1,10 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Modal, Motion, Typography } from '@interest-protocol/ui-kit';
 import { FC, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ChevronDownSVG, ChevronRightSVG, MinusSVG } from '@/components/svg';
 import TokenIcon from '@/components/token-icon';
+import { Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import {
   AssetMetadata,

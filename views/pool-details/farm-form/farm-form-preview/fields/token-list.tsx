@@ -1,9 +1,9 @@
-import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { TokenIcon } from '@/components';
+import { Network } from '@/constants';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 
 import { FieldProps } from '../preview.types';
@@ -23,11 +23,7 @@ const TokenListFields: FC<FieldProps> = ({ getValues }) => {
           justifyContent="space-between"
         >
           <Box display="flex" gap="xs" alignItems="center">
-            <TokenIcon
-              withBg
-              symbol={token.symbol}
-              network={network as Network}
-            />
+            <TokenIcon withBg symbol={token.symbol} network={network} />
             <Typography variant="body" size="large">
               {token.symbol}
             </Typography>

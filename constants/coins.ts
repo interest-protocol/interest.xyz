@@ -28,6 +28,17 @@ export const MOVE = {
   symbol: 'MOVE',
 };
 
+export const mUSD = {
+  address: AccountAddress.from(
+    '0xdd84125d1ebac8f1ecb2819801417fc392325e672be111ec03830c34d6ff82dd'
+  ),
+  decimals: 8,
+  iconUri: 'https://api.mirage.money/assets/mUSD.svg',
+  name: 'mirage dollar',
+  projectUri: 'https://mirage.money',
+  symbol: 'mUSD',
+};
+
 export const USDCe = {
   address: AccountAddress.from(
     '0x83121c9f9b0527d1f056e21a950d6bf3b9e9e2e8353d0e95ccea726713cbea39'
@@ -76,4 +87,4 @@ export const WBTCe = {
 
 export const ETH_COINS = [USDCe, USDTe, WETHe, WBTCe];
 
-export const TOKENS: ReadonlyArray<Token> = [MOVE, ...ETH_COINS];
+export const TOKENS: ReadonlyArray<Token> = [MOVE, ...ETH_COINS, mUSD];
