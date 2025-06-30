@@ -35,7 +35,6 @@ const SwapBackground = memo(() => {
         value: '',
       });
 
-    console.log(metadata, '>>>metadata');
     setValue('to', {
       ...metadata,
       value: '',
