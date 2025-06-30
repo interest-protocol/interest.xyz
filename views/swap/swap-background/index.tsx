@@ -9,7 +9,7 @@ import { TOKENS } from '@/constants/coins';
 import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
-import { MetadataSources } from '@/utils/coin/coin.types';
+import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 
 import {
   DISTANCE_BETWEEN_COINS,
@@ -82,7 +82,20 @@ const SwapBackground = memo(() => {
           animate={{ y: [-5, 5] }}
           top={getPosition(index, 'left').top}
           left={getPosition(index, 'left').left}
-          onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
+          onClick={() =>
+            onSelect(
+              token.address && token.type
+                ? parseToMetadata({
+                    name: token.name,
+                    symbol: token.symbol,
+                    iconUri: token.iconUri,
+                    address: token.address,
+                    decimals: token.decimals,
+                    projectUri: token.projectUri ?? '',
+                  } as FAMetadata)
+                : parseToMetadata(token as unknown as CoinMetadata | FAMetadata)
+            )
+          }
           transition={{
             duration: 2,
             repeat: Infinity,
@@ -153,7 +166,20 @@ const SwapBackground = memo(() => {
           animate={{ y: [-5, 5] }}
           top={getPosition(index, 'right').top}
           left={getPosition(index, 'right').left}
-          onClick={() => onSelect(parseToMetadata(token as MetadataSources))}
+          onClick={() =>
+            onSelect(
+              token.address && token.type
+                ? parseToMetadata({
+                    name: token.name,
+                    symbol: token.symbol,
+                    iconUri: token.iconUri,
+                    address: token.address,
+                    decimals: token.decimals,
+                    projectUri: token.projectUri ?? '',
+                  } as FAMetadata)
+                : parseToMetadata(token as unknown as CoinMetadata | FAMetadata)
+            )
+          }
           transition={{
             duration: 2,
             repeat: Infinity,
