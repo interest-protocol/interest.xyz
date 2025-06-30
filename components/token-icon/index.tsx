@@ -92,7 +92,7 @@ const TokenIcon: FC<TokenIconProps> = ({
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
           borderRadius={rounded ? 'full' : 'xs'}
-          {...(withBg && { bg: 'onSurface', color: 'surface' })}
+          {...(withBg && { bg: 'transparent', color: 'surface' })}
         >
           <Box
             overflow="hidden"
