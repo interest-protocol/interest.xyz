@@ -7,9 +7,10 @@ import SidebarLogo from '@/components/svg/sidebar-logo';
 
 import { SIDEBAR_SECTIONS } from '../../sidebar.data';
 import { SOCIAL_LINK } from '../../social-link.data';
+import { ISidebarContentProps } from './sidebar-content.types';
 import MenuSection from './sidebar-section';
 
-const SidebarContent: FC = () => {
+const SidebarContent: FC<ISidebarContentProps> = ({ isHovered }) => {
   return (
     <Box
       p="1.5rem"
@@ -17,7 +18,7 @@ const SidebarContent: FC = () => {
       height="100%"
       overflowY="auto"
       border="1px solid"
-      borderRadius="0.75rem"
+      borderRadius={isHovered ? '0.75rem 0  0 0.75rem' : '0.75rem'}
       borderColor="outlineVariant"
       width={['90%', '90%', '90%', '14.5rem']}
     >

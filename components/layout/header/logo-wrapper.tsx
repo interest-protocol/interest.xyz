@@ -1,4 +1,4 @@
-import { Box } from '@interest-protocol/ui-kit';
+import { Box, Motion } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import Sidebar from '@/components/sidebar';
@@ -11,11 +11,20 @@ const LogoWrapper: FC<LogoWrapperProps> = ({ isShort }) => {
   const { setModal, handleClose } = useModal();
 
   const handleOpenModal = () =>
-    setModal(<Sidebar onClose={handleClose} />, {
-      isOpen: true,
-      custom: true,
-      onClose: handleClose,
-    });
+    setModal(
+      <Motion
+        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, x: 0 }}
+        transition={{ duration: 0.7, ease: 'easeInOut' }}
+      >
+        <Sidebar onClose={handleClose} />
+      </Motion>,
+      {
+        isOpen: true,
+        custom: true,
+        onClose: handleClose,
+      }
+    );
 
   return (
     <Box
