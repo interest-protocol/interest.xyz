@@ -46,16 +46,17 @@ const Input: FC<InputProps> = ({ label }) => {
               width="100%"
               lineHeight="l"
               placeholder="0"
-              color={isEmpty ? '#6B7280' : '#FFFFFF'}
               fontFamily="Inter"
               fontSize={['2xl', '2.25rem']}
               disabled={label === 'to' || swapping}
+              opacity={isEmpty ? 0.4 : undefined}
               fieldProps={{
                 width: '100%',
                 border: 'none',
                 nHover: {
                   border: 'none',
                 },
+                color: isEmpty ? '#6B7280' : '#FFFFFF',
               }}
               {...register(
                 `${label}.value`,
