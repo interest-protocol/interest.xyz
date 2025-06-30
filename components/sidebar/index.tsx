@@ -1,27 +1,27 @@
 import { Box, Motion } from '@interest-protocol/ui-kit';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import SidebarClosed from './components/SidebarClosed';
 import SidebarContent from './components/SidebarContent';
 import { ISidebarProps } from './sidebar.types';
 
-const Sidebar: FC<ISidebarProps> = ({ onClose }) => (
-  <Box
-    top="0"
-    left="0"
-    width="100%"
-    minHeight="100vh"
-    display="flex"
-    p="1.875rem"
-    bg="#0000004D"
-    position="fixed"
-    flexDirection="column"
-    backdropFilter="blur(10px)"
-  >
+const Sidebar: FC<ISidebarProps> = ({ onClose }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
     <Motion
-      animate={{ opacity: 1, x: 0 }}
-      initial={{ opacity: 0, x: -100 }}
-      transition={{ duration: 0.7, ease: 'easeInOut' }}
+      layout
+      top="0"
+      left="0"
+      width="100%"
+      p="1.875rem"
+      display="flex"
+      bg="#0000004D"
+      position="fixed"
+      minHeight="100vh"
+      flexDirection="column"
+      backdropFilter="blur(10px)"
+      transition={{ duration: 0.3 }}
     >
       <Box
         display="flex"
@@ -29,11 +29,11 @@ const Sidebar: FC<ISidebarProps> = ({ onClose }) => (
         width={['100%', '100%', '100%', '18rem']}
         height={['92vh', '90vh', '90vh', '60rem']}
       >
-        <SidebarContent />
-        <SidebarClosed onClose={onClose} />
+        <SidebarContent isHovered={isHovered} />
+        <SidebarClosed onClose={onClose} setIsHovered={setIsHovered} />
       </Box>
     </Motion>
-  </Box>
-);
+  );
+};
 
 export default Sidebar;

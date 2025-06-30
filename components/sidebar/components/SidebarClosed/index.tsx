@@ -5,7 +5,7 @@ import CaretLeft from '@/components/svg/caret-left';
 
 import { ISidebarClosedProps } from './sidebar-closed.types';
 
-const SidebarClosed: FC<ISidebarClosedProps> = ({ onClose }) => {
+const SidebarClosed: FC<ISidebarClosedProps> = ({ onClose, setIsHovered }) => {
   return (
     <Box
       p="1rem"
@@ -22,6 +22,8 @@ const SidebarClosed: FC<ISidebarClosedProps> = ({ onClose }) => {
         maxHeight="20"
         cursor="pointer"
         onClick={onClose}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       />
     </Box>
   );
