@@ -81,6 +81,7 @@ export { default as MinusSVG } from './minus';
 export { default as MoreSVG } from './more';
 export { default as MOVESVG } from './move';
 export { default as MovementLogoSVG } from './movement-logo';
+export { default as MUSDSVG } from './mUSD';
 export { default as NETHSVG } from './neth';
 export { default as NoSearchSVG } from './no-search';
 export { default as PercentageSVG } from './percentage';
