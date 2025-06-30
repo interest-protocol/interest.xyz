@@ -106,6 +106,7 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       pr={style ? '0.75rem' : '0.75rem'}
       opacity={swapping ? 0.7 : 1}
       nHover={{ ...(isToWithoutToken ? { bg: '#B4C5FF' } : {}) }}
+      nFocus={{ ...(isToWithoutToken ? { bg: '#B4C5FF' } : {}) }}
       PrefixIcon={
         !isToWithoutToken && currentSymbol ? (
           <TokenIcon
