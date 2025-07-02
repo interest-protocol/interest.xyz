@@ -32,14 +32,12 @@ const TokenModalItem: FC<TokenModalItemProps> = ({
       color="textSoft"
       cursor="pointer"
       borderRadius="xs"
-      border="1px solid"
       onClick={onSelect}
       alignItems="center"
       position="relative"
       justifyContent="space-between"
       transition="background 500ms ease-in-out"
       bg={selected ? `${colors.primary}14` : 'unset'}
-      borderColor={selected ? 'primary' : 'outlineVariant'}
       nHover={{ bg: `${colors.primary}14`, borderColor: 'primary' }}
     >
       {isLoading && (
@@ -50,9 +48,10 @@ const TokenModalItem: FC<TokenModalItemProps> = ({
       <Box display="flex" alignItems="center" gap="s">
         <TokenIcon
           withBg
+          withBorder
           url={iconUri}
           size="1.3rem"
-          rounded={!isFA}
+          rounded
           symbol={symbol}
           network={network}
         />
@@ -62,12 +61,56 @@ const TokenModalItem: FC<TokenModalItemProps> = ({
             variant="title"
             overflow="hidden"
             whiteSpace="nowrap"
+            fontSize="0.87375rem"
             textOverflow="ellipsis"
             maxWidth={['unset', '5rem']}
           >
             {symbol}
           </Typography>
+          <Typography
+            size="medium"
+            variant="label"
+            color="#9CA3AF"
+            fontWeight="400"
+            fontFamily="Inter"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            fontSize="0.87375rem"
+            textOverflow="ellipsis"
+            maxWidth={['unset', '10rem']}
+          >
+            {isFA ? 'Fungible Asset' : 'Coin'}
+          </Typography>
         </Box>
+      </Box>
+      <Box display="flex" alignItems="flex-end" flexDirection="column">
+        <Typography
+          size="medium"
+          variant="title"
+          fontWeight="400"
+          fontFamily="Inter"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          fontSize="0.87375rem"
+          textOverflow="ellipsis"
+          maxWidth={['unset', '5rem']}
+        >
+          0.00
+        </Typography>
+        <Typography
+          size="medium"
+          variant="label"
+          color="#9CA3AF"
+          fontWeight="400"
+          fontFamily="Inter"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          fontSize="0.87375rem"
+          textOverflow="ellipsis"
+          maxWidth={['unset', '5rem']}
+        >
+          $0
+        </Typography>
       </Box>
     </Box>
   );

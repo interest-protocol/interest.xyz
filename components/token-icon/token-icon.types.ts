@@ -11,6 +11,7 @@ export interface TokenIconProps {
   network: Network;
   rounded?: boolean;
   loaderSize?: number;
+  withBorder?: boolean;
 }
 
 export interface TokenIconUrl {
