@@ -1,4 +1,5 @@
 import { Box, TextField } from '@interest-protocol/ui-kit';
+import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
@@ -12,14 +13,20 @@ import SelectToken from './select-token';
 const ToInput: FC = () => {
   const { control, getValues } = useFormContext();
 
+  const { account } = useAptosWallet();
+
   const value = useWatch({ control, name: 'to.value' });
+
+  const selectedToken = useWatch({ control, name: 'to' });
+
+  const isEmpty = !value || isNaN(+value) || +value <= 0;
 
   return (
     <Box>
       <HeaderInfo label="to" />
       <Box
         py="l"
-        gap="0.5rem"
+        gap="0.875rem"
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
@@ -32,7 +39,7 @@ const ToInput: FC = () => {
             justifyContent="flex-end"
           >
             <TextField
-              disabled
+              readOnly
               value={
                 isExponential(+value)
                   ? (+value).toFixed(getValues('to.decimals'))
@@ -42,9 +49,10 @@ const ToInput: FC = () => {
               width="100%"
               lineHeight="l"
               placeholder="0"
-              color="onSurface"
-              fontFamily="Proto"
-              fontSize={['2xl', '4xl']}
+              color={isEmpty ? '#6B7280' : '#FFFFFF'}
+              fontFamily="Inter"
+              fontSize={['2xl', '2.25rem']}
+              opacity="1"
               fieldProps={{
                 width: '100%',
                 border: 'none',
@@ -56,10 +64,13 @@ const ToInput: FC = () => {
           </Box>
           <SelectToken label="to" />
         </Box>
-        <Box display="flex" justifyContent="space-between" color="outline">
-          <AmountInDollar label="to" />
-          <Balance label="to" />
-        </Box>
+
+        {account?.address && selectedToken?.manuallySelected && (
+          <Box display="flex" justifyContent="space-between" color="outline">
+            <AmountInDollar label="to" />
+            <Balance label="to" />
+          </Box>
+        )}
       </Box>
     </Box>
   );

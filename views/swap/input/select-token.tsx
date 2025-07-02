@@ -31,33 +31,33 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     ],
   });
 
-  const { symbol: currentSymbol } = currentToken ?? {
-    symbol: undefined,
-    type: undefined,
-  };
+  const sanitizedToken =
+    label === 'to' && !currentToken?.manuallySelected
+      ? undefined
+      : currentToken;
 
-  const formattedSymbol = currentSymbol
-    ? currentSymbol
-    : !currentSymbol && type
-      ? type
-      : 'Select token';
+  const { symbol: currentSymbol } = sanitizedToken ?? {};
+
+  const formattedSymbol = currentSymbol ?? type ?? 'Select token';
 
   const onSelect = async (metadata: AssetMetadata) => {
-    if (metadata.type == opposite.type) return;
+    if (metadata.type === opposite?.type) return;
 
     if (
-      metadata.standard === opposite.standard &&
-      metadata.symbol === opposite.symbol
-    )
+      metadata.standard === opposite?.standard &&
+      metadata.symbol === opposite?.symbol
+    ) {
       setValue(label === 'to' ? 'from' : 'to', {
         ...currentToken,
         value: '',
       });
+    }
 
     setValue(label, {
       ...metadata,
       value: '',
       valueBN: ZERO_BIG_NUMBER,
+      manuallySelected: true,
     });
 
     if (label === 'from') {
@@ -88,45 +88,72 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       }
     );
 
+  const isToWithoutToken = label === 'to' && !currentSymbol;
+  const style = label == 'to' && isToWithoutToken;
+
   return (
     <Button
-      py="2xs"
-      pr="s"
+      py="3xs"
+      height="2rem"
       fontSize="s"
       variant="tonal"
       color="onSurface"
-      borderRadius="xs"
+      borderRadius="l"
       disabled={swapping}
       onClick={openModal}
-      bg="highestContainer"
+      bg={style ? '#B4C5FF' : '#030712'}
+      pl={style ? '0.75rem' : '0'}
+      pr={style ? '0.75rem' : '0.75rem'}
       opacity={swapping ? 0.7 : 1}
-      pl={currentSymbol ? '2xs' : 'm'}
-      {...(currentSymbol && {
-        PrefixIcon: (
+      nHover={{ ...(isToWithoutToken ? { bg: '#B4C5FF' } : {}) }}
+      nFocus={{ ...(isToWithoutToken ? { bg: '#B4C5FF' } : {}) }}
+      PrefixIcon={
+        !isToWithoutToken && currentSymbol ? (
           <TokenIcon
             withBg
-            size="1.1rem"
+            size="1.5rem"
             network={network}
             symbol={currentSymbol}
-            rounded={currentToken.standard === TokenStandard.COIN}
+            rounded={sanitizedToken?.standard === TokenStandard.COIN}
           />
-        ),
-      })}
+        ) : undefined
+      }
     >
-      <Typography
-        size="large"
-        maxWidth="12ch"
-        variant="label"
-        overflow="hidden"
-        whiteSpace="nowrap"
-        fontFamily="Satoshi"
-        textOverflow="ellipsis"
-        width={['0px', 'auto']}
-        display={[currentSymbol ? 'none' : 'block', 'block']}
-      >
-        {formattedSymbol}
-      </Typography>
-      <ChevronDownSVG maxHeight="1rem" maxWidth="1rem" width="100%" />
+      {isToWithoutToken ? (
+        <Typography
+          size="medium"
+          variant="label"
+          color="#002A78"
+          fontWeight="500"
+          fontFamily="Inter"
+          textAlign="center"
+          fontSize="0.875rem"
+        >
+          Select token
+        </Typography>
+      ) : (
+        <Typography
+          size="large"
+          maxWidth="12ch"
+          color="#9CA3AF"
+          variant="label"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          fontFamily="Satoshi"
+          textOverflow="ellipsis"
+          width={['0px', 'auto']}
+          fontWeight="500"
+          display={[currentSymbol ? 'none' : 'block', 'block']}
+        >
+          {formattedSymbol}
+        </Typography>
+      )}
+      <ChevronDownSVG
+        maxHeight="1.25rem"
+        maxWidth="1.25rem"
+        width="100%"
+        color={isToWithoutToken ? '#002A78' : undefined}
+      />
     </Button>
   );
 };

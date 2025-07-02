@@ -19,7 +19,6 @@ const TokenIcon: FC<TokenIconProps> = ({
   symbol,
   withBg,
   network,
-  rounded,
   size = '1.5rem',
   loaderSize = 16,
 }) => {
@@ -63,7 +62,8 @@ const TokenIcon: FC<TokenIconProps> = ({
           justifyContent="center"
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
-          borderRadius={rounded || !withBg ? 'full' : 'xs'}
+          borderRadius="full"
+          border="1px solid #FFFFFF"
           {...(withBg && { bg: 'onSurface', color: 'surface' })}
         >
           <DefaultTokenSVG
@@ -91,14 +91,16 @@ const TokenIcon: FC<TokenIconProps> = ({
           justifyContent="center"
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
-          borderRadius={rounded ? 'full' : 'xs'}
+          borderRadius="full"
+          border="1px solid #FFFFFF"
           {...(withBg && { bg: 'onSurface', color: 'surface' })}
         >
           <Box
             overflow="hidden"
             width={`calc(${size} * 1.66)`}
             height={`calc(${size} * 1.66)`}
-            borderRadius={rounded ? 'full' : 'xs'}
+            borderRadius="full"
+            border="1px solid #FFFFFF"
           >
             {loading && (
               <Box position="absolute" top="-0.5rem" left="0.9rem">
@@ -121,6 +123,7 @@ const TokenIcon: FC<TokenIconProps> = ({
             overflow="hidden"
             position="absolute"
             borderRadius="full"
+            border="1px solid #FFFFFF"
           >
             <ChainIcon maxHeight={size} maxWidth={size} width="100%" />
           </Box>
@@ -145,7 +148,8 @@ const TokenIcon: FC<TokenIconProps> = ({
           justifyContent="center"
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
-          borderRadius={rounded ? 'full' : 'xs'}
+          borderRadius="full"
+          border="1px solid #FFFFFF"
           {...(withBg && {
             bg: icon.bg || 'onSurface',
             color: icon.color || 'surface',
@@ -195,13 +199,15 @@ const TokenIcon: FC<TokenIconProps> = ({
           justifyContent="center"
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
-          borderRadius={rounded ? 'full' : 'xs'}
+          borderRadius="full"
+          border="1px solid #FFFFFF"
         >
           <Box
             overflow="hidden"
             width={`calc(${size} * 1.66)`}
             height={`calc(${size} * 1.66)`}
-            borderRadius={rounded ? 'full' : 'xs'}
+            borderRadius="full"
+            border="1px solid #FFFFFF"
           >
             {loading && (
               <Box position="absolute" top="-0.5rem" left="0.9rem">
@@ -253,13 +259,15 @@ const TokenIcon: FC<TokenIconProps> = ({
           justifyContent="center"
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
-          borderRadius={rounded ? 'full' : 'xs'}
+          borderRadius="full"
+          border="1px solid #FFFFFF"
         >
           <Box
             overflow="hidden"
             width={`calc(${size} * 1.66)`}
             height={`calc(${size} * 1.66)`}
-            borderRadius={rounded ? 'full' : 'xs'}
+            borderRadius="full"
+            border="1px solid #FFFFFF"
           >
             {isLoading && (
               <Box position="absolute" top="-0.5rem" left="0.9rem">
@@ -315,7 +323,8 @@ const TokenIcon: FC<TokenIconProps> = ({
         justifyContent="center"
         width={`calc(${size} * 1.66)`}
         height={`calc(${size} * 1.66)`}
-        borderRadius={rounded || !withBg ? 'full' : 'xs'}
+        borderRadius="full"
+        border="1px solid #FFFFFF"
         {...(withBg && { bg: 'onSurface', color: 'surface' })}
       >
         <DefaultTokenSVG

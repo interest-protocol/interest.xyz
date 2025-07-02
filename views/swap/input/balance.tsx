@@ -14,13 +14,13 @@ import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { formatMoney, isAptos, ZERO_BIG_NUMBER } from '@/utils';
 
 import { InputProps } from './input.types';
+import { MaxBadge } from './max-budget';
 
 const Balance: FC<InputProps> = ({ label }) => {
   const { coinsMap, loading } = useCoins();
   const { control, setValue, getValues } = useFormContext();
 
   const type = useWatch({ control, name: `${label}.type` });
-  const symbol = useWatch({ control, name: `${label}.symbol` });
   const decimals = useWatch({ control, name: `${label}.decimals` });
 
   if (!type)
@@ -48,6 +48,8 @@ const Balance: FC<InputProps> = ({ label }) => {
 
   const balance =
     coinsMap[normalizeSuiAddress(type)]?.balance ?? ZERO_BIG_NUMBER;
+
+  const numericBalance = FixedPointMath.toNumber(balance, decimals);
 
   const handleMax = () => {
     if (label === 'to') return;
@@ -78,8 +80,8 @@ const Balance: FC<InputProps> = ({ label }) => {
 
   if (label === 'to')
     return (
-      <Box display="flex" gap="xs">
-        <Box display={['none', 'block']} width="1rem" height="1rem">
+      <Box display="flex" gap="xs" alignItems="center">
+        <Box display={['none', 'block']} width="1.38875rem" height="1.25rem">
           <SubtractBox
             maxHeight="100%"
             maxWidth="100%"
@@ -89,14 +91,18 @@ const Balance: FC<InputProps> = ({ label }) => {
         </Box>
         <Typography
           size="small"
-          fontSize="s"
           variant="body"
+          color="#D1D5DB"
+          fontWeight="400"
+          fontSize="0.75rem"
+          fontFamily="Inter"
           whiteSpace="nowrap"
         >
           {type
-            ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))} ${symbol}`
+            ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))}`
             : '0'}
         </Typography>
+        <MaxBadge />
         {loading && (
           <Box
             mx="xs"
@@ -124,7 +130,7 @@ const Balance: FC<InputProps> = ({ label }) => {
       borderColor="transparent"
       nHover={{ bg: 'unset', borderColor: 'primary' }}
     >
-      <Box display={['none', 'block']} width="1rem" height="1rem">
+      <Box display={['none', 'block']} width="1.38875rem" height="1.25rem">
         <SubtractBox
           maxHeight="100%"
           maxWidth="100%"
@@ -132,11 +138,23 @@ const Balance: FC<InputProps> = ({ label }) => {
           height="100%"
         />
       </Box>
-      <Typography size="small" variant="body" fontSize="s" whiteSpace="nowrap">
+      <Typography
+        size="small"
+        variant="body"
+        color="#D1D5DB"
+        fontWeight="400"
+        fontSize="0.75rem"
+        fontFamily="Inter"
+        whiteSpace="nowrap"
+      >
         {type
-          ? `${formatMoney(FixedPointMath.toNumber(balance, decimals), 4)} ${symbol}`
-          : '0'}
+          ? numericBalance === 0
+            ? `0.${'0'.repeat(4)}`
+            : formatMoney(numericBalance, 4)
+          : '0.0000'}
       </Typography>
+      <MaxBadge />
+
       {!coinsMap[normalizeSuiAddress(type)]?.balance && loading && (
         <Box
           mx="xs"
