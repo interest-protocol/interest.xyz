@@ -59,6 +59,7 @@ const Header: FC = () => {
             }}
             borderRadius="full"
             transition="all 350ms ease-in-out"
+            zIndex="100000"
           >
             {SIDEBAR_ITEMS.map(({ name, path }) => (
               <Box
