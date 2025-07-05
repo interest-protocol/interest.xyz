@@ -1,13 +1,11 @@
 import BigNumber from 'bignumber.js';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
-import useSWR from 'swr';
 import { v4 } from 'uuid';
 
-import { useMetrics } from '@/hooks';
 import { useFarmAccount } from '@/hooks/use-farm-account';
+import { useLPCoinsPrice } from '@/hooks/use-lp-coin-price';
 import { FixedPointMath } from '@/lib';
-import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
 import { IPoolForm } from '@/views/pools/pools.types';
@@ -19,56 +17,15 @@ import PoolInfoLoading from '../pool-info-loading';
 
 const PoolInfoDetailsMyPosition: FC = () => {
   const { coinsMap } = useCoins();
-  const aptosClient = useAptosClient();
   const { pool, loading } = usePoolDetails();
-
+  const { data: lpPriceCustom, loading: lpLoading } = useLPCoinsPrice(
+    pool?.poolAddress
+  );
   const { getValues } = useFormContext<IPoolForm>();
-
-  const [tvl, setTvl] = useState(0);
-  const { data: metrics, isLoading } = useMetrics();
-
-  useEffect(() => {
-    setTvl(
-      Number(
-        metrics?.data?.find(
-          (metric) => metric.poolId == getValues('pool.poolAddress')
-        )?.metrics?.tvl ?? '0'
-      )
-    );
-  }, [isLoading, metrics]);
-
-  const { data: supply } = useSWR([getValues('lpCoin.type')], async () => {
-    if (!getValues('lpCoin.type')) return ZERO_BIG_NUMBER;
-
-    const resources = await aptosClient.getAccountResources({
-      accountAddress: getValues('lpCoin.type'),
-    });
-
-    const supplyStruct = resources.find(
-      ({ type }) => type === '0x1::fungible_asset::ConcurrentSupply'
-    );
-
-    if (!supplyStruct || !supplyStruct?.data) return ZERO_BIG_NUMBER;
-
-    return BigNumber((supplyStruct.data as any)['current']!['value']);
-  });
-
-  const lpPrice =
-    tvl /
-    FixedPointMath.toNumber(
-      supply ?? BigNumber(1),
-      pool?.poolMetadata?.decimals
-    );
 
   const farmAccount = useFarmAccount(getValues('lpCoin.type'));
 
-  if (!pool || loading || isLoading)
-    return (
-      <Accordion title="My Position" noBorder>
-        <PoolInfoLoading />
-      </Accordion>
-    );
-
+  const lpPrice = lpPriceCustom?.lpPrice || 0;
   const lpBalance =
     coinsMap[getValues('lpCoin.type')]?.balance ?? ZERO_BIG_NUMBER;
 
@@ -76,18 +33,25 @@ const PoolInfoDetailsMyPosition: FC = () => {
     ? BigNumber(String(farmAccount.data.amount))
     : ZERO_BIG_NUMBER;
 
+  if (!pool || loading || lpLoading)
+    return (
+      <Accordion title="My Position" noBorder>
+        <PoolInfoLoading />
+      </Accordion>
+    );
+
   const MY_POSITIONS: ReadonlyArray<[string, number]> = [
     [
-      'Pool Position',
+      'Wallet',
       FixedPointMath.toNumber(lpBalance, pool.poolMetadata?.decimals) * lpPrice,
     ],
     [
-      'Farm Position',
+      'Farm',
       FixedPointMath.toNumber(stakedBalance, pool.poolMetadata?.decimals) *
         lpPrice,
     ],
     [
-      'Total Position',
+      'Total',
       FixedPointMath.toNumber(
         stakedBalance.plus(lpBalance),
         pool.poolMetadata?.decimals

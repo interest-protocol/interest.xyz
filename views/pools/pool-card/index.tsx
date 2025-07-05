@@ -1,4 +1,5 @@
-import { Box } from '@interest-protocol/ui-kit';
+import { Box, Typography } from '@interest-protocol/ui-kit';
+import BigNumber from 'bignumber.js';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -6,12 +7,17 @@ import useSWR from 'swr';
 import { v4 } from 'uuid';
 
 import { FARMS_BY_LP, Routes, RoutesEnum } from '@/constants';
+import { useFarmAccount } from '@/hooks/use-farm-account';
+import { useLPCoinsPrice } from '@/hooks/use-lp-coin-price';
+import { FixedPointMath } from '@/lib';
+import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 import {
   formatDollars,
   formatMoney,
   getCoinMetadata,
   parseToMetadata,
+  ZERO_BIG_NUMBER,
 } from '@/utils';
 
 import { IPoolForm } from '../pools.types';
@@ -22,13 +28,25 @@ import PoolCardSkeleton from './pool-card-skeleton';
 import PoolCardTrade from './pool-card-trade';
 
 const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
+  const { coinsMap } = useCoins();
   const isFarm = !!FARMS_BY_LP[pool.poolAddress];
+
+  const { data: lpPriceCustom, loading: lpLoading } = useLPCoinsPrice(
+    pool?.poolAddress
+  );
   const [filteredTokens, setFilteredTokens] = useState<
     Array<AssetMetadata> | undefined
   >([]);
-
+  const farmAccount = useFarmAccount(pool.poolAddress);
   const { control, getValues } = useFormContext<IPoolForm>();
+
   const search = useWatch({ control, name: 'search' });
+
+  const lpToken = coinsMap[pool.poolAddress] ?? ZERO_BIG_NUMBER;
+
+  const stakedBalance = farmAccount.data?.amount
+    ? BigNumber(String(farmAccount.data.amount))
+    : ZERO_BIG_NUMBER;
 
   const { data: metadata, isLoading } = useSWR(
     ['pool-metadata', pool.tokensAddresses, pool.poolAddress],
@@ -53,13 +71,14 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
     setFilteredTokens(tmp);
   }, [metadata, search]);
 
-  if (isLoading) return <PoolCardSkeleton />;
+  if (isLoading || !lpPriceCustom || lpLoading) return <PoolCardSkeleton />;
 
   if (search && !filteredTokens?.length) return;
 
   const volume = getValues('metrics')?.filter(
     (metric) => metric.poolId == pool.poolAddress
   );
+  console.log(pool, '>>>metadata');
   return (
     <Link
       href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
@@ -91,6 +110,15 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           ])}
         />
         <PoolCardInfo key={v4()} coins={metadata ?? []} />
+        <Typography
+          size="medium"
+          variant="body"
+          color="onSurface"
+          textTransform="capitalize"
+          display="flex"
+        >
+          Stats
+        </Typography>
         <Box px="m" py="xs" bg="surface" borderRadius="1rem">
           <PoolCardTrade
             noBorder
@@ -142,6 +170,52 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
             amount={
               volume?.length
                 ? formatDollars(+Number(volume?.[0].metrics.tvl).toFixed(2))
+                : '0.00'
+            }
+          />
+        </Box>
+
+        <Typography
+          size="medium"
+          variant="body"
+          color="onSurface"
+          textTransform="capitalize"
+          display="flex"
+        >
+          Position
+        </Typography>
+        <Box px="m" py="xs" bg="surface" borderRadius="1rem">
+          <PoolCardTrade
+            noBorder
+            description="Wallet"
+            tooltipInfo="Wallet"
+            amount={
+              volume?.length
+                ? formatDollars(
+                    lpPriceCustom
+                      ? FixedPointMath.toNumber(
+                          lpToken.balance,
+                          lpToken.decimals
+                        ) * lpPriceCustom?.lpPrice
+                      : 0
+                  )
+                : '0.00'
+            }
+          />
+          <PoolCardTrade
+            noBorder
+            description="Farm"
+            tooltipInfo="Farm"
+            amount={
+              volume?.length
+                ? formatDollars(
+                    lpPriceCustom
+                      ? FixedPointMath.toNumber(
+                          stakedBalance,
+                          lpToken.decimals
+                        ) * lpPriceCustom?.lpPrice
+                      : 0
+                  )
                 : '0.00'
             }
           />
