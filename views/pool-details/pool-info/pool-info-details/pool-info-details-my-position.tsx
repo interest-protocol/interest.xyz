@@ -101,7 +101,7 @@ const PoolInfoDetailsMyPosition: FC = () => {
         <ItemStandard
           key={v4()}
           label={label}
-          loading={loading}
+          loading={loading || isNaN(balance)}
           content={{
             value: formatDollars(balance),
           }}
