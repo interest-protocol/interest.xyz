@@ -48,6 +48,10 @@ export interface Metric {
   metrics: MetricItemProps;
 }
 
+export interface PositionAmountProps {
+  wallet: number;
+  farm: number;
+}
 export interface MetricItemProps {
   tvl: string;
   tvl1D: string;
@@ -81,6 +85,7 @@ export interface IPoolForm {
   apr?: string;
   syncBalances?: boolean;
   metrics?: ReadonlyArray<Metric>;
+  position?: PositionAmountProps;
   tokenList: ReadonlyArray<PoolToken>;
   filterList: ReadonlyArray<FilterItemProps>;
 }
