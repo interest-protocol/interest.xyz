@@ -96,7 +96,6 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const volume = getValues('metrics')?.filter(
     (metric) => metric.poolId == pool.poolAddress
   );
-
   return (
     <Link
       href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
