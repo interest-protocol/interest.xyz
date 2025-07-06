@@ -77,6 +77,7 @@ const FindPoolButton: FC = () => {
           variant="tonal"
           color="onSurface"
           bg="highContainer"
+          width="max-content"
           onClick={openModal}
           nHover={{
             bg: `${colors.primary}14`,

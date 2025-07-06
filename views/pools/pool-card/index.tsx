@@ -38,7 +38,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
     Array<AssetMetadata> | undefined
   >([]);
   const farmAccount = useFarmAccount(pool.poolAddress);
-  const { control, getValues } = useFormContext<IPoolForm>();
+  const { control, getValues, setValue } = useFormContext<IPoolForm>();
 
   const search = useWatch({ control, name: 'search' });
 
@@ -71,6 +71,24 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
     setFilteredTokens(tmp);
   }, [metadata, search]);
 
+  useEffect(() => {
+    if (!(isLoading || !lpPriceCustom || lpLoading || !farmAccount)) {
+      const positionList = getValues('positionList') || {};
+      const tmpWalletPosition = lpPriceCustom
+        ? FixedPointMath.toNumber(lpToken.balance, lpToken.decimals) *
+          lpPriceCustom?.lpPrice
+        : 0;
+      const tmpFarmPosition = lpPriceCustom
+        ? FixedPointMath.toNumber(stakedBalance, lpToken.decimals) *
+          lpPriceCustom?.lpPrice
+        : 0;
+      setValue('positionList', {
+        ...positionList,
+        [pool.poolAddress]: tmpWalletPosition + tmpFarmPosition,
+      });
+    }
+  }, [isLoading, lpPriceCustom, lpLoading, farmAccount]);
+
   if (isLoading || !lpPriceCustom || lpLoading) return <PoolCardSkeleton />;
 
   if (search && !filteredTokens?.length) return;
@@ -78,7 +96,6 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const volume = getValues('metrics')?.filter(
     (metric) => metric.poolId == pool.poolAddress
   );
-  console.log(pool, '>>>metadata');
   return (
     <Link
       href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
@@ -189,35 +206,23 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
             noBorder
             description="Wallet"
             tooltipInfo="Wallet"
-            amount={
-              volume?.length
-                ? formatDollars(
-                    lpPriceCustom
-                      ? FixedPointMath.toNumber(
-                          lpToken.balance,
-                          lpToken.decimals
-                        ) * lpPriceCustom?.lpPrice
-                      : 0
-                  )
-                : '0.00'
-            }
+            amount={formatDollars(
+              lpPriceCustom
+                ? FixedPointMath.toNumber(lpToken.balance, lpToken.decimals) *
+                    lpPriceCustom?.lpPrice
+                : 0
+            )}
           />
           <PoolCardTrade
             noBorder
             description="Farm"
             tooltipInfo="Farm"
-            amount={
-              volume?.length
-                ? formatDollars(
-                    lpPriceCustom
-                      ? FixedPointMath.toNumber(
-                          stakedBalance,
-                          lpToken.decimals
-                        ) * lpPriceCustom?.lpPrice
-                      : 0
-                  )
-                : '0.00'
-            }
+            amount={formatDollars(
+              lpPriceCustom
+                ? FixedPointMath.toNumber(stakedBalance, lpToken.decimals) *
+                    lpPriceCustom?.lpPrice
+                : 0
+            )}
           />
         </Box>
       </Box>

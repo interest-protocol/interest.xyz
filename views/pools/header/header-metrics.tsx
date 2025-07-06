@@ -1,13 +1,19 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { useMetrics } from '@/hooks';
 
+import { IPoolForm } from '../pools.types';
 import { PoolHeaderIconEnum } from './header.types';
 import HeaderInfoCard from './header-info-card';
 
 const HeaderMetrics: FC = () => {
   const { data: metrics, isLoading } = useMetrics();
+
+  const { control } = useFormContext<IPoolForm>();
+
+  const positionList = useWatch({ control, name: 'positionList' });
 
   if (!isLoading && !metrics?.data)
     return (
@@ -44,7 +50,7 @@ const HeaderMetrics: FC = () => {
       width="100%"
       mb="m"
       display="grid"
-      gridTemplateColumns={['1fr', '1fr', '1fr 1fr 1fr', '1fr 1fr 1fr']}
+      gridTemplateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr 1fr 1fr']}
       gap="m"
     >
       <HeaderInfoCard
@@ -64,6 +70,19 @@ const HeaderMetrics: FC = () => {
         title="Trading Volume (24H)"
         type={PoolHeaderIconEnum.volume}
         value={metrics?.summary?.volume1D || '0'}
+      />
+      <HeaderInfoCard
+        title="Total Position"
+        isLoading={!positionList}
+        value={
+          positionList
+            ? `${Object.values(positionList).reduce(
+                (totalAmount: number, amount: number) => totalAmount + amount,
+                0
+              )}`
+            : '0'
+        }
+        type={PoolHeaderIconEnum.tvl}
       />
     </Box>
   );
