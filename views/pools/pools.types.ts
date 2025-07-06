@@ -87,6 +87,7 @@ export interface IPoolForm {
   metrics?: ReadonlyArray<Metric>;
   position?: PositionAmountProps;
   tokenList: ReadonlyArray<PoolToken>;
+  positionList: Record<string, number>;
   filterList: ReadonlyArray<FilterItemProps>;
 }
 
