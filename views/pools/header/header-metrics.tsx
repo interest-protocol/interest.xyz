@@ -13,7 +13,7 @@ const HeaderMetrics: FC = () => {
 
   const { control } = useFormContext<IPoolForm>();
 
-  const positionList = useWatch({ control, name: ['positionList'] });
+  const positionList = useWatch({ control, name: 'positionList' });
 
   if (!isLoading && !metrics?.data)
     return (
