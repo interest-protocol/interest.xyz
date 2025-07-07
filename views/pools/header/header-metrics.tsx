@@ -1,7 +1,6 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import Skeleton from 'react-loading-skeleton';
 
 import { useMetrics } from '@/hooks';
 
@@ -14,7 +13,7 @@ const HeaderMetrics: FC = () => {
 
   const { control } = useFormContext<IPoolForm>();
 
-  const positionList = useWatch({ control, name: 'positionList' });
+  const positionList = useWatch({ control, name: ['positionList'] });
 
   if (!isLoading && !metrics?.data)
     return (
@@ -74,16 +73,14 @@ const HeaderMetrics: FC = () => {
       />
       <HeaderInfoCard
         title="Total Position"
-        isLoading={!positionList}
+        isLoading={!positionList || positionList.length > 1}
         value={
-          positionList ? (
-            `${Object.values(positionList).reduce(
-              (totalAmount: number, amount: number) => totalAmount + amount,
-              0
-            )}`
-          ) : (
-            <Skeleton />
-          )
+          positionList
+            ? `${Object.values(positionList).reduce(
+                (totalAmount: number, amount: number) => totalAmount + amount,
+                0
+              )}`
+            : '0'
         }
         type={PoolHeaderIconEnum.tvl}
       />
