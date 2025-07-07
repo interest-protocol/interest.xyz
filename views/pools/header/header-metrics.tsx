@@ -73,7 +73,7 @@ const HeaderMetrics: FC = () => {
       />
       <HeaderInfoCard
         title="Total Position"
-        isLoading={!positionList}
+        isLoading={!positionList || positionList.length > 1}
         value={
           positionList
             ? `${Object.values(positionList).reduce(

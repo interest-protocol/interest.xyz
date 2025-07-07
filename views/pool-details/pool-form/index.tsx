@@ -23,9 +23,9 @@ const PoolForm: FC = () => {
   );
 
   useEffect(() => {
-    setValue('lpCoin.value', '0');
-    setValue('tokenList.0.value', '0');
-    setValue('tokenList.1.value', '0');
+    setValue('lpCoin.value', '');
+    setValue('tokenList.0.value', '');
+    setValue('tokenList.1.value', '');
     setValue('lpCoin.valueBN', ZERO_BIG_NUMBER);
     setValue('tokenList.0.valueBN', ZERO_BIG_NUMBER);
     setValue('tokenList.1.valueBN', ZERO_BIG_NUMBER);
