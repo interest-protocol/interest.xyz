@@ -72,7 +72,7 @@ const HeaderMetrics: FC = () => {
         value={metrics?.summary?.volume1D || '0'}
       />
       <HeaderInfoCard
-        title="Total Position"
+        title="User Position"
         isLoading={!positionList || positionList.length > 1}
         value={
           positionList
