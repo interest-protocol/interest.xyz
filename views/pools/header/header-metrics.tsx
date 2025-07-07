@@ -1,6 +1,7 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
 
 import { useMetrics } from '@/hooks';
 
@@ -75,12 +76,14 @@ const HeaderMetrics: FC = () => {
         title="Total Position"
         isLoading={!positionList}
         value={
-          positionList
-            ? `${Object.values(positionList).reduce(
-                (totalAmount: number, amount: number) => totalAmount + amount,
-                0
-              )}`
-            : '0'
+          positionList ? (
+            `${Object.values(positionList).reduce(
+              (totalAmount: number, amount: number) => totalAmount + amount,
+              0
+            )}`
+          ) : (
+            <Skeleton />
+          )
         }
         type={PoolHeaderIconEnum.tvl}
       />
