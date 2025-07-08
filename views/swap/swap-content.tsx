@@ -12,20 +12,21 @@ const SwapContent: FC = () => {
   const { tab } = useTabState();
 
   return (
-    <Box height="100%" display="flex" flexDirection="column">
+    <Box height="100%" display="flex">
       <Box
         gap="l"
         mx="auto"
         display="flex"
         borderRadius="l"
         alignContent="center"
-        flexDirection="column"
         justifyContent="center"
         px={['2xs', 'xl', 'xl', '7xl']}
         width={['100%', '100%', '100%', '39.75rem']}
       >
-        <SwapTabs />
-        {[<Swap key={v4()} />, <Bridge key={v4()} />][tab]}
+        <Box display="flex" flexDirection="column">
+          <SwapTabs />
+          {[<Swap key={v4()} />, <Bridge key={v4()} />][tab]}
+        </Box>
       </Box>
     </Box>
   );

@@ -7,7 +7,7 @@ import Tabs from '@/components/tabs';
 import { useModal } from '@/hooks/use-modal';
 import { useTabState } from '@/hooks/use-tab-manager';
 
-import SwapSettingsForm from '../swap-settings-form';
+import SwapSettings from '../swap-settings';
 
 const SwapTabs: FC = () => {
   const { tab, setTab } = useTabState();
@@ -19,7 +19,7 @@ const SwapTabs: FC = () => {
   const handleOpenSettings = () =>
     setModal(
       <FormProvider {...form}>
-        <SwapSettingsForm />
+        <SwapSettings />
       </FormProvider>,
       { isOpen: true, custom: true, onClose: handleClose }
     );
