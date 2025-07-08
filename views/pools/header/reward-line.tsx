@@ -129,7 +129,7 @@ const RewardLine: FC = () => {
           onClick={onHarvest}
           px={['xs', 'xs', 'm']}
           py={['xs', 'xs', 's']}
-          disabled={disabled}
+          disabled={disabled || !account}
         >
           <Box width="1rem" height="1rem">
             <WithdrawSVG maxWidth="100%" maxHeight="100%" width="100%" />
@@ -149,7 +149,7 @@ const RewardLine: FC = () => {
               ),
               8
             ).toFixed(4)} MOVE`
-          : '0'
+          : '0.00 MOVE'
       }
     />
   );
