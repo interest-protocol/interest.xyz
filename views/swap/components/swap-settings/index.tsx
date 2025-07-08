@@ -26,14 +26,6 @@ const SwapSettings: FC = () => {
     },
   });
 
-  const form = useForm({
-    defaultValues: {
-      slippageTolerance: '0.5',
-      transactionDeadline: '10',
-      infiniteApproval: true,
-    },
-  });
-
   const onConfirm = () => {
     const settings = formTmpSettings.getValues();
 
@@ -100,7 +92,9 @@ const SwapSettings: FC = () => {
             fontSize="medium"
             placeholder="0.5"
             nPlaceholder={{ opacity: 0.7 }}
-            {...form.register('slippageTolerance', { valueAsNumber: true })}
+            {...formTmpSettings.register('slippageTolerance', {
+              valueAsNumber: true,
+            })}
             fieldProps={{
               width: '6rem',
               height: '2.75rem',
@@ -130,12 +124,14 @@ const SwapSettings: FC = () => {
             placeholder="10"
             fontSize="medium"
             nPlaceholder={{ opacity: 0.7 }}
-            {...form.register('transactionDeadline', { valueAsNumber: true })}
             fieldProps={{
               width: '6rem',
               height: '2.75rem',
               borderRadius: 'xs',
             }}
+            {...formTmpSettings.register('transactionDeadline', {
+              valueAsNumber: true,
+            })}
           />
         </Box>
         <Box
@@ -159,15 +155,27 @@ const SwapSettings: FC = () => {
           <Box
             width="2.75rem"
             height="1.5rem"
+            cursor="pointer"
             position="relative"
             borderRadius="0.75rem"
             transition="all 0.3s ease"
-            bg={form.watch('infiniteApproval') ? '#8BA5FF' : '#374151'}
+            bg={
+              formTmpSettings.watch('infiniteApproval') ? '#8BA5FF' : '#374151'
+            }
+            onClick={() => {
+              formTmpSettings.setValue(
+                'infiniteApproval',
+                !formTmpSettings.watch('infiniteApproval')
+              );
+            }}
           >
             <input
               type="checkbox"
               id="hinfiniteApproval"
-              {...form.register('infiniteApproval')}
+              checked={formTmpSettings.watch('infiniteApproval')}
+              onChange={(e) =>
+                formTmpSettings.setValue('infiniteApproval', e.target.checked)
+              }
               style={{ display: 'none' }}
             />
             <Box
@@ -178,7 +186,11 @@ const SwapSettings: FC = () => {
               borderRadius="50%"
               position="absolute"
               transition="all 0.3s ease"
-              left={form.watch('infiniteApproval') ? '1.4rem' : '0.125rem'}
+              left={
+                formTmpSettings.watch('infiniteApproval')
+                  ? '1.4rem'
+                  : '0.125rem'
+              }
             />
           </Box>
         </Box>
