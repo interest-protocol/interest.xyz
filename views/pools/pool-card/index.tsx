@@ -97,21 +97,6 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
     (metric) => metric.poolId == pool.poolAddress
   );
 
-  console.log(pool.poolAddress, {
-    lpPriceCustom,
-    stakedBalance,
-    decimals: lpToken.decimals,
-    balance: lpToken.balance,
-    data: formatDollars(
-      lpPriceCustom
-        ? FixedPointMath.toNumber(
-            lpToken.balance?.plus(stakedBalance),
-            lpToken.decimals
-          ) * lpPriceCustom?.lpPrice
-        : 0
-    ),
-  });
-
   return (
     <Link
       href={`${Routes[RoutesEnum.PoolDetails]}?address=${pool.poolAddress}`}
