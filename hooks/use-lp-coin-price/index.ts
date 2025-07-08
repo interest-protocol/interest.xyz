@@ -10,6 +10,10 @@ export const useLPCoinPrice = (poolAddress?: string) => {
         `https://api.interestlabs.io/v1/movement/mainnet/curve/lp-price/${poolAddress}`
       )
         .then((response) => response.json())
+        .then((data) => {
+          if (!data.lpPrice) throw data;
+          return data;
+        })
         .catch()
   );
   const loading = !poolAddress || isLoading;
