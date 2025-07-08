@@ -190,37 +190,37 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
                 : '0.00'
             }
           />
-        </Box>
-
-        <Typography
-          size="medium"
-          variant="body"
-          color="onSurface"
-          textTransform="capitalize"
-          display="flex"
-        >
-          Position
-        </Typography>
-        <Box px="m" py="xs" bg="surface" borderRadius="1rem">
           <PoolCardTrade
             noBorder
-            description="Wallet"
-            tooltipInfo="Wallet"
+            description="Position"
+            tooltipInfo={[
+              {
+                value: formatDollars(
+                  lpPriceCustom
+                    ? FixedPointMath.toNumber(stakedBalance, lpToken.decimals) *
+                        lpPriceCustom?.lpPrice
+                    : 0
+                ),
+                label: 'Farm Position',
+              },
+              {
+                value: formatDollars(
+                  lpPriceCustom
+                    ? FixedPointMath.toNumber(
+                        lpToken.balance,
+                        lpToken.decimals
+                      ) * lpPriceCustom?.lpPrice
+                    : 0
+                ),
+                label: 'Pool Position',
+              },
+            ]}
             amount={formatDollars(
               lpPriceCustom
-                ? FixedPointMath.toNumber(lpToken.balance, lpToken.decimals) *
-                    lpPriceCustom?.lpPrice
-                : 0
-            )}
-          />
-          <PoolCardTrade
-            noBorder
-            description="Farm"
-            tooltipInfo="Farm"
-            amount={formatDollars(
-              lpPriceCustom
-                ? FixedPointMath.toNumber(stakedBalance, lpToken.decimals) *
-                    lpPriceCustom?.lpPrice
+                ? FixedPointMath.toNumber(
+                    lpToken.balance?.plus(stakedBalance),
+                    lpToken.decimals
+                  ) * lpPriceCustom?.lpPrice
                 : 0
             )}
           />
