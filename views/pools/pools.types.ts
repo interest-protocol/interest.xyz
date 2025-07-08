@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { IPool } from '@/interface';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
-import { ISwapSettings } from '../swap/swap.types';
+import { ISwapSettings } from '../swap/components/swap.types';
 import { FormFilterValue } from './pool-card/pool-card.types';
 
 export enum FilterTypeEnum {

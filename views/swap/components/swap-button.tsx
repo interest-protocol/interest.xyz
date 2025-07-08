@@ -17,8 +17,8 @@ import { useNetwork } from '@/lib/aptos-provider/network/network.hooks';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { ZERO_BIG_NUMBER } from '@/utils';
 
-import SuccessModal from '../components/success-modal';
-import SuccessModalTokenCard from '../components/success-modal/success-modal-token-card';
+import SuccessModal from '../../components/success-modal';
+import SuccessModalTokenCard from '../../components/success-modal/success-modal-token-card';
 import { logSwap } from './swap.utils';
 
 const SwapButton = () => {
