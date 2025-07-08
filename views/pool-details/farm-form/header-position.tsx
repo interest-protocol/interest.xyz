@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { FARMS_BY_LP } from '@/constants';
 import { useFarmAccount } from '@/hooks/use-farm-account';
 import { useLPCoinPrice } from '@/hooks/use-lp-coin-price';
 import { FixedPointMath } from '@/lib';
@@ -17,19 +18,20 @@ const HeaderPosition: FC = () => {
   const { coinsMap } = useCoins();
   const { pool, loading: poolLoading } = usePoolDetails();
 
-  const { data: lpPriceCustom, loading: lpLoading } = useLPCoinPrice(
-    pool?.poolAddress
-  );
+  const poolAddress = pool?.poolAddress;
+
+  const { data: lpPriceCustom, loading: lpLoading } =
+    useLPCoinPrice(poolAddress);
   const { getValues } = useFormContext<IPoolForm>();
 
-  const farmAccount = useFarmAccount(getValues('lpCoin.type'));
+  const { data: farmAccount } = useFarmAccount(poolAddress!);
 
   const lpPrice = lpPriceCustom?.lpPrice || 0;
 
   const lpToken = coinsMap[getValues('lpCoin.type')] ?? ZERO_BIG_NUMBER;
 
-  const stakedBalance = farmAccount.data?.amount
-    ? BigNumber(String(farmAccount.data.amount))
+  const stakedBalance = farmAccount?.amount
+    ? BigNumber(String(farmAccount.amount))
     : ZERO_BIG_NUMBER;
 
   const loading = lpLoading || poolLoading;
@@ -50,20 +52,22 @@ const HeaderPosition: FC = () => {
             : '0.00'
         }
       />
-      <HeaderInfoLine
-        isLoading={loading}
-        title="Farm"
-        value={
-          lpPriceCustom && pool
-            ? formatDollars(
-                FixedPointMath.toNumber(
-                  stakedBalance,
-                  pool.poolMetadata?.decimals
-                ) * lpPrice
-              )
-            : '10.00'
-        }
-      />
+      {poolAddress && FARMS_BY_LP[poolAddress] && (
+        <HeaderInfoLine
+          isLoading={loading}
+          title="Farm"
+          value={
+            lpPriceCustom && pool
+              ? formatDollars(
+                  FixedPointMath.toNumber(
+                    stakedBalance,
+                    pool.poolMetadata?.decimals
+                  ) * lpPrice
+                )
+              : '0.00'
+          }
+        />
+      )}
     </Box>
   );
 };
