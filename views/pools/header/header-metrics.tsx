@@ -3,10 +3,13 @@ import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { useMetrics } from '@/hooks';
+import { formatDollars } from '@/utils';
 
 import { IPoolForm } from '../pools.types';
 import { PoolHeaderIconEnum } from './header.types';
 import HeaderInfoCard from './header-info-card';
+import HeaderInfoLine from './header-info-line';
+import RewardLine from './reward-line';
 
 const HeaderMetrics: FC = () => {
   const { data: metrics, isLoading } = useMetrics();
@@ -46,45 +49,58 @@ const HeaderMetrics: FC = () => {
     );
 
   return (
-    <Box
-      width="100%"
-      mb="m"
-      display="grid"
-      gridTemplateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr 1fr 1fr']}
-      gap="m"
-    >
-      <HeaderInfoCard
-        title="TVL"
-        isLoading={isLoading}
-        value={metrics?.summary?.tvl || '0'}
-        type={PoolHeaderIconEnum.tvl}
-      />
-      <HeaderInfoCard
-        isLoading={isLoading}
-        title="Cumulative Volume"
-        type={PoolHeaderIconEnum.volume}
-        value={metrics?.summary?.volume || '0'}
-      />
-      <HeaderInfoCard
-        isLoading={isLoading}
-        title="Trading Volume (24H)"
-        type={PoolHeaderIconEnum.volume}
-        value={metrics?.summary?.volume1D || '0'}
-      />
-      <HeaderInfoCard
-        title="User Position"
-        isLoading={!positionList || positionList.length > 1}
-        value={
-          positionList
-            ? `${Object.values(positionList).reduce(
-                (totalAmount: number, amount: number) => totalAmount + amount,
-                0
-              )}`
-            : '0'
-        }
-        type={PoolHeaderIconEnum.tvl}
-      />
-    </Box>
+    <>
+      <Box
+        width="100%"
+        mb="m"
+        display="grid"
+        gridTemplateColumns={['1fr', '1fr', '1fr 1fr 1fr', '1fr 1fr 1fr']}
+        gap="m"
+      >
+        <HeaderInfoCard
+          title="TVL"
+          isLoading={isLoading}
+          value={metrics?.summary?.tvl || '0'}
+          type={PoolHeaderIconEnum.tvl}
+        />
+        <HeaderInfoCard
+          isLoading={isLoading}
+          title="Cumulative Volume"
+          type={PoolHeaderIconEnum.volume}
+          value={metrics?.summary?.volume || '0'}
+        />
+        <HeaderInfoCard
+          isLoading={isLoading}
+          title="Trading Volume (24H)"
+          type={PoolHeaderIconEnum.volume}
+          value={metrics?.summary?.volume1D || '0'}
+        />
+      </Box>
+      <Box
+        mb="m"
+        gap="m"
+        width="100%"
+        display="grid"
+        gridTemplateColumns={['1fr', '1fr', '1fr', '1fr 1fr']}
+      >
+        <HeaderInfoLine
+          title="User Position"
+          isLoading={!positionList}
+          value={
+            positionList
+              ? `${formatDollars(
+                  Object.values(positionList).reduce(
+                    (totalAmount: number, amount: number) =>
+                      totalAmount + amount,
+                    0
+                  )
+                )}`
+              : '0'
+          }
+        />
+        <RewardLine />
+      </Box>
+    </>
   );
 };
 
