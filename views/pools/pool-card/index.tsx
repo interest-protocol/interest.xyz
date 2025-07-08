@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
 
 import { FARMS_BY_LP, Routes, RoutesEnum } from '@/constants';
 import { useFarmAccount } from '@/hooks/use-farm-account';
-import { useLPCoinsPrice } from '@/hooks/use-lp-coin-price';
+import { useLPCoinPrice } from '@/hooks/use-lp-coin-price';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
@@ -31,7 +31,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const { coinsMap } = useCoins();
   const isFarm = !!FARMS_BY_LP[pool.poolAddress];
 
-  const { data: lpPriceCustom, loading: lpLoading } = useLPCoinsPrice(
+  const { data: lpPriceCustom, loading: lpLoading } = useLPCoinPrice(
     pool?.poolAddress
   );
   const [filteredTokens, setFilteredTokens] = useState<

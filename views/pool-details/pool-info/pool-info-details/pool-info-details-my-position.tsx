@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { v4 } from 'uuid';
 
 import { useFarmAccount } from '@/hooks/use-farm-account';
-import { useLPCoinsPrice } from '@/hooks/use-lp-coin-price';
+import { useLPCoinPrice } from '@/hooks/use-lp-coin-price';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { formatDollars, ZERO_BIG_NUMBER } from '@/utils';
@@ -18,7 +18,7 @@ import PoolInfoLoading from '../pool-info-loading';
 const PoolInfoDetailsMyPosition: FC = () => {
   const { coinsMap } = useCoins();
   const { pool, loading } = usePoolDetails();
-  const { data: lpPriceCustom, loading: lpLoading } = useLPCoinsPrice(
+  const { data: lpPriceCustom, loading: lpLoading } = useLPCoinPrice(
     pool?.poolAddress
   );
   const { getValues } = useFormContext<IPoolForm>();
