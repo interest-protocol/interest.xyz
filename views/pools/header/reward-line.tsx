@@ -1,4 +1,3 @@
-import { FARMS } from '@interest-protocol/interest-aptos-curve';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
@@ -38,18 +37,16 @@ const RewardLine: FC = () => {
       invariant(farm.data, 'Fail to get farms');
 
       setValue('error', '');
-      const { rewards } = Object.values(FARMS_BY_LP).reduce<{
-        rewards: `0x${string}`[];
-      }>(
-        (acc, item) => {
-          acc.rewards.push(...item.rewards);
-          return acc;
-        },
-        { rewards: [] }
-      );
+      const farmList = farm.data
+        .filter((item) => item.rewards.toString() !== '0')
+        .map((item) => item.farm);
+
+      const rewards = Object.values(FARMS_BY_LP)
+        .filter((farm) => farmList.includes(farm.address.toString()))
+        .map((farm) => farm.rewards.toString());
 
       const payload = dexCurve.harvestAll({
-        farms: FARMS.map((farm) => farm.address.toString()),
+        farms: farmList,
         rewardFas: rewards,
         recipient: account.address,
       });
