@@ -92,13 +92,13 @@ const SwapSettings: FC = () => {
             fontSize="medium"
             placeholder="0.5"
             nPlaceholder={{ opacity: 0.7 }}
-            {...formTmpSettings.register('slippageTolerance', {
-              valueAsNumber: true,
-            })}
+            {...formTmpSettings.register('slippageTolerance')}
             fieldProps={{
               width: '6rem',
               height: '2.75rem',
               borderRadius: 'xs',
+              background: '#202123',
+              color: '#FFFFFF',
             }}
           />
         </Box>
@@ -119,7 +119,7 @@ const SwapSettings: FC = () => {
             Transaction deadline
           </Typography>
           <TextField
-            type="text"
+            type="number"
             Suffix="mins"
             placeholder="10"
             fontSize="medium"
@@ -128,10 +128,10 @@ const SwapSettings: FC = () => {
               width: '6rem',
               height: '2.75rem',
               borderRadius: 'xs',
+              background: '#202123',
+              color: '#FFFFFF',
             }}
-            {...formTmpSettings.register('transactionDeadline', {
-              valueAsNumber: true,
-            })}
+            {...formTmpSettings.register('transactionDeadline')}
           />
         </Box>
         <Box
