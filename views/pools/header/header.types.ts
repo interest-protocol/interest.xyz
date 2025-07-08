@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import { PoolTabEnum } from '../pools.types';
 
@@ -15,6 +15,7 @@ export interface HeaderProps {
 export interface HeaderInfoCardProps {
   title: string;
   value: string;
+  Button?: ReactNode;
   isLoading?: boolean;
   type: PoolHeaderIconEnum;
 }
