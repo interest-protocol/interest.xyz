@@ -3,8 +3,11 @@ import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { SwapSVG } from '@/components/svg';
+import ArrowNarrowDown from '@/components/svg/arrow-narrow-down';
 
-const SwapFlipToken: FC = () => {
+import { SwapFlipTokenProps } from './swap-flip-token.types';
+
+const SwapFlipToken: FC<SwapFlipTokenProps> = ({ type }) => {
   const form = useFormContext();
 
   const { setValue, control } = form;
@@ -27,17 +30,20 @@ const SwapFlipToken: FC = () => {
       isIcon
       p="xs"
       variant="text"
-      bg="container"
-      width="1.5rem"
-      height="1.5rem"
+      bg="#030712"
+      width="2rem"
+      height="2rem"
       color="onSurface"
-      borderRadius="full"
+      borderRadius="0.75rem"
       onClick={flipToken}
-      border="5px solid #131316"
       nHover={{ bg: 'lowContainer' }}
       disabled={(!to && !from) || swapping}
     >
-      <SwapSVG maxWidth="1.25rem" maxHeight="1.25rem" width="100%" />
+      {type == 'swap' ? (
+        <ArrowNarrowDown maxWidth="1.25rem" maxHeight="1.25rem" width="100%" />
+      ) : (
+        <SwapSVG maxWidth="1.25rem" maxHeight="1.25rem" width="100%" />
+      )}
     </Button>
   );
 };

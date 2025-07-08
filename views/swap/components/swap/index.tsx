@@ -2,7 +2,6 @@ import { Box } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
 import Input from '../input';
-import SwapFormFieldSlider from '../input/swap-manager-slider';
 import ToInput from '../input/to-input';
 import SwapButton from '../swap-button';
 import SwapFlipToken from '../swap-flip-token';
@@ -15,12 +14,11 @@ const Swap: FC = () => (
         py="l"
         px="xl"
         display="flex"
-        bg="container"
+        bg="#9CA3AF1A"
         borderRadius="s"
         flexDirection="column"
       >
         <Input label="from" />
-        <SwapFormFieldSlider />
       </Box>
       <Box
         my="-1.4rem"
@@ -28,13 +26,13 @@ const Swap: FC = () => (
         alignItems="center"
         justifyContent="center"
       >
-        <SwapFlipToken />
+        <SwapFlipToken type="swap" />
       </Box>
       <Box
         py="s"
         px="xl"
         display="flex"
-        bg="container"
+        bg="#9CA3AF1A"
         borderRadius="s"
         flexDirection="column"
       >
