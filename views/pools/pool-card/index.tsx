@@ -1,4 +1,4 @@
-import { Box, Typography } from '@interest-protocol/ui-kit';
+import { Box } from '@interest-protocol/ui-kit';
 import BigNumber from 'bignumber.js';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
@@ -127,15 +127,6 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
           ])}
         />
         <PoolCardInfo key={v4()} coins={metadata ?? []} />
-        <Typography
-          size="medium"
-          variant="body"
-          color="onSurface"
-          textTransform="capitalize"
-          display="flex"
-        >
-          Stats
-        </Typography>
         <Box px="m" py="xs" bg="surface" borderRadius="1rem">
           <PoolCardTrade
             noBorder
