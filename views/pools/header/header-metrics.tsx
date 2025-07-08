@@ -1,22 +1,15 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
 
 import { useMetrics } from '@/hooks';
-import { formatDollars } from '@/utils';
 
-import { IPoolForm } from '../pools.types';
 import { PoolHeaderIconEnum } from './header.types';
 import HeaderInfoCard from './header-info-card';
-import HeaderInfoLine from './header-info-line';
 import RewardLine from './reward-line';
+import UserPositionLine from './user-position';
 
 const HeaderMetrics: FC = () => {
   const { data: metrics, isLoading } = useMetrics();
-
-  const { control } = useFormContext<IPoolForm>();
-
-  const positionList = useWatch({ control, name: 'positionList' });
 
   if (!isLoading && !metrics?.data)
     return (
@@ -83,21 +76,7 @@ const HeaderMetrics: FC = () => {
         display="grid"
         gridTemplateColumns={['1fr', '1fr', '1fr', '1fr 1fr']}
       >
-        <HeaderInfoLine
-          title="User Position"
-          isLoading={!positionList}
-          value={
-            positionList
-              ? `${formatDollars(
-                  Object.values(positionList).reduce(
-                    (totalAmount: number, amount: number) =>
-                      totalAmount + amount,
-                    0
-                  )
-                )}`
-              : '0'
-          }
-        />
+        <UserPositionLine />
         <RewardLine />
       </Box>
     </>
