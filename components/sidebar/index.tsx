@@ -21,7 +21,10 @@ const Sidebar: FC<ISidebarProps> = ({ onClose }) => {
       minHeight="100vh"
       flexDirection="column"
       backdropFilter="blur(10px)"
-      transition={{ duration: 0.3 }}
+      exit={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.4, ease: 'easeInOut' }}
     >
       <Box
         display="flex"

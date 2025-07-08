@@ -43,7 +43,7 @@ const SidebarList: FC<ISidebarListProps> = ({ items }) => {
                 >
                   {label}
                 </Typography>
-                <ExternalLink maxWidth="16" maxHeight="16" />
+                <ExternalLink maxWidth="1rem" maxHeight="1rem" width="100%" />
               </Box>
             </Link>
           ) : (

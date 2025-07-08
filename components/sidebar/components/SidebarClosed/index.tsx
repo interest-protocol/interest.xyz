@@ -16,14 +16,14 @@ const SidebarClosed: FC<ISidebarClosedProps> = ({ onClose, setIsHovered }) => {
         bg: '#12131380',
         borderRadius: '0 0.75rem 0.75rem 0',
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <CaretLeft
         maxWidth="20"
         maxHeight="20"
         cursor="pointer"
         onClick={onClose}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       />
     </Box>
   );
