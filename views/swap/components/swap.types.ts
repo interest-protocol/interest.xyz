@@ -5,6 +5,7 @@ import { SVGProps } from '@/components/svg/svg.types';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 export interface ISwapSettings {
+  slippage: string;
   slippageTolerance: string;
   transactionDeadline: string;
   infiniteApproval: boolean;
