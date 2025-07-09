@@ -197,7 +197,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
                         lpPriceCustom?.lpPrice
                     : 0
                 ),
-                label: 'Farm Position',
+                label: 'Farm',
               },
               {
                 value: formatDollars(
@@ -208,7 +208,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
                       ) * lpPriceCustom?.lpPrice
                     : 0
                 ),
-                label: 'Pool Position',
+                label: 'Wallet',
               },
             ]}
             amount={formatDollars(
