@@ -43,7 +43,9 @@ const SwapBackground = memo(() => {
   };
 
   const { leftCoins, rightCoins } = useMemo(() => {
-    const shuffledCoins = Array.from(TOKENS).sort(() => Math.random() - 0.5);
+    const shuffledCoins = Array.from(TOKENS)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 6);
     const half = Math.ceil(shuffledCoins.length / 2);
     const leftCoins = shuffledCoins.slice(0, half);
     const rightCoins = shuffledCoins.slice(half);
