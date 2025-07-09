@@ -16,6 +16,7 @@ export const useLPCoinPrice = (poolAddress?: string) => {
         })
         .catch()
   );
+
   const loading = !poolAddress || isLoading;
 
   return {
