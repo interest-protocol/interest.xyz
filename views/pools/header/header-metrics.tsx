@@ -1,19 +1,15 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
 
 import { useMetrics } from '@/hooks';
 
-import { IPoolForm } from '../pools.types';
 import { PoolHeaderIconEnum } from './header.types';
 import HeaderInfoCard from './header-info-card';
+import RewardLine from './reward-line';
+import UserPositionLine from './user-position';
 
 const HeaderMetrics: FC = () => {
   const { data: metrics, isLoading } = useMetrics();
-
-  const { control } = useFormContext<IPoolForm>();
-
-  const positionList = useWatch({ control, name: 'positionList' });
 
   if (!isLoading && !metrics?.data)
     return (
@@ -46,45 +42,44 @@ const HeaderMetrics: FC = () => {
     );
 
   return (
-    <Box
-      width="100%"
-      mb="m"
-      display="grid"
-      gridTemplateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr 1fr 1fr']}
-      gap="m"
-    >
-      <HeaderInfoCard
-        title="TVL"
-        isLoading={isLoading}
-        value={metrics?.summary?.tvl || '0'}
-        type={PoolHeaderIconEnum.tvl}
-      />
-      <HeaderInfoCard
-        isLoading={isLoading}
-        title="Cumulative Volume"
-        type={PoolHeaderIconEnum.volume}
-        value={metrics?.summary?.volume || '0'}
-      />
-      <HeaderInfoCard
-        isLoading={isLoading}
-        title="Trading Volume (24H)"
-        type={PoolHeaderIconEnum.volume}
-        value={metrics?.summary?.volume1D || '0'}
-      />
-      <HeaderInfoCard
-        title="Total Position"
-        isLoading={!positionList}
-        value={
-          positionList
-            ? `${Object.values(positionList).reduce(
-                (totalAmount: number, amount: number) => totalAmount + amount,
-                0
-              )}`
-            : '0'
-        }
-        type={PoolHeaderIconEnum.tvl}
-      />
-    </Box>
+    <>
+      <Box
+        width="100%"
+        mb="m"
+        display="grid"
+        gridTemplateColumns={['1fr', '1fr', '1fr 1fr 1fr', '1fr 1fr 1fr']}
+        gap="m"
+      >
+        <HeaderInfoCard
+          title="TVL"
+          isLoading={isLoading}
+          value={metrics?.summary?.tvl || '0'}
+          type={PoolHeaderIconEnum.tvl}
+        />
+        <HeaderInfoCard
+          isLoading={isLoading}
+          title="Cumulative Volume"
+          type={PoolHeaderIconEnum.volume}
+          value={metrics?.summary?.volume || '0'}
+        />
+        <HeaderInfoCard
+          isLoading={isLoading}
+          title="Trading Volume (24H)"
+          type={PoolHeaderIconEnum.volume}
+          value={metrics?.summary?.volume1D || '0'}
+        />
+      </Box>
+      <Box
+        mb="m"
+        gap="m"
+        width="100%"
+        display="grid"
+        gridTemplateColumns={['1fr', '1fr', '1fr', '1fr 1fr']}
+      >
+        <UserPositionLine />
+        <RewardLine />
+      </Box>
+    </>
   );
 };
 

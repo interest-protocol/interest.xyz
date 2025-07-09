@@ -42,24 +42,22 @@ const PoolCardInfo: FC<PoolCardTokenInfoProps> = ({ coins }) => {
         ))}
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center">
-        {
-          <Typography
-            gap="xs"
-            size="small"
-            variant="body"
-            display="flex"
-            fontSize="1rem"
-            fontWeight="700"
-            color="onSurface"
-            textAlign="center"
-            lineHeight="1.7rem"
-          >
-            {coins.flatMap((coin, index) => [
-              index ? <>{' • '}</> : '',
-              coin.symbol || <Skeleton key={v4()} width="4rem" />,
-            ])}
-          </Typography>
-        }
+        <Typography
+          gap="xs"
+          size="small"
+          variant="body"
+          display="flex"
+          fontSize="1rem"
+          fontWeight="700"
+          color="onSurface"
+          textAlign="center"
+          lineHeight="1.7rem"
+        >
+          {coins.flatMap((coin, index) => [
+            <Box key={v4()}>{index ? ' • ' : ''}</Box>,
+            coin.symbol || <Skeleton key={v4()} width="4rem" />,
+          ])}
+        </Typography>
       </Box>
     </Box>
   );
