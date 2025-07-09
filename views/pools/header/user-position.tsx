@@ -37,11 +37,6 @@ const UserPositionLine: FC = () => {
 
   const data = [...stakedAmounts, ...lpCoinsBalance];
 
-  console.log({
-    lpsPriceMap,
-    metadata: data.map(([token]) => coinsMap[token]),
-  });
-
   const usdUserPosition = lpsPriceMap
     ? data.reduce(
         (acc, [lpToken, balance]) =>
