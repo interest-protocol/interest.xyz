@@ -7,7 +7,7 @@ import useSWR from 'swr';
 import { v4 } from 'uuid';
 
 import { FARMS_BY_LP, Routes, RoutesEnum } from '@/constants';
-import { useFarmAccount } from '@/hooks/use-farm-account';
+import { useGetAccountFarmsData } from '@/hooks/use-get-account-farms-data';
 import { useLPCoinPrice } from '@/hooks/use-lp-coin-price';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
@@ -37,15 +37,19 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   const [filteredTokens, setFilteredTokens] = useState<
     Array<AssetMetadata> | undefined
   >([]);
-  const farmAccount = useFarmAccount(pool.poolAddress);
+  const { data: accountFarms } = useGetAccountFarmsData();
   const { control, getValues, setValue } = useFormContext<IPoolForm>();
 
   const search = useWatch({ control, name: 'search' });
 
   const lpToken = coinsMap[pool.poolAddress] ?? ZERO_BIG_NUMBER;
 
-  const stakedBalance = farmAccount.data?.amount
-    ? BigNumber(String(farmAccount.data.amount))
+  const farmId = FARMS_BY_LP[pool.poolAddress]?.address.toString();
+
+  const farm = accountFarms?.find(({ farm }) => farm === farmId);
+
+  const stakedBalance = farm?.amount
+    ? BigNumber(String(farm.amount))
     : ZERO_BIG_NUMBER;
 
   const { data: metadata, isLoading } = useSWR(
@@ -72,7 +76,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
   }, [metadata, search]);
 
   useEffect(() => {
-    if (!(isLoading || !lpPriceCustom || lpLoading || !farmAccount)) {
+    if (!(isLoading || !lpPriceCustom || lpLoading || !farm)) {
       const positionList = getValues('positionList') || {};
       const tmpWalletPosition = lpPriceCustom
         ? FixedPointMath.toNumber(lpToken.balance, lpToken.decimals) *
@@ -87,7 +91,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
         [pool.poolAddress]: tmpWalletPosition + tmpFarmPosition,
       });
     }
-  }, [isLoading, lpPriceCustom, lpLoading, farmAccount]);
+  }, [isLoading, lpPriceCustom, lpLoading, accountFarms]);
 
   if (isLoading) return <PoolCardSkeleton />;
 
