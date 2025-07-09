@@ -35,13 +35,21 @@ const UserPositionLine: FC = () => {
         : []
   );
 
+  const data = [...stakedAmounts, ...lpCoinsBalance];
+
+  console.log({
+    lpsPriceMap,
+    metadata: data.map(([token]) => coinsMap[token]),
+  });
+
   const usdUserPosition = lpsPriceMap
-    ? [...stakedAmounts, ...lpCoinsBalance].reduce(
+    ? data.reduce(
         (acc, [lpToken, balance]) =>
-          acc + coinsMap?.[lpToken]?.decimals
+          acc +
+          (coinsMap?.[lpToken]?.decimals
             ? FixedPointMath.toNumber(balance, coinsMap[lpToken].decimals) *
               lpsPriceMap[lpToken].lpPrice
-            : 0,
+            : 0),
         0
       )
     : 0;
