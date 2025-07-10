@@ -37,7 +37,15 @@ const HeaderPosition: FC = () => {
   const loading = lpLoading || poolLoading;
 
   return (
-    <Box mb="m" gap="m" width="100%" mx="auto" maxWidth="65rem" display="flex">
+    <Box
+      mb="m"
+      gap="m"
+      width="100%"
+      mx="auto"
+      maxWidth="65rem"
+      display="grid"
+      gridTemplateColumns={['1fr', '1fr', '1fr 1fr', '1fr 1fr']}
+    >
       <HeaderInfoLine
         isLoading={loading}
         title="Wallet"
