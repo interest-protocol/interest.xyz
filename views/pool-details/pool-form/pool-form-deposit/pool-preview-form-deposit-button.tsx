@@ -52,8 +52,8 @@ const PoolPreviewFormDepositButton: FC = () => {
 
   const disabled =
     !!error || pool?.algorithm === 'v2'
-      ? !firsTokenValue || !secondTokenValue
-      : !lpTokenValue;
+      ? !Number(firsTokenValue) || !Number(secondTokenValue)
+      : !Number(lpTokenValue);
 
   return (
     <Button
