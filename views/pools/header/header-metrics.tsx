@@ -64,7 +64,7 @@ const HeaderMetrics: FC = () => {
         />
         <HeaderInfoCard
           isLoading={isLoading}
-          title="Trading Volume (24H)"
+          title="Volume (24H)"
           type={PoolHeaderIconEnum.volume}
           value={metrics?.summary?.volume1D || '0'}
         />
