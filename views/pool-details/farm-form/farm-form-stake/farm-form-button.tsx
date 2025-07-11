@@ -105,7 +105,7 @@ const FarmFormButton: FC<FarmFormButtonProps> = ({
       }),
       success: () => ({
         title: `${state ? 'Unstake' : 'Stake'} Successful`,
-        message: `Your LP tokens have been successfully ${state ? 'unstaked' : 'staked'}. ${!state ? '' : 'You’re now earning rewards!'}`,
+        message: `Your LP tokens have been successfully ${state ? 'unstaked' : 'staked'}. ${state ? '' : 'You’re now earning rewards!'}`,
         primaryButton: {
           label: 'See on Explorer',
           onClick: gotoExplorer,
