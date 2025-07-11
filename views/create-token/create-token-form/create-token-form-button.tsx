@@ -124,9 +124,9 @@ const CreateTokenFormButton = () => {
   const onSubmit = () =>
     dialog.promise(handleCreateToken(), {
       loading: () => ({
-        title: 'Creating Token...',
+        title: 'Token Creation in Progress',
         message:
-          'We are creating the token, and you will let you know when it is done',
+          'Your token is being created. This may take a few moments to complete.',
       }),
       error: (error) => ({
         title: 'Creation Failure',
@@ -139,7 +139,7 @@ const CreateTokenFormButton = () => {
         },
       }),
       success: () => ({
-        title: 'Token Created!',
+        title: 'Token Created Successfully',
         message: (
           <SuccessModal
             transactionTime={`${(

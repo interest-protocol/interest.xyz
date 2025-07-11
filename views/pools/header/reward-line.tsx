@@ -102,7 +102,7 @@ const RewardLine: FC = () => {
           'We are Withdrawing your rewards, and you will let you know when it is done',
       }),
       success: () => ({
-        title: `Withdrawing Successfully`,
+        title: `Withdrawing Successful`,
         message: `Your Rewards Withdraw was successfully, and you can check it on the Explorer`,
         primaryButton: {
           label: 'See on Explorer',
