@@ -101,12 +101,11 @@ const FarmFormButton: FC<FarmFormButtonProps> = ({
     dialog.promise(handleFarm(), {
       loading: () => ({
         title: state ? 'Unstaking...' : 'Staking...',
-        message:
-          'We are Withdrawing, and you will let you know when it is done',
+        message: `Your LP tokens are being ${state ? 'unstaked' : 'staked'}. This may take a few moments.`,
       }),
       success: () => ({
-        title: `${state ? 'Unstake' : 'Stake'} Successfully`,
-        message: `Your ${state ? 'Unstake' : 'Stake'} was successfully, and you can check it on the Explorer`,
+        title: `${state ? 'Unstake' : 'Stake'} Successful`,
+        message: `Your LP tokens have been successfully ${state ? 'unstaked' : 'staked'}. ${state ? '' : 'You’re now earning rewards!'}`,
         primaryButton: {
           label: 'See on Explorer',
           onClick: gotoExplorer,

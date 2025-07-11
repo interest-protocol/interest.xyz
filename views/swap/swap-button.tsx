@@ -98,7 +98,8 @@ const SwapButton = () => {
     dialog.promise(handleSwap(), {
       loading: () => ({
         title: 'Swapping...',
-        message: 'We are swapping, and you will let you know when it is done',
+        message:
+          'Your transaction is being processed. This may take a few moments.',
       }),
       error: (error) => ({
         title: 'Swap Failure',

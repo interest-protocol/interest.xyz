@@ -121,12 +121,11 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
       loading: () => ({
         title: 'Withdrawing...',
         message:
-          'We are Withdrawing, and you will let you know when it is done',
+          'Your withdrawal is being processed. This may take a few moments.',
       }),
       success: () => ({
-        title: 'Withdraw Successfully',
-        message:
-          'Your withdraw was successfully, and you can check it on the Explorer',
+        title: 'Withdraw Successful',
+        message: 'Your funds have been successfully withdrawn.',
         primaryButton: {
           label: 'See on Explorer',
           onClick: gotoExplorer,

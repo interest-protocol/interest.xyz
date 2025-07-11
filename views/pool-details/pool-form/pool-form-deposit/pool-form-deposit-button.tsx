@@ -115,13 +115,14 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
     dialog.promise(handleDeposit(), {
       loading: () => ({
         title: 'Depositing...',
-        message: 'We are Depositing, and you will let you know when it is done',
+        message:
+          'Your deposit is being confirmed. This may take a few moments.',
       }),
       success: () => ({
-        title: 'Deposit Successfully',
+        title: 'Deposit Successful',
         message:
           getValues('error') ||
-          'Your deposit was successfully, and you can check it on the Explorer',
+          'Your funds have been deposited. You can now continue using the platform.',
         primaryButton: {
           label: 'See on Explorer',
           onClick: gotoExplorer,
