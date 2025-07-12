@@ -1,14 +1,6 @@
 import { Box, Theme, Typography, useTheme } from '@interest-protocol/ui-kit';
 import stylin from '@stylin.js/react';
-import {
-  ChangeEvent,
-  FC,
-  forwardRef,
-  PropsWithRef,
-  RefAttributes,
-  useId,
-  useState,
-} from 'react';
+import { FC, forwardRef, PropsWithRef, RefAttributes, useId } from 'react';
 
 import { TokenFieldElementProps, TokenFieldProps } from './token-field.types';
 
@@ -36,12 +28,6 @@ export const TokenField: FC<PropsWithRef<TokenFieldProps>> = forwardRef(
   ) => {
     const id = useId();
     const { colors } = useTheme() as Theme;
-    const [value, setValue] = useState<string>();
-
-    const changeValue = (input: string) => setValue(input);
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
-      changeValue(e.target.value);
 
     return (
       <Box
@@ -92,8 +78,6 @@ export const TokenField: FC<PropsWithRef<TokenFieldProps>> = forwardRef(
               lineHeight="l"
               fontWeight="500"
               color={colors.onSurface}
-              onChange={handleChange}
-              defaultValue={value || props.defaultValue}
               {...props}
             />
             {Bottom}
