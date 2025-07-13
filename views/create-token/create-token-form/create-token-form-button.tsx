@@ -166,16 +166,43 @@ const CreateTokenFormButton = () => {
     });
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box
+      gap="1.5rem"
+      display="flex"
+      flexShrink={0}
+      alignItems="center"
+      justifyContent="space-between"
+    >
       <Button
-        py="m"
-        flex="1"
+        py="1rem"
+        width="47%"
+        bg="#9CA3AF1A"
+        fontSize="1rem"
         variant="filled"
+        fontWeight="500"
         onClick={onSubmit}
+        fontFamily="Inter"
+        borderRadius="0.75rem"
         justifyContent="center"
         disabled={!ableToMerge}
       >
-        Create coin
+        Back
+      </Button>
+
+      <Button
+        py="1rem"
+        width="47%"
+        bg="#B4C5FF"
+        fontSize="1rem"
+        variant="filled"
+        fontWeight="500"
+        onClick={onSubmit}
+        fontFamily="Inter"
+        borderRadius="0.75rem"
+        justifyContent="center"
+        disabled={!ableToMerge}
+      >
+        Create Token
       </Button>
     </Box>
   );

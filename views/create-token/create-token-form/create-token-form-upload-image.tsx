@@ -67,11 +67,14 @@ const CreateTokenFormImage: FC<CreateTokenFormImageProps> = ({ setValue }) => {
     <Box
       p="l"
       gap="m"
-      bg="surface"
       display="flex"
+      bg="#9CA3AF1A"
+      width="19.5rem"
       borderRadius="xs"
       borderWidth="1px"
       alignItems="center"
+      height="4.59375rem"
+      border="1px solid #F3F4F61A"
       onDrop={handleDropFile}
       onDragEnter={() => setDragging(true)}
       onDragLeave={() => setDragging(false)}
@@ -90,17 +93,23 @@ const CreateTokenFormImage: FC<CreateTokenFormImageProps> = ({ setValue }) => {
       >
         <FolderSVG maxWidth="1.4rem" maxHeight="1.4rem" width="100%" />
       </Box>
-      <Typography size="large" variant="label">
+      <Typography
+        fontFamily="Inter"
+        size="medium"
+        variant="label"
+        color="#FFFFFF"
+      >
         Drop your file here or{' '}
         <Typography
           as="label"
-          size="large"
+          size="medium"
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           htmlFor="file"
           variant="label"
           color="primary"
           cursor="pointer"
+          fontFamily="Inter"
           textDecoration="underline"
         >
           upload
