@@ -10,18 +10,18 @@ const CreateToken: FC = () => (
     <Box width="100%" display="flex" alignItems="center" flexDirection="column">
       <Box
         display="flex"
-        minWidth="45.3rem"
-        height="37.59375rem"
+        width="100%"
+        maxWidth="45.3rem"
         flexDirection="column"
       >
         <Typography
+          mb="1.5rem"
           size="large"
           variant="title"
           color="#FFFFFF"
           fontWeight="600"
-          fontSize="1.75rem"
           fontFamily="Inter"
-          mb="1.5rem"
+          fontSize={['1.125rem', '1.75rem']}
         >
           Create Token
         </Typography>

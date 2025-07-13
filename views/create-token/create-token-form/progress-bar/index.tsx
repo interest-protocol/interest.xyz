@@ -7,11 +7,11 @@ const ProgressBar: FC<ProgressBarProps> = ({ currentStep, totalSteps }) => {
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <Box width="100%" bg="#9CA3AF1A" height="0.375rem" borderRadius="full">
+    <Box width="100%" bg="#9CA3AF1A" height="0.375rem" borderRadius="9999px">
       <Box
         height="100%"
         bg="primary"
-        borderRadius="full"
+        borderRadius="9999px"
         width={`${progress}%`}
         transition="width 0.3s ease"
         style={{

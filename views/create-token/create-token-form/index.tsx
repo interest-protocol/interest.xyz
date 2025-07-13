@@ -1,23 +1,15 @@
 import { Box } from '@interest-protocol/ui-kit';
 import { FC, useState } from 'react';
 
-import StepOne from './create-token-form-pool/step-one';
-import StepTwo from './create-token-form-pool/step-two';
 import ProgressBar from './progress-bar';
+import StepOne from './step-one';
+import StepTwo from './step-two';
 
 const CreateTokenForm: FC = () => {
-  const [step] = useState(2);
+  const [step, setStep] = useState(1);
 
-  const steps = () => {
-    switch (step) {
-      case 1:
-        return <StepOne />;
-      case 2:
-        return <StepTwo />;
-      default:
-        return null;
-    }
-  };
+  const handleNext = () => setStep((prev) => Math.min(prev + 1, 2));
+  const handleBack = () => setStep((prev) => Math.max(prev - 1, 1));
 
   return (
     <Box
@@ -31,7 +23,11 @@ const CreateTokenForm: FC = () => {
     >
       <ProgressBar currentStep={step} totalSteps={2} />
       <Box p="1.5rem" gap="1rem" display="flex" flexDirection="column">
-        {steps()}
+        {step === 1 ? (
+          <StepOne onNext={handleNext} />
+        ) : (
+          <StepTwo onBack={handleBack} />
+        )}
       </Box>
     </Box>
   );
