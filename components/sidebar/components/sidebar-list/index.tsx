@@ -18,8 +18,8 @@ const SidebarList: FC<ISidebarListProps> = ({ items }) => {
       {normalizeItems.map(({ label, href, isExternal }) => (
         <Box
           as="li"
-          mb="xs"
           key={label}
+          mb="0.75rem"
           borderRadius="s"
           cursor="pointer"
           nHover={{ bg: 'surfaceContainerHighest' }}
@@ -27,19 +27,21 @@ const SidebarList: FC<ISidebarListProps> = ({ items }) => {
           {isExternal ? (
             <Link href={href} rel="noreferrer" target="_blank">
               <Box
-                gap="4px"
+                gap="0.5rem"
                 display="flex"
+                color="#9CA3AF"
                 alignItems="center"
+                transition="0.3s"
                 textDecoration="none"
+                nHover={{ color: '#B4C5FF' }}
               >
                 <Typography
                   size="medium"
                   variant="body"
-                  color="#9CA3AF"
                   fontWeight="600"
                   fontSize="0.75rem"
                   fontFamily="Inter"
-                  nHover={{ color: '#B4C5FF' }}
+                  lineHeight="1.5rem"
                 >
                   {label}
                 </Typography>
@@ -56,6 +58,7 @@ const SidebarList: FC<ISidebarListProps> = ({ items }) => {
                   fontWeight="600"
                   fontSize="0.75rem"
                   fontFamily="Inter"
+                  lineHeight="1.5rem"
                   nHover={{ color: '#B4C5FF' }}
                 >
                   {label}

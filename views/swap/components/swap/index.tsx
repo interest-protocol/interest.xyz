@@ -6,17 +6,19 @@ import ToInput from '../input/to-input';
 import SwapButton from '../swap-button';
 import SwapFlipToken from '../swap-flip-token';
 import SwapManager from '../swap-manager';
+import AdditionalInfo from './additional-info';
 
 const Swap: FC = () => (
   <>
     <Box position="relative">
       <Box
-        py="l"
-        px="xl"
+        p="1rem"
+        gap="0.5rem"
         display="flex"
         bg="#9CA3AF1A"
-        borderRadius="s"
+        height="8.156rem"
         flexDirection="column"
+        borderRadius="0.75rem"
       >
         <Input label="from" />
       </Box>
@@ -29,16 +31,18 @@ const Swap: FC = () => (
         <SwapFlipToken type="swap" />
       </Box>
       <Box
-        py="s"
-        px="xl"
+        p="1rem"
+        gap="0.5rem"
         display="flex"
         bg="#9CA3AF1A"
-        borderRadius="s"
+        height="8.156rem"
         flexDirection="column"
+        borderRadius="0.75rem"
       >
         <ToInput />
       </Box>
       <SwapButton />
+      <AdditionalInfo />
     </Box>
     <SwapManager />
   </>

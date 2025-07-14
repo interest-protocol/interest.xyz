@@ -1,23 +1,29 @@
-import { Box, Typography } from '@interest-protocol/ui-kit';
+import { Button, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-export const MaxBadge: FC = () => (
-  <Box
+import { MaxBadgeProps } from './input.types';
+
+export const MaxBadge: FC<MaxBadgeProps> = ({ handleMax }) => (
+  <Button
     bg="#9CA3AF1A"
-    padding="2px 6px"
+    p="2px 6px"
     borderRadius="0.75rem"
     border="2px solid #9CA3AF1A"
+    color="outline"
+    variant="outline"
+    onClick={handleMax}
+    nHover={{ bg: 'unset', borderColor: 'primary' }}
   >
     <Typography
       size="small"
       variant="body"
-      fontSize="s"
+      fontSize="0.75rem"
       whiteSpace="nowrap"
       fontWeight="500"
       fontFamily="Inter"
-      lineHeight="1"
+      lineHeight="1rem"
     >
       Max
     </Typography>
-  </Box>
+  </Button>
 );

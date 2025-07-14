@@ -1,8 +1,8 @@
 import { Box, Motion } from '@interest-protocol/ui-kit';
 import { FC, useState } from 'react';
 
-import SidebarClosed from './components/SidebarClosed';
-import SidebarContent from './components/SidebarContent';
+import SidebarClosed from './components/sidebar-closed';
+import SidebarContent from './components/sidebar-content';
 import { ISidebarProps } from './sidebar.types';
 
 const Sidebar: FC<ISidebarProps> = ({ onClose }) => {
@@ -14,12 +14,13 @@ const Sidebar: FC<ISidebarProps> = ({ onClose }) => {
       top="0"
       left="0"
       width="100%"
-      p="1.875rem"
+      px="1.875rem"
       display="flex"
-      bg="#0000004D"
       position="fixed"
+      onClick={onClose}
       minHeight="100vh"
       flexDirection="column"
+      justifyContent="center"
       backdropFilter="blur(10px)"
       exit={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -30,7 +31,7 @@ const Sidebar: FC<ISidebarProps> = ({ onClose }) => {
         display="flex"
         flexDirection="row"
         width={['100%', '100%', '100%', '18rem']}
-        height={['92vh', '90vh', '90vh', '60rem']}
+        height="93vh"
       >
         <SidebarContent isHovered={isHovered} />
         <SidebarClosed onClose={onClose} setIsHovered={setIsHovered} />

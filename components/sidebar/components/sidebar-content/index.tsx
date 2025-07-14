@@ -15,22 +15,26 @@ const SidebarContent: FC<ISidebarContentProps> = ({ isHovered }) => {
     <Box
       p="1.5rem"
       bg="#121313"
-      height="100%"
+      display="flex"
       overflowY="auto"
       border="1px solid"
-      borderRadius={isHovered ? '0.75rem 0  0 0.75rem' : '0.75rem'}
+      onClick={(e) => e.stopPropagation()}
+      flexDirection="column"
       borderColor="outlineVariant"
+      justifyContent="space-between"
       width={['90%', '90%', '90%', '14.5rem']}
+      borderRadius={isHovered ? '0.75rem 0  0 0.75rem' : '0.75rem'}
     >
-      <Box mb="m">
-        <SidebarLogo maxWidth="40" maxHeight="40" />
+      <Box>
+        <Box mb="m">
+          <SidebarLogo maxWidth="40" maxHeight="40" />
+        </Box>
+
+        {SIDEBAR_SECTIONS.map((section) => (
+          <MenuSection key={section.title} section={section} />
+        ))}
       </Box>
-
-      {SIDEBAR_SECTIONS.map((section) => (
-        <MenuSection key={section.title} section={section} />
-      ))}
-
-      <Box mt={['2rem', '4rem', '6rem', '8rem']}>
+      <Box mb={['0.5rem', '0.5rem', '0.5rem', '7.25rem']}>
         <Typography
           mb="m"
           size="small"
@@ -39,11 +43,12 @@ const SidebarContent: FC<ISidebarContentProps> = ({ isHovered }) => {
           fontWeight="600"
           fontFamily="Inter"
           fontSize="0.75rem"
+          lineHeight="1.5rem"
         >
           Social
         </Typography>
 
-        <Box display="flex" gap="10.25px">
+        <Box display="flex" gap="1.5rem">
           {SOCIAL_LINK.map(({ title, pathname, Icon }) => (
             <Link
               key={v4()}
@@ -52,12 +57,18 @@ const SidebarContent: FC<ISidebarContentProps> = ({ isHovered }) => {
               rel="noreferrer"
               title={`Follow us on ${title}`}
             >
-              <Box width="1.348125rem" height="1.21875rem">
+              <Box
+                width="1.5rem"
+                height="1.5rem"
+                color="#9CA3AF"
+                transition="0.3s"
+                nHover={{ color: '#B4C5FF' }}
+              >
                 <Icon
-                  maxWidth="21.57"
-                  maxHeight="19.5"
-                  color="#9CA3AF"
+                  width="100%"
+                  maxWidth="100%"
                   cursor="pointer"
+                  maxHeight="100%%"
                 />
               </Box>
             </Link>

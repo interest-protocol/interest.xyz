@@ -30,6 +30,7 @@ const SwapTabs: FC = () => {
           alignItems="center"
           justifyContent="center"
           backdropFilter="blur(10px)"
+          onClick={() => handleClose()}
         >
           <Motion
             animate={{ scale: 1 }}
@@ -44,7 +45,12 @@ const SwapTabs: FC = () => {
     );
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="space-between">
+    <Box
+      display="flex"
+      mb="0.75rem"
+      alignItems="center"
+      justifyContent="space-between"
+    >
       <Tabs tabs={tabs} setTab={setTab} tab={tab} />
       <Box
         role="button"

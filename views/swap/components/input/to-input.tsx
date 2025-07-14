@@ -17,21 +17,23 @@ const ToInput: FC = () => {
 
   const value = useWatch({ control, name: 'to.value' });
 
-  const selectedToken = useWatch({ control, name: 'to' });
-
   const isEmpty = !value || isNaN(+value) || +value <= 0;
 
   return (
-    <Box>
+    <>
       <HeaderInfo label="to" />
       <Box
-        py="l"
-        gap="0.875rem"
+        gap="0.5rem"
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
       >
-        <Box display="flex" justifyContent="space-between" gap="xs">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          gap="0.5rem"
+        >
           <Box
             flex="1"
             display="flex"
@@ -65,14 +67,14 @@ const ToInput: FC = () => {
           <SelectToken label="to" />
         </Box>
 
-        {account?.address && selectedToken?.manuallySelected && (
+        {account?.address && (
           <Box display="flex" justifyContent="space-between" color="outline">
             <AmountInDollar label="to" />
             <Balance label="to" />
           </Box>
         )}
       </Box>
-    </Box>
+    </>
   );
 };
 
