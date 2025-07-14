@@ -2,19 +2,6 @@ import { ISidebarSection } from './sidebar.types';
 
 export const SIDEBAR_SECTIONS: ReadonlyArray<ISidebarSection> = [
   {
-    title: 'Interest Dex',
-    items: [
-      { label: 'AirDrop', href: '/airdrop' },
-      { label: 'Settings', href: '/settings' },
-      {
-        label: 'Governance',
-        href: 'https://governance.platform',
-        isExternal: true,
-      },
-      { label: 'Vote', href: '/vote', isExternal: true },
-    ],
-  },
-  {
     title: 'Other Products',
     items: [
       { label: 'Memez.gg', href: 'https://memez.gg', isExternal: true },

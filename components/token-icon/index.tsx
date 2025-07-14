@@ -150,7 +150,7 @@ const TokenIcon: FC<TokenIconProps> = ({
           justifyContent="center"
           width={`calc(${size} * 1.66)`}
           height={`calc(${size} * 1.66)`}
-          borderRadius="full"
+          borderRadius={rounded ? 'full' : 'xs'}
           {...(withBg && {
             bg: icon.bg || 'onSurface',
             color: icon.color || 'surface',
@@ -208,7 +208,7 @@ const TokenIcon: FC<TokenIconProps> = ({
             overflow="hidden"
             width={`calc(${size} * 1.66)`}
             height={`calc(${size} * 1.66)`}
-            borderRadius="full"
+            borderRadius={rounded ? 'full' : 'xs'}
             border="1px solid #FFFFFF"
           >
             {loading && (

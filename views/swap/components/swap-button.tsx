@@ -150,7 +150,7 @@ const SwapButton = () => {
     !!error;
 
   return (
-    <Box display="flex" flexDirection="column" mt="xs">
+    <Box display="flex" flexDirection="column" mt="0.75rem">
       {account?.address ? (
         <Button
           height="2rem"
@@ -168,8 +168,13 @@ const SwapButton = () => {
           }}
         >
           <Typography
-            variant="label"
+            p="1rem"
             size="large"
+            fontSize="1rem"
+            variant="label"
+            fontWeight="500"
+            fontFamily="Inter"
+            lineHeight="1.5rem"
             color={error ? '#fff' : 'none'}
           >
             {loading ? 'Swapping...' : error ? error : 'Confirm Swap'}

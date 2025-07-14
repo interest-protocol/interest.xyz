@@ -1,6 +1,6 @@
 import { DiscordSVG, GithubSVG, XSVG } from '@/components/svg';
 
-import { ISocialLinkProps } from './social-link.types';
+import { ISocialLinkProps } from './sidebar.types';
 
 export const SOCIAL_LINK: ReadonlyArray<ISocialLinkProps> = [
   {

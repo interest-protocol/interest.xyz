@@ -31,4 +31,5 @@ const SwapContent: FC = () => {
     </Box>
   );
 };
+
 export default SwapContent;

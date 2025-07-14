@@ -31,10 +31,7 @@ const SelectToken: FC<InputProps> = ({ label }) => {
     ],
   });
 
-  const sanitizedToken =
-    label === 'to' && !currentToken?.manuallySelected
-      ? undefined
-      : currentToken;
+  const sanitizedToken = currentToken;
 
   const { symbol: currentSymbol } = sanitizedToken ?? {};
 
@@ -106,8 +103,7 @@ const SelectToken: FC<InputProps> = ({ label }) => {
 
   return (
     <Button
-      py="3xs"
-      height="2rem"
+      height="0.5rem"
       fontSize="s"
       variant="tonal"
       color="onSurface"
@@ -119,16 +115,17 @@ const SelectToken: FC<InputProps> = ({ label }) => {
       pr={style ? '0.75rem' : '0.75rem'}
       opacity={swapping ? 0.7 : 1}
       nHover={{ ...(isToWithoutToken ? { bg: '#B4C5FF' } : {}) }}
-      nFocus={{ ...(isToWithoutToken ? { bg: '#B4C5FF' } : {}) }}
       PrefixIcon={
         !isToWithoutToken && currentSymbol ? (
-          <TokenIcon
-            withBg
-            size="1.5rem"
-            network={network}
-            symbol={currentSymbol}
-            rounded={sanitizedToken?.standard === TokenStandard.COIN}
-          />
+          <Box mt={label == 'from' ? '-0.25rem' : '0'}>
+            <TokenIcon
+              withBg
+              size="1.25rem"
+              network={network}
+              symbol={currentSymbol}
+              rounded={sanitizedToken?.standard === TokenStandard.COIN}
+            />
+          </Box>
         ) : undefined
       }
     >

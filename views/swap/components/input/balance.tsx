@@ -1,10 +1,5 @@
 import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
-import {
-  Box,
-  Button,
-  ProgressIndicator,
-  Typography,
-} from '@interest-protocol/ui-kit';
+import { Box, ProgressIndicator, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
@@ -102,7 +97,6 @@ const Balance: FC<InputProps> = ({ label }) => {
             ? `${formatMoney(FixedPointMath.toNumber(balance, decimals))}`
             : '0'}
         </Typography>
-        <MaxBadge />
         {loading && (
           <Box
             mx="xs"
@@ -120,16 +114,7 @@ const Balance: FC<InputProps> = ({ label }) => {
     );
 
   return (
-    <Button
-      p="2xs"
-      gap="0.5rem"
-      color="outline"
-      variant="outline"
-      alignItems="center"
-      onClick={handleMax}
-      borderColor="transparent"
-      nHover={{ bg: 'unset', borderColor: 'primary' }}
-    >
+    <Box display="flex" alignItems="center" gap="0.5rem" onClick={handleMax}>
       <Box display={['none', 'block']} width="1.38875rem" height="1.25rem">
         <SubtractBox
           maxHeight="100%"
@@ -145,6 +130,7 @@ const Balance: FC<InputProps> = ({ label }) => {
         fontWeight="400"
         fontSize="0.75rem"
         fontFamily="Inter"
+        lineHeight="1rem"
         whiteSpace="nowrap"
       >
         {type
@@ -153,7 +139,7 @@ const Balance: FC<InputProps> = ({ label }) => {
             : formatMoney(numericBalance, 4)
           : '0.0000'}
       </Typography>
-      <MaxBadge />
+      <MaxBadge handleMax={handleMax} />
 
       {!coinsMap[normalizeSuiAddress(type)]?.balance && loading && (
         <Box
@@ -168,7 +154,7 @@ const Balance: FC<InputProps> = ({ label }) => {
           </Box>
         </Box>
       )}
-    </Button>
+    </Box>
   );
 };
 

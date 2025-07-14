@@ -28,13 +28,17 @@ const Input: FC<InputProps> = ({ label }) => {
     <>
       <HeaderInfo label={label} />
       <Box
-        pt="m"
         gap="0.5rem"
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
       >
-        <Box display="flex" justifyContent="space-between" gap="xs">
+        <Box
+          gap="xs"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Box
             flex="1"
             display="flex"
@@ -47,6 +51,7 @@ const Input: FC<InputProps> = ({ label }) => {
               lineHeight="l"
               placeholder="0"
               fontFamily="Inter"
+              fontWeight="400"
               fontSize={['2xl', '2.25rem']}
               disabled={label === 'to' || swapping}
               opacity={isEmpty ? 0.4 : undefined}
