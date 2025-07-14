@@ -123,13 +123,14 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
             fontSize="0.875rem"
             fontWeight="500"
             fontFamily="Inter"
+            color="#fff"
           >
-            {formatMoney(balance)}
-            <Box fontSize="Satoshi" as="span" ml="2xs">
+            {formatMoney(balance, 4)}
+            <Box fontSize="Inter" as="span" ml="2xs">
               {symbol}
             </Box>
           </Typography>
-          {!!price?.length && price[0]?.priceChange24HoursPercentage && (
+          {!!price?.length && price[0]?.priceChange24HoursPercentage ? (
             <Box
               mt="0.15rem"
               display="flex"
@@ -157,9 +158,13 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
                 fontWeight="500"
                 fontFamily="Inter"
               >
-                {(price?.length && price[0]?.priceChange24HoursPercentage) ?? 0}
+                {(price?.length &&
+                  price[0]?.priceChange24HoursPercentage.toFixed(4)) ??
+                  0}
               </Typography>
             </Box>
+          ) : (
+            ''
           )}
         </Box>
         {isConvertible && (

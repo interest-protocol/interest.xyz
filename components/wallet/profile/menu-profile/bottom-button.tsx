@@ -19,6 +19,7 @@ const BottomButton: FC<BottomButtonProps> = ({
       display="flex"
       onClick={onClick}
       borderRadius="1rem"
+      cursor="pointer"
       alignItems="center"
       justifyContent="space-between"
       nHover={{
@@ -65,7 +66,12 @@ const BottomButton: FC<BottomButtonProps> = ({
           className="chevron-icon"
           transition="all 300ms ease-in-out"
         >
-          <ChevronRightSVG maxWidth="1rem" maxHeight="1rem" width="100%" />
+          <ChevronRightSVG
+            maxWidth="1rem"
+            maxHeight="1rem"
+            width="100%"
+            fill="inherit"
+          />
         </Box>
       )}
     </Box>

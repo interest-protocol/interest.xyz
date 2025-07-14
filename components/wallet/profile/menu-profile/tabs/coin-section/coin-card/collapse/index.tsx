@@ -43,6 +43,7 @@ const Collapse: FC<CollapseProps> = ({ title, children }) => {
           display="flex"
           initial="rest"
           alignItems="center"
+          color="#fff"
           animate={isExpanded ? 'rest' : 'collapsed'}
         >
           <CollapseIcon />
