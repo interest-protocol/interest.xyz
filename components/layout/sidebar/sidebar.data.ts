@@ -34,8 +34,8 @@ export const SIDEBAR_ITEMS: ReadonlyArray<
   },
   {
     Icon: BridgeSVG,
-    name: 'Bridge',
-    path: 'https://bridge.movementnetwork.xyz/',
+    name: 'DCA',
+    path: Routes[RoutesEnum.DCA],
     disabled: false,
   },
 ];

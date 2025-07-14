@@ -16,7 +16,7 @@ export const MENU_ITEMS: ReadonlyArray<MenuItemsProps> = [
     path: Routes[RoutesEnum.TokenCreate],
   },
   {
-    name: 'Bridge',
-    path: 'https://bridge.movementnetwork.xyz/',
+    name: 'DCA',
+    path: Routes[RoutesEnum.DCA],
   },
 ];
