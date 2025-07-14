@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
+import { SVGProps } from '@/components/svg';
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
 export interface UserInfoProps {
@@ -32,4 +33,14 @@ export interface CardWrapperProps {
   symbol: string;
   TokenIcon: ReactNode;
   supportingText: string;
+}
+export interface AvatarProps {
+  accountAddress?: string;
+}
+
+export interface BottomButtonProps {
+  title: string;
+  Icon: FC<SVGProps>;
+  onClick: () => void;
+  hasChevron?: boolean;
 }
