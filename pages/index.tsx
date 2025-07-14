@@ -6,8 +6,8 @@ import { TOKENS } from '@/constants/coins';
 import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 import { CoinMetadata, FAMetadata } from '@/utils/coin/coin.types';
 import SwapComponent from '@/views/swap';
-import { SwapForm } from '@/views/swap/swap.types';
-import SwapInitManager from '@/views/swap/swap-init-manager';
+import { SwapForm } from '@/views/swap/components/swap.types';
+import SwapInitManager from '@/views/swap/components/swap-init-manager';
 
 const SwapPage: NextPage = () => {
   const form = useForm<SwapForm>({

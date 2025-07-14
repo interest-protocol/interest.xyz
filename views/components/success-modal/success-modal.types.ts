@@ -1,4 +1,4 @@
-import { SwapToken } from '@/views/swap/swap.types';
+import { SwapToken } from '@/views/swap/components/swap.types';
 
 export interface SuccessModalProps {
   transactionTime: string;
