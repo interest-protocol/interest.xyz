@@ -11,12 +11,10 @@ const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
 }) => {
   return (
     <Box
-      p="m"
-      m="3xs"
+      p="0.5rem"
       display="flex"
-      bg="surface"
-      borderRadius="xs"
-      height="4.625rem"
+      bg="#222222"
+      borderRadius="1rem"
       width="100%"
       alignItems="center"
       justifyContent="space-between"
@@ -29,15 +27,25 @@ const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
           flexDirection="column"
           justifyContent="center"
         >
-          <Typography size="small" variant="body" lineHeight="1.5rem">
+          <Typography
+            size="small"
+            variant="body"
+            lineHeight="1rem"
+            fontFamily="Inter"
+            fontSize="0.875rem"
+            color="#fff"
+          >
             {symbol}
           </Typography>
           <Typography
-            opacity={0.7}
+            mt="0.15rem"
+            color="#fff"
             size="small"
-            variant="label"
-            color="onSurface"
+            variant="body"
+            fontWeight="400"
             lineHeight="1rem"
+            fontSize="0.75rem"
+            fontFamily="Inter"
           >
             {supportingText}
           </Typography>

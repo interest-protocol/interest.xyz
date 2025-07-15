@@ -102,7 +102,6 @@ const FloatingButtons: FC = () => {
       right="2rem"
       bottom={['7rem', '7rem', '7rem', '2rem']}
       position="fixed"
-      zIndex="2"
       display="flex"
       flexDirection="column"
       gap="m"

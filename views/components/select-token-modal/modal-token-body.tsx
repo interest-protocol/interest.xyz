@@ -1,4 +1,4 @@
-import { Box, ProgressIndicator, Typography } from '@interest-protocol/ui-kit';
+import { Box, ProgressIndicator } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
@@ -32,26 +32,17 @@ const ModalTokenBody: FC<ModalTokenBodyProps> = ({
 
   if (!isSearchAddres)
     return (
-      <Box px="m" py="s">
+      <Box>
         <Box display="flex" gap="2xs" alignItems="center">
-          <Typography variant="body" size="small" color="outline">
-            {filteredTokens.length} Coin{filteredTokens.length !== 1 ? 's' : ''}
-          </Typography>
           {loading && <ProgressIndicator variant="loading" size={12} />}
         </Box>
-        <Box
-          py="m"
-          gap="s"
-          display="grid"
-          gridTemplateColumns={['1fr', '1fr 1fr']}
-        >
+        <Box gap="s" width="100%">
           {filteredTokens.length ? (
             filteredTokens.map((token) => (
               <TokenModalItem
                 key={v4()}
                 selected={false}
-                symbol={token.symbol}
-                iconUri={token.iconUri}
+                token={token}
                 onClick={() => handleSelectToken(token)}
                 isFA={token.standard === TokenStandard.FA}
               />

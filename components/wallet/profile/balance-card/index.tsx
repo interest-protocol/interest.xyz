@@ -1,17 +1,14 @@
 import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Box, Typography } from '@interest-protocol/ui-kit';
-import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 
 import { MOVE } from '@/constants/coins';
-import { useCoinsPrice } from '@/hooks/use-coins-price';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
-import { formatDollars, parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
+import { parseToMetadata, ZERO_BIG_NUMBER } from '@/utils';
 
 const BalanceCard: FC = () => {
   const { coinsMap } = useCoins();
-  const { data: price } = useCoinsPrice(MOVE.type);
   const defaultCoins = [
     {
       name: MOVE.name,
@@ -41,28 +38,19 @@ const BalanceCard: FC = () => {
   );
 
   return (
-    <Box
-      my="m"
-      gap="xs"
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      alignItems="flex-start"
-      justifyContent="flex-start"
-    >
-      <Typography size="small" variant="display">
+    <Box gap="xs" width="100%" display="flex" flexDirection="column">
+      <Typography
+        size="small"
+        variant="body"
+        fontFamily="Inter"
+        fontSize="1rem"
+        fontWeight="500"
+        lineHeight="1.3rem"
+        color="#949E9E"
+        textAlign="center"
+      >
         {FixedPointMath.toNumber(balance, MOVE.decimals)}{' '}
-        <Box fontSize="Satoshi" as="span">
-          {MOVE.symbol}
-        </Box>
-      </Typography>
-      <Typography size="small" opacity="0.7" variant="label" color="onSurface">
-        {formatDollars(
-          +BigNumber(balance, MOVE.decimals)
-            .times(BigNumber((price?.length && price[0].price) ?? 0))
-            .toNumber()
-            .toFixed(3)
-        )}
+        <Box as="span">{MOVE.symbol}</Box>
       </Typography>
     </Box>
   );

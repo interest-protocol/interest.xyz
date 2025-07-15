@@ -1,3 +1,4 @@
+import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
@@ -31,11 +32,23 @@ const VerifiedCoinList: FC = () => {
   );
 
   return (
-    <>
+    <Box display="flex" flexDirection="column" gap="0.5rem">
+      <Typography
+        color="#fff"
+        size="small"
+        variant="label"
+        fontWeight="500"
+        fontFamily="Inter"
+        fontSize="0.85rem"
+        lineHeight="1.5rem"
+        textTransform="uppercase"
+      >
+        COINS
+      </Typography>
       {verifiedTokens.map((token) => (
         <CoinCard key={v4()} token={token} />
       ))}
-    </>
+    </Box>
   );
 };
 export default VerifiedCoinList;

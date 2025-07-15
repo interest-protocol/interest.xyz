@@ -1,7 +1,7 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-import { CoinSVG } from '@/components/svg';
+import { ExclamationCircleSVG } from '@/components/svg';
 
 const NoCoin: FC = () => (
   <Box
@@ -11,23 +11,33 @@ const NoCoin: FC = () => (
     flexDirection="column"
     justifyContent="center"
   >
-    <CoinSVG
-      width="4.765rem"
-      height="5.476rem"
+    <ExclamationCircleSVG
+      width="1.25rem"
+      height="1.25rem"
       maxHeight="100%"
       maxWidth="100%"
     />
-    <Typography size="medium" variant="label">
-      No coins yet
+    <Typography
+      size="medium"
+      variant="body"
+      fontFamily="Inter"
+      fontWeight="700"
+      fontSize="1rem"
+      lineHeight="1.5rem"
+    >
+      No tokens found
     </Typography>
     <Typography
       size="small"
-      opacity="0.7"
-      variant="label"
-      color="onSurface"
+      variant="body"
+      color="#9CA3AF"
+      fontWeight="400"
+      fontSize="0.875rem"
+      fontFamily="Inter"
+      lineHeight="1.5rem"
       textAlign="center"
     >
-      Buy or transfer coins to this wallet to get started.
+      We couldn&apos;t find any tokens matching your criteria.
     </Typography>
   </Box>
 );

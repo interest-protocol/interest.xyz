@@ -3,9 +3,8 @@ import { FC } from 'react';
 import { SVGProps } from '@/components/svg/svg.types';
 
 export interface MenuProfileProps {
-  isOpen: boolean;
-
-  handleCloseProfile: () => void;
+  onClose: () => void;
+  onDisconnect: () => void;
 }
 
 export interface ProfileMenuItemProps {

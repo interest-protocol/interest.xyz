@@ -1,80 +1,45 @@
-import { Box, Motion } from '@interest-protocol/ui-kit';
-import { not } from 'ramda';
-import { FC, useState } from 'react';
+import { Box } from '@interest-protocol/ui-kit';
+import { FC } from 'react';
 
-import { wrapperVariants } from '@/constants/wrapper-variants';
-import { useIsFirstRender } from '@/hooks';
+import DirectionalMenu from '@/components/directional-menu';
+import { SignOutSVG } from '@/components/svg';
 
-import MenuButton from '../../menu-button';
 import { MenuProfileProps } from '../profile.types';
-import CurrencyProfile from './currency-profile';
+import BottomButton from './bottom-button';
 import HomeProfile from './home-profile';
-import SettingProfile from './setting-profile';
 import UserInfo from './user-info';
 
-const MenuProfile: FC<MenuProfileProps> = ({ isOpen, handleCloseProfile }) => {
-  const firstRender = useIsFirstRender();
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
-
-  const handleSettings = () => {
-    setIsSettingsOpen(true);
-    setIsCurrencyOpen(false);
-  };
-
-  const handleCurrency = () => {
-    setIsCurrencyOpen(true);
-    setIsSettingsOpen(false);
-  };
-
-  const handleToggleProfile = () => setIsSettingsOpen(not);
-
+const MenuProfile: FC<MenuProfileProps> = ({ onClose, onDisconnect }) => {
   return (
-    <Motion
-      p="xl"
-      right="0"
-      zIndex={10}
-      border="1px"
-      display="flex"
-      bg="container"
-      overflowY="auto"
-      color="onSurface"
-      borderRadius="2xs"
-      borderStyle="solid"
-      borderColor="outline"
-      flexDirection="column"
-      variants={wrapperVariants}
-      textTransform="capitalize"
-      justifyContent="space-between"
-      top={['0', '0', '0', '3.5rem']}
-      animate={isOpen ? 'open' : 'closed'}
-      pointerEvents={isOpen ? 'auto' : 'none'}
-      height={['100vh', '100vh', '100vh', '85vh']}
-      width={['100vw', '100vw', '100vw', '26.875rem']}
-      position={['fixed', 'fixed', 'fixed', 'absolute']}
-      initial={isOpen || firstRender ? 'closed' : 'open'}
-    >
-      <Box display="flex" flexDirection="column">
-        <Box
-          pb="l"
-          flexDirection="row-reverse"
-          display={['flex', 'flex', 'flex', 'none']}
-        >
-          <MenuButton handleClose={handleCloseProfile} />
-        </Box>
-        <UserInfo handleSettings={handleToggleProfile} />
-        {isSettingsOpen ? (
-          <SettingProfile
-            handleToggleProfile={handleToggleProfile}
-            handleCurrency={handleCurrency}
-          />
-        ) : isCurrencyOpen ? (
-          <CurrencyProfile handleBack={handleSettings} />
-        ) : (
-          <HomeProfile />
-        )}
+    <DirectionalMenu onClose={onClose} isDirectionalRight>
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap="1.5rem"
+        p="1.5rem"
+        flex="1"
+        overflowY="auto"
+      >
+        <UserInfo />
+        <HomeProfile />
       </Box>
-    </Motion>
+      <Box
+        gap="0.5rem"
+        display="flex"
+        flexDirection="column"
+        borderTop="1px solid #FFFFFF1A"
+        px="1.5rem"
+        py="1rem"
+        mt="auto"
+        color="#949E9E"
+      >
+        <BottomButton
+          Icon={SignOutSVG}
+          title="Disconnect"
+          onClick={onDisconnect}
+        />
+      </Box>
+    </DirectionalMenu>
   );
 };
 
