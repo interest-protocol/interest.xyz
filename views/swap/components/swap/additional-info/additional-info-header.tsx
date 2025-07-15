@@ -1,8 +1,11 @@
 import { Box, Button, Motion, Typography } from '@interest-protocol/ui-kit';
+import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ChevronDownSVG } from '@/components/svg';
+import { useCoinsPrice } from '@/hooks/use-coins-price';
+import { formatDollars, formatMoney } from '@/utils';
 
 import { SwapForm } from '../../swap.types';
 import { AdditionalInfoHeaderProps } from './additional-info.types';
@@ -10,16 +13,19 @@ import { AdditionalInfoHeaderProps } from './additional-info.types';
 const AdditionalInfoHeader: FC<AdditionalInfoHeaderProps> = ({
   toggle,
   isOpen,
+  amount,
 }) => {
   const { control } = useFormContext<SwapForm>();
   const fromSymbol = useWatch({
     control,
     name: 'from.symbol',
   });
-  const toSymbol = useWatch({
+  const to = useWatch({
     control,
-    name: 'to.symbol',
+    name: 'to',
   });
+
+  const { data: price } = useCoinsPrice(to.type);
   return (
     <Box
       display="flex"
@@ -37,7 +43,7 @@ const AdditionalInfoHeader: FC<AdditionalInfoHeaderProps> = ({
         letterSpacing="-0.035rem"
         color="#B8C4C4"
       >
-        1 {fromSymbol} = 42.5411 {toSymbol}{' '}
+        1 {fromSymbol} = {`${formatMoney(Number(amount))} ${to.symbol} `}
         <Typography
           variant="body"
           size="small"
@@ -49,7 +55,18 @@ const AdditionalInfoHeader: FC<AdditionalInfoHeaderProps> = ({
           as="span"
           color="#949E9E"
         >
-          ($108,905.58)
+          (
+          {amount != '--'
+            ? price?.length && price[0].price
+              ? formatDollars(
+                  +BigNumber(amount)
+                    .times(BigNumber(price[0].price))
+                    .toNumber()
+                    .toFixed(3)
+                )
+              : '--'
+            : '--'}
+          )
         </Typography>
       </Typography>
       <Motion

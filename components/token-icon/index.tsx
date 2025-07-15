@@ -209,7 +209,6 @@ const TokenIcon: FC<TokenIconProps> = ({
             width={`calc(${size} * 1.66)`}
             height={`calc(${size} * 1.66)`}
             borderRadius={rounded ? 'full' : 'xs'}
-            border="1px solid #FFFFFF"
           >
             {loading && (
               <Box position="absolute" top="-0.5rem" left="0.9rem">

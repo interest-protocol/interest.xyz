@@ -7,4 +7,9 @@ export interface AdditionalInfoLineProps {
 export interface AdditionalInfoHeaderProps {
   toggle: () => void;
   isOpen: boolean;
+  amount: string;
+}
+
+export interface SwapManagerEquivalenceProps {
+  setAmount: (amount: string) => void;
 }
