@@ -83,10 +83,12 @@ export interface IPoolForm {
   settings: ISwapSettings;
   search?: string;
   apr?: string;
+  tvl?: string;
   syncBalances?: boolean;
   metrics?: ReadonlyArray<Metric>;
   position?: PositionAmountProps;
   tokenList: ReadonlyArray<PoolToken>;
+  ratio: ReadonlyArray<number>;
   positionList: Record<string, number>;
   filterList: ReadonlyArray<FilterItemProps>;
 }

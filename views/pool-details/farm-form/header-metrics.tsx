@@ -17,7 +17,7 @@ const DEFAULT_METRIC: MetricPoolDetails = {
 };
 
 const HeaderMetrics: FC = () => {
-  const { getValues } = useFormContext<IPoolForm>();
+  const { getValues, setValue } = useFormContext<IPoolForm>();
   const [metric, setMetric] = useState<MetricPoolDetails>(DEFAULT_METRIC);
   const { data: metrics, isLoading } = useMetrics();
 
@@ -28,6 +28,7 @@ const HeaderMetrics: FC = () => {
       const tmpMetric = metrics?.data?.filter(
         (metric) => metric.poolId == getValues('pool.poolAddress')
       );
+      setValue('tvl', tmpMetric?.length ? tmpMetric[0].metrics.tvl : '0');
       setMetric(tmpMetric?.length ? tmpMetric[0].metrics : DEFAULT_METRIC);
     }
   }, [isLoading, metrics]);
