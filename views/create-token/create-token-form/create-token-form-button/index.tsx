@@ -1,7 +1,7 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
 
@@ -12,10 +12,15 @@ import { FixedPointMath } from '@/lib';
 import { useAptosClient } from '@/lib/aptos-provider/aptos-client/aptos-client.hooks';
 import SuccessModal from '@/views/components/success-modal';
 
-import { ICreateTokenForm } from '../create-token.types';
-import { logCreateToken } from '../create-token.utils';
+import { ICreateTokenForm } from '../../create-token.types';
+import { logCreateToken } from '../../create-token.utils';
+import { CreateTokenFormButtonProps } from './create-token-form-button.types';
 
-const CreateTokenFormButton = () => {
+const CreateTokenFormButton: FC<CreateTokenFormButtonProps> = ({
+  step,
+  onClick,
+  onBackClick,
+}) => {
   const dexV2 = useInterestV2Dex();
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
@@ -165,17 +170,56 @@ const CreateTokenFormButton = () => {
       }),
     });
 
+  const requiredFieldsFilled = !!(
+    values.name &&
+    values.symbol &&
+    values.projectUrl
+  );
+
+  const canProceedStepOne = step === 1 && requiredFieldsFilled;
+  const canSubmitStepTwo =
+    step === 2 && !!account && !loading && values.decimals && values.supply;
+
   return (
-    <Box display="flex" alignItems="center">
+    <Box
+      gap="1.5rem"
+      display="flex"
+      flexShrink={0}
+      alignItems="center"
+      justifyContent="space-between"
+    >
       <Button
-        py="m"
-        flex="1"
+        py="1rem"
+        width="47%"
+        bg="#9CA3AF1A"
+        fontSize="1rem"
         variant="filled"
-        onClick={onSubmit}
+        fontWeight="500"
+        fontFamily="Inter"
+        borderRadius="0.75rem"
         justifyContent="center"
-        disabled={!ableToMerge}
+        color="#9CA3AF"
+        disabled={step === 1}
+        onClick={onBackClick}
+        nHover={step === 1 ? {} : { color: '#002A78' }}
       >
-        Create coin
+        Back
+      </Button>
+
+      <Button
+        py="1rem"
+        width="47%"
+        bg="#B4C5FF"
+        fontSize="1rem"
+        variant="filled"
+        fontWeight="500"
+        fontFamily="Inter"
+        borderRadius="0.75rem"
+        justifyContent="center"
+        disabled={step === 1 ? !canProceedStepOne : !canSubmitStepTwo}
+        onClick={step === 1 ? onClick : onSubmit}
+      >
+        {step === 1 ? 'Next' : 'Create Token'}
       </Button>
     </Box>
   );

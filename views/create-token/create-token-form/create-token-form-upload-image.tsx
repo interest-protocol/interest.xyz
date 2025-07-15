@@ -1,4 +1,4 @@
-import { Box, Theme, Typography, useTheme } from '@interest-protocol/ui-kit';
+import { Box, Typography } from '@interest-protocol/ui-kit';
 import { propOr } from 'ramda';
 import { ChangeEventHandler, DragEventHandler, FC, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -9,7 +9,6 @@ import { CreateTokenFormImageProps } from '../create-token.types';
 import { getBase64 } from '../create-token.utils';
 
 const CreateTokenFormImage: FC<CreateTokenFormImageProps> = ({ setValue }) => {
-  const { colors } = useTheme() as Theme;
   const [dragging, setDragging] = useState(false);
 
   const handleChangeFile: ChangeEventHandler<HTMLInputElement> = async (e) => {
@@ -67,40 +66,41 @@ const CreateTokenFormImage: FC<CreateTokenFormImageProps> = ({ setValue }) => {
     <Box
       p="l"
       gap="m"
-      bg="surface"
       display="flex"
+      bg="#9CA3AF1A"
       borderRadius="xs"
       borderWidth="1px"
       alignItems="center"
+      height="4.59375rem"
       onDrop={handleDropFile}
+      width={['100%', '19.5rem']}
+      border="1px solid #BBB9FD99"
       onDragEnter={() => setDragging(true)}
       onDragLeave={() => setDragging(false)}
       onDragOver={(e) => e.preventDefault()}
       borderStyle={dragging ? 'solid' : 'dashed'}
       borderColor={dragging ? 'primary' : 'outlineVariant'}
     >
-      <Box
-        display="flex"
-        width="2.5rem"
-        height="2.5rem"
-        borderRadius="full"
-        alignItems="center"
-        justifyContent="center"
-        bg={`${colors.primary}14`}
+      <FolderSVG maxWidth="1.4rem" maxHeight="1.4rem" width="100%" />
+
+      <Typography
+        size="medium"
+        variant="label"
+        color="#FFFFFF"
+        fontFamily="Inter"
+        fontSize="0.875rem"
       >
-        <FolderSVG maxWidth="1.4rem" maxHeight="1.4rem" width="100%" />
-      </Box>
-      <Typography size="large" variant="label">
         Drop your file here or{' '}
         <Typography
           as="label"
-          size="large"
+          size="medium"
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           htmlFor="file"
           variant="label"
           color="primary"
           cursor="pointer"
+          fontFamily="Inter"
           textDecoration="underline"
         >
           upload
