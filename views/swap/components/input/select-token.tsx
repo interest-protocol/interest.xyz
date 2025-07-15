@@ -1,5 +1,5 @@
 import { Network } from '@interest-protocol/interest-aptos-v2';
-import { Box, Button, Motion, Typography } from '@interest-protocol/ui-kit';
+import { Box, Button, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
@@ -66,30 +66,11 @@ const SelectToken: FC<InputProps> = ({ label }) => {
   const openModal = () =>
     !swapping &&
     setModal(
-      <Box
-        top="0"
-        left="0"
-        width="100vw"
-        height="100vh"
-        zIndex="9999"
-        position="fixed"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        backdropFilter="blur(10px)"
-      >
-        <Motion
-          animate={{ scale: 1 }}
-          initial={{ scale: 0.85 }}
-          transition={{ duration: 0.3 }}
-        >
-          <SelectTokenModal
-            onSelect={onSelect}
-            closeModal={handleClose}
-            isOutput={label === 'to'}
-          />
-        </Motion>
-      </Box>,
+      <SelectTokenModal
+        onSelect={onSelect}
+        closeModal={handleClose}
+        isOutput={label === 'to'}
+      />,
       {
         isOpen: true,
         custom: true,

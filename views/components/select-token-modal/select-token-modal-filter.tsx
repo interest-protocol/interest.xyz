@@ -1,23 +1,23 @@
-import { Box, Motion, Typography } from '@interest-protocol/ui-kit';
+import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { v4 } from 'uuid';
 
-import {
-  SelectTokenFilterProps,
-  TokenOrigin,
-} from './select-token-modal.types';
+import { SearchTokenForm, TokenOrigin } from './select-token-modal.types';
 
 const ORIGIN_TITLE = {
   [TokenOrigin.Strict]: 'Strict',
   [TokenOrigin.Wallet]: 'Wallet',
 };
 
-const SelectTokenFilter: FC<SelectTokenFilterProps> = ({
-  control,
-  setValue,
-}) => {
+const SelectTokenFilter: FC = () => {
+  const { setValue, control } = useFormContext<SearchTokenForm>();
+
+  const searchValue = useWatch({ control, name: 'search' });
+
   const filterSelected = useWatch({ control, name: 'filter' });
+
+  if (searchValue) return;
 
   return (
     <Box gap="s" display="grid" flexWrap="wrap" gridTemplateColumns="1fr 1fr">
@@ -26,33 +26,25 @@ const SelectTokenFilter: FC<SelectTokenFilterProps> = ({
           key={v4()}
           cursor="pointer"
           onClick={() => setValue('filter', item)}
+          bg={filterSelected === item ? '#B4C5FF33' : 'transparent'}
+          color="#FFFFFF"
+          fontWeight="500"
+          fontFamily="Inter"
+          borderRadius="9999px"
+          py="0.5rem"
         >
           <Typography
-            py="m"
             size="medium"
             variant="body"
-            fontWeight="400"
+            fontSize="1rem"
             textAlign="center"
             fontFamily="Inter"
+            lineHeight="1.5rem"
+            fontWeight={filterSelected === item ? '500' : '400'}
             color={filterSelected === item ? '#FFFFFF' : '#9CA3AF'}
           >
             {ORIGIN_TITLE[item]}
           </Typography>
-          {filterSelected === item && (
-            <Motion
-              layout
-              py="0.5rem"
-              px={['2rem', '5.9375rem']}
-              mt={['-28%', '-21%', '-20.5%', '-20.5%']}
-              bg="#B4C5FF33"
-              color="#FFFFFF"
-              height="2.75rem"
-              fontWeight="500"
-              maxWidth="14.5rem"
-              fontFamily="Inter"
-              borderRadius="9999px"
-            />
-          )}
         </Box>
       ))}
     </Box>

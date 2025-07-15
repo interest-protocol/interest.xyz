@@ -42,8 +42,7 @@ const ModalTokenBody: FC<ModalTokenBodyProps> = ({
               <TokenModalItem
                 key={v4()}
                 selected={false}
-                symbol={token.symbol}
-                iconUri={token.iconUri}
+                token={token}
                 onClick={() => handleSelectToken(token)}
                 isFA={token.standard === TokenStandard.FA}
               />

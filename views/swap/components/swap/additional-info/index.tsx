@@ -4,9 +4,11 @@ import { FC, useState } from 'react';
 
 import AdditionalInfoHeader from './additional-info-header';
 import AdditionalInfoLine from './additional-info-line';
+import SwapManagerEquivalence from './swap-manager-equivalence';
 
 const AdditionalInfo: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [amount, setAmount] = useState('--');
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -14,7 +16,11 @@ const AdditionalInfo: FC = () => {
 
   return (
     <Box mt="0.813rem">
-      <AdditionalInfoHeader toggle={toggleAccordion} isOpen={isOpen} />
+      <AdditionalInfoHeader
+        toggle={toggleAccordion}
+        isOpen={isOpen}
+        amount={amount}
+      />
       <AnimatePresence>
         {isOpen && (
           <Motion
@@ -31,9 +37,9 @@ const AdditionalInfo: FC = () => {
               flexDirection="column"
               className="accordion"
             >
-              <AdditionalInfoLine title="Fee (0,25%)" value="6,45$" />
-              <AdditionalInfoLine title="Price impact" value="-0,05%" />
-              <AdditionalInfoLine title="Network cost" value="0,96$" />
+              <AdditionalInfoLine title="Fee (0,25%)" value="0.00$" />
+              <AdditionalInfoLine title="Price impact" value="0.00%" />
+              <AdditionalInfoLine title="Network cost" value="0.00$" />
               <AdditionalInfoLine
                 flag="auto"
                 value="0,50%"
@@ -43,6 +49,7 @@ const AdditionalInfo: FC = () => {
           </Motion>
         )}
       </AnimatePresence>
+      <SwapManagerEquivalence setAmount={(amount) => setAmount(amount)} />
     </Box>
   );
 };
