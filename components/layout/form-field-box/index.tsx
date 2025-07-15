@@ -2,25 +2,20 @@
 
 import { Box, TextField, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
-import { useFormContext } from 'react-hook-form';
-
-import InfoSVG from '@/components/svg/info';
-import { ICreateTokenForm } from '@/views/create-token/create-token.types';
 
 import { FormFieldBoxProps } from './form-field-box.types';
 
 const FormFieldBox: FC<FormFieldBoxProps> = ({
   label,
   placeholder,
-  registerName,
+  register,
   type = 'text',
   width = '100%',
   height = '4.59375rem',
   error,
   supportingText,
+  icon,
 }) => {
-  const { register } = useFormContext<ICreateTokenForm>();
-
   return (
     <Box
       p="0.75rem"
@@ -43,13 +38,13 @@ const FormFieldBox: FC<FormFieldBoxProps> = ({
         gap="0.25rem"
       >
         {label}
-        <InfoSVG maxWidth="1.25rem" maxHeight="1.25rem" />
+        {icon}
       </Typography>
 
       <Box>
         <TextField
           ml="-1rem"
-          {...register(registerName)}
+          {...register}
           type={type}
           placeholder={placeholder}
           nPlaceholder={{ opacity: 0.7 }}

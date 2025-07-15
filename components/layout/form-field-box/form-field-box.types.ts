@@ -1,4 +1,5 @@
-import { ICreateTokenForm } from '../../create-token.types';
+import { ReactNode } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 export interface FormFieldBoxProps {
   label: string;
@@ -8,5 +9,6 @@ export interface FormFieldBoxProps {
   supportingText?: string;
   width?: string | string[];
   height?: string | string[];
-  registerName: keyof ICreateTokenForm;
+  register: UseFormRegisterReturn;
+  icon?: ReactNode;
 }
