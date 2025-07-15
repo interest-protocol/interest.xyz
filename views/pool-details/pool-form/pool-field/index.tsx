@@ -58,15 +58,16 @@ const PoolField: FC<PoolFieldsProps> = ({ index, poolOptionView }) => {
 
       if (pool.curve == 'stable') {
         const ratio = getValues('ratio');
+        const tvl = getValues('tvl') || 0;
 
         setValue(
           `tokenList.${newIndex}.value`,
-          `${parseFloat((+amount * ratio[index]).toFixed(6))}`
+          `${parseFloat((+amount * (+tvl >= 100 ? ratio[index] : 1)).toFixed(6))}`
         );
         setValue(
           `tokenList.${newIndex}.valueBN`,
           FixedPointMath.toBigNumber(
-            +amount * ratio[index],
+            +amount * (+tvl >= 100 ? ratio[index] : 1),
             getValues(`tokenList.${newIndex}.decimals`)
           )
         );
