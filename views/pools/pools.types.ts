@@ -83,6 +83,7 @@ export interface IPoolForm {
   settings: ISwapSettings;
   search?: string;
   apr?: string;
+  tvl?: string;
   syncBalances?: boolean;
   metrics?: ReadonlyArray<Metric>;
   position?: PositionAmountProps;

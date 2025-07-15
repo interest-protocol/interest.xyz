@@ -34,11 +34,9 @@ const PoolInfoDetailsBalance: FC = () => {
     );
     const [token0Balance, token1Balance] = ratio;
 
-    const hasNoLiquidity = token0Balance < 100 && token1Balance < 100;
-
     setValue('ratio', [
-      hasNoLiquidity ? 1 : token1Balance / token0Balance,
-      hasNoLiquidity ? 1 : token0Balance / token1Balance,
+      token1Balance / token0Balance,
+      token0Balance / token1Balance,
     ]);
   }, [loading, pool]);
 
