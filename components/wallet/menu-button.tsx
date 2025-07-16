@@ -23,7 +23,6 @@ const MenuButton: FC<MenuButtonProps> = ({ handleClose }) => (
     variant="text"
     p="0.15rem !important"
     borderRadius="50%"
-    bg={['unset', '#FFFFFF1A']}
     onClick={handleClose}
     border={['1px solid', '1px solid', '1px solid', 'none']}
     borderColor="disabled"
@@ -41,8 +40,8 @@ const MenuButton: FC<MenuButtonProps> = ({ handleClose }) => (
         <TimesSVG
           width="100%"
           height="100%"
-          maxWidth="0.75rem"
-          maxHeight="0.75rem"
+          maxWidth="0.875rem"
+          maxHeight="0.875rem"
         />
       </Motion>
     </AnimatePresence>
