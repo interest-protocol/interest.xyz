@@ -57,11 +57,17 @@ const MaxButton: FC<MaxButtonProps> = ({ name, index }) => {
       );
 
       if (pool.curve == 'stable') {
-        setValue(`tokenList.${newIndex}.value`, amount);
+        const ratio = getValues('ratio');
+        const tvl = getValues('tvl') || 0;
+
+        setValue(
+          `tokenList.${newIndex}.value`,
+          `${parseFloat((+amount * (+tvl >= 100 ? ratio[index] : 1)).toFixed(6))}`
+        );
         setValue(
           `tokenList.${newIndex}.valueBN`,
           FixedPointMath.toBigNumber(
-            amount,
+            +amount * (+tvl >= 100 ? ratio[index] : 1),
             getValues(`tokenList.${newIndex}.decimals`)
           )
         );
