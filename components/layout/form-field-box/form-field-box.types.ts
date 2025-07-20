@@ -9,6 +9,6 @@ export interface FormFieldBoxProps {
   supportingText?: string;
   width?: string | string[];
   height?: string | string[];
-  register: UseFormRegisterReturn;
+  register?: UseFormRegisterReturn;
   icon?: ReactNode;
 }

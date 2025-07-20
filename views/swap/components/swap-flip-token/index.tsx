@@ -2,7 +2,7 @@ import { Button } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { SwapSVG } from '@/components/svg';
+import { PlusSVG, SwapSVG } from '@/components/svg';
 import ArrowNarrowDown from '@/components/svg/arrow-narrow-down';
 
 import { SwapFlipTokenProps } from './swap-flip-token.types';
@@ -25,6 +25,31 @@ const SwapFlipToken: FC<SwapFlipTokenProps> = ({ type }) => {
     setValue('from', { ...tmpTo, value: '' });
   };
 
+  const getIcon = () => {
+    switch (type) {
+      case 'swap':
+        return (
+          <ArrowNarrowDown
+            maxWidth="1.25rem"
+            maxHeight="1.25rem"
+            width="100%"
+          />
+        );
+      case 'bridge':
+        return <SwapSVG maxWidth="1.25rem" maxHeight="1.25rem" width="100%" />;
+      case 'dca':
+        return <PlusSVG maxWidth="1.25rem" maxHeight="1.25rem" width="100%" />;
+      default:
+        return (
+          <ArrowNarrowDown
+            maxWidth="1.25rem"
+            maxHeight="1.25rem"
+            width="100%"
+          />
+        );
+    }
+  };
+
   return (
     <Button
       isIcon
@@ -39,11 +64,7 @@ const SwapFlipToken: FC<SwapFlipTokenProps> = ({ type }) => {
       nHover={{ bg: 'lowContainer' }}
       disabled={(!to && !from) || swapping}
     >
-      {type == 'swap' ? (
-        <ArrowNarrowDown maxWidth="1.25rem" maxHeight="1.25rem" width="100%" />
-      ) : (
-        <SwapSVG maxWidth="1.25rem" maxHeight="1.25rem" width="100%" />
-      )}
+      {getIcon()}
     </Button>
   );
 };

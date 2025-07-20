@@ -14,7 +14,7 @@ const DCAPage: NextPage = () => {
 
   return (
     <FormProvider {...form}>
-      <SEO pageTitle="Pools" />
+      <SEO pageTitle="DCA" />
       <DCA />
     </FormProvider>
   );

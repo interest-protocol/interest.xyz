@@ -12,7 +12,12 @@ const DCAContent: FC = () => {
   const { tab } = useTabState();
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Box
+      px={['0rem', '2.5rem']}
+      width="100%"
+      display="flex"
+      flexDirection="column"
+    >
       <DCATabs />
       {[<Trade key={v4()} />, <Orders key={v4()} />][tab]}
     </Box>

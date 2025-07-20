@@ -12,11 +12,14 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
   title,
   children,
   background,
+  useContainer = true,
+  ml = '0',
 }) => (
   <ErrorBoundary>
     <Box
       flex="1"
       as="aside"
+      bg="#030712"
       height="100vh"
       overflowY="auto"
       overflowX="hidden"
@@ -24,7 +27,6 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
       flexDirection="column"
       gridTemplateRows="auto 1fr"
       pb={['8rem', '8rem', '8rem', 'unset']}
-      bg="#030712"
       display={['flex', 'flex', 'flex', 'grid']}
     >
       <Header />
@@ -53,9 +55,11 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
             width="100%"
             height="100%"
             display="flex"
-            variant="container"
             flexDirection="column"
             px={['m', 'l', 'l', 'xl']}
+            {...(useContainer
+              ? { variant: 'container' }
+              : { maxWidth: '100%' })}
           >
             <Box
               flex="1"
@@ -74,11 +78,13 @@ const Layout: FC<PropsWithChildren<LayoutProps>> = ({
               >
                 {title && (
                   <Typography
-                    my="3rem"
+                    mb="1.5rem"
                     size="medium"
-                    color="onSurface"
-                    variant="display"
-                    textAlign="center"
+                    variant="title"
+                    color="#FFFFFF"
+                    fontWeight="600"
+                    fontSize="1.75rem"
+                    ml={ml}
                   >
                     {title}
                   </Typography>
