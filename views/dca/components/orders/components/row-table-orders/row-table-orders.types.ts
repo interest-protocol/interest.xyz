@@ -1,4 +1,5 @@
 export interface RowTableOrdersProps {
+  id: string;
   from: string;
   to: string;
   fromIcon: string;

@@ -13,10 +13,10 @@ const DCAContent: FC = () => {
 
   return (
     <Box
-      px={['0rem', '2.5rem']}
       width="100%"
       display="flex"
       flexDirection="column"
+      px={['0rem', '2.5rem']}
     >
       <DCATabs />
       {[<Trade key={v4()} />, <Orders key={v4()} />][tab]}

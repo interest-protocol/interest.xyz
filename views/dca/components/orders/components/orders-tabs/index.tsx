@@ -1,6 +1,7 @@
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
+import RefreshSVG from '@/components/svg/refresh';
 import Tabs from '@/components/tabs';
 import { useTabState } from '@/hooks/use-tab-manager';
 
@@ -10,36 +11,30 @@ const OrdersTabs: FC = () => {
 
   return (
     <Box
+      gap="1rem"
+      mb="1.5rem"
       display="flex"
-      mb="0.75rem"
-      alignItems="center"
       justifyContent="space-between"
+      flexDirection={['column', 'row']}
     >
       <Tabs tabs={tabsOrders} setTab={setTab} tab={tab} />
-      <Box
-        role="button"
-        lineHeight="0"
+
+      <Button
+        px="1.5rem"
         display="flex"
-        cursor="pointer"
-        color="onSurface"
+        fontSize="1rem"
+        color="#002A78"
+        fontWeight="600"
+        variant="filled"
+        maxWidth="8.5rem"
+        fontFamily="Inter"
         alignItems="center"
-        aria-label="Settings"
-        transition="transform 500ms ease-in-out"
-        nHover={{ transform: 'rotate(180deg)' }}
+        justifyContent="center"
+        borderRadius="0.75rem"
       >
-        <Button
-          py="1.5rem"
-          px="1.5rem"
-          fontSize="1rem"
-          color="#002A78"
-          fontWeight="600"
-          variant="filled"
-          fontFamily="Inter"
-          borderRadius="0.75rem"
-        >
-          Refresh
-        </Button>
-      </Box>
+        Refresh
+        <RefreshSVG width="100%" maxWidth="0.84rem" maxHeight="0.84rem" />
+      </Button>
     </Box>
   );
 };
