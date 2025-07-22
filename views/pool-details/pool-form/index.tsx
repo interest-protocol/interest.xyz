@@ -26,6 +26,7 @@ const PoolForm: FC = () => {
     setValue('lpCoin.value', '');
     setValue('tokenList.0.value', '');
     setValue('tokenList.1.value', '');
+    setValue('syncBalances', false);
     setValue('lpCoin.valueBN', ZERO_BIG_NUMBER);
     setValue('tokenList.0.valueBN', ZERO_BIG_NUMBER);
     setValue('tokenList.1.valueBN', ZERO_BIG_NUMBER);
