@@ -17,8 +17,10 @@ export const LOCAL_STORAGE_VERSION = 'v5';
 export const PAGE_SIZE = 50;
 
 export const RPC_URL = {
-  [Network.MAINNET]: 'https://mainnet.movementnetwork.xyz/v1',
-  [Network.MovementMainnet]: 'https://mainnet.movementnetwork.xyz/v1',
+  [Network.MAINNET]:
+    'https://rpc.sentio.xyz/ubhXreFT5WIvDL5f8KGmhOyTBfRpCrhx/movement/v1',
+  [Network.MovementMainnet]:
+    'https://rpc.sentio.xyz/ubhXreFT5WIvDL5f8KGmhOyTBfRpCrhx/movement/v1',
 };
 
 export const INDEXER_URL = {
