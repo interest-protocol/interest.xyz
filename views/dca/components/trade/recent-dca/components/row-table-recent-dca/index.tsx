@@ -1,6 +1,8 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
+import ArrowRight from '@/components/svg/arrow-right';
+
 const RowTableRecentDCA: FC = ({
   from,
   to,
@@ -34,14 +36,12 @@ const RowTableRecentDCA: FC = ({
       >
         {from}
       </Typography>
-      <Typography
-        size="medium"
-        variant="label"
+      <ArrowRight
+        width="100%"
         color="#9CA3AF"
-        fontFamily="Inter"
-      >
-        {'>'}
-      </Typography>
+        maxWidth="1.25rem"
+        maxHeight="1.25rem"
+      />
       <img
         alt={to}
         width={32}
