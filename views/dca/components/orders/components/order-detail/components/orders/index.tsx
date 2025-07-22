@@ -43,7 +43,16 @@ const Orders: FC = () => {
             Gráfico
           </Typography>
         </Box>
-        <CardInfo width="30.57rem" />
+        <CardInfo
+          width="25.125rem"
+          headers={['DCA MOVE Balance', 'DCA USDT Balance']}
+          keys={['dcaMoveBalance', 'dcaUsdtBalance']}
+          values={{
+            dcaMoveBalance: '0,05 MOVE',
+            dcaUsdtBalance: '2 USDT',
+          }}
+          isLoading={false}
+        />
       </Box>
     </Box>
   );

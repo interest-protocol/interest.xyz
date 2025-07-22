@@ -32,9 +32,36 @@ const Overview: FC = () => {
         display="flex"
         flexDirection={['column', 'row']}
       >
-        <CardInfo width="25.125rem" />
-        <CardInfo width="25.125rem" />
-        <CardInfo width="25.125rem" />
+        <CardInfo
+          width="25.125rem"
+          headers={['DCA MOVE Balance', 'DCA USDT Balance']}
+          keys={['dcaMoveBalance', 'dcaUsdtBalance']}
+          values={{
+            dcaMoveBalance: '0,05 MOVE',
+            dcaUsdtBalance: '2 USDT',
+          }}
+          isLoading={false}
+        />
+        <CardInfo
+          width="25.125rem"
+          headers={['DCA MOVE Balance', 'DCA USDT Balance']}
+          keys={['dcaMoveBalance', 'dcaUsdtBalance']}
+          values={{
+            dcaMoveBalance: '0,05 MOVE',
+            dcaUsdtBalance: '2 USDT',
+          }}
+          isLoading={false}
+        />
+        <CardInfo
+          width="25.125rem"
+          headers={['DCA MOVE Balance', 'DCA USDT Balance']}
+          keys={['dcaMoveBalance', 'dcaUsdtBalance']}
+          values={{
+            dcaMoveBalance: '0,05 MOVE',
+            dcaUsdtBalance: '2 USDT',
+          }}
+          isLoading={false}
+        />
       </Box>
     </Box>
   );
