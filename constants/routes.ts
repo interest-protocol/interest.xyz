@@ -5,6 +5,7 @@
 export enum RoutesEnum {
   Swap = 'swap',
   Pools = 'pools',
+  DCA = 'dca',
   Analytics = 'analytics',
   PoolCreate = 'pool-create',
   Leaderboard = 'leaderboard',
@@ -19,6 +20,7 @@ export enum RoutesEnum {
 export const Routes: Record<RoutesEnum, string> = {
   [RoutesEnum.Swap]: '/',
   [RoutesEnum.Pools]: '/pools',
+  [RoutesEnum.DCA]: '/dca',
   [RoutesEnum.Analytics]: '/analytics',
   [RoutesEnum.Leaderboard]: '/leaderboard',
   [RoutesEnum.PoolCreate]: '/pools/create',

@@ -1,134 +1,33 @@
-import { Box, TextField, Typography } from '@interest-protocol/ui-kit';
-import { ChangeEvent, FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Box } from '@interest-protocol/ui-kit';
+import { FC, useState } from 'react';
 
-import { parseInputEventToNumberString } from '@/utils';
-
-import { ICreateTokenForm } from '../create-token.types';
-import CreateTokenFormButton from './create-token-form-button';
-import CreateTokenFormImage from './create-token-form-upload-image';
+import ProgressBar from './progress-bar';
+import StepOne from './step-one';
+import StepTwo from './step-two';
 
 const CreateTokenForm: FC = () => {
-  const {
-    register,
-    setValue,
-    formState: { errors },
-  } = useFormContext<ICreateTokenForm>();
+  const [step, setStep] = useState(1);
+
+  const handleNext = () => setStep((prev) => Math.min(prev + 1, 2));
+  const handleBack = () => setStep((prev) => Math.max(prev - 1, 1));
 
   return (
-    <Box display="flex" flexDirection="column" gap="2xl">
-      <Box
-        px="xl"
-        py="2xl"
-        mx="auto"
-        width="100%"
-        bg="container"
-        maxWidth="37rem"
-        overflow="hidden"
-        borderRadius="xs"
-        color="onSurface"
-      >
-        <Typography variant="headline" size="small">
-          Coin Generator
-        </Typography>
-        <Box py="2xl" display="flex" flexDirection="column" gap="l">
-          <Typography size="large" variant="body">
-            1. Coin Details
-          </Typography>
-          <Box>
-            <TextField
-              label="Name"
-              {...register('name')}
-              placeholder="Eg. Ruco"
-              nPlaceholder={{ opacity: 0.7 }}
-              status={errors.name && 'error'}
-              supportingText={errors.name?.message}
-              fieldProps={{ borderRadius: 'xs', height: '2.8rem' }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              label="Symbol"
-              placeholder="Eg. Ruco"
-              {...register('symbol')}
-              nPlaceholder={{ opacity: 0.7 }}
-              status={errors.symbol && 'error'}
-              supportingText={errors.symbol?.message}
-              fieldProps={{ borderRadius: 'xs', height: '2.8rem' }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              label="Project URL"
-              {...register('projectUrl')}
-              nPlaceholder={{ opacity: 0.7 }}
-              status={errors.projectUrl && 'error'}
-              placeholder="Eg. https://www.Ruco.com"
-              supportingText={errors.projectUrl?.message}
-              fieldProps={{ borderRadius: 'xs', height: '2.8rem' }}
-            />
-          </Box>
-        </Box>
-        <Box display="flex" flexDirection="column" gap="l" mb="2xl">
-          <Typography size="large" variant="body">
-            2. Add Coin Image
-          </Typography>
-          <Box>
-            <TextField
-              type="link"
-              label="Coin Image URL"
-              {...register('imageUrl')}
-              nPlaceholder={{ opacity: 0.7 }}
-              status={errors.imageUrl && 'error'}
-              placeholder="Eg. https://move.com/images/logo.png"
-              fieldProps={{ borderRadius: 'xs', height: '2.8rem' }}
-              supportingText={
-                errors.imageUrl?.message ??
-                'We recommend to upload an image with 250x250 pixels.'
-              }
-            />
-          </Box>
-          <Typography textAlign="center" size="small" variant="body">
-            OR
-          </Typography>
-          <Box display="flex" flexDirection="column" gap="xs">
-            <CreateTokenFormImage setValue={setValue} />
-          </Box>
-        </Box>
-        <Box display="flex" flexDirection="column" gap="l">
-          <Typography size="large" variant="body">
-            3. Coin Features
-          </Typography>
-          <Box>
-            <TextField
-              type="number"
-              label="Coin Decimals"
-              {...register('decimals')}
-              supportingText="Insert the decimal precision of your token. If you don't know what to insert, use 8"
-              nPlaceholder={{ opacity: 0.7 }}
-              fieldProps={{ borderRadius: 'xs', height: '2.8rem' }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              label="Total Supply"
-              nPlaceholder={{ opacity: 0.7 }}
-              status={errors.supply && 'error'}
-              placeholder="Your total coin supply"
-              supportingText={
-                errors.supply?.message ||
-                'Insert the initial token supply to mint'
-              }
-              {...register('supply', {
-                onChange: (v: ChangeEvent<HTMLInputElement>) => {
-                  setValue('supply', Number(parseInputEventToNumberString(v)));
-                },
-              })}
-              fieldProps={{ borderRadius: 'xs', height: '2.8rem' }}
-            />
-          </Box>
-          <CreateTokenFormButton />
-        </Box>
+    <Box
+      p="0"
+      gap="1rem"
+      width="100%"
+      bg="#9CA3AF1A"
+      display="flex"
+      borderRadius="0.75rem"
+      flexDirection="column"
+    >
+      <ProgressBar currentStep={step} totalSteps={2} />
+      <Box p="1.5rem" gap="1rem" display="flex" flexDirection="column">
+        {step === 1 ? (
+          <StepOne onNext={handleNext} />
+        ) : (
+          <StepTwo onBack={handleBack} />
+        )}
       </Box>
     </Box>
   );

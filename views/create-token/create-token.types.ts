@@ -22,6 +22,7 @@ export interface ICreateTokenForm {
   fixedSupply: boolean;
   explorerLink: string;
   executionTime: string;
+  deploy_pool_instantly: boolean;
   pool: ICreateTokenPool;
 }
 
