@@ -25,7 +25,7 @@ const TableRowDesktop: FC<TableRowOrdersProps> = ({
       height="4rem"
       display="grid"
       alignItems="center"
-      gridTemplateColumns="2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr"
+      gridTemplateColumns="2fr 2fr 2fr 2fr 2fr 2fr 2fr 0.1fr"
     >
       <Box display="flex" gap="0.5rem">
         <img
@@ -73,8 +73,8 @@ const TableRowDesktop: FC<TableRowOrdersProps> = ({
       <ExternalLink
         width="100%"
         color="#9CA3AF"
-        maxWidth="0.625rem"
-        maxHeight="0.625rem"
+        maxWidth="1rem"
+        maxHeight="1rem"
       />
     </Box>
   </Link>

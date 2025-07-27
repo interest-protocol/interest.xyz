@@ -25,7 +25,7 @@ const TableOrders: FC<TableOrdersProps> = ({ data }) => (
       alignItems="center"
       borderTopLeftRadius="0.5rem"
       borderTopRightRadius="0.5rem"
-      gridTemplateColumns={['1fr', '2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr']}
+      gridTemplateColumns={['1fr', '2fr 2fr 2fr 2fr 2fr 2fr 2fr 0.1fr']}
     >
       {columns.map((label) => (
         <Box
