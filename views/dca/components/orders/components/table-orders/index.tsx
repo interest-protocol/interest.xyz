@@ -1,45 +1,50 @@
-import { Box } from '@interest-protocol/ui-kit';
+import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import NoCoin from '@/components/wallet/profile/menu-profile/tabs/no-coin';
 
-import RowTableOrders from '../row-table-orders';
+import TableRowOrders from '../table-row-orders';
 import { TableOrdersProps } from './table-order.types';
 import { columns } from './table-orders-columns';
 
 const TableOrders: FC<TableOrdersProps> = ({ data }) => (
   <Box
     width="100%"
-    display="flex"
-    alignItems="center"
-    overflow-x="auto"
-    minHeight="25.3rem"
     borderRadius="0.75rem"
     border="1px solid #1F2937"
-    flexDirection="column"
+    overflowX={['auto', 'visible']}
   >
     <Box
+      gap="0.5rem"
+      px={['0.5rem', '1rem']}
       width="100%"
-      px="1rem"
-      display="flex"
       bg="#9CA3AF1A"
+      display="grid"
       height="3.03125rem"
       alignItems="center"
       borderTopLeftRadius="0.5rem"
       borderTopRightRadius="0.5rem"
-      justifyContent="space-between"
+      gridTemplateColumns={['1fr', '2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr']}
     >
-      {columns.map(({ label, width }) => (
+      {columns.map((label) => (
         <Box
           key={v4()}
-          width={width}
-          color="#FFFFFF"
-          fontSize="1rem"
-          fontWeight="500"
-          fontFamily="Inter"
+          display={['none', 'flex']}
+          gap="3rem"
+          alignItems="center"
         >
-          {label}
+          <Typography
+            size="medium"
+            variant="label"
+            color="#FFFFFF"
+            fontSize="1rem"
+            fontWeight="500"
+            fontFamily="Inter"
+            display={['none', 'block']}
+          >
+            {label}
+          </Typography>
         </Box>
       ))}
     </Box>
@@ -55,7 +60,7 @@ const TableOrders: FC<TableOrdersProps> = ({ data }) => (
         <NoCoin />
       </Box>
     ) : (
-      data.map((item) => <RowTableOrders key={v4()} {...item} />)
+      data.map((item) => <TableRowOrders key={v4()} {...item} />)
     )}
   </Box>
 );

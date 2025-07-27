@@ -1,4 +1,4 @@
-export interface RowTableOrdersProps {
+export interface TableRowOrdersProps {
   id: string;
   from: string;
   to: string;
