@@ -7,7 +7,7 @@ import { useTabState } from '@/hooks/use-tab-manager';
 import Pools from './components/pools';
 import StatsTabs from './components/stats-tabs';
 import Tokens from './components/tokens';
-import Transactions from './components/transations';
+import Transactions from './components/transactions';
 
 const StatsContent: FC = () => {
   const { tab } = useTabState();
