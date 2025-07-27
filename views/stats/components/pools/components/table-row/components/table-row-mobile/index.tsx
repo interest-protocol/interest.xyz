@@ -3,16 +3,16 @@ import { FC } from 'react';
 
 import CellText from '@/views/stats/components/cell-text';
 
-import { TokenProps } from '../../../../tokens.types';
+import { PoolsProps } from '../../../../pools.types';
 
-const TableRowMobile: FC<TokenProps> = ({
+const TableRowMobile: FC<PoolsProps> = ({
   rank,
   token,
-  price,
-  hour,
-  day,
-  fdv,
-  volume,
+  transactions,
+  tvl,
+  volume24h,
+  volume7d,
+  apr1d,
 }) => (
   <Box p="m" display="flex" flexDirection="column" gap="0.25rem">
     <Box display="flex" gap="0.5rem">
@@ -36,28 +36,24 @@ const TableRowMobile: FC<TokenProps> = ({
       </Box>
     </Box>
     <Box display="flex" gap="0.5rem">
-      <CellText color="#FFFFFF">Price:</CellText>
-      <CellText color="#FFFFFF">{price}</CellText>
+      <CellText color="#FFFFFF">Transactions:</CellText>
+      <CellText color="#FFFFFF">{transactions}</CellText>
     </Box>
     <Box display="flex" gap="0.5rem">
-      <CellText color="#FFFFFF">1h:</CellText>
-      <CellText color={hour.startsWith('+') ? '#157F3D' : '#EF4444'}>
-        {hour}
-      </CellText>
+      <CellText color="#FFFFFF">TVL:</CellText>
+      <CellText color="#FFFFFF">{tvl}</CellText>
     </Box>
     <Box display="flex" gap="0.5rem">
-      <CellText color="#FFFFFF">1d:</CellText>
-      <CellText color={day.startsWith('-') ? '#EF4444' : '#157F3D'}>
-        {day}
-      </CellText>
+      <CellText color="#FFFFFF">24h Volume:</CellText>
+      <CellText color="#FFFFFF">{volume24h}</CellText>
     </Box>
     <Box display="flex" gap="0.5rem">
-      <CellText color="#FFFFFF">FDV:</CellText>
-      <CellText color="#FFFFFF">{fdv}</CellText>
+      <CellText color="#FFFFFF">7D Volume:</CellText>
+      <CellText color="#FFFFFF">{volume7d}</CellText>
     </Box>
     <Box display="flex" gap="0.5rem">
-      <CellText color="#FFFFFF">Volume:</CellText>
-      <CellText color="#FFFFFF">{volume}</CellText>
+      <CellText color="#FFFFFF">1D APR:</CellText>
+      <CellText color="#FFFFFF">{apr1d}</CellText>
     </Box>
   </Box>
 );

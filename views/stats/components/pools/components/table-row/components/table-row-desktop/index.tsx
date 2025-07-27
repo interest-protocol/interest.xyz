@@ -3,16 +3,16 @@ import { FC } from 'react';
 
 import CellText from '@/views/stats/components/cell-text';
 
-import { TokenProps } from '../../../../tokens.types';
+import { PoolsProps } from '../../../../pools.types';
 
-const TableRowDesktop: FC<TokenProps> = ({
+const TableRowDesktop: FC<PoolsProps> = ({
   rank,
   token,
-  price,
-  hour,
-  day,
-  fdv,
-  volume,
+  transactions,
+  tvl,
+  volume24h,
+  volume7d,
+  apr1d,
 }) => (
   <Box
     gap="m"
@@ -20,7 +20,7 @@ const TableRowDesktop: FC<TokenProps> = ({
     height="4rem"
     display="grid"
     alignItems="center"
-    gridTemplateColumns="2fr 2fr 2fr 2fr 2fr 2fr"
+    gridTemplateColumns="1fr 2fr 1fr 1fr 1fr 1fr 1fr"
   >
     <Box display="flex" gap="3rem" alignItems="center">
       <CellText color="#FFFFFF80">{rank}</CellText>
@@ -38,15 +38,11 @@ const TableRowDesktop: FC<TokenProps> = ({
         <CellText color="#FFFFFF">{token}</CellText>
       </Box>
     </Box>
-    <CellText color="#FFFFFF">{price}</CellText>
-    <CellText color={hour.startsWith('+') ? '#157F3D' : '#EF4444'}>
-      {hour}
-    </CellText>
-    <CellText color={day.startsWith('-') ? '#EF4444' : '#157F3D'}>
-      {day}
-    </CellText>
-    <CellText color="#FFFFFF">{fdv}</CellText>
-    <CellText color="#FFFFFF">{volume}</CellText>
+    <CellText color="#FFFFFF">{transactions}</CellText>
+    <CellText color="#FFFFFF">{tvl}</CellText>
+    <CellText color="#FFFFFF">{volume24h}</CellText>
+    <CellText color="#FFFFFF">{volume7d}</CellText>
+    <CellText color="#FFFFFF">{apr1d}</CellText>
   </Box>
 );
 

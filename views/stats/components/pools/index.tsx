@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-const Pools: FC = () => {
-  return <h1>Nada a dizer</h1>;
-};
+import TablePools from './components/table-pools';
+
+const Pools: FC = () => <TablePools />;
 
 export default Pools;
