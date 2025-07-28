@@ -16,6 +16,7 @@ const NoCoin: FC = () => (
       height="1.25rem"
       maxHeight="100%"
       maxWidth="100%"
+      color="#9CA3AF"
     />
     <Typography
       size="medium"
@@ -24,6 +25,7 @@ const NoCoin: FC = () => (
       fontWeight="700"
       fontSize="1rem"
       lineHeight="1.5rem"
+      color="#FFFFFF"
     >
       No tokens found
     </Typography>
