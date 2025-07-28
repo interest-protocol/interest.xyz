@@ -1,34 +1,25 @@
 import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
-import { Box } from '@interest-protocol/ui-kit';
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { Box, TextField } from '@interest-protocol/ui-kit';
+import { useAptosWallet } from '@razorlabs/wallet-kit';
+import { ChangeEvent, FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { MOVE } from '@/constants/coins';
-import useEventListener from '@/hooks/use-event-listener';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { parseInputEventToNumberString, ZERO_BIG_NUMBER } from '@/utils';
 import { ICreateTokenForm } from '@/views/create-token/create-token.types';
-import { TokenField } from '@/views/pool-create/select-coins/input/token-field';
 
+import AmountInDollar from './dollar-value';
 import { InputProps } from './input.types';
-import InputQuoteMaxButton from './input-quote-max-button';
-import InputTokenMaxButton from './input-token-max-button';
 import QuoteBalance from './quote-balance';
-import QuoteInputDollar from './quote-input-dollar';
 import SelectToken from './select-token';
 import TokenBalance from './token-balance';
-import TokenInputDollar from './token-input-dollar';
 
 const Input: FC<InputProps> = ({ label }) => {
   const { coinsMap } = useCoins();
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const {
-    register,
-    setValue,
-    getValues,
-    formState: { errors },
-  } = useFormContext<ICreateTokenForm>();
+  const { account } = useAptosWallet();
+  const { register, setValue, getValues } = useFormContext<ICreateTokenForm>();
 
   const type = MOVE.address.toString();
   const balance =
@@ -38,58 +29,84 @@ const Input: FC<InputProps> = ({ label }) => {
         )
       : getValues('supply');
 
-  const handleSetMobile = useCallback(() => {
-    const mediaIsMobile = !window.matchMedia('(max-width: 26.875rem)').matches;
-    setIsMobile(mediaIsMobile);
-  }, []);
-
-  useEventListener('resize', handleSetMobile, true);
+  const rawValue = getValues(`pool.${label}Value`);
+  const isEmpty = !rawValue || isNaN(+rawValue) || +rawValue <= 0;
 
   return (
     <Box
+      gap="l"
+      px="1rem"
+      py="1.5rem"
       width="100%"
-      display=" flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignContent="center"
+      bg="#9CA3AF1A"
+      display="flex"
+      height="5.75rem"
+      alignItems="center"
+      borderRadius="0.75rem"
+      border="1px solid #F3F4F61A"
+      justifyContent="space-between"
     >
-      <TokenField
-        active
-        status={
-          label == 'quote'
-            ? errors.pool?.quoteValue && 'error'
-            : errors.pool?.tokenValue && 'error'
-        }
-        supportingText={
-          label == 'quote'
-            ? errors.pool?.quoteValue?.message
-            : errors.pool?.tokenValue?.message
-        }
-        opacity="0.7"
-        placeholder="--"
-        variant="outline"
-        textAlign="right"
-        Bottom={label === 'token' ? <TokenInputDollar /> : <QuoteInputDollar />}
-        TokenIcon={<SelectToken label={label} isMobile={isMobile} />}
-        Balance={label === 'token' ? <TokenBalance /> : <QuoteBalance />}
-        ButtonMax={
-          label === 'token' ? <InputTokenMaxButton /> : <InputQuoteMaxButton />
-        }
-        {...register(`pool.${label}Value`, {
-          onChange: (v: ChangeEvent<HTMLInputElement>) => {
-            const value = parseInputEventToNumberString(v);
-            const amount = +value > balance ? balance : value;
-            setValue?.(`pool.${label}Value`, String(amount));
-            setValue?.(
-              `pool.${label}ValueBN`,
-              FixedPointMath.toBigNumber(
-                amount,
-                label === 'quote' ? 8 : getValues('decimals')
-              )
-            );
-          },
-        })}
-      />
+      <Box
+        gap="0.5rem"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        width="100%"
+      >
+        <Box
+          gap="xs"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box
+            flex="1"
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            <TextField
+              ml="-1rem"
+              width="100%"
+              lineHeight="l"
+              placeholder="0"
+              fontFamily="Inter"
+              fontWeight="400"
+              fontSize={['2xl', '2.25rem']}
+              opacity={isEmpty ? 0.4 : undefined}
+              fieldProps={{
+                width: '100%',
+                border: 'none',
+                nHover: {
+                  border: 'none',
+                },
+                color: isEmpty ? '#6B7280' : '#FFFFFF',
+              }}
+              {...register(`pool.${label}Value`, {
+                onChange: (v: ChangeEvent<HTMLInputElement>) => {
+                  const value = parseInputEventToNumberString(v);
+                  const amount = +value > balance ? balance : value;
+                  setValue?.(`pool.${label}Value`, String(amount));
+                  setValue?.(
+                    `pool.${label}ValueBN`,
+                    FixedPointMath.toBigNumber(
+                      amount,
+                      label === 'quote' ? 8 : getValues('decimals')
+                    )
+                  );
+                },
+              })}
+            />
+          </Box>
+          <SelectToken label={label} />
+        </Box>
+        {account?.address && (
+          <Box display="flex" justifyContent="space-between" color="outline">
+            <AmountInDollar label={label} />
+            {label == 'token' ? <TokenBalance /> : <QuoteBalance />}
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

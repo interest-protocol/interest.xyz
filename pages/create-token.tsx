@@ -7,6 +7,7 @@ import { SEO } from '@/components';
 import { MOVE } from '@/constants/coins';
 import { useCoinsPrice } from '@/hooks/use-coins-price';
 import CreateToken from '@/views/create-token';
+import { CreateTokenFormStep } from '@/views/create-token/create-token.types';
 import { validationSchema } from '@/views/create-token/create-token-form/create-token-form.validation';
 
 const CreateTokenPage: NextPage = () => {
@@ -19,6 +20,7 @@ const CreateTokenPage: NextPage = () => {
       fixedSupply: true,
       pool: { active: true },
       supply: 1_000_000_000,
+      step: CreateTokenFormStep.PresetInfo,
     },
   });
 

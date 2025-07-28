@@ -1,67 +1,205 @@
-'use client';
+import {
+  Box,
+  BoxElementProps,
+  Button,
+  TextFieldElementProps,
+  Typography,
+} from '@interest-protocol/ui-kit';
+import stylin from '@stylin.js/react';
+import {
+  ChangeEvent,
+  FC,
+  forwardRef,
+  PropsWithRef,
+  RefAttributes,
+  useId,
+  useState,
+} from 'react';
 
-import { Box, TextField, Typography } from '@interest-protocol/ui-kit';
-import { FC } from 'react';
+import InfoSVG from '@/components/svg/info';
 
-import { FormFieldBoxProps } from './form-field-box.types';
+import {
+  FormFieldBoxProps,
+  TextAreaElementProps,
+} from './form-field-box.types';
 
-const FormFieldBox: FC<FormFieldBoxProps> = ({
-  label,
-  placeholder,
-  register,
-  type = 'text',
-  width = '100%',
-  height = '4.59375rem',
-  error,
-  supportingText,
-  icon,
-}) => {
-  return (
-    <Box
-      p="0.75rem"
-      bg="#9CA3AF1A"
-      borderRadius="0.75rem"
-      border="1px solid #F3F4F61A"
-      width={width}
-      height={height}
-    >
-      <Typography
-        size="small"
-        mb="0.25rem"
-        variant="label"
-        color="#9CA3AF"
-        fontWeight="400"
-        fontFamily="Inter"
-        fontSize="0.875rem"
-        display="flex"
-        alignItems="center"
-        gap="0.25rem"
-      >
-        {label}
-        {icon}
-      </Typography>
+const TextFieldElement = stylin<TextFieldElementProps & RefAttributes<unknown>>(
+  'input'
+)({
+  '&::-webkit-outer-spin-button': {
+    WebkitAppearance: 'none',
+  },
+  '&::-webkit-inner-spin-button': {
+    WebkitAppearance: 'none',
+  },
+});
 
+const TextAreaElement = stylin<TextAreaElementProps & RefAttributes<unknown>>(
+  'textarea'
+)({});
+
+const FieldContainer = stylin<BoxElementProps & RefAttributes<unknown>>('div')({
+  '&:has(input:focus), &:has(textarea:focus)': {
+    borderColor: '#B4C5FF',
+  },
+
+  '&:has(input:not(:placeholder-shown):not(:focus)), &:has(textarea:not(:placeholder-shown):not(:focus))':
+    {
+      borderColor: '#9CA3AF',
+    },
+});
+
+export const FormFieldBox: FC<
+  PropsWithRef<Omit<FormFieldBoxProps, 'Prefix' | 'onFocus' | 'onBlur'>>
+> = forwardRef(
+  (
+    {
+      label,
+      Suffix,
+      status,
+      disabled,
+      fieldProps,
+      isTextArea,
+      supportingText,
+      ...props
+    },
+    ref
+  ) => {
+    const [value, setValue] = useState<string>();
+    const id = useId();
+
+    const statusColor = !status ? ' #fff' : status == 'none' ? '#fff' : status;
+
+    const handleBorderStatus = () => {
+      const isError = status === 'error';
+      const isSuccess = status === 'success';
+      const hasStatus = isError || isSuccess;
+      if (disabled) return '1px solid red';
+      if (hasStatus)
+        return `1px solid ${isError ? '#FED7D7' : '#BAF6CF'} !important`;
+    };
+
+    const changeValue = (input: string) => setValue(input);
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+      changeValue(e.target.value);
+
+    return (
       <Box>
-        <TextField
-          ml="-1rem"
-          {...register}
-          type={type}
-          placeholder={placeholder}
-          nPlaceholder={{ opacity: 0.7 }}
-          status={error ? 'error' : undefined}
-          supportingText={error || supportingText}
-          fontSize="1rem"
-          fieldProps={{
-            width: '100%',
-            border: 'none',
-            nHover: { border: 'none' },
-            fontWeight: 400,
-            color: '#FFFFFF',
-          }}
-        />
+        <FieldContainer
+          p="0.75rem"
+          pb={isTextArea ? '0.75rem' : '1rem'}
+          display="flex"
+          //flexDirection="column"
+          gap="0.25rem"
+          bg="#9CA3AF1A"
+          borderRadius="0.75rem"
+          border={handleBorderStatus() || '1px solid #F3F4F61A'}
+          {...fieldProps}
+        >
+          <Box width="100%">
+            <Box display="flex">
+              <Typography
+                size="small"
+                display="flex"
+                variant="body"
+                color="#9CA3AF"
+                fontWeight="400"
+                fontFamily="Inter"
+                fontSize="0.875rem"
+                lineHeight="1.25rem"
+                alignItems="center"
+              >
+                {label}
+              </Typography>
+              <Button
+                isIcon
+                p="unset"
+                ml="0.25rem"
+                variant="text"
+                width="1.25rem"
+                color="#6B7280"
+                height="1.25rem"
+                nHover={{
+                  bg: 'unset',
+                  color: 'primary',
+                }}
+              >
+                <InfoSVG maxWidth="100%" maxHeight="100%" width="100%" />
+              </Button>
+            </Box>
+            <Box>
+              {isTextArea ? (
+                <TextAreaElement
+                  id={id}
+                  rows={2}
+                  ref={ref}
+                  all="unset"
+                  width="100%"
+                  disabled={disabled}
+                  color={
+                    statusColor == 'success'
+                      ? '#fff'
+                      : statusColor == 'error'
+                        ? '#FED7D7'
+                        : statusColor
+                  }
+                  placeholder="Enter pool description here..."
+                  nPlaceholder={{
+                    color: '#6B7280',
+                  }}
+                />
+              ) : (
+                <TextFieldElement
+                  id={id}
+                  ref={ref}
+                  all="unset"
+                  width="100%"
+                  fontSize="1rem"
+                  bg="transparent"
+                  height="1.25rem"
+                  fontWeight="400"
+                  fontFamily="Inter"
+                  disabled={disabled}
+                  color={
+                    statusColor == 'success'
+                      ? '#fff'
+                      : statusColor == 'error'
+                        ? '#FED7D7'
+                        : statusColor
+                  }
+                  lineHeight="1.25rem"
+                  onChange={handleChange}
+                  defaultValue={value || props.defaultValue}
+                  nPlaceholder={{
+                    color: '#6B7280',
+                  }}
+                  placeholder="Name"
+                  {...props}
+                />
+              )}
+            </Box>
+          </Box>
+          {Suffix}
+        </FieldContainer>
+        {supportingText && (
+          <Typography
+            size="small"
+            px="0.75rem"
+            pt="0.25rem"
+            hyphens="auto"
+            variant="body"
+            wordWrap="break-word"
+            overflowWrap="break-word"
+            color={disabled ? '#6B7280' : statusColor}
+          >
+            {supportingText}
+          </Typography>
+        )}
       </Box>
-    </Box>
-  );
-};
+    );
+  }
+);
 
-export default FormFieldBox;
+FormFieldBox.displayName = 'FormFieldBox';
+export * from './form-field-box.types';

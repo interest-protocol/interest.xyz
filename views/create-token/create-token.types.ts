@@ -10,12 +10,17 @@ export interface ICreateTokenPool {
   tokenValueBN: BigNumber;
 }
 
+export enum CreateTokenFormStep {
+  PresetInfo,
+  Deploy,
+}
 export interface ICreateTokenForm {
   name: string;
   error: string;
   symbol: string;
   supply: number;
   decimals: number;
+  step: CreateTokenFormStep;
   imageUrl?: string;
   projectUrl?: string;
   description?: string;

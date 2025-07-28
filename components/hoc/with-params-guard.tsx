@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
 
-import Error from '@/views/error';
+import Error from '@/views/create-token/error';
 import Loading from '@/views/loading';
 
 type TWithParamsGuard = (

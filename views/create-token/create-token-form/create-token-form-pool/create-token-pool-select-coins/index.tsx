@@ -4,7 +4,7 @@ import { FC } from 'react';
 import Input from './input';
 
 const CreateTokenPoolSelectCoins: FC = () => (
-  <Box my="s" gap="s" display="flex" alignItems="center" flexDirection="column">
+  <Box gap="1rem" display="flex" alignItems="center" flexDirection="column">
     <Input label="quote" />
     <Input label="token" />
   </Box>
