@@ -90,7 +90,6 @@ export const FormFieldBox: FC<
           p="0.75rem"
           pb={isTextArea ? '0.75rem' : '1rem'}
           display="flex"
-          //flexDirection="column"
           gap="0.25rem"
           bg="#9CA3AF1A"
           borderRadius="0.75rem"
