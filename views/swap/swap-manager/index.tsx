@@ -8,7 +8,7 @@ import { useDebounce } from 'use-debounce';
 import { TREASURY } from '@/constants';
 import { EXCHANGE_FEE_BPS } from '@/constants/fees';
 import { FixedPointMath } from '@/lib';
-import { ZERO_BIG_NUMBER } from '@/utils';
+import { removeLeadingZeros, ZERO_BIG_NUMBER } from '@/utils';
 
 import { MosaicQuoteResponse } from '../swap.types';
 import { SwapErrorManager } from './swap-error-manager';
@@ -44,7 +44,7 @@ const SwapManager: FC = () => {
     const slippage = (getValues('settings.slippage') * 100).toFixed(0);
 
     fetch(
-      `https://api.mosaic.ag/v1/quote?srcAsset=${from.type}&dstAsset=${to.type}&amount=${from.valueBN.toFixed(0)}&feeInBps=${EXCHANGE_FEE_BPS}&feeReceiver=${TREASURY}&includeSources=interest_v2,interest_curve_stable,interest_curve_volatile&slippage=${slippage}&sender=${account?.address ?? '0x0'}`,
+      `https://api.mosaic.ag/v1/quote?srcAsset=${removeLeadingZeros(from.type)}&dstAsset=${removeLeadingZeros(to.type)}&amount=${from.valueBN.toFixed(0)}&feeInBps=${EXCHANGE_FEE_BPS}&feeReceiver=${TREASURY}&includeSources=interest_curve_stable,interest_curve_volatile&slippage=${slippage}&sender=${account?.address ?? '0x0'}`,
       {
         headers: {
           accept: '*/*',
