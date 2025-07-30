@@ -151,3 +151,6 @@ export function isHexString(value: any, length?: number): boolean {
 
 export const formatAddress = (address: string): string =>
   `${address.slice(0, 6)}...${address.slice(-4)}`;
+
+export const removeLeadingZeros = (hexString: string) =>
+  '0x' + hexString.slice(2).replace(/^0+/, '') || '0';
