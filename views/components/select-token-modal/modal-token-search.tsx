@@ -49,8 +49,7 @@ const ModalTokenSearch: FC<ModalTokenSearchProps> = ({
       <TokenModalItem
         key={search}
         selected={false}
-        symbol={tokenMetadata.symbol}
-        iconUri={tokenMetadata.iconUri}
+        token={tokenMetadata}
         onClick={() => handleSelectToken(tokenMetadata)}
         isFA={tokenMetadata.standard === TokenStandard.FA}
       />

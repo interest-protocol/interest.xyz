@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 
 import { SEO, ThemeManager } from '@/components';
-import Error from '@/views/error';
+import Error from '@/views/create-token/error';
 
 interface Props {
   statusCode: number | undefined;

@@ -6,7 +6,6 @@ import VerifiedList from './verified-list';
 
 const CoinSection: FC = () => (
   <Box
-    py="l"
     gap="s"
     display="flex"
     alignItems="center"

@@ -4,6 +4,7 @@ import { FixedPointMath } from '@/lib';
 
 export const validationSchema = yup.object({
   name: yup.string(),
+  step: yup.number(),
   symbol: yup
     .string()
     .matches(

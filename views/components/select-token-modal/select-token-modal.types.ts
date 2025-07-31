@@ -2,11 +2,11 @@ import { Control, UseFormSetValue } from 'react-hook-form';
 
 import { AssetMetadata } from '@/lib/coins-manager/coins-manager.types';
 
-export interface TokenModalItemProps
-  extends Pick<AssetMetadata, 'symbol' | 'iconUri'> {
+export interface TokenModalItemProps {
   isFA: boolean;
   selected: boolean;
   onClick: () => void;
+  token: AssetMetadata;
 }
 
 export interface SelectTokenModalProps {

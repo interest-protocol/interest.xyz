@@ -3,7 +3,6 @@ export interface InputProps {
   label: 'quote' | 'token';
 }
 
-export interface HeaderInfoProps {
-  type: string;
-  decimals: number;
+export interface MaxBadgeProps {
+  handleMax: () => void;
 }

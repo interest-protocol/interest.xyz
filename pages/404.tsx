@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 
 import { SEO } from '@/components';
-import ErrorPage from '@/views/error';
+import ErrorPage from '@/views/create-token/error';
 
 const NotFoundPage: NextPage = () => (
   <>

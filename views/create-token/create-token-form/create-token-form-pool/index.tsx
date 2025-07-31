@@ -6,7 +6,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { ICreateTokenForm } from '../../create-token.types';
 import CreateTokenFormPoolForm from './create-token-form-pool-form';
 
-const CreateTokenFormPoolToggle: FC = () => {
+export const CreateTokenFormPoolToggle: FC = () => {
   const { control, setValue } = useFormContext<ICreateTokenForm>();
   const value = useWatch({ control, name: 'pool.active' });
   return (
