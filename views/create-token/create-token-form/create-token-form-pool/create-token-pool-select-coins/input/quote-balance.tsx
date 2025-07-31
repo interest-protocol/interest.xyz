@@ -3,18 +3,17 @@ import {
   Network,
   normalizeSuiAddress,
 } from '@interest-protocol/interest-aptos-v2';
-import {
-  Button,
-  ProgressIndicator,
-  Typography,
-} from '@interest-protocol/ui-kit';
+import { Box, ProgressIndicator, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import SubtractBox from '@/components/svg/subtract-box';
 import { FixedPointMath } from '@/lib';
 import { useCoins } from '@/lib/coins-manager/coins-manager.hooks';
 import { ZERO_BIG_NUMBER } from '@/utils';
 import { ICreateTokenForm } from '@/views/create-token/create-token.types';
+
+import { MaxBadge } from './max-budget';
 
 const QuoteBalance: FC = () => {
   const { coinsMap, loading } = useCoins();
@@ -38,23 +37,41 @@ const QuoteBalance: FC = () => {
   };
 
   return (
-    <Button
-      p="2xs"
-      gap="0.5rem"
-      display="flex"
-      color="onSurface"
-      variant="outline"
-      alignItems="center"
-      onClick={handleMax}
-      borderColor="transparent"
-      nHover={{ bg: 'unset', borderColor: 'primary' }}
-      className="loading-balance"
-    >
-      <Typography size="small" variant="body" fontSize="xs">
-        Balance: {FixedPointMath.toNumber(balance) ?? '--'}
+    <Box display="flex" gap="xs" alignItems="center">
+      <Box display={['none', 'block']} width="1.38875rem" height="1.25rem">
+        <SubtractBox
+          maxHeight="100%"
+          maxWidth="100%"
+          width="100%"
+          height="100%"
+        />
+      </Box>
+      <Typography
+        size="small"
+        variant="body"
+        color="#D1D5DB"
+        fontWeight="400"
+        fontSize="0.75rem"
+        fontFamily="Inter"
+        whiteSpace="nowrap"
+      >
+        {FixedPointMath.toNumber(balance) ?? '--'}
       </Typography>
-      {loading && <ProgressIndicator variant="loading" size={12} />}
-    </Button>
+      <MaxBadge handleMax={handleMax} />
+      {loading && (
+        <Box
+          mx="xs"
+          mt="-1.7rem"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box position="absolute" justifySelf="flex-end">
+            <ProgressIndicator variant="loading" size={12} />
+          </Box>
+        </Box>
+      )}
+    </Box>
   );
 };
 

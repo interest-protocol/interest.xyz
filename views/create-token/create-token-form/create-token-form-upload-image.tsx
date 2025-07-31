@@ -65,21 +65,20 @@ const CreateTokenFormImage: FC<CreateTokenFormImageProps> = ({ setValue }) => {
   return (
     <Box
       p="l"
-      gap="m"
+      gap="0.75rem"
       display="flex"
       bg="#9CA3AF1A"
       borderRadius="xs"
-      borderWidth="1px"
       alignItems="center"
+      justifyContent="center"
       height="4.59375rem"
       onDrop={handleDropFile}
-      width={['100%', '19.5rem']}
-      border="1px solid #BBB9FD99"
+      outline="2px dashed #BBB9FD99"
       onDragEnter={() => setDragging(true)}
       onDragLeave={() => setDragging(false)}
       onDragOver={(e) => e.preventDefault()}
-      borderStyle={dragging ? 'solid' : 'dashed'}
-      borderColor={dragging ? 'primary' : 'outlineVariant'}
+      outlineStyle={dragging ? 'solid' : 'dashed'}
+      outlineColor={dragging ? 'primary' : 'outlineVariant'}
     >
       <FolderSVG maxWidth="1.4rem" maxHeight="1.4rem" width="100%" />
 
@@ -102,6 +101,7 @@ const CreateTokenFormImage: FC<CreateTokenFormImageProps> = ({ setValue }) => {
           cursor="pointer"
           fontFamily="Inter"
           textDecoration="underline"
+          fontSize="0.875rem"
         >
           upload
         </Typography>

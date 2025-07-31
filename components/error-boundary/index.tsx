@@ -1,6 +1,6 @@
 import { Component, ReactElement } from 'react';
 
-import Error from '@/views/error';
+import Error from '@/views/create-token/error';
 
 import { Props, State } from './error-boundary.types';
 

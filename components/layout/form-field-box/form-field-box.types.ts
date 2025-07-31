@@ -1,14 +1,11 @@
-import { ReactNode } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { TextFieldProps } from '@interest-protocol/ui-kit';
+import { TextareaHTMLAttributes } from 'react';
 
-export interface FormFieldBoxProps {
-  label: string;
-  type?: string;
-  error?: string;
-  placeholder?: string;
-  supportingText?: string;
-  width?: string | string[];
-  height?: string | string[];
-  register?: UseFormRegisterReturn;
-  icon?: ReactNode;
+export type TextAreaElementProps = Omit<
+  TextareaHTMLAttributes<HTMLInputElement>,
+  'color' | 'translate' | 'height' | 'width' | 'content'
+>;
+
+export interface FormFieldBoxProps extends TextFieldProps {
+  isTextArea?: boolean;
 }

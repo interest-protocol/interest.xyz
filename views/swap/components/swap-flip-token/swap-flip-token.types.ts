@@ -1,3 +1,3 @@
 export interface SwapFlipTokenProps {
-  type: 'swap' | 'bridge' | 'dca';
+  type: 'swap' | 'bridge';
 }

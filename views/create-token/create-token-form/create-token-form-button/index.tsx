@@ -14,13 +14,8 @@ import SuccessModal from '@/views/components/success-modal';
 
 import { ICreateTokenForm } from '../../create-token.types';
 import { logCreateToken } from '../../create-token.utils';
-import { CreateTokenFormButtonProps } from './create-token-form-button.types';
 
-const CreateTokenFormButton: FC<CreateTokenFormButtonProps> = ({
-  step,
-  onClick,
-  onBackClick,
-}) => {
+const CreateTokenFormButton: FC = () => {
   const dexV2 = useInterestV2Dex();
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
@@ -170,45 +165,18 @@ const CreateTokenFormButton: FC<CreateTokenFormButtonProps> = ({
       }),
     });
 
-  const requiredFieldsFilled = !!(
-    values.name &&
-    values.symbol &&
-    values.projectUrl
-  );
-
-  const canProceedStepOne = step === 1 && requiredFieldsFilled;
-  const canSubmitStepTwo =
-    step === 2 && !!account && !loading && values.decimals && values.supply;
+  const isRequiredFieldsFilled = !!(values.name && values.symbol);
 
   return (
     <Box
       gap="1.5rem"
       display="flex"
-      flexShrink={0}
       alignItems="center"
       justifyContent="space-between"
     >
       <Button
         py="1rem"
-        width="47%"
-        bg="#9CA3AF1A"
-        fontSize="1rem"
-        variant="filled"
-        fontWeight="500"
-        fontFamily="Inter"
-        borderRadius="0.75rem"
-        justifyContent="center"
-        color="#9CA3AF"
-        disabled={step === 1}
-        onClick={onBackClick}
-        nHover={step === 1 ? {} : { color: '#002A78' }}
-      >
-        Back
-      </Button>
-
-      <Button
-        py="1rem"
-        width="47%"
+        width="100%"
         bg="#B4C5FF"
         fontSize="1rem"
         variant="filled"
@@ -216,10 +184,10 @@ const CreateTokenFormButton: FC<CreateTokenFormButtonProps> = ({
         fontFamily="Inter"
         borderRadius="0.75rem"
         justifyContent="center"
-        disabled={step === 1 ? !canProceedStepOne : !canSubmitStepTwo}
-        onClick={step === 1 ? onClick : onSubmit}
+        disabled={!isRequiredFieldsFilled}
+        onClick={onSubmit}
       >
-        {step === 1 ? 'Next' : 'Create Token'}
+        Create Token
       </Button>
     </Box>
   );

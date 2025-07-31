@@ -1,32 +1,29 @@
 import { Box } from '@interest-protocol/ui-kit';
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
+import { CreateTokenFormStep, ICreateTokenForm } from '../create-token.types';
+import CreateTokenFormDeployPool from './create-token-form-deploy-pool';
+import CreateTokenFormPreset from './create-token-form-preset';
 import ProgressBar from './progress-bar';
-import StepOne from './step-one';
-import StepTwo from './step-two';
 
 const CreateTokenForm: FC = () => {
-  const [step, setStep] = useState(1);
-
-  const handleNext = () => setStep((prev) => Math.min(prev + 1, 2));
-  const handleBack = () => setStep((prev) => Math.max(prev - 1, 1));
-
+  const { control } = useFormContext<ICreateTokenForm>();
+  const step = useWatch({ control, name: 'step' });
   return (
     <Box
-      p="0"
-      gap="1rem"
       width="100%"
-      bg="#9CA3AF1A"
       display="flex"
-      borderRadius="0.75rem"
+      bg="#9CA3AF1A"
       flexDirection="column"
+      borderRadius="0.75rem"
     >
-      <ProgressBar currentStep={step} totalSteps={2} />
-      <Box p="1.5rem" gap="1rem" display="flex" flexDirection="column">
-        {step === 1 ? (
-          <StepOne onNext={handleNext} />
+      <ProgressBar currentStep={2} totalSteps={2} />
+      <Box p="1.5rem" display="flex" flexDirection="column">
+        {step === CreateTokenFormStep.PresetInfo ? (
+          <CreateTokenFormPreset />
         ) : (
-          <StepTwo onBack={handleBack} />
+          <CreateTokenFormDeployPool />
         )}
       </Box>
     </Box>
