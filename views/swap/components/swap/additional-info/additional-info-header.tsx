@@ -43,7 +43,8 @@ const AdditionalInfoHeader: FC<AdditionalInfoHeaderProps> = ({
         letterSpacing="-0.035rem"
         color="#B8C4C4"
       >
-        1 {fromSymbol} = {`${formatMoney(Number(amount))} ${to.symbol} `}
+        1 {fromSymbol} ={' '}
+        {`${formatMoney(isNaN(Number(amount)) ? 0.0 : Number(amount))} ${to.symbol}`}
         <Typography
           variant="body"
           size="small"
