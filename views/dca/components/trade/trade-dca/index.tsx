@@ -1,9 +1,8 @@
 import { Box, Typography } from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 
-import FormFieldBox from '@/components/layout/form-field-box';
+import { FormFieldBox } from '@/components/layout/form-field-box';
 import { CogsSVG } from '@/components/svg';
-import InfoSVG from '@/components/svg/info';
 import Input from '@/views/swap/components/input';
 import ToInput from '@/views/swap/components/input/to-input';
 import SwapFlipToken from '@/views/swap/components/swap-flip-token';
@@ -88,24 +87,12 @@ const TradeDCA: FC = () => (
     </Box>
 
     <Box
-      gap="s"
-      display="flex"
-      justifyContent="space-between"
-      flexDirection={['column', 'row']}
+      gap="1.5rem"
+      display="grid"
+      gridTemplateColumns={['1fr', '1fr', '1fr 1fr']}
     >
-      <FormFieldBox
-        label="Frequency"
-        placeholder="1"
-        width={['100%', '49.3%']}
-        icon={<InfoSVG maxWidth="1.25rem" maxHeight="1.25rem" />}
-      />
-
-      <FormFieldBox
-        label="Minutes"
-        placeholder="20"
-        width={['100%', '49.3%']}
-        icon={<InfoSVG maxWidth="1.25rem" maxHeight="1.25rem" />}
-      />
+      <FormFieldBox label="Frequency" placeholder="1" />
+      <FormFieldBox label="Minutes" placeholder="20" />
     </Box>
     <TradeDCAButton />
   </Box>
