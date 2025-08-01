@@ -44,9 +44,9 @@ const FieldContainer = stylin<BoxElementProps & RefAttributes<unknown>>('div')({
   },
 
   '&:has(input:not(:placeholder-shown):not(:focus)), &:has(textarea:not(:placeholder-shown):not(:focus))':
-  {
-    borderColor: '#9CA3AF',
-  },
+    {
+      borderColor: '#9CA3AF',
+    },
 });
 
 export const FormFieldBox: FC<
