@@ -19,8 +19,8 @@ const SwitchNetworkManager: FC = () => {
         chainId: 126, // mainnet Move
         url: RPC_URL[Network.MAINNET],
       });
-    } catch (error) {
-      console.error('>>>>chain Erro ao trocar rede:', error);
+    } catch (e) {
+      console.warn('error: ', e);
     } finally {
       isSwitchingRef.current = false;
     }
