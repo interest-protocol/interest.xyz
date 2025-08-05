@@ -82,7 +82,7 @@ const PoolFormWithdrawReceiveTokens: FC = () => {
                 </Box>
               </Box>
               <Typography variant="body" ml="m" mr="m" size="large">
-                {selectedCoinIndex[index] ? (+token.value).toFixed(4) || 0 : 0}
+                {selectedCoinIndex[index] ? (+token.value).toFixed(8) || 0 : 0}
               </Typography>
             </Box>
           ))

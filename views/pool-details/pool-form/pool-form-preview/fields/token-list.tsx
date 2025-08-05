@@ -33,7 +33,7 @@ const TokenListFields: FC<FieldProps> = ({ getValues }) => {
             </Typography>
           </Box>
           <Typography variant="body" ml="m" size="medium">
-            {token.value}
+            {(+token.value).toFixed(8).toString()}
           </Typography>
         </Box>
       ))}

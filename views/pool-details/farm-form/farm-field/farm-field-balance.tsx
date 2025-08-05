@@ -49,10 +49,9 @@ const FarmFieldBalance: FC<FarmFieldProps> = ({ farmMode }) => {
     setValue(`lpCoin.valueBN`, value);
     setValue(
       `lpCoin.value`,
-      FixedPointMath.toNumber(
-        value.decimalPlaces(0, 1),
-        token.decimals
-      ).toString()
+      FixedPointMath.toNumber(value.decimalPlaces(0, 1), token.decimals)
+        .toFixed(8)
+        .toString()
     );
   };
 
@@ -87,7 +86,7 @@ const FarmFieldBalance: FC<FarmFieldProps> = ({ farmMode }) => {
     >
       <Typography size="small" variant="body" fontSize="xs">
         Balance:{' '}
-        {FixedPointMath.toNumber(balance, token.decimals).toFixed(4) ?? '--'}
+        {FixedPointMath.toNumber(balance, token.decimals).toFixed(8) ?? '--'}
       </Typography>
       {loading && <ProgressIndicator variant="loading" size={12} />}
     </Button>
