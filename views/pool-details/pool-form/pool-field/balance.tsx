@@ -48,10 +48,9 @@ const Balance: FC<Omit<NameProps, 'index'>> = ({ name }) => {
     setValue(`${name}.valueBN`, value);
     setValue(
       `${name}.value`,
-      FixedPointMath.toNumber(
-        value.decimalPlaces(0, 1),
-        token.decimals
-      ).toString()
+      FixedPointMath.toNumber(value.decimalPlaces(0, 1), token.decimals)
+        .toFixed(8)
+        .toString()
     );
   };
 
@@ -86,7 +85,7 @@ const Balance: FC<Omit<NameProps, 'index'>> = ({ name }) => {
     >
       <Typography size="small" variant="body" fontSize="xs">
         Balance:{' '}
-        {FixedPointMath.toNumber(balance, token.decimals).toFixed(4) ?? '--'}
+        {FixedPointMath.toNumber(balance, token.decimals).toFixed(8) ?? '--'}
       </Typography>
       {loading && <ProgressIndicator variant="loading" size={12} />}
     </Button>

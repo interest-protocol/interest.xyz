@@ -92,10 +92,9 @@ const MaxButton: FC<MaxButtonProps> = ({ name, index }) => {
     } else {
       setValue(
         `${name}.value`,
-        FixedPointMath.toNumber(
-          value.decimalPlaces(0, 1),
-          token.decimals
-        ).toString()
+        FixedPointMath.toNumber(value.decimalPlaces(0, 1), token.decimals)
+          .toFixed(8)
+          .toString()
       );
       setValue(`${name}.valueBN`, value);
     }
