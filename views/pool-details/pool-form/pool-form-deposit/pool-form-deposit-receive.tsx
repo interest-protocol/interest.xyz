@@ -43,7 +43,7 @@ const PoolFormDepositReceive: FC = () => {
             </Typography>
           </Box>
           <Typography variant="body" ml="m" size="large">
-            {(+value).toFixed(4) || 0}
+            {(+value).toFixed(8) || 0}
           </Typography>
         </Box>
       </Box>

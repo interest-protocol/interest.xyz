@@ -40,10 +40,9 @@ const MaxButton: FC<FarmFieldProps> = ({ farmMode }) => {
     setValue(`lpCoin.valueBN`, value);
     setValue(
       `lpCoin.value`,
-      FixedPointMath.toNumber(
-        value.decimalPlaces(0, 1),
-        token.decimals
-      ).toString()
+      FixedPointMath.toNumber(value.decimalPlaces(0, 1), token.decimals)
+        .toFixed(8)
+        .toString()
     );
   };
 
