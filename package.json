@@ -16,7 +16,7 @@
     "@hookform/resolvers": "^3.9.1",
     "@interest-protocol/aptos-move-dex": "2.0.0",
     "@interest-protocol/aptos-sr-amm": "^1.1.0",
-    "@interest-protocol/interest-aptos-curve": "^5.3.0",
+    "@interest-protocol/interest-aptos-curve": "^5.4.0",
     "@interest-protocol/interest-aptos-v2": "4.0.1",
     "@interest-protocol/ui-kit": "0.3.3-beta",
     "@razorlabs/wallet-kit": "^0.5.0",
