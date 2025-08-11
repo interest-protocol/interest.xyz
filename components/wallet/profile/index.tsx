@@ -7,7 +7,6 @@ import Avatar from '@/components/account-info/avatar';
 import useClickOutsideListenerRef from '@/hooks/use-click-outside-listener-ref';
 
 import MenuProfile from './menu-profile';
-import SwitchNetworkManager from './switch-network-manager';
 
 const BOX_ID = 'wallet-box';
 
@@ -93,7 +92,6 @@ const Profile: FC = () => {
         isOpen={isOpenProfile}
         handleCloseProfile={handleCloseProfile}
       />
-      <SwitchNetworkManager />
     </Box>
   );
 };

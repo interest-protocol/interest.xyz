@@ -1,3 +1,4 @@
+import { getAptosWallets } from '@aptos-labs/wallet-standard';
 import { Box, Button } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
@@ -14,6 +15,22 @@ const UserInfo: FC<UserInfoProps> = ({ handleSettings }) => {
   const account = currentAccount?.address || '';
 
   const clipBoardSuccessMessage = 'Address copied to the clipboard';
+
+  const handleDisconnect = async () => {
+    const wallets = getAptosWallets();
+    const aptosWallets = wallets.aptosWallets;
+
+    const nightlyPosition = aptosWallets.findIndex(
+      (obj) => '_nightlyEventsMap' in obj
+    );
+
+    if (nightlyPosition != -1)
+      await aptosWallets[nightlyPosition].features[
+        'aptos:disconnect'
+      ].disconnect();
+
+    disconnect();
+  };
 
   return (
     <Box>
@@ -61,7 +78,12 @@ const UserInfo: FC<UserInfoProps> = ({ handleSettings }) => {
                 onClick={handleSettings}
               />
             </Button>
-            <Button isIcon variant="text" onClick={disconnect} p="0 !important">
+            <Button
+              isIcon
+              variant="text"
+              onClick={handleDisconnect}
+              p="0 !important"
+            >
               <LogoutSVG
                 width="1rem"
                 height="1rem"

@@ -1,3 +1,5 @@
+import { Network } from '@aptos-labs/ts-sdk';
+import { getAptosWallets, NetworkInfo } from '@aptos-labs/wallet-standard';
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
 import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
@@ -10,12 +12,29 @@ import { ConnectWalletModalProps } from './connect-wallet.types';
 
 const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
   const { allAvailableWallets, select } = useAptosWallet();
+  const wallets = getAptosWallets();
+  const aptosWallets = wallets.aptosWallets;
 
   const handleConnect = async (name: string) => {
     if (!allAvailableWallets.length)
       return window.open(name, '_blank')?.focus();
 
-    await select(name);
+    const networkInfo: NetworkInfo = {
+      chainId: 126,
+      name: Network.CUSTOM,
+    };
+
+    const nightlyPosition = aptosWallets.findIndex(
+      (obj) => '_nightlyEventsMap' in obj
+    );
+
+    if (nightlyPosition == -1) await select(name);
+    else {
+      const networkRequest = await aptosWallets[nightlyPosition].features[
+        'aptos:connect'
+      ].connect(false, networkInfo);
+      if (networkRequest.status == 'Approved') await select(name);
+    }
     handleClose();
   };
 
