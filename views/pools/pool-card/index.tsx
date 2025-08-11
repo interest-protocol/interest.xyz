@@ -127,7 +127,7 @@ const PoolCurveCard: FC<PoolCardProps> = ({ pool }) => {
       >
         <PoolCardHeader
           tags={((isFarm ? ['earn'] : []) as string[]).concat([
-            pool.algorithm,
+            pool.algorithm == 'curve' ? 'concentrated' : pool.algorithm,
             pool.algorithm != 'v2' ? pool.curve : '',
           ])}
         />

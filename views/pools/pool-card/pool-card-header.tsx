@@ -1,10 +1,16 @@
-import { Box, Button, Tag, Typography } from '@interest-protocol/ui-kit';
+import {
+  Box,
+  Button,
+  Tag,
+  TooltipWrapper,
+  Typography,
+} from '@interest-protocol/ui-kit';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { ArrowObliqueSVG } from '@/components/svg';
 
-import { TAG_COLOR } from './pool-card.data';
+import { TAG_COLOR, TAG_TOOLTIP } from './pool-card.data';
 import { PoolCardHeaderProps } from './pool-card.types';
 
 const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
@@ -12,22 +18,39 @@ const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
     <Box display="flex" flexWrap="wrap">
       {tags.map((tag) =>
         tag ? (
-          <Tag
+          <TooltipWrapper
+            bg="onSurface"
+            borderRadius="0.5rem"
+            width="max-content"
+            tooltipPosition="top"
+            tooltipContent={
+              <Typography
+                size="small"
+                variant="body"
+                textAlign="center"
+                whiteSpace="pre-line"
+              >
+                {TAG_TOOLTIP[tag]}
+              </Typography>
+            }
             key={v4()}
-            px="0"
-            py="0"
-            mr="2xs"
-            size="small"
-            height="1.4rem"
-            variant="outline"
-            bg={TAG_COLOR[tag].bg}
-            color={TAG_COLOR[tag].color}
-            borderColor={TAG_COLOR[tag].color}
           >
-            <Typography size="small" variant="label">
-              {tag}
-            </Typography>
-          </Tag>
+            <Tag
+              px="0"
+              py="0"
+              mr="2xs"
+              size="small"
+              height="1.4rem"
+              variant="outline"
+              bg={TAG_COLOR[tag].bg}
+              color={TAG_COLOR[tag].color}
+              borderColor={TAG_COLOR[tag].color}
+            >
+              <Typography size="small" variant="label">
+                {tag}
+              </Typography>
+            </Tag>
+          </TooltipWrapper>
         ) : (
           true
         )
