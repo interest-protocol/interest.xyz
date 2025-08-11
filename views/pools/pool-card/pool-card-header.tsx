@@ -24,12 +24,7 @@ const PoolCardHeader: FC<PoolCardHeaderProps> = ({ tags }) => (
             width="max-content"
             tooltipPosition="top"
             tooltipContent={
-              <Typography
-                size="small"
-                variant="body"
-                textAlign="center"
-                whiteSpace="pre-line"
-              >
+              <Typography size="small" variant="body" whiteSpace="pre-line">
                 {TAG_TOOLTIP[tag]}
               </Typography>
             }
