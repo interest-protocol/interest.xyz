@@ -30,6 +30,6 @@ export const TAG_TOOLTIP: Record<string, string> = {
   concentrated: `Concentrated Liquidity without \nconstant active management.`,
   v2: 'v2',
   volatile: 'Designed for uncorrelated assets.',
-  stable: 'Stable',
+  stable: 'Designed for correlated assets.',
   earn: 'Earn MOVE when \nproviding liquidity.',
 };
