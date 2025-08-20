@@ -38,11 +38,17 @@ const CoinsManager: FC = () => {
           (acc, { asset_type, amount, metadata }) => {
             if (!asset_type || !metadata) return acc;
 
+            const normalizedAddress = normalizeSuiAddress(asset_type);
+            const newBalance = BigNumber(amount);
+            const existingAsset = acc[normalizedAddress];
+
             return {
               ...acc,
-              [normalizeSuiAddress(asset_type)]: {
-                ...parseToMetadata(metadata),
-                balance: BigNumber(amount),
+              [normalizedAddress]: {
+                ...(existingAsset || parseToMetadata(metadata)),
+                balance: existingAsset
+                  ? existingAsset.balance.plus(newBalance)
+                  : newBalance,
               },
             };
           },
