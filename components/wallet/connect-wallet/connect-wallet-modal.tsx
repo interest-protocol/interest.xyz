@@ -11,9 +11,9 @@ import { CUSTOM_WALLETS } from './connect-wallet.data';
 import { ConnectWalletModalProps } from './connect-wallet.types';
 
 const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
-  const { allAvailableWallets, select } = useAptosWallet();
   const wallets = getAptosWallets();
   const aptosWallets = wallets.aptosWallets;
+  const { allAvailableWallets, select } = useAptosWallet();
 
   const handleConnect = async (name: string) => {
     if (!allAvailableWallets.length)
@@ -24,17 +24,16 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
       name: Network.CUSTOM,
     };
 
-    const nightlyPosition = aptosWallets.findIndex(
-      (obj) => '_nightlyEventsMap' in obj
-    );
+    await select(name);
 
-    if (nightlyPosition == -1) await select(name);
-    else {
-      const networkRequest = await aptosWallets[nightlyPosition].features[
-        'aptos:connect'
-      ].connect(false, networkInfo);
-      if (networkRequest.status == 'Approved') await select(name);
+    const wallet = aptosWallets.find((w) => w.name === name)!;
+
+    if (wallet.name === 'Nightly') {
+      await (wallet as any).changeNetwork(networkInfo);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
+
     handleClose();
   };
 
