@@ -1,6 +1,6 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
@@ -22,7 +22,7 @@ const SwapButton = () => {
   const { coinsMap, mutate } = useCoins();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useWallet();
   const { getValues, setValue, control, reset } = useFormContext();
 
   const to = useWatch({ control, name: 'to' });
@@ -54,11 +54,11 @@ const SwapButton = () => {
 
       if (!account) return;
 
-      const { from, to, payload } = getValues();
+      const { from, to, payload: data } = getValues();
 
       const startTime = Date.now();
 
-      const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ data });
 
       invariant(tx.status === 'Approved', 'Rejected by User');
 

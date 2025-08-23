@@ -1,6 +1,6 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button, Typography } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
 import { useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
@@ -24,7 +24,7 @@ const FarmFormButton: FC<FarmFormButtonProps> = ({
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
   const { handleClose: closeModal } = useModal();
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useWallet();
 
   const error = useWatch({ control, name: 'error' });
 
@@ -36,24 +36,24 @@ const FarmFormButton: FC<FarmFormButtonProps> = ({
 
       const lpCoin = getValues('lpCoin');
 
-      let payload, txResult;
+      let data, txResult;
 
       if (state === PoolFarmsOption.Stake) {
-        payload = dexCurve.stake({
+        data = dexCurve.stake({
           faIn: poolAddress,
           amount: BigInt(lpCoin.valueBN.toFixed(0)),
           farm: FARMS_BY_LP[poolAddress].address.toString(),
         });
       } else {
-        payload = dexCurve.unstake({
+        data = dexCurve.unstake({
           recipient: account.address,
           amount: BigInt(lpCoin.valueBN.toFixed(0)),
           farm: FARMS_BY_LP[poolAddress].address.toString(),
         });
       }
 
-      if (payload) {
-        const tx = await signAndSubmitTransaction({ payload });
+      if (data) {
+        const tx = await signAndSubmitTransaction({ data });
 
         invariant(tx.status === 'Approved', 'Rejected by User');
 

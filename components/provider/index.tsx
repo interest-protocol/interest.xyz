@@ -1,6 +1,7 @@
+import { Network } from '@aptos-labs/ts-sdk';
 import { FC, PropsWithChildren } from 'react';
 
-import { INDEXER_URL, Network, RPC_URL } from '@/constants';
+import { INDEXER_URL, RPC_URL } from '@/constants';
 import { ModalProvider } from '@/context/modal';
 import { AptosProvider } from '@/lib/aptos-provider';
 import CoinsManager from '@/lib/coins-manager';

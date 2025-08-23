@@ -1,4 +1,4 @@
-import { useAptosWallet } from '@razorlabs/wallet-kit';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import BigNumber from 'bignumber.js';
 import { values } from 'ramda';
 import { FC, memo, useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ const SwapManager: FC = () => {
   const [value] = useDebounce(useWatch({ control, name: 'from.value' }), 800);
   const [refreshInterval, setRefreshInterval] = useState(0);
 
-  const { account } = useAptosWallet();
+  const { account } = useWallet();
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -1,5 +1,5 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { type FC, useEffect, useId } from 'react';
 import useSWR from 'swr';
@@ -13,7 +13,7 @@ import { Asset } from './coins-manager.types';
 const CoinsManager: FC = () => {
   const id = useId();
   const client = useAptosClient();
-  const { account: currentAccount } = useAptosWallet();
+  const { account: currentAccount } = useWallet();
 
   const { setError, setLoading, setCoins, setMutate } = useCoins();
 

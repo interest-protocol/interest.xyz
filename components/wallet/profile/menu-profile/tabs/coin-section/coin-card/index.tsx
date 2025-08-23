@@ -1,3 +1,4 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { InterestDex } from '@interest-protocol/aptos-move-dex';
 import { normalizeSuiAddress } from '@interest-protocol/interest-aptos-v2';
 import {
@@ -6,7 +7,6 @@ import {
   TooltipWrapper,
   Typography,
 } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 import toast from 'react-hot-toast';
@@ -31,7 +31,7 @@ type CoinType = keyof typeof COIN_TYPE_TO_FA;
 const CoinCard: FC<CoinCardProps> = ({ token }) => {
   const network = useNetwork<Network>();
   const { coinsMap, mutate } = useCoins();
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useWallet();
 
   const symbol = token.symbol;
   const decimals = token.decimals;
@@ -53,13 +53,13 @@ const CoinCard: FC<CoinCardProps> = ({ token }) => {
       invariant(account, 'You should have this coin in your wallet');
       invariant(coin, 'You should have this coin in your wallet');
 
-      const payload = dexV2.wrapCoin({
+      const data = dexV2.wrapCoin({
         coinType: token.type,
         amount: BigInt(coin.balance.toString()),
         recipient: account.address,
       });
 
-      const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ data });
 
       invariant(tx.status === 'Approved', 'Rejected by User');
 

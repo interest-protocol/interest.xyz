@@ -2,8 +2,8 @@ import {
   InputGenerateTransactionPayloadData,
   UserTransactionResponse,
 } from '@aptos-labs/ts-sdk';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Button } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -23,7 +23,7 @@ const PoolSummaryButton: FC = () => {
   const { push } = useRouter();
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useWallet();
   const { setValue, getValues, resetField } = useFormContext<CreatePoolForm>();
 
   const gotoExplorer = () => {
@@ -49,10 +49,10 @@ const PoolSummaryButton: FC = () => {
         [[], []] as [ReadonlyArray<Token>, ReadonlyArray<Token>]
       );
 
-      let payload: InputGenerateTransactionPayloadData;
+      let data: InputGenerateTransactionPayloadData;
 
       if (coins.length > 1) {
-        payload = dexV2.addLiquidityCoins({
+        data = dexV2.addLiquidityCoins({
           coinA: coins[0].type,
           coinB: coins[1].type,
           recipient: account.address,
@@ -68,7 +68,7 @@ const PoolSummaryButton: FC = () => {
           ),
         });
       } else if (coins.length === 1) {
-        payload = dexV2.addLiquidityOneCoin({
+        data = dexV2.addLiquidityOneCoin({
           coinA: coins[0].type,
           faB: fas[0].type,
           recipient: account.address,
@@ -84,7 +84,7 @@ const PoolSummaryButton: FC = () => {
           ),
         });
       } else {
-        payload = dexV2.addLiquidity({
+        data = dexV2.addLiquidity({
           faA: fas[0].type,
           faB: fas[1].type,
           recipient: account.address,
@@ -93,7 +93,7 @@ const PoolSummaryButton: FC = () => {
         });
       }
 
-      const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ data });
 
       invariant(tx.status === 'Approved', 'Rejected by User');
 

@@ -1,5 +1,5 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Box, Button } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
@@ -19,7 +19,7 @@ const CreateTokenFormButton = () => {
   const client = useAptosClient();
   const { dialog, handleClose } = useDialog();
   const [loading, setLoading] = useState(false);
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useWallet();
   const { control, setValue, getValues, reset } =
     useFormContext<ICreateTokenForm>();
 
@@ -69,11 +69,11 @@ const CreateTokenFormButton = () => {
         ),
       };
 
-      const payload = dexV2.createFa(createFaArgs);
+      const data = dexV2.createFa(createFaArgs);
 
       const startTime = Date.now();
 
-      const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ data });
 
       invariant(tx.status === 'Approved', 'Rejected by User');
 

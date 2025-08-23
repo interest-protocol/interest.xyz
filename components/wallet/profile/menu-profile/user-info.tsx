@@ -1,6 +1,6 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { getAptosWallets } from '@aptos-labs/wallet-standard';
 import { Box, Button } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
 
 import Avatar from '@/components/account-info/avatar';
@@ -10,7 +10,7 @@ import { copyToClipboard } from '@/utils';
 import { UserInfoProps } from './user-info.types';
 
 const UserInfo: FC<UserInfoProps> = ({ handleSettings }) => {
-  const { account: currentAccount, disconnect } = useAptosWallet();
+  const { account: currentAccount, disconnect } = useWallet();
 
   const account = currentAccount?.address || '';
 

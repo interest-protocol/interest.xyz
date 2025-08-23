@@ -1,5 +1,5 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { FARMS } from '@interest-protocol/interest-aptos-curve';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import useSWR from 'swr';
 
 import { MOVE } from '@/constants/coins';
@@ -8,7 +8,8 @@ import { useInterestCurveDex } from '../use-interest-dex-curve';
 
 export const useGetAccountFarmsData = () => {
   const interestCurveDex = useInterestCurveDex();
-  const { account: currentAccount } = useAptosWallet();
+
+  const { account: currentAccount } = useWallet();
 
   return useSWR([useGetAccountFarmsData.name, currentAccount], async () => {
     if (!currentAccount) return;

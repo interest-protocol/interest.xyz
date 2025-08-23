@@ -1,46 +1,82 @@
 import { Network } from '@aptos-labs/ts-sdk';
-import { getAptosWallets, NetworkInfo } from '@aptos-labs/wallet-standard';
+import { useWallet, WalletName } from '@aptos-labs/wallet-adapter-react';
+import { getAptosWallets } from '@aptos-labs/wallet-standard';
 import { Box, Button, Typography } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { ArrowLeftSVG, TimesSVG } from '@/components/svg';
+import { RPC_URL } from '@/constants';
 
-import { CUSTOM_WALLETS } from './connect-wallet.data';
 import { ConnectWalletModalProps } from './connect-wallet.types';
 
 const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
-  const { allAvailableWallets, select } = useAptosWallet();
-  const wallets = getAptosWallets();
-  const aptosWallets = wallets.aptosWallets;
+  const { wallets, connect } = useWallet();
 
-  const handleConnect = async (name: string) => {
-    if (!allAvailableWallets.length)
-      return window.open(name, '_blank')?.focus();
+  // Filter out unwanted wallets, remove duplicates, and sort with Nightly first
+  const filteredWallets = wallets
+    ? wallets
+        .filter((wallet) => {
+          const name = wallet.name.toLowerCase();
+          return (
+            !name.includes('petra') &&
+            !name.includes('google') &&
+            !name.includes('apple')
+          );
+        })
+        .filter((wallet, index, self) => {
+          // Remove duplicates based on wallet name
+          return index === self.findIndex((w) => w.name === wallet.name);
+        })
+        .sort((a, b) => {
+          // Nightly always first
+          if (a.name.toLowerCase().includes('nightly')) return -1;
+          if (b.name.toLowerCase().includes('nightly')) return 1;
+          return 0;
+        })
+    : [];
 
-    const networkInfo: NetworkInfo = {
-      chainId: 126,
-      name: Network.CUSTOM,
-    };
+  const handleWalletSelect = async (walletName: WalletName<string>) => {
+    try {
+      // Try to connect with Movement network info using wallet-standard features
+      if (typeof window !== 'undefined') {
+        const allWallets = getAptosWallets();
+        const selectedWallet = allWallets.aptosWallets.find(
+          (w) => w.name === walletName
+        );
 
-    const nightlyPosition = aptosWallets.findIndex(
-      (obj) => '_nightlyEventsMap' in obj
-    );
+        if (selectedWallet?.features?.['aptos:connect']) {
+          // Use wallet-standard aptos:connect feature with network info
+          const networkInfo = {
+            chainId: 126, // Movement Mainnet
+            name: Network.MAINNET,
+            url: RPC_URL[Network.MAINNET],
+          };
 
-    if (nightlyPosition == -1) await select(name);
-    else {
-      const networkRequest = await aptosWallets[nightlyPosition].features[
-        'aptos:connect'
-      ].connect(false, networkInfo);
-      if (networkRequest.status == 'Approved') await select(name);
+          try {
+            const result = await selectedWallet.features[
+              'aptos:connect'
+            ].connect(false, networkInfo);
+
+            // If wallet-standard connection succeeded, now connect via wallet adapter
+            if (result.status === 'Approved') {
+              await connect(walletName);
+              handleClose();
+              return;
+            }
+          } catch (connectError) {
+            // Fallback to standard connection
+          }
+        }
+      }
+
+      // Fallback to standard wallet adapter connection
+      await connect(walletName);
+      handleClose();
+    } catch (error) {
+      // Silent error - wallet adapter will handle error display
     }
-    handleClose();
   };
-
-  const WALLETS = !allAvailableWallets.length
-    ? CUSTOM_WALLETS
-    : allAvailableWallets;
 
   return (
     <Box
@@ -73,25 +109,19 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" gap="s">
-        {WALLETS.map(({ label, name, iconUrl, downloadUrl }) => (
+        {filteredWallets.map((wallet) => (
           <Button
             key={v4()}
             px="s"
             variant="tonal"
             color="onSurface"
             borderRadius="xs"
-            onClick={() =>
-              handleConnect(
-                allAvailableWallets.length
-                  ? name
-                  : downloadUrl.browserExtension || ''
-              )
-            }
+            onClick={() => handleWalletSelect(wallet.name)}
           >
             <Box as="span" display="flex" alignItems="center" gap="s">
-              <img src={iconUrl} alt={label} width="40" />
+              <img src={wallet.icon} alt={wallet.name} width="40" />
               <Typography as="span" size="large" variant="label">
-                {label}
+                {wallet.name}
               </Typography>
             </Box>
             <Box>

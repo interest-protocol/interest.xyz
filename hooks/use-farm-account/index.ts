@@ -1,4 +1,4 @@
-import { useAptosWallet } from '@razorlabs/wallet-kit';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import useSWR from 'swr';
 
 import { FARMS_BY_LP } from '@/constants';
@@ -7,7 +7,7 @@ import { useInterestCurveDex } from '../use-interest-dex-curve';
 
 export const useFarmAccount = (lpAddress: string) => {
   const interestCurveDex = useInterestCurveDex();
-  const { account: currentAccount } = useAptosWallet();
+  const { account: currentAccount } = useWallet();
 
   return useSWR(
     [useFarmAccount.name, interestCurveDex, currentAccount, lpAddress],

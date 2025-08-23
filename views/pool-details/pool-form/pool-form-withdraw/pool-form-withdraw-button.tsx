@@ -1,6 +1,6 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Network } from '@interest-protocol/interest-aptos-v2';
 import { Button, Typography } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
 import { useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
@@ -25,7 +25,7 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
   const { handleClose: closeModal } = useModal();
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useWallet();
 
   const error = useWatch({ control, name: 'error' });
 
@@ -37,11 +37,11 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
 
       const lpCoin = getValues('lpCoin');
 
-      let payload, txResult;
+      let data, txResult;
       const selectedCoinIndex = getValues('selectedCoinIndex');
       if (algorithm === 'curve') {
         if (selectedCoinIndex[0] && selectedCoinIndex[1]) {
-          payload = dexCurve.removeLiquidity({
+          data = dexCurve.removeLiquidity({
             pool: poolAddress,
             recipient: account.address,
             amount: BigInt(lpCoin.valueBN.toFixed(0)),
@@ -53,7 +53,7 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
               ? 0
               : 1
             : 0;
-          payload = dexCurve.removeLiquidityOneFa({
+          data = dexCurve.removeLiquidityOneFa({
             pool: lpCoin.type,
             minAmountOut: BigInt(0),
             recipient: account.address,
@@ -64,15 +64,15 @@ const PoolFormWithdrawButton: FC<PoolFormButtonProps> = ({
       }
 
       if (algorithm === 'v2') {
-        payload = dexV2.removeLiquidity({
+        data = dexV2.removeLiquidity({
           lpFa: lpCoin.type,
           recipient: account.address,
           amount: BigInt(lpCoin.valueBN.decimalPlaces(0, 1).toString()),
         });
       }
 
-      if (payload) {
-        const tx = await signAndSubmitTransaction({ payload });
+      if (data) {
+        const tx = await signAndSubmitTransaction({ data });
 
         invariant(tx.status === 'Approved', 'Rejected by User');
 

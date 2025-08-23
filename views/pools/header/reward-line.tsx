@@ -1,5 +1,5 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Box, Button } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -23,7 +23,9 @@ const RewardLine: FC = () => {
   const dexCurve = useInterestCurveDex();
   const { dialog, handleClose } = useDialog();
   const { handleClose: closeModal } = useModal();
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  //const { account, signAndSubmitTransaction } = useAptosWallet();
+
+  const { account, signAndSubmitTransaction } = useWallet();
 
   const { getValues, setValue } = useFormContext<IPoolForm>();
 
@@ -40,18 +42,21 @@ const RewardLine: FC = () => {
       const farmList = farm.data
         .filter((item) => item.rewards.toString() !== '0')
         .map((item) => item.farm);
-
       const rewards = Object.values(FARMS_BY_LP)
         .filter((farm) => farmList.includes(farm.address.toString()))
         .map((farm) => farm.rewards.toString());
 
-      const payload = dexCurve.harvestAll({
+      const data = dexCurve.harvestAll({
         farms: farmList,
         rewardFas: rewards,
         recipient: account.address,
       });
-
-      const tx = await signAndSubmitTransaction({ payload });
+      console.warn(data, '>>>error');
+      const tx = await signAndSubmitTransaction({
+        data,
+        sender: account.address,
+      });
+      // invariant(!account, 'You must be connected to proceed');
 
       invariant(tx.status === 'Approved', 'Rejected by User');
 
@@ -76,7 +81,7 @@ const RewardLine: FC = () => {
         EXPLORER_URL[Network.MAINNET](`txn/${txResult.hash}`)
       );
     } catch (e) {
-      console.warn({ e });
+      console.warn({ e }, '>>>error');
 
       if ((e as any)?.data?.error_code === 'mempool_is_full')
         throw new Error('The mempool is full, try again in a few seconds.');

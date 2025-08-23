@@ -1,5 +1,5 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Box, Button } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import BigNumber from 'bignumber.js';
 import { isEmpty, values } from 'ramda';
 import { FC } from 'react';
@@ -20,7 +20,7 @@ const FarmFormRewardButton: FC<{ rewardFa: string }> = ({ rewardFa }) => {
   const dexCurve = useInterestCurveDex();
   const { dialog, handleClose } = useDialog();
   const { handleClose: closeModal } = useModal();
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useWallet();
 
   const { getValues, setValue } = useFormContext<IPoolForm>();
   const { data: farmAccount, isLoading: loadingBalances } = useFarmAccount(
@@ -43,13 +43,13 @@ const FarmFormRewardButton: FC<{ rewardFa: string }> = ({ rewardFa }) => {
 
       setValue('error', '');
 
-      const payload = dexCurve.harvest({
+      const data = dexCurve.harvest({
         rewardFa,
         recipient: account.address,
         farm: FARMS_BY_LP[getValues('pool.poolAddress')].address.toString(),
       });
 
-      const tx = await signAndSubmitTransaction({ payload });
+      const tx = await signAndSubmitTransaction({ data });
 
       invariant(tx.status === 'Approved', 'Rejected by User');
 

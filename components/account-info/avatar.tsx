@@ -1,5 +1,5 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Box, Typography } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import Link from 'next/link';
 import { FC } from 'react';
 
@@ -17,17 +17,11 @@ const Avatar: FC<AvatarProps> = ({
   nameOrAddressPosition = 'right',
 }) => {
   const network = useNetwork<Network>();
-  const {
-    account: currentAccount,
-    name,
-    allAvailableWallets,
-  } = useAptosWallet();
+  const { account: currentAccount } = useWallet();
 
-  const walletImg = allAvailableWallets.find(
-    (wallet) => wallet.name === name
-  )?.iconUrl;
-
-  const address = accountAddress ?? (currentAccount?.address || '');
+  const address = accountAddress
+    ? accountAddress
+    : currentAccount?.address || '';
 
   const SIZE = isLarge ? '2.2rem' : '1.5rem';
 
@@ -65,16 +59,16 @@ const Avatar: FC<AvatarProps> = ({
         borderRadius="full"
         justifyContent="center"
       >
-        {walletImg ? (
+        {/*walletImg ? (
           <img src={walletImg} alt={name} width="100%" />
         ) : (
-          <UserSVG width="80%" height="80%" maxWidth={SIZE} maxHeight={SIZE} />
-        )}
+        )*/}
+        <UserSVG width="80%" height="80%" maxWidth={SIZE} maxHeight={SIZE} />
       </Box>
       {withNameOrAddress && nameOrAddressPosition === 'right' && (
         <Link
           target="_blank"
-          href={EXPLORER_URL[network](`account/${address}`)}
+          href={EXPLORER_URL[network]?.(`account/${address}`) || '#'}
         >
           <Typography
             mr="0.5rem"

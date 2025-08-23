@@ -1,5 +1,5 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Button, Typography } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { FC } from 'react';
 import { useWatch } from 'react-hook-form';
 import invariant from 'tiny-invariant';
@@ -23,19 +23,19 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
   const dexCurve = useInterestCurveDex();
   const { dialog, handleClose } = useDialog();
   const { getValues, control, setValue } = form;
-  const { account, signAndSubmitTransaction } = useAptosWallet();
+  const { account, signAndSubmitTransaction } = useWallet();
 
   const handleDeposit = async () => {
     try {
       invariant(account, 'You must be connected to proceed');
       setValue('error', '');
 
-      let txResult, payload;
+      let txResult, data;
 
       if (algorithm === 'curve') {
         const tokens = getValues('tokenList');
 
-        payload = dexCurve.addLiquidity({
+        data = dexCurve.addLiquidity({
           pool: poolAddress,
           fasIn: tokens.map((token) => token.type),
           recipient: account.address,
@@ -49,7 +49,7 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
       if (algorithm === 'v2') {
         const [token0, token1] = getValues('tokenList');
 
-        payload = dexV2.addLiquidity({
+        data = dexV2.addLiquidity({
           faA: token0.type,
           faB: token1.type,
           recipient: account.address,
@@ -58,8 +58,8 @@ const PoolFormDepositButton: FC<PoolFormButtonProps> = ({
         });
       }
 
-      if (payload) {
-        const tx = await signAndSubmitTransaction({ payload });
+      if (data) {
+        const tx = await signAndSubmitTransaction({ data });
 
         invariant(tx.status === 'Approved', 'Rejected by User');
 

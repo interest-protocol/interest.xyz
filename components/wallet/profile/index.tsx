@@ -1,5 +1,5 @@
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Box } from '@interest-protocol/ui-kit';
-import { useAptosWallet } from '@razorlabs/wallet-kit';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 
@@ -7,13 +7,12 @@ import Avatar from '@/components/account-info/avatar';
 import useClickOutsideListenerRef from '@/hooks/use-click-outside-listener-ref';
 
 import MenuProfile from './menu-profile';
-import SwitchNetworkManager from './switch-network-manager';
 
 const BOX_ID = 'wallet-box';
 
 const Profile: FC = () => {
   const { query } = useRouter();
-  const { account: currentAccount } = useAptosWallet();
+  const { account: currentAccount } = useWallet();
   const [isOpenProfile, setIsOpenProfile] = useState(Boolean(query.profile));
 
   const [menuIsDropdown] = useState(isOpenProfile);
@@ -93,7 +92,6 @@ const Profile: FC = () => {
         isOpen={isOpenProfile}
         handleCloseProfile={handleCloseProfile}
       />
-      <SwitchNetworkManager />
     </Box>
   );
 };
