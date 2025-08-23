@@ -26,15 +26,15 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
 
     await select(name);
 
+    handleClose();
+
     const wallet = aptosWallets.find((w) => w.name === name)!;
 
-    if (wallet.name === 'Nightly') {
+    if (wallet.name === 'Nightly' && (wallet as any).chainId !== 126) {
       await (wallet as any).changeNetwork(networkInfo);
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-
-    handleClose();
   };
 
   const WALLETS = !allAvailableWallets.length
