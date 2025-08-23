@@ -38,7 +38,6 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
 
   const handleWalletSelect = async (walletName: WalletName<string>) => {
     try {
-      // Try to connect with Movement network info using wallet-standard features
       if (typeof window !== 'undefined') {
         const allWallets = getAptosWallets();
         const selectedWallet = allWallets.aptosWallets.find(
@@ -46,7 +45,6 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
         );
 
         if (selectedWallet?.features?.['aptos:connect']) {
-          // Use wallet-standard aptos:connect feature with network info
           const networkInfo = {
             chainId: 126, // Movement Mainnet
             name: Network.MAINNET,
@@ -58,19 +56,17 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
               'aptos:connect'
             ].connect(false, networkInfo);
 
-            // If wallet-standard connection succeeded, now connect via wallet adapter
             if (result.status === 'Approved') {
               await connect(walletName);
               handleClose();
               return;
             }
           } catch (connectError) {
-            // Fallback to standard connection
+            /* empty */
           }
         }
       }
 
-      // Fallback to standard wallet adapter connection
       await connect(walletName);
       handleClose();
     } catch (error) {
