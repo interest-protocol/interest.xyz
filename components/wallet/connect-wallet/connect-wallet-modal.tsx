@@ -6,6 +6,7 @@ import { FC } from 'react';
 import { v4 } from 'uuid';
 
 import { ArrowLeftSVG, TimesSVG } from '@/components/svg';
+import { CHAIN_ID, RPC_URL } from '@/constants';
 
 import { CUSTOM_WALLETS } from './connect-wallet.data';
 import { ConnectWalletModalProps } from './connect-wallet.types';
@@ -20,21 +21,18 @@ const ConnectWalletModal: FC<ConnectWalletModalProps> = ({ handleClose }) => {
       return window.open(name, '_blank')?.focus();
 
     const networkInfo: NetworkInfo = {
-      chainId: 126,
       name: Network.CUSTOM,
+      url: RPC_URL[Network.MAINNET],
+      chainId: CHAIN_ID[Network.MAINNET],
     };
-
-    await select(name);
-
-    handleClose();
 
     const wallet = aptosWallets.find((w) => w.name === name)!;
 
-    if (wallet.name === 'Nightly' && (wallet as any).chainId !== 126) {
-      await (wallet as any).changeNetwork(networkInfo);
+    if (wallet.name === 'Nightly')
+      await wallet.features['aptos:connect'].connect(false, networkInfo);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
+    await select(name);
+    handleClose();
   };
 
   const WALLETS = !allAvailableWallets.length

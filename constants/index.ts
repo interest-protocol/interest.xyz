@@ -23,6 +23,11 @@ export const RPC_URL = {
     'https://rpc.sentio.xyz/ubhXreFT5WIvDL5f8KGmhOyTBfRpCrhx/movement/v1',
 };
 
+export const CHAIN_ID = {
+  [Network.MAINNET]: 126,
+  [Network.MovementMainnet]: 126,
+};
+
 export const INDEXER_URL = {
   [Network.MAINNET]: 'https://indexer.mainnet.movementnetwork.xyz/v1/graphql',
   [Network.MovementMainnet]:
