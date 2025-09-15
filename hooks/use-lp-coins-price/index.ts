@@ -14,9 +14,10 @@ export const useLPCoinsPrice = () =>
             `https://api.interestlabs.io/v1/movement/mainnet/curve/lp-price/${poolAddress}`
           )
             .then((response) => response.json())
-            .then(
-              (data: LPCoinsPriceProps) =>
-                [poolAddress, data] as [string, LPCoinsPriceProps]
+            .then((data: LPCoinsPriceProps) =>
+              !data.lpPrice
+                ? []
+                : ([poolAddress, data] as [string, LPCoinsPriceProps])
             )
             .catch(() => [])
         )
