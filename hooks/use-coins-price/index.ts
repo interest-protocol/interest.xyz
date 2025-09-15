@@ -9,7 +9,7 @@ export const useCoinsPrice = (coins?: string | ReadonlyArray<string>) =>
     !coins?.length
       ? null
       : fetch(
-          `https://api.staging.interestlabs.io/v1/rates?${Array.isArray(coins) ? coins.map((coin) => `coins=${String(coin)}`).join('&') : `coins=${String(coins)}`}`,
+          `https://api.interestlabs.io/v1/rates?${Array.isArray(coins) ? coins.map((coin) => `coins=${String(coin)}`).join('&') : `coins=${String(coins)}`}`,
           { headers: { network: 'MOVEMENT', cache: 'force-cache' } }
         )
           .then((response) => response.json())

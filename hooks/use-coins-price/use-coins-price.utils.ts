@@ -19,7 +19,7 @@ export const getBasedCoins = async (data: ReadonlyArray<TokenPrice>) => {
   );
 
   const basesPricesMap = await fetch(
-    `https://api.staging.interestlabs.io/v1/rates?${uniqueBases.map((coin) => `coins=${String(coin)}`).join('&')}`,
+    `https://api.interestlabs.io/v1/rates?${uniqueBases.map((coin) => `coins=${String(coin)}`).join('&')}`,
     { headers: { network: 'MOVEMENT', cache: 'force-cache' } }
   )
     .then((response) => response.json())
