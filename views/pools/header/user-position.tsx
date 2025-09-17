@@ -18,7 +18,7 @@ const UserPositionLine: FC = () => {
 
   const stakedAmounts: ReadonlyArray<[string, BigNumber]> =
     farmList?.flatMap((farm) =>
-      Number(farm.rewards)
+      Number(farm.amount)
         ? [
             [
               LPS_BY_FARMS[farm.farm.toString()],
@@ -36,7 +36,6 @@ const UserPositionLine: FC = () => {
   );
 
   const data = [...stakedAmounts, ...lpCoinsBalance];
-
   const usdUserPosition = lpsPriceMap
     ? data.reduce(
         (acc, [lpToken, balance]) =>
